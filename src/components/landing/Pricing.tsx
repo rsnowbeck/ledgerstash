@@ -11,7 +11,7 @@ const plans = [
     features: [
       "Up to 10 recipients",
       "5 active requirements",
-      "Email notifications",
+      "Standard email delivery",
       "PDF exports",
       "14-day free trial"
     ],
