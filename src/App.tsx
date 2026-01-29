@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import Recipients from "./pages/Recipients";
 import Requirements from "./pages/Requirements";
 import Sign from "./pages/Sign";
+import Signatures from "./pages/Signatures";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/recipients" element={<Recipients />} />
           <Route path="/requirements" element={<Requirements />} />
+          <Route path="/signatures" element={<Signatures />} />
           <Route path="/sign/:token" element={<Sign />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

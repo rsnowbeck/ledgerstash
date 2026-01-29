@@ -7,7 +7,8 @@ import {
   BarChart3, 
   LogOut,
   Menu,
-  X
+  X,
+  FileSignature
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -20,6 +21,7 @@ const navItems = [
   { label: "Dashboard", icon: BarChart3, href: "/dashboard" },
   { label: "Recipients", icon: Users, href: "/recipients" },
   { label: "Requirements", icon: FileText, href: "/requirements" },
+  { label: "Signatures", icon: FileSignature, href: "/signatures" },
 ];
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
