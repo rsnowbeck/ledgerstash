@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Loader2, Send, Search, Users, CheckCircle2 } from "lucide-react";
+import { Loader2, Send, Search, Users, CheckCircle2, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 
 interface Recipient {
@@ -20,6 +20,12 @@ interface Recipient {
   email: string;
   department: string | null;
   recipient_type: string | null;
+}
+
+interface SigningLink {
+  recipientName: string;
+  email: string;
+  url: string;
 }
 
 interface SendForSignatureDialogProps {
@@ -45,14 +51,16 @@ export function SendForSignatureDialog({
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [sentCount, setSentCount] = useState(0);
+  const [signingLinks, setSigningLinks] = useState<SigningLink[]>([]);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (open && organizationId) {
       fetchRecipients();
       setSelectedIds(new Set());
       setSuccess(false);
-      setSentCount(0);
+      setSigningLinks([]);
+      setCopiedIndex(null);
     }
   }, [open, organizationId]);
 
@@ -99,34 +107,44 @@ export function SendForSignatureDialog({
     setSending(true);
 
     try {
+      const selectedRecipients = recipients.filter((r) => selectedIds.has(r.id));
       const signingRequests = await Promise.all(
-        Array.from(selectedIds).map(async (recipientId) => {
+        selectedRecipients.map(async (recipient) => {
           const token = generateSecureToken();
           const tokenHash = await hashToken(token);
 
           return {
             organization_id: organizationId,
             requirement_id: requirementId,
-            recipient_id: recipientId,
+            recipient_id: recipient.id,
             token_hash: tokenHash,
             status: "pending",
             sent_at: new Date().toISOString(),
-            // Store the plain token temporarily for email sending (we'll handle this later)
             _plain_token: token,
+            _recipient_name: recipient.full_name,
+            _recipient_email: recipient.email,
           };
         })
       );
 
-      // Insert signing requests (without the plain token)
+      // Insert signing requests (without the plain token and recipient info)
       const { error } = await supabase.from("signing_requests").insert(
-        signingRequests.map(({ _plain_token, ...rest }) => rest)
+        signingRequests.map(({ _plain_token, _recipient_name, _recipient_email, ...rest }) => rest)
       );
 
       if (error) throw error;
 
-      setSentCount(selectedIds.size);
+      // Generate signing links
+      const baseUrl = window.location.origin;
+      const links: SigningLink[] = signingRequests.map((req) => ({
+        recipientName: req._recipient_name,
+        email: req._recipient_email,
+        url: `${baseUrl}/sign/${req._plain_token}`,
+      }));
+
+      setSigningLinks(links);
       setSuccess(true);
-      toast.success(`Sent ${selectedIds.size} signing request(s)`);
+      toast.success(`Created ${selectedIds.size} signing request(s)`);
       onSuccess?.();
     } catch (error: any) {
       console.error("Error creating signing requests:", error);
@@ -134,6 +152,13 @@ export function SendForSignatureDialog({
     } finally {
       setSending(false);
     }
+  };
+
+  const copyToClipboard = async (url: string, index: number) => {
+    await navigator.clipboard.writeText(url);
+    setCopiedIndex(index);
+    toast.success("Link copied!");
+    setTimeout(() => setCopiedIndex(null), 2000);
   };
 
   const toggleRecipient = (id: string) => {
@@ -174,22 +199,60 @@ export function SendForSignatureDialog({
   if (success) {
     return (
       <Dialog open={open} onOpenChange={handleClose}>
-        <DialogContent className="sm:max-w-md">
-          <div className="py-8 text-center">
-            <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary mb-4">
-              <CheckCircle2 className="h-8 w-8" />
+        <DialogContent className="sm:max-w-lg">
+          <div className="py-4">
+            <div className="text-center mb-6">
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary mb-3">
+                <CheckCircle2 className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground">
+                Signing Requests Created!
+              </h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                Share these links with your recipients
+              </p>
             </div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">
-              Signing Requests Sent!
-            </h3>
-            <p className="text-muted-foreground mb-6">
-              Created {sentCount} signing request{sentCount !== 1 ? "s" : ""} for "{requirementTitle}".
-              <br />
-              <span className="text-sm">
-                (Email notifications coming soon)
-              </span>
-            </p>
-            <Button onClick={handleClose}>Done</Button>
+
+            <ScrollArea className="max-h-[300px] -mx-6 px-6">
+              <div className="space-y-3">
+                {signingLinks.map((link, index) => (
+                  <div
+                    key={index}
+                    className="p-3 rounded-lg border border-border bg-muted/30"
+                  >
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <div className="min-w-0">
+                        <p className="font-medium text-foreground truncate text-sm">
+                          {link.recipientName}
+                        </p>
+                        <p className="text-xs text-muted-foreground truncate">
+                          {link.email}
+                        </p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => copyToClipboard(link.url, index)}
+                        className="shrink-0"
+                      >
+                        {copiedIndex === index ? (
+                          <Check className="h-4 w-4 text-primary" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                    <code className="text-xs text-muted-foreground block truncate bg-background px-2 py-1 rounded">
+                      {link.url}
+                    </code>
+                  </div>
+                ))}
+              </div>
+            </ScrollArea>
+
+            <div className="mt-6 text-center">
+              <Button onClick={handleClose}>Done</Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
