@@ -1,60 +1,86 @@
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { User } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import { 
-  Shield, 
   Users, 
   FileText, 
   BarChart3, 
-  LogOut,
   Plus,
   Clock,
-  CheckCircle2,
-  AlertCircle,
-  Menu,
-  X
 } from "lucide-react";
-import { toast } from "sonner";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { useAuth } from "@/hooks/useAuth";
+import { useOrganization } from "@/hooks/useOrganization";
 
 export default function Dashboard() {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navigate = useNavigate();
+  const { loading: authLoading } = useAuth();
+  const { organization, loading: orgLoading } = useOrganization();
+  const [stats, setStats] = useState({
+    totalRecipients: 0,
+    activeRequirements: 0,
+    pendingSignatures: 0,
+    complianceRate: null as number | null,
+  });
+  const [statsLoading, setStatsLoading] = useState(true);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user ?? null);
-        setLoading(false);
-        
-        if (!session?.user) {
-          navigate("/login");
-        }
-      }
-    );
+    if (organization?.id) {
+      fetchStats();
+    }
+  }, [organization?.id]);
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-      
-      if (!session?.user) {
-        navigate("/login");
-      }
-    });
+  const fetchStats = async () => {
+    if (!organization?.id) return;
+    
+    try {
+      // Fetch recipients count
+      const { count: recipientsCount } = await supabase
+        .from('recipients')
+        .select('*', { count: 'exact', head: true })
+        .eq('organization_id', organization.id)
+        .eq('is_deleted', false);
 
-    return () => subscription.unsubscribe();
-  }, [navigate]);
+      // Fetch requirements count (published only)
+      const { count: requirementsCount } = await supabase
+        .from('requirements')
+        .select('*', { count: 'exact', head: true })
+        .eq('organization_id', organization.id)
+        .eq('status', 'published');
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    toast.success("Logged out successfully");
-    navigate("/");
+      // Fetch pending signing requests
+      const { count: pendingCount } = await supabase
+        .from('signing_requests')
+        .select('*', { count: 'exact', head: true })
+        .eq('organization_id', organization.id)
+        .eq('status', 'pending');
+
+      // Fetch completed signing requests for compliance rate
+      const { count: completedCount } = await supabase
+        .from('signing_requests')
+        .select('*', { count: 'exact', head: true })
+        .eq('organization_id', organization.id)
+        .eq('status', 'completed');
+
+      const totalRequests = (pendingCount || 0) + (completedCount || 0);
+      const complianceRate = totalRequests > 0 
+        ? Math.round((completedCount || 0) / totalRequests * 100) 
+        : null;
+
+      setStats({
+        totalRecipients: recipientsCount || 0,
+        activeRequirements: requirementsCount || 0,
+        pendingSignatures: pendingCount || 0,
+        complianceRate,
+      });
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    } finally {
+      setStatsLoading(false);
+    }
   };
 
-  if (loading) {
+  if (authLoading || orgLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-pulse text-muted-foreground">Loading...</div>
@@ -62,150 +88,78 @@ export default function Dashboard() {
     );
   }
 
-  const stats = [
-    { label: "Total Recipients", value: "0", icon: Users, change: "Add your first" },
-    { label: "Active Requirements", value: "0", icon: FileText, change: "Create one" },
-    { label: "Pending Signatures", value: "0", icon: Clock, change: "—" },
-    { label: "Compliance Rate", value: "—", icon: BarChart3, change: "No data yet" },
-  ];
-
-  const navItems = [
-    { label: "Dashboard", icon: BarChart3, href: "/dashboard", active: true },
-    { label: "Recipients", icon: Users, href: "/recipients" },
-    { label: "Requirements", icon: FileText, href: "/requirements" },
+  const statCards = [
+    { 
+      label: "Total Recipients", 
+      value: stats.totalRecipients.toString(), 
+      icon: Users, 
+      change: stats.totalRecipients === 0 ? "Add your first" : `${stats.totalRecipients} people` 
+    },
+    { 
+      label: "Active Requirements", 
+      value: stats.activeRequirements.toString(), 
+      icon: FileText, 
+      change: stats.activeRequirements === 0 ? "Create one" : `${stats.activeRequirements} published` 
+    },
+    { 
+      label: "Pending Signatures", 
+      value: stats.pendingSignatures.toString(), 
+      icon: Clock, 
+      change: stats.pendingSignatures === 0 ? "—" : "Awaiting response" 
+    },
+    { 
+      label: "Compliance Rate", 
+      value: stats.complianceRate !== null ? `${stats.complianceRate}%` : "—", 
+      icon: BarChart3, 
+      change: stats.complianceRate !== null ? "Overall completion" : "No data yet" 
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-background flex">
-      {/* Sidebar - Desktop */}
-      <aside className="hidden lg:flex w-64 flex-col fixed inset-y-0 z-50 bg-sidebar border-r border-sidebar-border">
-        <div className="flex h-16 items-center gap-2 px-6 border-b border-sidebar-border">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sidebar-primary">
-            <Shield className="h-4 w-4 text-sidebar-primary-foreground" />
-          </div>
-          <span className="text-lg font-bold text-sidebar-foreground">Attestly</span>
+    <DashboardLayout>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
+          <p className="text-muted-foreground">
+            Welcome back{organization?.name ? ` to ${organization.name}` : ''}! Here's an overview of your compliance status.
+          </p>
         </div>
-
-        <nav className="flex-1 p-4 space-y-1">
-          {navItems.map((item) => (
-            <Link
-              key={item.label}
-              to={item.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                item.active
-                  ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                  : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
-              }`}
-            >
-              <item.icon className="h-5 w-5" />
-              {item.label}
+        <div className="flex gap-3">
+          <Button variant="heroOutline" asChild>
+            <Link to="/recipients">
+              <Plus className="h-4 w-4" />
+              Add Recipient
             </Link>
-          ))}
-        </nav>
-
-        <div className="p-4 border-t border-sidebar-border">
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-colors w-full"
-          >
-            <LogOut className="h-5 w-5" />
-            Sign Out
-          </button>
+          </Button>
+          <Button variant="hero" asChild>
+            <Link to="/requirements">
+              <Plus className="h-4 w-4" />
+              New Requirement
+            </Link>
+          </Button>
         </div>
-      </aside>
+      </div>
 
-      {/* Mobile Header */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-16 bg-background border-b border-border flex items-center justify-between px-4">
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-            <Shield className="h-4 w-4 text-primary-foreground" />
-          </div>
-          <span className="text-lg font-bold text-foreground">Attestly</span>
-        </div>
-        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2">
-          {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
-      </header>
-
-      {/* Mobile Sidebar */}
-      {sidebarOpen && (
-        <div className="lg:hidden fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" onClick={() => setSidebarOpen(false)}>
-          <aside className="fixed inset-y-0 left-0 w-64 bg-sidebar border-r border-sidebar-border pt-16" onClick={(e) => e.stopPropagation()}>
-            <nav className="flex-1 p-4 space-y-1">
-              {navItems.map((item) => (
-                <Link
-                  key={item.label}
-                  to={item.href}
-                  onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                    item.active
-                      ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                      : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
-                  }`}
-                >
-                  <item.icon className="h-5 w-5" />
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-
-            <div className="p-4 border-t border-sidebar-border">
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-colors w-full"
-              >
-                <LogOut className="h-5 w-5" />
-                Sign Out
-              </button>
-            </div>
-          </aside>
-        </div>
-      )}
-
-      {/* Main Content */}
-      <main className="flex-1 lg:ml-64 pt-16 lg:pt-0">
-        <div className="p-6 lg:p-8">
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
-              <p className="text-muted-foreground">
-                Welcome back! Here's an overview of your compliance status.
-              </p>
-            </div>
-            <div className="flex gap-3">
-              <Button variant="heroOutline" asChild>
-                <Link to="/recipients">
-                  <Plus className="h-4 w-4" />
-                  Add Recipient
-                </Link>
-              </Button>
-              <Button variant="hero" asChild>
-                <Link to="/requirements">
-                  <Plus className="h-4 w-4" />
-                  New Requirement
-                </Link>
-              </Button>
-            </div>
-          </div>
-
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {stats.map((stat) => (
-              <div key={stat.label} className="stat-card">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center">
-                    <stat.icon className="h-5 w-5 text-accent" />
-                  </div>
-                </div>
-                <p className="text-2xl font-bold text-foreground mb-1">{stat.value}</p>
-                <p className="text-sm text-muted-foreground">{stat.label}</p>
-                <p className="text-xs text-muted-foreground mt-2">{stat.change}</p>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {statCards.map((stat) => (
+          <div key={stat.label} className="stat-card">
+            <div className="flex items-center justify-between mb-4">
+              <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center">
+                <stat.icon className="h-5 w-5 text-accent" />
               </div>
-            ))}
+            </div>
+            <p className="text-2xl font-bold text-foreground mb-1">{stat.value}</p>
+            <p className="text-sm text-muted-foreground">{stat.label}</p>
+            <p className="text-xs text-muted-foreground mt-2">{stat.change}</p>
           </div>
+        ))}
+      </div>
 
-          {/* Empty State */}
+      {/* Empty State or Recent Activity */}
+      {stats.totalRecipients === 0 && stats.activeRequirements === 0 ? (
+        <>
           <div className="card-elevated p-12 text-center">
             <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-accent/10 text-accent mb-6">
               <FileText className="h-8 w-8" />
@@ -271,8 +225,31 @@ export default function Dashboard() {
               </p>
             </div>
           </div>
+        </>
+      ) : (
+        <div className="card-elevated p-6">
+          <h2 className="text-lg font-semibold text-foreground mb-4">Quick Actions</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Link to="/recipients" className="p-4 rounded-lg border border-border hover:border-accent/50 hover:bg-accent/5 transition-colors">
+              <Users className="h-6 w-6 text-accent mb-2" />
+              <h3 className="font-medium text-foreground">Manage Recipients</h3>
+              <p className="text-sm text-muted-foreground">{stats.totalRecipients} total</p>
+            </Link>
+            <Link to="/requirements" className="p-4 rounded-lg border border-border hover:border-accent/50 hover:bg-accent/5 transition-colors">
+              <FileText className="h-6 w-6 text-accent mb-2" />
+              <h3 className="font-medium text-foreground">View Requirements</h3>
+              <p className="text-sm text-muted-foreground">{stats.activeRequirements} active</p>
+            </Link>
+            <div className="p-4 rounded-lg border border-border">
+              <BarChart3 className="h-6 w-6 text-accent mb-2" />
+              <h3 className="font-medium text-foreground">Compliance Overview</h3>
+              <p className="text-sm text-muted-foreground">
+                {stats.complianceRate !== null ? `${stats.complianceRate}% complete` : 'No requests yet'}
+              </p>
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
+      )}
+    </DashboardLayout>
   );
 }
