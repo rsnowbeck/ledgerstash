@@ -21,8 +21,8 @@ export function Hero() {
 
           {/* Subheadline */}
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground mb-10 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            Collect legally defensible signatures for policies, NDAs, and training confirmations. 
-            No logins required for signers. Audit-ready proof in seconds.
+            Collect legally defensible signatures for policies, NDAs, and training. 
+            No logins for signers. Audit-ready proof in seconds.
           </p>
 
           {/* CTAs */}
