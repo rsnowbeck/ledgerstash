@@ -12,6 +12,7 @@ import {
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { useOrganization } from "@/hooks/useOrganization";
+import { SignatureMetrics } from "@/components/dashboard/SignatureMetrics";
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth();
@@ -156,6 +157,11 @@ export default function Dashboard() {
           </div>
         ))}
       </div>
+
+      {/* Signature Metrics Charts */}
+      {organization?.id && (
+        <SignatureMetrics organizationId={organization.id} />
+      )}
 
       {/* Empty State or Recent Activity */}
       {stats.totalRecipients === 0 && stats.activeRequirements === 0 ? (
