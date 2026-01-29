@@ -1,1 +1,4 @@
 project_id = "urpqjnoowsdehvkrqxmy"
+
+[functions.verify-signing-token]
+verify_jwt = false
