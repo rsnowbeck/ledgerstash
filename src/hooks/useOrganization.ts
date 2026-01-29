@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "./useAuth";
+import { User } from "@supabase/supabase-js";
 
 interface Organization {
   id: string;
@@ -18,8 +18,7 @@ interface Profile {
   email: string | null;
 }
 
-export function useOrganization() {
-  const { user } = useAuth({ requireAuth: false });
+export function useOrganization(user: User | null) {
   const [organization, setOrganization] = useState<Organization | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);

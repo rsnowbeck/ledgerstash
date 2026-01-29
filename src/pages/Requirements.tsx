@@ -54,8 +54,8 @@ interface Requirement {
 }
 
 export default function Requirements() {
-  const { loading: authLoading } = useAuth();
-  const { organization } = useOrganization();
+  const { user, loading: authLoading } = useAuth();
+  const { organization } = useOrganization(user);
   const [requirements, setRequirements] = useState<Requirement[]>([]);
   const [requirementsLoading, setRequirementsLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
