@@ -61,7 +61,7 @@ export function Features() {
             Everything you need for compliance
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            From policy acknowledgments to audit exports, Attestly handles it all so you can focus on your business.
+            From policy acknowledgments to audit exports, Attestly handles it all so you can focus on your business. Works for employees, contractors, and vendors — even if they're not in HR.
           </p>
         </div>
 
