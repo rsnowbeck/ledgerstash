@@ -127,16 +127,16 @@ export default function Dashboard() {
           </p>
         </div>
         <div className="flex gap-3">
-          <Button variant="heroOutline" asChild>
-            <Link to="/recipients">
-              <Plus className="h-4 w-4" />
-              Add Recipient
-            </Link>
-          </Button>
           <Button variant="hero" asChild>
             <Link to="/requirements">
               <Plus className="h-4 w-4" />
               New Requirement
+            </Link>
+          </Button>
+          <Button variant="heroOutline" asChild>
+            <Link to="/recipients">
+              <Plus className="h-4 w-4" />
+              Add Recipient
             </Link>
           </Button>
         </div>
@@ -178,16 +178,16 @@ export default function Dashboard() {
               acknowledgments from your team.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button variant="heroOutline" asChild>
-                <Link to="/recipients">
-                  <Users className="h-4 w-4" />
-                  Add Recipients
-                </Link>
-              </Button>
               <Button variant="hero" asChild>
                 <Link to="/requirements">
                   <FileText className="h-4 w-4" />
                   Create Requirement
+                </Link>
+              </Button>
+              <Button variant="heroOutline" asChild>
+                <Link to="/recipients">
+                  <Users className="h-4 w-4" />
+                  Add Recipients
                 </Link>
               </Button>
             </div>
