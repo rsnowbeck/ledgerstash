@@ -40,6 +40,7 @@ import { toast } from "sonner";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { useOrganization } from "@/hooks/useOrganization";
+import { SendForSignatureDialog } from "@/components/requirements/SendForSignatureDialog";
 
 interface Requirement {
   id: string;
@@ -60,12 +61,19 @@ export default function Requirements() {
   const [requirementsLoading, setRequirementsLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
+  const [sendDialogOpen, setSendDialogOpen] = useState(false);
+  const [selectedRequirement, setSelectedRequirement] = useState<Requirement | null>(null);
 
   // Form state
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [frequency, setFrequency] = useState("one-time");
   const [dueDate, setDueDate] = useState("");
+
+  const handleSendForSignature = (requirement: Requirement) => {
+    setSelectedRequirement(requirement);
+    setSendDialogOpen(true);
+  };
 
   useEffect(() => {
     if (organization?.id) {
@@ -339,40 +347,69 @@ export default function Requirements() {
                     )}
                   </div>
                 </div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem>
-                      <Eye className="h-4 w-4 mr-2" />
-                      View Details
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Edit className="h-4 w-4 mr-2" />
-                      Edit
-                    </DropdownMenuItem>
-                    {requirement.status === 'draft' && (
-                      <DropdownMenuItem onClick={() => handlePublishRequirement(requirement.id, requirement.title)}>
-                        <Send className="h-4 w-4 mr-2" />
-                        Publish
-                      </DropdownMenuItem>
-                    )}
-                    <DropdownMenuItem 
-                      className="text-destructive"
-                      onClick={() => handleDeleteRequirement(requirement.id, requirement.title)}
+                <div className="flex items-center gap-2">
+                  {requirement.status === 'published' && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleSendForSignature(requirement)}
                     >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                      <Send className="h-4 w-4" />
+                      Send for Signature
+                    </Button>
+                  )}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm">
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem>
+                        <Eye className="h-4 w-4 mr-2" />
+                        View Details
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Edit className="h-4 w-4 mr-2" />
+                        Edit
+                      </DropdownMenuItem>
+                      {requirement.status === 'draft' && (
+                        <DropdownMenuItem onClick={() => handlePublishRequirement(requirement.id, requirement.title)}>
+                          <Send className="h-4 w-4 mr-2" />
+                          Publish
+                        </DropdownMenuItem>
+                      )}
+                      {requirement.status === 'published' && (
+                        <DropdownMenuItem onClick={() => handleSendForSignature(requirement)}>
+                          <Send className="h-4 w-4 mr-2" />
+                          Send for Signature
+                        </DropdownMenuItem>
+                      )}
+                      <DropdownMenuItem 
+                        className="text-destructive"
+                        onClick={() => handleDeleteRequirement(requirement.id, requirement.title)}
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
             </div>
           ))}
         </div>
+      )}
+
+      {/* Send for Signature Dialog */}
+      {selectedRequirement && organization && (
+        <SendForSignatureDialog
+          open={sendDialogOpen}
+          onOpenChange={setSendDialogOpen}
+          requirementId={selectedRequirement.id}
+          requirementTitle={selectedRequirement.title}
+          organizationId={organization.id}
+        />
       )}
     </DashboardLayout>
   );
