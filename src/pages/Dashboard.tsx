@@ -14,8 +14,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useOrganization } from "@/hooks/useOrganization";
 
 export default function Dashboard() {
-  const { loading: authLoading } = useAuth();
-  const { organization, loading: orgLoading } = useOrganization();
+  const { user, loading: authLoading } = useAuth();
+  const { organization, loading: orgLoading } = useOrganization(user);
   const [stats, setStats] = useState({
     totalRecipients: 0,
     activeRequirements: 0,

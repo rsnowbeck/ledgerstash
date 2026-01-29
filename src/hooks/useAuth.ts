@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User, Session } from "@supabase/supabase-js";
@@ -16,6 +16,7 @@ export function useAuth(options: UseAuthOptions = {}) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
@@ -28,6 +29,7 @@ export function useAuth(options: UseAuthOptions = {}) {
       }
     );
 
+    // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -41,10 +43,10 @@ export function useAuth(options: UseAuthOptions = {}) {
     return () => subscription.unsubscribe();
   }, [navigate, redirectTo, requireAuth]);
 
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     await supabase.auth.signOut();
     navigate("/");
-  };
+  }, [navigate]);
 
   return { user, session, loading, signOut };
 }

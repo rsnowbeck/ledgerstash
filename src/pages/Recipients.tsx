@@ -48,8 +48,8 @@ interface Recipient {
 }
 
 export default function Recipients() {
-  const { loading: authLoading } = useAuth();
-  const { organization } = useOrganization();
+  const { user, loading: authLoading } = useAuth();
+  const { organization } = useOrganization(user);
   const [recipients, setRecipients] = useState<Recipient[]>([]);
   const [recipientsLoading, setRecipientsLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
