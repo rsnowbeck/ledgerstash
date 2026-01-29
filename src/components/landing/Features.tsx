@@ -39,7 +39,7 @@ export function Features() {
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-4">
             Everything you need for compliance
           </h2>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">From policy acknowledgments to audit exports, Attestly handles it all so you can focus on your business. Works for employees, contractors, and vendors — even if they're not in HR system.</p>
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">From policy acknowledgments to audit exports, Attestly handles it all so you can focus on your business. Works for employees, contractors, and vendors — even if they're not in the HR system.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
