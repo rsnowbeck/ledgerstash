@@ -4,6 +4,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { useOrganization } from "@/hooks/useOrganization";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -21,8 +22,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Search, FileSignature, Clock, CheckCircle2, XCircle } from "lucide-react";
+import { Search, FileSignature, Clock, CheckCircle2, XCircle, RefreshCw } from "lucide-react";
 import { format } from "date-fns";
+import { ResendLinkDialog } from "@/components/signatures/ResendLinkDialog";
 
 interface SigningRequest {
   id: string;
@@ -47,6 +49,8 @@ export default function Signatures() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [resendDialogOpen, setResendDialogOpen] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState<SigningRequest | null>(null);
 
   useEffect(() => {
     if (organization?.id) {
@@ -127,6 +131,16 @@ export default function Signatures() {
     return matchesSearch && matchesStatus;
   });
 
+  const isRequestPendingOrExpired = (request: SigningRequest) => {
+    const isExpired = request.expires_at && new Date(request.expires_at) < new Date();
+    return request.status === "pending" || isExpired;
+  };
+
+  const handleResendClick = (request: SigningRequest) => {
+    setSelectedRequest(request);
+    setResendDialogOpen(true);
+  };
+
   if (authLoading || orgLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -204,6 +218,7 @@ export default function Signatures() {
                   <TableHead>Sent</TableHead>
                   <TableHead>Completed</TableHead>
                   <TableHead>Signed As</TableHead>
+                  <TableHead className="w-[100px]">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -246,6 +261,19 @@ export default function Signatures() {
                         <span className="text-muted-foreground">—</span>
                       )}
                     </TableCell>
+                    <TableCell>
+                      {isRequestPendingOrExpired(request) && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleResendClick(request)}
+                          className="h-8 px-2"
+                        >
+                          <RefreshCw className="h-4 w-4" />
+                          <span className="sr-only">Resend</span>
+                        </Button>
+                      )}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -268,6 +296,19 @@ export default function Signatures() {
             Pending: {filteredRequests.filter((r) => r.status === "pending" && !(r.expires_at && new Date(r.expires_at) < new Date())).length}
           </span>
         </div>
+      )}
+
+      {/* Resend Link Dialog */}
+      {selectedRequest && (
+        <ResendLinkDialog
+          open={resendDialogOpen}
+          onOpenChange={setResendDialogOpen}
+          signingRequestId={selectedRequest.id}
+          recipientName={selectedRequest.recipient?.full_name || "Unknown"}
+          recipientEmail={selectedRequest.recipient?.email || ""}
+          requirementTitle={selectedRequest.requirement?.title || "Unknown"}
+          onSuccess={fetchSigningRequests}
+        />
       )}
     </DashboardLayout>
   );
