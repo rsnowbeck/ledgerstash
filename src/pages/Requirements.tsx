@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -30,7 +31,9 @@ import {
   Trash2,
   Edit,
   Eye,
-  Search
+  Search,
+  Archive,
+  X
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -68,6 +71,8 @@ export default function Requirements() {
   const [selectedRequirement, setSelectedRequirement] = useState<Requirement | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [bulkActionLoading, setBulkActionLoading] = useState(false);
 
   // Form state
   const [title, setTitle] = useState("");
@@ -180,6 +185,8 @@ export default function Requirements() {
     switch (status) {
       case 'published':
         return 'bg-success/10 text-success';
+      case 'archived':
+        return 'bg-muted/50 text-muted-foreground';
       case 'draft':
       default:
         return 'bg-muted text-muted-foreground';
@@ -193,6 +200,72 @@ export default function Requirements() {
     const matchesStatus = statusFilter === "all" || req.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
+
+  const toggleSelection = (id: string) => {
+    const newSelected = new Set(selectedIds);
+    if (newSelected.has(id)) {
+      newSelected.delete(id);
+    } else {
+      newSelected.add(id);
+    }
+    setSelectedIds(newSelected);
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === filteredRequirements.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(filteredRequirements.map((r) => r.id)));
+    }
+  };
+
+  const clearSelection = () => {
+    setSelectedIds(new Set());
+  };
+
+  const handleBulkArchive = async () => {
+    if (selectedIds.size === 0) return;
+    setBulkActionLoading(true);
+    
+    try {
+      const { error } = await supabase
+        .from('requirements')
+        .update({ status: 'archived' })
+        .in('id', Array.from(selectedIds));
+
+      if (error) throw error;
+
+      toast.success(`Archived ${selectedIds.size} requirement(s)`);
+      setSelectedIds(new Set());
+      fetchRequirements();
+    } catch (error: any) {
+      toast.error('Failed to archive requirements');
+    } finally {
+      setBulkActionLoading(false);
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedIds.size === 0) return;
+    setBulkActionLoading(true);
+    
+    try {
+      const { error } = await supabase
+        .from('requirements')
+        .delete()
+        .in('id', Array.from(selectedIds));
+
+      if (error) throw error;
+
+      toast.success(`Deleted ${selectedIds.size} requirement(s)`);
+      setSelectedIds(new Set());
+      fetchRequirements();
+    } catch (error: any) {
+      toast.error('Failed to delete requirements');
+    } finally {
+      setBulkActionLoading(false);
+    }
+  };
 
   if (authLoading) {
     return (
@@ -331,9 +404,57 @@ export default function Requirements() {
             <SelectItem value="all">All statuses</SelectItem>
             <SelectItem value="draft">Draft</SelectItem>
             <SelectItem value="published">Published</SelectItem>
+            <SelectItem value="archived">Archived</SelectItem>
           </SelectContent>
         </Select>
       </div>
+
+      {/* Bulk Action Bar */}
+      {selectedIds.size > 0 && (
+        <div className="flex items-center justify-between gap-4 p-4 mb-6 rounded-lg bg-accent/10 border border-accent/20">
+          <div className="flex items-center gap-3">
+            <Checkbox
+              checked={selectedIds.size === filteredRequirements.length}
+              onCheckedChange={toggleSelectAll}
+            />
+            <span className="text-sm font-medium text-foreground">
+              {selectedIds.size} selected
+            </span>
+            <Button variant="ghost" size="sm" onClick={clearSelection}>
+              <X className="h-4 w-4" />
+              Clear
+            </Button>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleBulkArchive}
+              disabled={bulkActionLoading}
+            >
+              {bulkActionLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Archive className="h-4 w-4" />
+              )}
+              Archive
+            </Button>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={handleBulkDelete}
+              disabled={bulkActionLoading}
+            >
+              {bulkActionLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Trash2 className="h-4 w-4" />
+              )}
+              Delete
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Requirements List or Empty State */}
       {requirementsLoading ? (
@@ -365,10 +486,24 @@ export default function Requirements() {
           {filteredRequirements.map((requirement) => (
             <div
               key={requirement.id} 
-              className="card-elevated p-6 cursor-pointer hover:border-accent/30 transition-colors"
+              className={`card-elevated p-6 cursor-pointer hover:border-accent/30 transition-colors ${selectedIds.has(requirement.id) ? 'border-accent bg-accent/5' : ''}`}
               onClick={() => navigate(`/requirements/${requirement.id}`)}
             >
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start gap-4">
+                {/* Checkbox */}
+                <div 
+                  className="pt-1"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleSelection(requirement.id);
+                  }}
+                >
+                  <Checkbox
+                    checked={selectedIds.has(requirement.id)}
+                    onCheckedChange={() => toggleSelection(requirement.id)}
+                  />
+                </div>
+                
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">
                     <h3 className="text-lg font-semibold text-foreground truncate">
@@ -426,6 +561,20 @@ export default function Requirements() {
                         <DropdownMenuItem onClick={() => handleSendForSignature(requirement)}>
                           <Send className="h-4 w-4 mr-2" />
                           Send for Signature
+                        </DropdownMenuItem>
+                      )}
+                      {requirement.status !== 'archived' && (
+                        <DropdownMenuItem onClick={async () => {
+                          try {
+                            await supabase.from('requirements').update({ status: 'archived' }).eq('id', requirement.id);
+                            toast.success(`Archived "${requirement.title}"`);
+                            fetchRequirements();
+                          } catch {
+                            toast.error('Failed to archive');
+                          }
+                        }}>
+                          <Archive className="h-4 w-4 mr-2" />
+                          Archive
                         </DropdownMenuItem>
                       )}
                       <DropdownMenuItem 
