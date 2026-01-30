@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, X, Check } from "lucide-react";
+import { Loader2, X, Check, Upload, Paperclip, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface Requirement {
@@ -27,12 +27,14 @@ interface Requirement {
 
 interface RequirementEditFormProps {
   requirement: Requirement;
+  organizationId: string;
   onSave: () => void;
   onCancel: () => void;
 }
 
 export function RequirementEditForm({
   requirement,
+  organizationId,
   onSave,
   onCancel,
 }: RequirementEditFormProps) {
@@ -40,11 +42,73 @@ export function RequirementEditForm({
   const [description, setDescription] = useState(requirement.description || "");
   const [frequency, setFrequency] = useState(requirement.frequency || "one-time");
   const [dueDate, setDueDate] = useState(requirement.due_date || "");
+  const [attachmentUrl, setAttachmentUrl] = useState(requirement.attachment_url);
+  const [attachmentName, setAttachmentName] = useState(requirement.attachment_name);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (file.type !== "application/pdf") {
+      toast.error("Only PDF files are allowed");
+      return;
+    }
+
+    // Validate file size (10MB max)
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("File size must be less than 10MB");
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      // Generate unique filename
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${organizationId}/${requirement.id}/${Date.now()}.${fileExt}`;
+
+      // Upload to storage
+      const { error: uploadError } = await supabase.storage
+        .from("requirement-attachments")
+        .upload(fileName, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: urlData } = supabase.storage
+        .from("requirement-attachments")
+        .getPublicUrl(fileName);
+
+      setAttachmentUrl(urlData.publicUrl);
+      setAttachmentName(file.name);
+      toast.success("File uploaded successfully");
+    } catch (error: any) {
+      console.error("Error uploading file:", error);
+      toast.error(error.message || "Failed to upload file");
+    } finally {
+      setUploading(false);
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const handleRemoveAttachment = async () => {
+    // We'll just clear the local state - the old file will be orphaned but that's acceptable
+    // A cleanup job could be added later if needed
+    setAttachmentUrl(null);
+    setAttachmentName(null);
+    toast.success("Attachment removed");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!title.trim()) {
       toast.error("Title is required");
       return;
@@ -60,6 +124,8 @@ export function RequirementEditForm({
           description: description.trim() || null,
           frequency,
           due_date: dueDate || null,
+          attachment_url: attachmentUrl,
+          attachment_name: attachmentName,
         })
         .eq("id", requirement.id);
 
@@ -124,12 +190,98 @@ export function RequirementEditForm({
         </div>
       </div>
 
+      {/* Attachment Section */}
+      <div className="space-y-2">
+        <Label>Attachment (PDF)</Label>
+        
+        {attachmentUrl ? (
+          <div className="flex items-center gap-3 p-3 rounded-lg border border-border bg-muted/30">
+            <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+              <Paperclip className="h-5 w-5 text-accent" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-foreground truncate">
+                {attachmentName || "Attachment"}
+              </p>
+              <a
+                href={attachmentUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-muted-foreground hover:text-accent"
+              >
+                View current file
+              </a>
+            </div>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={handleRemoveAttachment}
+              className="text-destructive hover:text-destructive hover:bg-destructive/10"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
+        ) : (
+          <div
+            className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-accent/50 transition-colors cursor-pointer"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            {uploading ? (
+              <>
+                <Loader2 className="h-8 w-8 mx-auto text-accent animate-spin mb-2" />
+                <p className="text-sm text-muted-foreground">Uploading...</p>
+              </>
+            ) : (
+              <>
+                <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+                <p className="text-sm text-muted-foreground">
+                  Click to upload or drag and drop
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">PDF up to 10MB</p>
+              </>
+            )}
+          </div>
+        )}
+        
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="application/pdf"
+          onChange={handleFileUpload}
+          className="hidden"
+        />
+        
+        {attachmentUrl && (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="w-full"
+          >
+            {uploading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                Uploading...
+              </>
+            ) : (
+              <>
+                <Upload className="h-4 w-4 mr-2" />
+                Replace with new file
+              </>
+            )}
+          </Button>
+        )}
+      </div>
+
       <div className="flex gap-3 pt-4">
         <Button
           type="button"
           variant="outline"
           onClick={onCancel}
-          disabled={saving}
+          disabled={saving || uploading}
           className="flex-1"
         >
           <X className="h-4 w-4 mr-2" />
@@ -138,7 +290,7 @@ export function RequirementEditForm({
         <Button
           type="submit"
           variant="hero"
-          disabled={saving}
+          disabled={saving || uploading}
           className="flex-1"
         >
           {saving ? (
