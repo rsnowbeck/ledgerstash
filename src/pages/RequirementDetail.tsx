@@ -269,11 +269,12 @@ export default function RequirementDetail() {
       </div>
 
       {/* Edit Form */}
-      {isEditing && (
+      {isEditing && organization && (
         <div className="card-elevated p-6 mb-8">
           <h2 className="text-lg font-semibold text-foreground mb-4">Edit Requirement</h2>
           <RequirementEditForm
             requirement={requirement}
+            organizationId={organization.id}
             onSave={handleEditSave}
             onCancel={handleEditCancel}
           />
