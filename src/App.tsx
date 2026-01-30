@@ -11,6 +11,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import Recipients from "./pages/Recipients";
 import Requirements from "./pages/Requirements";
+import RequirementDetail from "./pages/RequirementDetail";
 import Sign from "./pages/Sign";
 import Signatures from "./pages/Signatures";
 import NotFound from "./pages/NotFound";
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/recipients" element={<Recipients />} />
           <Route path="/requirements" element={<Requirements />} />
+          <Route path="/requirements/:id" element={<RequirementDetail />} />
           <Route path="/signatures" element={<Signatures />} />
           <Route path="/sign/:token" element={<Sign />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

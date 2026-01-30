@@ -225,7 +225,7 @@ export function DashboardRequirementsTable({ organizationId }: DashboardRequirem
                     </div>
                     <div>
                       <Link 
-                        to="/requirements" 
+                        to={`/requirements/${req.id}`}
                         className="font-medium text-foreground hover:text-accent transition-colors"
                       >
                         {req.title}
@@ -247,7 +247,7 @@ export function DashboardRequirementsTable({ organizationId }: DashboardRequirem
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <Button variant="ghost" size="sm" asChild>
-                      <Link to="/requirements">
+                      <Link to={`/requirements/${req.id}`}>
                         <Eye className="h-4 w-4" />
                       </Link>
                     </Button>
