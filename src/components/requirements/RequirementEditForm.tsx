@@ -48,13 +48,22 @@ export function RequirementEditForm({
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const allowedTypes = [
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "image/png",
+    "image/jpeg",
+    "image/jpg",
+  ];
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     // Validate file type
-    if (file.type !== "application/pdf") {
-      toast.error("Only PDF files are allowed");
+    if (!allowedTypes.includes(file.type)) {
+      toast.error("Only PDF, Word documents, and images (PNG, JPG) are allowed");
       return;
     }
 
@@ -192,7 +201,7 @@ export function RequirementEditForm({
 
       {/* Attachment Section */}
       <div className="space-y-2">
-        <Label>Attachment (PDF)</Label>
+        <Label>Attachment</Label>
         
         {attachmentUrl ? (
           <div className="flex items-center gap-3 p-3 rounded-lg border border-border bg-muted/30">
@@ -238,7 +247,7 @@ export function RequirementEditForm({
                 <p className="text-sm text-muted-foreground">
                   Click to upload or drag and drop
                 </p>
-                <p className="text-xs text-muted-foreground mt-1">PDF up to 10MB</p>
+                <p className="text-xs text-muted-foreground mt-1">PDF, Word, or images up to 10MB</p>
               </>
             )}
           </div>
@@ -247,7 +256,7 @@ export function RequirementEditForm({
         <input
           ref={fileInputRef}
           type="file"
-          accept="application/pdf"
+          accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/png,image/jpeg"
           onChange={handleFileUpload}
           className="hidden"
         />

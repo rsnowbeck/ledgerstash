@@ -260,14 +260,14 @@ export default function Requirements() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label>Attachment (PDF)</Label>
+                <Label>Attachment</Label>
                 <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-accent/50 transition-colors cursor-pointer">
                   <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
                   <p className="text-sm text-muted-foreground">
                     Click to upload or drag and drop
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    PDF up to 10MB
+                    PDF, Word, or images up to 10MB
                   </p>
                 </div>
               </div>
