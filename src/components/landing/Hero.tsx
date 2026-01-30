@@ -33,8 +33,12 @@ export function Hero() {
                 <ArrowRight className="h-5 w-5" />
               </Link>
             </Button>
-            <Button variant="heroOutline" size="xl" asChild>
-              <Link to="#how-it-works">See How It Works</Link>
+            <Button 
+              variant="heroOutline" 
+              size="xl" 
+              onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              See How It Works
             </Button>
           </div>
 
