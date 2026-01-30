@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useAuth } from "@/hooks/useAuth";
@@ -26,9 +26,11 @@ import {
   AlertCircle,
   Send,
   Paperclip,
+  Edit,
 } from "lucide-react";
 import { format, isPast, isToday } from "date-fns";
 import { ResendLinkDialog } from "@/components/signatures/ResendLinkDialog";
+import { RequirementEditForm } from "@/components/requirements/RequirementEditForm";
 
 interface Requirement {
   id: string;
@@ -61,6 +63,7 @@ interface SigningRequestWithRecipient {
 
 export default function RequirementDetail() {
   const { id } = useParams<{ id: string }>();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { user, loading: authLoading } = useAuth();
   const { organization, loading: orgLoading } = useOrganization(user);
   const [requirement, setRequirement] = useState<Requirement | null>(null);
@@ -68,6 +71,13 @@ export default function RequirementDetail() {
   const [loading, setLoading] = useState(true);
   const [resendDialogOpen, setResendDialogOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState<SigningRequestWithRecipient | null>(null);
+  const [isEditing, setIsEditing] = useState(searchParams.get("edit") === "true");
+
+  // Update editing state when URL changes
+  useEffect(() => {
+    const editParam = searchParams.get("edit") === "true";
+    setIsEditing(editParam);
+  }, [searchParams]);
 
   useEffect(() => {
     if (id && organization?.id) {
@@ -125,6 +135,19 @@ export default function RequirementDetail() {
   const handleResendClick = (request: SigningRequestWithRecipient) => {
     setSelectedRequest(request);
     setResendDialogOpen(true);
+  };
+
+  const handleEditSave = () => {
+    setIsEditing(false);
+    searchParams.delete("edit");
+    setSearchParams(searchParams);
+    fetchRequirementDetails();
+  };
+
+  const handleEditCancel = () => {
+    setIsEditing(false);
+    searchParams.delete("edit");
+    setSearchParams(searchParams);
   };
 
   const getStatusBadge = (status: string | null, dueDate: string | null) => {
@@ -235,12 +258,27 @@ export default function RequirementDetail() {
           </div>
 
           <div className="flex gap-2">
-            <Button variant="outline" asChild>
-              <Link to="/requirements">Edit Requirement</Link>
-            </Button>
+            {!isEditing && (
+              <Button variant="outline" onClick={() => setIsEditing(true)}>
+                <Edit className="h-4 w-4 mr-2" />
+                Edit
+              </Button>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Edit Form */}
+      {isEditing && (
+        <div className="card-elevated p-6 mb-8">
+          <h2 className="text-lg font-semibold text-foreground mb-4">Edit Requirement</h2>
+          <RequirementEditForm
+            requirement={requirement}
+            onSave={handleEditSave}
+            onCancel={handleEditCancel}
+          />
+        </div>
+      )}
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

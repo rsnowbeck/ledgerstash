@@ -371,7 +371,7 @@ export default function Requirements() {
                         <Eye className="h-4 w-4 mr-2" />
                         View Details
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => navigate(`/requirements/${requirement.id}`)}>
+                      <DropdownMenuItem onClick={() => navigate(`/requirements/${requirement.id}?edit=true`)}>
                         <Edit className="h-4 w-4 mr-2" />
                         Edit
                       </DropdownMenuItem>
