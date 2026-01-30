@@ -124,7 +124,8 @@ export default function Contact() {
             </div>
             <h1 className="text-3xl font-bold text-foreground mb-3">Get in Touch</h1>
             <p className="text-muted-foreground max-w-md mx-auto">
-              Have a question about Attestly? Want to schedule a demo? We'd love to hear from you.
+              Have a question about Attestly or need help getting started?<br />
+              We're here to help.
             </p>
           </div>
 
