@@ -14,6 +14,7 @@ import Requirements from "./pages/Requirements";
 import RequirementDetail from "./pages/RequirementDetail";
 import Sign from "./pages/Sign";
 import Signatures from "./pages/Signatures";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/requirements/:id" element={<RequirementDetail />} />
           <Route path="/signatures" element={<Signatures />} />
           <Route path="/sign/:token" element={<Sign />} />
+          <Route path="/contact" element={<Contact />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

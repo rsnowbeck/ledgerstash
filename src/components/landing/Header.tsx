@@ -27,6 +27,9 @@ export function Header() {
           <a href="#how-it-works" className="nav-link text-sm font-medium">
             How It Works
           </a>
+          <Link to="/contact" className="nav-link text-sm font-medium">
+            Contact
+          </Link>
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
@@ -77,6 +80,13 @@ export function Header() {
               >
                 How It Works
               </a>
+              <Link
+                to="/contact"
+                className="nav-link text-sm font-medium"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Contact
+              </Link>
             </nav>
             <div className="flex flex-col gap-2 pt-4 border-t border-border">
               <Button variant="ghost" className="w-full justify-center" asChild>
