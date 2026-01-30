@@ -198,7 +198,7 @@ export function SendForSignatureDialog({
       if (error) throw error;
 
       // Generate signing links - always use production URL
-      const baseUrl = "https://getattestly.lovable.app";
+      const baseUrl = "https://getattestly.com";
       const links: SigningLink[] = signingRequests.map((req) => ({
         recipientName: req._recipient_name,
         email: req._recipient_email,
