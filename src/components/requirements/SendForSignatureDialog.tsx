@@ -482,11 +482,10 @@ export function SendForSignatureDialog({
               </div>
               <Button
                 variant="outline"
-                size="icon"
                 onClick={() => setShowAddForm(true)}
-                title="Add new recipient"
               >
                 <UserPlus className="h-4 w-4" />
+                Create New
               </Button>
             </div>
 
