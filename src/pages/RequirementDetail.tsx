@@ -432,7 +432,7 @@ export default function RequirementDetail() {
                 <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
                   {requirement.status === "published" 
                     ? "No recipients assigned yet. Click 'Add Recipients' above to send signing requests."
-                    : "This requirement is still a draft. Publish it first to send signing requests."}
+                    : "This requirement is still a draft. Publish it first to add and send signing requests."}
                 </TableCell>
               </TableRow>
             ) : (
