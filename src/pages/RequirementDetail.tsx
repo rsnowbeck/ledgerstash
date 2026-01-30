@@ -153,6 +153,23 @@ export default function RequirementDetail() {
     setSearchParams(searchParams);
   };
 
+  const handlePublish = async () => {
+    if (!requirement) return;
+    
+    try {
+      const { error } = await supabase
+        .from("requirements")
+        .update({ status: "published" })
+        .eq("id", requirement.id);
+
+      if (error) throw error;
+      
+      fetchRequirementDetails();
+    } catch (error) {
+      console.error("Error publishing requirement:", error);
+    }
+  };
+
   const getStatusBadge = (status: string | null, dueDate: string | null) => {
     const isOverdue = dueDate && isPast(new Date(dueDate)) && !isToday(new Date(dueDate));
 
@@ -261,6 +278,12 @@ export default function RequirementDetail() {
           </div>
 
           <div className="flex gap-2">
+            {!isEditing && requirement.status === "draft" && (
+              <Button variant="hero" onClick={handlePublish}>
+                <Send className="h-4 w-4 mr-2" />
+                Publish
+              </Button>
+            )}
             {!isEditing && (
               <Button variant="outline" onClick={() => setIsEditing(true)}>
                 <Edit className="h-4 w-4 mr-2" />
