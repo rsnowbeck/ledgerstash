@@ -45,6 +45,8 @@ import { toast } from "sonner";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { useOrganization } from "@/hooks/useOrganization";
+import { usePlanLimits } from "@/hooks/usePlanLimits";
+import { PlanLimitBanner } from "@/components/common/PlanLimitBanner";
 import { SendForSignatureDialog } from "@/components/requirements/SendForSignatureDialog";
 
 interface Requirement {
@@ -73,6 +75,10 @@ export default function Requirements() {
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [bulkActionLoading, setBulkActionLoading] = useState(false);
+  const [recipientCount, setRecipientCount] = useState(0);
+
+  // Plan limits (we need recipient count for the hook, but use requirement count for limits)
+  const planLimits = usePlanLimits(organization, recipientCount, requirements.length);
 
   // Form state
   const [title, setTitle] = useState("");
@@ -88,8 +94,26 @@ export default function Requirements() {
   useEffect(() => {
     if (organization?.id) {
       fetchRequirements();
+      fetchRecipientCount();
     }
   }, [organization?.id]);
+
+  const fetchRecipientCount = async () => {
+    if (!organization?.id) return;
+    
+    try {
+      const { count, error } = await supabase
+        .from('recipients')
+        .select('*', { count: 'exact', head: true })
+        .eq('organization_id', organization.id)
+        .eq('is_deleted', false);
+
+      if (error) throw error;
+      setRecipientCount(count || 0);
+    } catch (error) {
+      console.error('Error fetching recipient count:', error);
+    }
+  };
 
   const fetchRequirements = async () => {
     if (!organization?.id) return;
@@ -115,6 +139,12 @@ export default function Requirements() {
     e.preventDefault();
     if (!organization?.id) {
       toast.error('Organization not found');
+      return;
+    }
+
+    // Check plan limits
+    if (!planLimits.canAddRequirement) {
+      toast.error(`You've reached your ${planLimits.planName} plan limit of ${planLimits.requirementLimit} requirements`);
       return;
     }
 
@@ -277,17 +307,43 @@ export default function Requirements() {
 
   return (
     <DashboardLayout>
+      {/* Plan Limit Banner */}
+      {planLimits.isAtRequirementLimit && (
+        <PlanLimitBanner
+          type="requirement"
+          limit={planLimits.requirementLimit}
+          planName={planLimits.planName}
+          isTrialExpired={planLimits.isTrialExpired}
+          trialDaysRemaining={planLimits.trialDaysRemaining}
+        />
+      )}
+
+      {/* Trial Warning Banner */}
+      {!planLimits.isAtRequirementLimit && planLimits.trialDaysRemaining !== null && planLimits.trialDaysRemaining <= 3 && planLimits.trialDaysRemaining > 0 && (
+        <PlanLimitBanner
+          type="requirement"
+          limit={planLimits.requirementLimit}
+          planName={planLimits.planName}
+          trialDaysRemaining={planLimits.trialDaysRemaining}
+        />
+      )}
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Requirements</h1>
           <p className="text-muted-foreground">
             Create and manage compliance items that need acknowledgment.
+            {planLimits.requirementLimit !== -1 && (
+              <span className="ml-2 text-xs">
+                ({requirements.length}/{planLimits.requirementLimit} used)
+              </span>
+            )}
           </p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="hero">
+            <Button variant="hero" disabled={!planLimits.canAddRequirement}>
               <Plus className="h-4 w-4" />
               New Requirement
             </Button>

@@ -22,11 +22,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Search, FileSignature, Clock, CheckCircle2, XCircle, Send, Download, FileText } from "lucide-react";
+import { Search, FileSignature, Clock, CheckCircle2, XCircle, Send, Download, FileText, Bell } from "lucide-react";
 import { format } from "date-fns";
 import { ResendLinkDialog } from "@/components/signatures/ResendLinkDialog";
+import { BulkReminderDialog } from "@/components/signatures/BulkReminderDialog";
 import { toast } from "sonner";
 import { generateSignaturePdf } from "@/lib/generateSignaturePdf";
+import { exportSignaturesToCSV } from "@/lib/csvExport";
 
 interface SigningRequest {
   id: string;
@@ -54,6 +56,7 @@ export default function Signatures() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [resendDialogOpen, setResendDialogOpen] = useState(false);
+  const [bulkReminderDialogOpen, setBulkReminderDialogOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState<SigningRequest | null>(null);
 
   useEffect(() => {
@@ -168,7 +171,7 @@ export default function Signatures() {
     toast.success("PDF certificate downloaded");
   };
 
-  const exportToCSV = () => {
+  const handleExportCSV = () => {
     const completedRequests = signingRequests.filter((r) => r.status === "completed");
     
     if (completedRequests.length === 0) {
@@ -176,43 +179,13 @@ export default function Signatures() {
       return;
     }
 
-    const headers = [
-      "Recipient Name",
-      "Recipient Email",
-      "Requirement",
-      "Signed As",
-      "Sent Date",
-      "Completed Date",
-    ];
-
-    const rows = completedRequests.map((req) => [
-      req.recipient?.full_name || "",
-      req.recipient?.email || "",
-      req.requirement?.title || "",
-      req.signed_name || "",
-      req.sent_at ? format(new Date(req.sent_at), "yyyy-MM-dd HH:mm:ss") : "",
-      req.completed_at ? format(new Date(req.completed_at), "yyyy-MM-dd HH:mm:ss") : "",
-    ]);
-
-    const csvContent = [
-      headers.join(","),
-      ...rows.map((row) =>
-        row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(",")
-      ),
-    ].join("\n");
-
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `signatures-export-${format(new Date(), "yyyy-MM-dd")}.csv`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
+    exportSignaturesToCSV(signingRequests, false);
     toast.success(`Exported ${completedRequests.length} completed signature(s)`);
   };
+
+  const pendingCount = signingRequests.filter(
+    (r) => r.status === "pending" && !(r.expires_at && new Date(r.expires_at) < new Date())
+  ).length;
 
   if (authLoading || orgLoading) {
     return (
@@ -232,14 +205,24 @@ export default function Signatures() {
             Track and manage all signing requests
           </p>
         </div>
-        <Button
-          variant="outline"
-          onClick={exportToCSV}
-          disabled={loading || signingRequests.filter((r) => r.status === "completed").length === 0}
-        >
-          <Download className="h-4 w-4" />
-          Export CSV
-        </Button>
+        <div className="flex gap-3">
+          <Button
+            variant="outline"
+            onClick={() => setBulkReminderDialogOpen(true)}
+            disabled={loading || pendingCount === 0}
+          >
+            <Bell className="h-4 w-4" />
+            Send Reminders ({pendingCount})
+          </Button>
+          <Button
+            variant="outline"
+            onClick={handleExportCSV}
+            disabled={loading || signingRequests.filter((r) => r.status === "completed").length === 0}
+          >
+            <Download className="h-4 w-4" />
+            Export CSV
+          </Button>
+        </div>
       </div>
 
       {/* Filters */}
@@ -402,6 +385,17 @@ export default function Signatures() {
           recipientName={selectedRequest.recipient?.full_name || "Unknown"}
           recipientEmail={selectedRequest.recipient?.email || ""}
           requirementTitle={selectedRequest.requirement?.title || "Unknown"}
+          onSuccess={fetchSigningRequests}
+        />
+      )}
+
+      {/* Bulk Reminder Dialog */}
+      {organization && (
+        <BulkReminderDialog
+          open={bulkReminderDialogOpen}
+          onOpenChange={setBulkReminderDialogOpen}
+          organizationId={organization.id}
+          organizationName={organization.name}
           onSuccess={fetchSigningRequests}
         />
       )}

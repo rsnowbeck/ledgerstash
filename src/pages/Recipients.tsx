@@ -25,7 +25,8 @@ import {
   UserPlus,
   MoreHorizontal,
   Mail,
-  Trash2
+  Trash2,
+  Download
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -37,6 +38,9 @@ import { toast } from "sonner";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { useOrganization } from "@/hooks/useOrganization";
+import { usePlanLimits } from "@/hooks/usePlanLimits";
+import { PlanLimitBanner } from "@/components/common/PlanLimitBanner";
+import { exportRecipientsToCSV } from "@/lib/csvExport";
 
 interface Recipient {
   id: string;
@@ -55,6 +59,9 @@ export default function Recipients() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [formLoading, setFormLoading] = useState(false);
+
+  // Plan limits
+  const planLimits = usePlanLimits(organization, recipients.length, 0);
 
   // Form state
   const [name, setName] = useState("");
@@ -93,6 +100,12 @@ export default function Recipients() {
     e.preventDefault();
     if (!organization?.id) {
       toast.error('Organization not found');
+      return;
+    }
+
+    // Check plan limits
+    if (!planLimits.canAddRecipient) {
+      toast.error(`You've reached your ${planLimits.planName} plan limit of ${planLimits.recipientLimit} recipients`);
       return;
     }
 
@@ -142,6 +155,15 @@ export default function Recipients() {
     }
   };
 
+  const handleExportCSV = () => {
+    if (recipients.length === 0) {
+      toast.error("No recipients to export");
+      return;
+    }
+    exportRecipientsToCSV(recipients);
+    toast.success(`Exported ${recipients.length} recipient(s)`);
+  };
+
   const filteredRecipients = recipients.filter(r => 
     r.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     r.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -158,100 +180,136 @@ export default function Recipients() {
 
   return (
     <DashboardLayout>
+      {/* Plan Limit Banner */}
+      {planLimits.isAtRecipientLimit && (
+        <PlanLimitBanner
+          type="recipient"
+          limit={planLimits.recipientLimit}
+          planName={planLimits.planName}
+          isTrialExpired={planLimits.isTrialExpired}
+          trialDaysRemaining={planLimits.trialDaysRemaining}
+        />
+      )}
+
+      {/* Trial Warning Banner */}
+      {!planLimits.isAtRecipientLimit && planLimits.trialDaysRemaining !== null && planLimits.trialDaysRemaining <= 3 && planLimits.trialDaysRemaining > 0 && (
+        <PlanLimitBanner
+          type="recipient"
+          limit={planLimits.recipientLimit}
+          planName={planLimits.planName}
+          trialDaysRemaining={planLimits.trialDaysRemaining}
+        />
+      )}
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Recipients</h1>
           <p className="text-muted-foreground">
             Manage the people who need to acknowledge your requirements.
+            {planLimits.recipientLimit !== -1 && (
+              <span className="ml-2 text-xs">
+                ({recipients.length}/{planLimits.recipientLimit} used)
+              </span>
+            )}
           </p>
         </div>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button variant="hero">
-              <Plus className="h-4 w-4" />
-              Add Recipient
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Add Recipient</DialogTitle>
-              <DialogDescription>
-                Add a new person who will receive acknowledgment requests.
-              </DialogDescription>
-            </DialogHeader>
-            <form onSubmit={handleAddRecipient} className="space-y-4 mt-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Full Name *</Label>
-                <Input
-                  id="name"
-                  placeholder="Jane Smith"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="recipientEmail">Email *</Label>
-                <Input
-                  id="recipientEmail"
-                  type="email"
-                  placeholder="jane@company.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="type">Type</Label>
-                <Select value={recipientType} onValueChange={setRecipientType}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="employee">Employee</SelectItem>
-                    <SelectItem value="contractor">Contractor</SelectItem>
-                    <SelectItem value="vendor">Vendor</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="department">Department / Group</Label>
-                <Input
-                  id="department"
-                  placeholder="Engineering, Sales, etc."
-                  value={department}
-                  onChange={(e) => setDepartment(e.target.value)}
-                />
-              </div>
-              <div className="flex gap-3 pt-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="flex-1"
-                  onClick={() => setDialogOpen(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  variant="hero"
-                  className="flex-1"
-                  disabled={formLoading}
-                >
-                  {formLoading ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Adding...
-                    </>
-                  ) : (
-                    "Add Recipient"
-                  )}
-                </Button>
-              </div>
-            </form>
-          </DialogContent>
-        </Dialog>
+        <div className="flex gap-3">
+          <Button
+            variant="outline"
+            onClick={handleExportCSV}
+            disabled={recipients.length === 0}
+          >
+            <Download className="h-4 w-4" />
+            Export CSV
+          </Button>
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="hero" disabled={!planLimits.canAddRecipient}>
+                <Plus className="h-4 w-4" />
+                Add Recipient
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Add Recipient</DialogTitle>
+                <DialogDescription>
+                  Add a new person who will receive acknowledgment requests.
+                </DialogDescription>
+              </DialogHeader>
+              <form onSubmit={handleAddRecipient} className="space-y-4 mt-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Full Name *</Label>
+                  <Input
+                    id="name"
+                    placeholder="Jane Smith"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="recipientEmail">Email *</Label>
+                  <Input
+                    id="recipientEmail"
+                    type="email"
+                    placeholder="jane@company.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="type">Type</Label>
+                  <Select value={recipientType} onValueChange={setRecipientType}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="employee">Employee</SelectItem>
+                      <SelectItem value="contractor">Contractor</SelectItem>
+                      <SelectItem value="vendor">Vendor</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="department">Department / Group</Label>
+                  <Input
+                    id="department"
+                    placeholder="Engineering, Sales, etc."
+                    value={department}
+                    onChange={(e) => setDepartment(e.target.value)}
+                  />
+                </div>
+                <div className="flex gap-3 pt-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="flex-1"
+                    onClick={() => setDialogOpen(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="hero"
+                    className="flex-1"
+                    disabled={formLoading}
+                  >
+                    {formLoading ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Adding...
+                      </>
+                    ) : (
+                      "Add Recipient"
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       {/* Search */}
@@ -284,7 +342,7 @@ export default function Recipients() {
               : "Add your first recipient to start sending acknowledgment requests. You can add employees, contractors, or vendors."
             }
           </p>
-          {!searchQuery && (
+          {!searchQuery && planLimits.canAddRecipient && (
             <Button variant="hero" onClick={() => setDialogOpen(true)}>
               <Plus className="h-4 w-4" />
               Add Your First Recipient
