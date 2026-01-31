@@ -15,8 +15,7 @@ export function Hero() {
 
           {/* Headline */}
           <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-6xl mb-6 animate-slide-up">
-            Compliance acknowledgments,{" "}
-            <span className="inline-block mt-2 text-accent">simplified</span>
+            Compliance acknowledgments, <span className="inline-block mt-2 text-accent">simplified</span>
           </h1>
 
           {/* Subheadline */}
