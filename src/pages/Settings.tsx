@@ -22,10 +22,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { User, Building2, Shield, Loader2, Bell, Trash2, Users } from "lucide-react";
+import { User, Building2, Shield, Loader2, Bell, Trash2, Users, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { OrganizationSettingsForm } from "@/components/settings/OrganizationSettingsForm";
 import { TeamManagement } from "@/components/settings/TeamManagement";
+import { EmailSettingsForm } from "@/components/settings/EmailSettingsForm";
 
 // Common timezones
 const TIMEZONES = [
@@ -254,6 +255,10 @@ export default function Settings() {
             <TabsTrigger value="team" className="gap-2">
               <Users className="h-4 w-4" />
               Team
+            </TabsTrigger>
+            <TabsTrigger value="emails" className="gap-2">
+              <Mail className="h-4 w-4" />
+              Emails
             </TabsTrigger>
           </TabsList>
 
@@ -531,6 +536,22 @@ export default function Settings() {
               <TeamManagement 
                 organizationId={organization.id} 
                 organizationName={organization.name}
+              />
+            ) : (
+              <Card>
+                <CardContent className="py-8 text-center text-muted-foreground">
+                  No organization found
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+
+          {/* Emails Tab */}
+          <TabsContent value="emails" className="space-y-6">
+            {organization ? (
+              <EmailSettingsForm 
+                organization={organization}
+                onUpdate={refetchOrg}
               />
             ) : (
               <Card>
