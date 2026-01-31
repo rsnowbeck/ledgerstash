@@ -46,36 +46,54 @@ export type Database = {
       }
       organizations: {
         Row: {
+          auto_reminder_days: number | null
+          auto_reminder_enabled: boolean | null
           created_at: string
+          default_due_days: number | null
           id: string
+          logo_url: string | null
           name: string
           plan: string | null
           recipient_limit: number | null
           requirement_limit: number | null
+          sender_email: string | null
+          sender_name: string | null
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
           trial_ends_at: string | null
           updated_at: string
         }
         Insert: {
+          auto_reminder_days?: number | null
+          auto_reminder_enabled?: boolean | null
           created_at?: string
+          default_due_days?: number | null
           id?: string
+          logo_url?: string | null
           name: string
           plan?: string | null
           recipient_limit?: number | null
           requirement_limit?: number | null
+          sender_email?: string | null
+          sender_name?: string | null
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
           trial_ends_at?: string | null
           updated_at?: string
         }
         Update: {
+          auto_reminder_days?: number | null
+          auto_reminder_enabled?: boolean | null
           created_at?: string
+          default_due_days?: number | null
           id?: string
+          logo_url?: string | null
           name?: string
           plan?: string | null
           recipient_limit?: number | null
           requirement_limit?: number | null
+          sender_email?: string | null
+          sender_name?: string | null
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
           trial_ends_at?: string | null
