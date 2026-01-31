@@ -22,9 +22,9 @@ const faqs = [
       "Yes. Attestly provides timestamped, signer-verified records designed to meet common audit and compliance requirements.",
   },
   {
-    question: "Is Attestly a good fit for small businesses?",
+    question: "Who is Attestly designed for?",
     answer:
-      "Absolutely. Attestly is designed for SMBs that need reliable compliance tracking without enterprise contracts or per-module pricing.",
+      "Attestly is designed for teams that need simple, audit-ready compliance acknowledgments without the cost or complexity of full HR platforms. It's ideal for organizations that want a focused solution that works alongside existing HR or payroll tools.",
   },
   {
     question: "Do signers need an account or login?",
