@@ -20,6 +20,7 @@ import { useOrganization } from "@/hooks/useOrganization";
 import { SignatureMetrics } from "@/components/dashboard/SignatureMetrics";
 import { DashboardRequirementsTable } from "@/components/dashboard/DashboardRequirementsTable";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { OnboardingTour } from "@/components/onboarding/OnboardingTour";
 import { subDays } from "date-fns";
 
 type TimeRange = "7" | "30" | "all";
@@ -448,6 +449,9 @@ export default function Dashboard() {
         /* Operating Mode: Requirements Table */
         organization?.id && <DashboardRequirementsTable organizationId={organization.id} />
       )}
+
+      {/* Onboarding Tour */}
+      <OnboardingTour organizationId={organization?.id} />
     </DashboardLayout>
   );
 }

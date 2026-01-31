@@ -22,13 +22,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { User, Building2, Shield, Loader2, Bell, Trash2, Users, Mail } from "lucide-react";
+import { User, Building2, Shield, Loader2, Bell, Trash2, Users, Mail, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { OrganizationSettingsForm } from "@/components/settings/OrganizationSettingsForm";
 import { TeamManagement } from "@/components/settings/TeamManagement";
 import { EmailSettingsForm } from "@/components/settings/EmailSettingsForm";
 import { AutoReminderSettings } from "@/components/settings/AutoReminderSettings";
 import { ReminderLogTable } from "@/components/signatures/ReminderLogTable";
+import { useOnboardingTour } from "@/components/onboarding/OnboardingTour";
 
 // Common timezones
 const TIMEZONES = [
@@ -61,6 +62,7 @@ interface ProfileData {
 export default function Settings() {
   const { user, signOut } = useAuth();
   const { organization, loading: orgLoading, refetch: refetchOrg } = useOrganization(user);
+  const { resetTour } = useOnboardingTour(organization?.id);
 
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -461,6 +463,28 @@ export default function Settings() {
                   ) : (
                     "Change Password"
                   )}
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Onboarding Tour</CardTitle>
+                <CardDescription>
+                  Restart the guided tour to learn about Attestly's features
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    resetTour();
+                    toast.success("Tour restarted! Redirecting to dashboard...");
+                  }}
+                  className="gap-2"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                  Restart Onboarding Tour
                 </Button>
               </CardContent>
             </Card>
