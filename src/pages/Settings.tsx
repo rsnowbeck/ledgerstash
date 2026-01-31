@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
@@ -25,7 +24,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { User, Building2, Shield, Loader2, Bell, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { Link } from "react-router-dom";
+import { OrganizationSettingsForm } from "@/components/settings/OrganizationSettingsForm";
 
 // Common timezones
 const TIMEZONES = [
@@ -57,7 +56,7 @@ interface ProfileData {
 
 export default function Settings() {
   const { user, signOut } = useAuth();
-  const { organization, loading: orgLoading } = useOrganization(user);
+  const { organization, loading: orgLoading, refetch: refetchOrg } = useOrganization(user);
 
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -203,8 +202,6 @@ export default function Settings() {
 
     setDeleting(true);
     try {
-      // For now, we'll sign out and show a message about contacting support
-      // Full deletion requires admin privileges
       toast.info("Account deletion request submitted. Please contact support@attestly.com to complete the process.");
       await signOut();
     } catch (error: any) {
@@ -213,19 +210,6 @@ export default function Settings() {
     } finally {
       setDeleting(false);
     }
-  };
-
-  const planDisplayNames: Record<string, string> = {
-    trial: "Trial",
-    starter: "Starter",
-    team: "Team",
-    pro: "Pro",
-  };
-
-  const planBadgeVariant = (plan: string): "default" | "secondary" | "outline" => {
-    if (plan === "pro") return "default";
-    if (plan === "team") return "secondary";
-    return "outline";
   };
 
   if (loading || orgLoading) {
@@ -244,7 +228,7 @@ export default function Settings() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground">Settings</h1>
           <p className="text-muted-foreground">
-            Manage your account and preferences
+            Manage your account and organization preferences
           </p>
         </div>
 
@@ -522,62 +506,18 @@ export default function Settings() {
 
           {/* Organization Tab */}
           <TabsContent value="organization" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Organization Details</CardTitle>
-                <CardDescription>
-                  Your organization information and plan
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Organization Name</Label>
-                  <Input
-                    value={organization?.name || ""}
-                    disabled
-                    className="bg-muted"
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Organization settings will be available soon
-                  </p>
-                </div>
-
-                <Separator />
-
-                <div className="space-y-3">
-                  <Label>Current Plan</Label>
-                  <div className="flex items-center gap-3">
-                    <Badge variant={planBadgeVariant(organization?.plan || "trial")}>
-                      {planDisplayNames[organization?.plan || "trial"] || organization?.plan}
-                    </Badge>
-                    {organization?.plan === "trial" && organization?.trial_ends_at && (
-                      <span className="text-sm text-muted-foreground">
-                        Trial ends {new Date(organization.trial_ends_at).toLocaleDateString()}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 pt-2">
-                  <div className="p-4 rounded-lg bg-muted/50">
-                    <p className="text-sm text-muted-foreground">Recipient Limit</p>
-                    <p className="text-xl font-semibold text-foreground">
-                      {organization?.recipient_limit === -1 ? "Unlimited" : organization?.recipient_limit || 10}
-                    </p>
-                  </div>
-                  <div className="p-4 rounded-lg bg-muted/50">
-                    <p className="text-sm text-muted-foreground">Requirement Limit</p>
-                    <p className="text-xl font-semibold text-foreground">
-                      {organization?.requirement_limit === -1 ? "Unlimited" : organization?.requirement_limit || 5}
-                    </p>
-                  </div>
-                </div>
-
-                <Button variant="outline" asChild className="mt-4">
-                  <Link to="/pricing">View Plans & Upgrade</Link>
-                </Button>
-              </CardContent>
-            </Card>
+            {organization ? (
+              <OrganizationSettingsForm 
+                organization={organization} 
+                onUpdate={refetchOrg}
+              />
+            ) : (
+              <Card>
+                <CardContent className="py-8 text-center text-muted-foreground">
+                  No organization found
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
         </Tabs>
       </div>
