@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useAuth } from "@/hooks/useAuth";
@@ -22,8 +23,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Search, FileSignature, Clock, CheckCircle2, XCircle, Send, Download, FileText, Bell } from "lucide-react";
-import { format } from "date-fns";
+import { Search, FileSignature, Clock, CheckCircle2, XCircle, Send, Download, FileText, Bell, AlertTriangle } from "lucide-react";
+import { format, isPast } from "date-fns";
 import { ResendLinkDialog } from "@/components/signatures/ResendLinkDialog";
 import { BulkReminderDialog } from "@/components/signatures/BulkReminderDialog";
 import { toast } from "sonner";
@@ -51,13 +52,32 @@ interface SigningRequest {
 export default function Signatures() {
   const { user, loading: authLoading } = useAuth();
   const { organization, loading: orgLoading } = useOrganization(user);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [signingRequests, setSigningRequests] = useState<SigningRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>(searchParams.get("status") || "all");
   const [resendDialogOpen, setResendDialogOpen] = useState(false);
   const [bulkReminderDialogOpen, setBulkReminderDialogOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState<SigningRequest | null>(null);
+
+  // Sync status filter with URL params
+  useEffect(() => {
+    const urlStatus = searchParams.get("status");
+    if (urlStatus && ["pending", "completed", "expired", "overdue"].includes(urlStatus)) {
+      setStatusFilter(urlStatus === "overdue" ? "overdue" : urlStatus);
+    }
+  }, [searchParams]);
+
+  const handleStatusFilterChange = (value: string) => {
+    setStatusFilter(value);
+    if (value === "all") {
+      searchParams.delete("status");
+    } else {
+      searchParams.set("status", value);
+    }
+    setSearchParams(searchParams);
+  };
 
   useEffect(() => {
     if (organization?.id) {
@@ -98,6 +118,7 @@ export default function Signatures() {
 
   const getStatusBadge = (status: string | null, expiresAt: string | null) => {
     const isExpired = expiresAt && new Date(expiresAt) < new Date();
+    const isOverdue = status === "pending" && isExpired;
     
     if (status === "completed") {
       return (
@@ -108,6 +129,15 @@ export default function Signatures() {
       );
     }
     
+    if (isOverdue) {
+      return (
+        <Badge variant="destructive" className="bg-destructive/10 text-destructive border-destructive/20">
+          <AlertTriangle className="h-3 w-3 mr-1" />
+          Overdue
+        </Badge>
+      );
+    }
+
     if (isExpired) {
       return (
         <Badge variant="destructive" className="bg-destructive/10 text-destructive border-destructive/20">
@@ -132,10 +162,27 @@ export default function Signatures() {
       req.requirement?.title.toLowerCase().includes(searchQuery.toLowerCase());
 
     const isExpired = req.expires_at && new Date(req.expires_at) < new Date();
-    const effectiveStatus = req.status === "pending" && isExpired ? "expired" : req.status;
+    const isOverdue = req.status === "pending" && isExpired;
+    
+    // Determine effective status
+    let effectiveStatus = req.status;
+    if (isOverdue) effectiveStatus = "overdue";
+    else if (req.status === "pending" && isExpired) effectiveStatus = "expired";
 
-    const matchesStatus =
-      statusFilter === "all" || effectiveStatus === statusFilter;
+    // Handle filter matching
+    let matchesStatus = false;
+    if (statusFilter === "all") {
+      matchesStatus = true;
+    } else if (statusFilter === "overdue") {
+      matchesStatus = isOverdue;
+    } else if (statusFilter === "pending") {
+      // Pending filter excludes overdue
+      matchesStatus = req.status === "pending" && !isExpired;
+    } else if (statusFilter === "expired") {
+      matchesStatus = req.status === "pending" && isExpired && !isOverdue;
+    } else {
+      matchesStatus = effectiveStatus === statusFilter;
+    }
 
     return matchesSearch && matchesStatus;
   });
@@ -236,13 +283,14 @@ export default function Signatures() {
             className="pl-9"
           />
         </div>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
+        <Select value={statusFilter} onValueChange={handleStatusFilterChange}>
           <SelectTrigger className="w-full sm:w-[180px]">
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All statuses</SelectItem>
             <SelectItem value="pending">Pending</SelectItem>
+            <SelectItem value="overdue">Overdue</SelectItem>
             <SelectItem value="completed">Completed</SelectItem>
             <SelectItem value="expired">Expired</SelectItem>
           </SelectContent>

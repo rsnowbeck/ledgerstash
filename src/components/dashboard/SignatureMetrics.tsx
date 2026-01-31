@@ -21,6 +21,7 @@ import { format, subDays, startOfDay, eachDayOfInterval } from "date-fns";
 
 interface SignatureMetricsProps {
   organizationId: string;
+  timeRangeDays?: number | null;
 }
 
 interface MetricsData {
@@ -51,7 +52,7 @@ interface RecentActivity {
   timestamp: string;
 }
 
-export function SignatureMetrics({ organizationId }: SignatureMetricsProps) {
+export function SignatureMetrics({ organizationId, timeRangeDays = 14 }: SignatureMetricsProps) {
   const [metrics, setMetrics] = useState<MetricsData>({
     pending: 0,
     completed: 0,
@@ -63,11 +64,14 @@ export function SignatureMetrics({ organizationId }: SignatureMetricsProps) {
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const effectiveDays = timeRangeDays ?? 14;
+
   useEffect(() => {
     fetchAllData();
-  }, [organizationId]);
+  }, [organizationId, timeRangeDays]);
 
   const fetchAllData = async () => {
+    setLoading(true);
     await Promise.all([
       fetchMetrics(),
       fetchTrendData(),
@@ -115,7 +119,7 @@ export function SignatureMetrics({ organizationId }: SignatureMetricsProps) {
   const fetchTrendData = async () => {
     try {
       const endDate = new Date();
-      const startDate = subDays(endDate, 13); // Last 14 days
+      const startDate = subDays(endDate, effectiveDays - 1);
 
       const { data, error } = await supabase
         .from("signing_requests")
@@ -403,7 +407,7 @@ export function SignatureMetrics({ organizationId }: SignatureMetricsProps) {
                 <Activity className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold text-foreground">14-Day Activity</h3>
+                <h3 className="font-semibold text-foreground">{effectiveDays}-Day Activity</h3>
                 <p className="text-sm text-muted-foreground">Signatures sent vs completed</p>
               </div>
             </div>
