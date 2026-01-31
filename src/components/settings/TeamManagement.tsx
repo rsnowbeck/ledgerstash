@@ -154,8 +154,30 @@ export function TeamManagement({ organizationId, organizationName }: TeamManagem
 
       if (error) throw error;
 
-      // TODO: Send invitation email via edge function
-      toast.success(`Invitation sent to ${inviteEmail}`);
+      // Send invitation email via edge function
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("full_name")
+        .eq("id", user?.id)
+        .single();
+
+      const { error: emailError } = await supabase.functions.invoke("send-team-invite", {
+        body: {
+          email: inviteEmail,
+          token: token,
+          role: inviteRole,
+          organizationName: organizationName,
+          inviterName: profile?.full_name || "A team member",
+        },
+      });
+
+      if (emailError) {
+        console.error("Failed to send invitation email:", emailError);
+        toast.warning(`Invitation created, but email failed to send`);
+      } else {
+        toast.success(`Invitation sent to ${inviteEmail}`);
+      }
+      
       setInviteEmail("");
       setInviteRole("member");
       fetchTeamData();
