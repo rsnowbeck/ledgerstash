@@ -11,6 +11,7 @@ const plans = [
     features: [
       "Up to 10 recipients",
       "5 active requirements",
+      "Pre-built compliance templates",
       "Standard email delivery",
       "PDF exports",
       "14-day free trial"
@@ -26,6 +27,7 @@ const plans = [
     features: [
       "Up to 100 recipients",
       "Unlimited requirements",
+      "Pre-built compliance templates",
       "Priority email delivery",
       "CSV & PDF exports",
       "Bulk reminders",
@@ -42,6 +44,7 @@ const plans = [
     features: [
       "Unlimited recipients",
       "Unlimited requirements",
+      "Pre-built compliance templates",
       "Priority support",
       "Custom branding",
       "API access",
