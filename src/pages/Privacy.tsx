@@ -11,7 +11,7 @@ export default function Privacy() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">A</span>
+              <Shield className="h-4 w-4 text-primary-foreground" />
             </div>
             <span className="font-semibold text-foreground">Attestly</span>
           </Link>

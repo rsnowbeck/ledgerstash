@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { ArrowLeft, Send, CheckCircle2, Mail, MessageSquare } from "lucide-react";
+import { ArrowLeft, Send, CheckCircle2, Mail, MessageSquare, Shield } from "lucide-react";
 import { z } from "zod";
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
@@ -98,7 +98,7 @@ export default function Contact() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">A</span>
+              <Shield className="h-4 w-4 text-primary-foreground" />
             </div>
             <span className="font-semibold text-foreground">Attestly</span>
           </Link>

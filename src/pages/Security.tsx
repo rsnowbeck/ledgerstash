@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Lock, Mail } from "lucide-react";
+import { ArrowLeft, Lock, Mail, Shield } from "lucide-react";
 import { Footer } from "@/components/landing/Footer";
 
 export default function Security() {
@@ -11,7 +11,7 @@ export default function Security() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">A</span>
+              <Shield className="h-4 w-4 text-primary-foreground" />
             </div>
             <span className="font-semibold text-foreground">Attestly</span>
           </Link>
