@@ -1,7 +1,49 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useSyncExternalStore } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User, Session } from "@supabase/supabase-js";
+
+// Global auth state to prevent flicker on navigation
+let globalSession: Session | null = null;
+let globalUser: User | null = null;
+let globalLoading = true;
+let listeners: Set<() => void> = new Set();
+
+function notifyListeners() {
+  listeners.forEach((listener) => listener());
+}
+
+function subscribe(callback: () => void) {
+  listeners.add(callback);
+  return () => listeners.delete(callback);
+}
+
+function getSnapshot() {
+  return { session: globalSession, user: globalUser, loading: globalLoading };
+}
+
+// Initialize auth listener once
+let initialized = false;
+function initializeAuth() {
+  if (initialized) return;
+  initialized = true;
+
+  // Set up auth state listener
+  supabase.auth.onAuthStateChange((event, session) => {
+    globalSession = session;
+    globalUser = session?.user ?? null;
+    globalLoading = false;
+    notifyListeners();
+  });
+
+  // Check for existing session
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    globalSession = session;
+    globalUser = session?.user ?? null;
+    globalLoading = false;
+    notifyListeners();
+  });
+}
 
 interface UseAuthOptions {
   redirectTo?: string;
@@ -10,43 +52,32 @@ interface UseAuthOptions {
 
 export function useAuth(options: UseAuthOptions = {}) {
   const { redirectTo = "/login", requireAuth = true } = options;
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Initialize on first use
   useEffect(() => {
-    // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
-        
-        if (requireAuth && !session?.user) {
-          navigate(redirectTo);
-        }
-      }
-    );
+    initializeAuth();
+  }, []);
 
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-      
-      if (requireAuth && !session?.user) {
-        navigate(redirectTo);
-      }
-    });
+  // Subscribe to global auth state
+  const authState = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 
-    return () => subscription.unsubscribe();
-  }, [navigate, redirectTo, requireAuth]);
+  // Handle redirect when auth is required but user is not logged in
+  useEffect(() => {
+    if (!authState.loading && requireAuth && !authState.user) {
+      navigate(redirectTo);
+    }
+  }, [authState.loading, authState.user, navigate, redirectTo, requireAuth]);
 
   const signOut = useCallback(async () => {
     await supabase.auth.signOut();
     navigate("/");
   }, [navigate]);
 
-  return { user, session, loading, signOut };
+  return { 
+    user: authState.user, 
+    session: authState.session, 
+    loading: authState.loading, 
+    signOut 
+  };
 }
