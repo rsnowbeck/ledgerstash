@@ -12,7 +12,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -25,7 +24,7 @@ import {
   Plus,
   Loader2,
   Upload,
-  FilePlus,
+  FileText,
   MoreHorizontal,
   Send,
   Trash2,
@@ -49,6 +48,8 @@ import { useOrganization } from "@/hooks/useOrganization";
 import { usePlanLimits } from "@/hooks/usePlanLimits";
 import { PlanLimitBanner } from "@/components/common/PlanLimitBanner";
 import { SendForSignatureDialog } from "@/components/requirements/SendForSignatureDialog";
+import { TemplatePickerDialog } from "@/components/requirements/TemplatePickerDialog";
+import { RequirementTemplate } from "@/components/requirements/RequirementTemplates";
 
 interface Requirement {
   id: string;
@@ -68,6 +69,7 @@ export default function Requirements() {
   const { organization } = useOrganization(user);
   const [requirements, setRequirements] = useState<Requirement[]>([]);
   const [requirementsLoading, setRequirementsLoading] = useState(true);
+  const [templatePickerOpen, setTemplatePickerOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
   const [sendDialogOpen, setSendDialogOpen] = useState(false);
@@ -95,6 +97,33 @@ export default function Requirements() {
   const handleSendForSignature = (requirement: Requirement) => {
     setSelectedRequirement(requirement);
     setSendDialogOpen(true);
+  };
+
+  const handleSelectTemplate = (template: RequirementTemplate) => {
+    setTitle(template.title);
+    setDescription(template.description);
+    setFrequency(template.suggestedFrequency);
+    setTemplatePickerOpen(false);
+    setDialogOpen(true);
+  };
+
+  const handleStartBlank = () => {
+    setTitle("");
+    setDescription("");
+    setFrequency("one-time");
+    setDueDate("");
+    setAttachmentFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+    setTemplatePickerOpen(false);
+    setDialogOpen(true);
+  };
+
+  const handleNewRequirementClick = () => {
+    if (!planLimits.canAddRequirement) {
+      toast.error(`You've reached your ${planLimits.planName} plan limit of ${planLimits.requirementLimit} requirements`);
+      return;
+    }
+    setTemplatePickerOpen(true);
   };
 
   useEffect(() => {
@@ -418,13 +447,11 @@ export default function Requirements() {
             )}
           </p>
         </div>
+        <Button variant="hero" onClick={handleNewRequirementClick} disabled={!planLimits.canAddRequirement}>
+          <Plus className="h-4 w-4" />
+          New Requirement
+        </Button>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button variant="hero" disabled={!planLimits.canAddRequirement}>
-              <Plus className="h-4 w-4" />
-              New Requirement
-            </Button>
-          </DialogTrigger>
           <DialogContent className="sm:max-w-lg">
             <DialogHeader>
               <DialogTitle>Create Requirement</DialogTitle>
@@ -632,7 +659,7 @@ export default function Requirements() {
       ) : filteredRequirements.length === 0 ? (
         <div className="card-elevated p-12 text-center">
           <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-accent/10 text-accent mb-6">
-            <FilePlus className="h-8 w-8" />
+            <FileText className="h-8 w-8" />
           </div>
           <h2 className="text-xl font-semibold text-foreground mb-2">
             {searchQuery || statusFilter !== "all" ? "No requirements found" : "No requirements yet"}
@@ -643,7 +670,7 @@ export default function Requirements() {
               : "Create your first compliance requirement—like a policy acknowledgment, NDA, or training confirmation—and start collecting signatures."}
           </p>
           {!searchQuery && statusFilter === "all" && (
-            <Button variant="hero" onClick={() => setDialogOpen(true)}>
+            <Button variant="hero" onClick={handleNewRequirementClick}>
               <Plus className="h-4 w-4" />
               Create Your First Requirement
             </Button>
@@ -760,6 +787,14 @@ export default function Requirements() {
           ))}
         </div>
       )}
+
+      {/* Template Picker Dialog */}
+      <TemplatePickerDialog
+        open={templatePickerOpen}
+        onOpenChange={setTemplatePickerOpen}
+        onSelectTemplate={handleSelectTemplate}
+        onStartBlank={handleStartBlank}
+      />
 
       {/* Send for Signature Dialog */}
       {selectedRequirement && organization && (
