@@ -127,7 +127,7 @@ export function Pricing() {
                 ))}
                 {plan.proOnlyFeatures && (
                   <>
-                    <li className="pt-2">
+                    <li className="pt-4 mt-2 border-t border-border/50">
                       <span className="text-sm font-semibold text-accent">Pro-only features:</span>
                     </li>
                     {plan.proOnlyFeatures.map((feature) => (
