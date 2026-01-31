@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,7 +27,8 @@ import {
   MoreHorizontal,
   Mail,
   Trash2,
-  Download
+  Download,
+  Upload
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -41,6 +43,7 @@ import { useOrganization } from "@/hooks/useOrganization";
 import { usePlanLimits } from "@/hooks/usePlanLimits";
 import { PlanLimitBanner } from "@/components/common/PlanLimitBanner";
 import { exportRecipientsToCSV } from "@/lib/csvExport";
+import { CSVImportDialog } from "@/components/recipients/CSVImportDialog";
 
 interface Recipient {
   id: string;
@@ -57,6 +60,7 @@ export default function Recipients() {
   const [recipients, setRecipients] = useState<Recipient[]>([]);
   const [recipientsLoading, setRecipientsLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [formLoading, setFormLoading] = useState(false);
 
@@ -170,11 +174,40 @@ export default function Recipients() {
     r.department?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const existingEmails = new Set(recipients.map(r => r.email.toLowerCase()));
+
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-pulse text-muted-foreground">Loading...</div>
-      </div>
+      <DashboardLayout>
+        <div className="space-y-6 animate-in fade-in-50 duration-300">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="space-y-2">
+              <Skeleton className="h-8 w-32" />
+              <Skeleton className="h-4 w-64" />
+            </div>
+            <div className="flex gap-3">
+              <Skeleton className="h-10 w-28" />
+              <Skeleton className="h-10 w-28" />
+              <Skeleton className="h-10 w-32" />
+            </div>
+          </div>
+          <Skeleton className="h-10 w-full" />
+          <div className="space-y-3">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="card-elevated p-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex-1 space-y-2">
+                    <Skeleton className="h-5 w-40" />
+                    <Skeleton className="h-4 w-56" />
+                  </div>
+                  <Skeleton className="h-6 w-20 rounded-full" />
+                  <Skeleton className="h-8 w-8" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </DashboardLayout>
     );
   }
 
@@ -215,6 +248,14 @@ export default function Recipients() {
           </p>
         </div>
         <div className="flex gap-3">
+          <Button
+            variant="outline"
+            onClick={() => setImportDialogOpen(true)}
+            disabled={!planLimits.canAddRecipient}
+          >
+            <Upload className="h-4 w-4" />
+            Import CSV
+          </Button>
           <Button
             variant="outline"
             onClick={handleExportCSV}
@@ -350,57 +391,115 @@ export default function Recipients() {
           )}
         </div>
       ) : (
-        <div className="card-elevated overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-muted/50 border-b border-border">
-                <tr>
-                  <th className="text-left px-6 py-3 text-sm font-medium text-muted-foreground">Name</th>
-                  <th className="text-left px-6 py-3 text-sm font-medium text-muted-foreground">Email</th>
-                  <th className="text-left px-6 py-3 text-sm font-medium text-muted-foreground">Type</th>
-                  <th className="text-left px-6 py-3 text-sm font-medium text-muted-foreground">Department</th>
-                  <th className="text-right px-6 py-3 text-sm font-medium text-muted-foreground">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {filteredRecipients.map((recipient) => (
-                  <tr key={recipient.id} className="hover:bg-muted/30 transition-colors">
-                    <td className="px-6 py-4 text-sm font-medium text-foreground">{recipient.full_name}</td>
-                    <td className="px-6 py-4 text-sm text-muted-foreground">{recipient.email}</td>
-                    <td className="px-6 py-4">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/10 text-accent capitalize">
+        <>
+          {/* Mobile card view */}
+          <div className="block md:hidden space-y-3">
+            {filteredRecipients.map((recipient) => (
+              <div key={recipient.id} className="card-elevated p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-foreground truncate">{recipient.full_name}</p>
+                    <p className="text-sm text-muted-foreground truncate">{recipient.email}</p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-accent/10 text-accent capitalize">
                         {recipient.recipient_type}
                       </span>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-muted-foreground">{recipient.department || '—'}</td>
-                    <td className="px-6 py-4 text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
-                            <Mail className="h-4 w-4 mr-2" />
-                            Send Request
-                          </DropdownMenuItem>
-                          <DropdownMenuItem 
-                            className="text-destructive"
-                            onClick={() => handleDeleteRecipient(recipient.id, recipient.full_name)}
-                          >
-                            <Trash2 className="h-4 w-4 mr-2" />
-                            Remove
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      {recipient.department && (
+                        <span className="text-xs text-muted-foreground">{recipient.department}</span>
+                      )}
+                    </div>
+                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm">
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem>
+                        <Mail className="h-4 w-4 mr-2" />
+                        Send Request
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        className="text-destructive"
+                        onClick={() => handleDeleteRecipient(recipient.id, recipient.full_name)}
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Remove
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
+
+          {/* Desktop table view */}
+          <div className="hidden md:block card-elevated overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-muted/50 border-b border-border">
+                  <tr>
+                    <th className="text-left px-6 py-3 text-sm font-medium text-muted-foreground">Name</th>
+                    <th className="text-left px-6 py-3 text-sm font-medium text-muted-foreground">Email</th>
+                    <th className="text-left px-6 py-3 text-sm font-medium text-muted-foreground">Type</th>
+                    <th className="text-left px-6 py-3 text-sm font-medium text-muted-foreground">Department</th>
+                    <th className="text-right px-6 py-3 text-sm font-medium text-muted-foreground">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {filteredRecipients.map((recipient) => (
+                    <tr key={recipient.id} className="hover:bg-muted/30 transition-colors">
+                      <td className="px-6 py-4 text-sm font-medium text-foreground">{recipient.full_name}</td>
+                      <td className="px-6 py-4 text-sm text-muted-foreground">{recipient.email}</td>
+                      <td className="px-6 py-4">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/10 text-accent capitalize">
+                          {recipient.recipient_type}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-muted-foreground">{recipient.department || '—'}</td>
+                      <td className="px-6 py-4 text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm">
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem>
+                              <Mail className="h-4 w-4 mr-2" />
+                              Send Request
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              className="text-destructive"
+                              onClick={() => handleDeleteRecipient(recipient.id, recipient.full_name)}
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Remove
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* CSV Import Dialog */}
+      {organization && (
+        <CSVImportDialog
+          open={importDialogOpen}
+          onOpenChange={setImportDialogOpen}
+          organizationId={organization.id}
+          existingEmails={existingEmails}
+          onSuccess={fetchRecipients}
+          recipientLimit={planLimits.recipientLimit}
+          currentCount={recipients.length}
+        />
       )}
     </DashboardLayout>
   );

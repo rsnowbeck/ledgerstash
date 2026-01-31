@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { 
   Users, 
   FileText, 
@@ -126,9 +127,41 @@ export default function Dashboard() {
 
   if (authLoading || orgLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-pulse text-muted-foreground">Loading...</div>
-      </div>
+      <DashboardLayout>
+        <div className="space-y-6 animate-in fade-in-50 duration-300">
+          {/* Header skeleton */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="space-y-2">
+              <Skeleton className="h-8 w-32" />
+              <Skeleton className="h-4 w-64" />
+            </div>
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-9 w-40 rounded-lg" />
+              <Skeleton className="h-10 w-36" />
+            </div>
+          </div>
+
+          {/* Stats skeleton */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="stat-card">
+                <div className="flex items-center justify-between mb-4">
+                  <Skeleton className="h-10 w-10 rounded-lg" />
+                </div>
+                <Skeleton className="h-8 w-12 mb-1" />
+                <Skeleton className="h-4 w-24 mb-2" />
+                <Skeleton className="h-3 w-20" />
+              </div>
+            ))}
+          </div>
+
+          {/* Chart skeleton */}
+          <div className="card-elevated p-6">
+            <Skeleton className="h-6 w-40 mb-4" />
+            <Skeleton className="h-64 w-full" />
+          </div>
+        </div>
+      </DashboardLayout>
     );
   }
 

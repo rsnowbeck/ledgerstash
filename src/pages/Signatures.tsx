@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useAuth } from "@/hooks/useAuth";
@@ -236,9 +237,37 @@ export default function Signatures() {
 
   if (authLoading || orgLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-pulse text-muted-foreground">Loading...</div>
-      </div>
+      <DashboardLayout>
+        <div className="space-y-6 animate-in fade-in-50 duration-300">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="space-y-2">
+              <Skeleton className="h-8 w-32" />
+              <Skeleton className="h-4 w-48" />
+            </div>
+            <div className="flex gap-3">
+              <Skeleton className="h-10 w-40" />
+              <Skeleton className="h-10 w-28" />
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Skeleton className="h-10 flex-1" />
+            <Skeleton className="h-10 w-44" />
+          </div>
+          <div className="card-elevated p-6 space-y-4">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="flex items-center gap-4 py-2">
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-5 w-40" />
+                  <Skeleton className="h-4 w-56" />
+                </div>
+                <Skeleton className="h-6 w-20 rounded-full" />
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-8 w-16" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </DashboardLayout>
     );
   }
 
@@ -297,7 +326,7 @@ export default function Signatures() {
         </Select>
       </div>
 
-      {/* Table */}
+      {/* Content */}
       <div className="card-elevated">
         {loading ? (
           <div className="py-12 text-center">
@@ -320,92 +349,148 @@ export default function Signatures() {
             </p>
           </div>
         ) : (
-          <ScrollArea className="w-full">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Recipient</TableHead>
-                  <TableHead>Requirement</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Sent</TableHead>
-                  <TableHead>Completed</TableHead>
-                  <TableHead>Signed As</TableHead>
-                  <TableHead className="w-[100px]">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredRequests.map((request) => (
-                  <TableRow key={request.id}>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium text-foreground">
-                          {request.recipient?.full_name || "Unknown"}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          {request.recipient?.email || "—"}
-                        </p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <span className="font-medium">
-                        {request.requirement?.title || "Unknown"}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      {getStatusBadge(request.status, request.expires_at)}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
+          <>
+            {/* Mobile card view */}
+            <div className="block md:hidden divide-y divide-border">
+              {filteredRequests.map((request) => (
+                <div key={request.id} className="p-4">
+                  <div className="flex items-start justify-between gap-3 mb-2">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium text-foreground truncate">
+                        {request.recipient?.full_name || "Unknown"}
+                      </p>
+                      <p className="text-sm text-muted-foreground truncate">
+                        {request.recipient?.email || "—"}
+                      </p>
+                    </div>
+                    {getStatusBadge(request.status, request.expires_at)}
+                  </div>
+                  <p className="text-sm text-foreground mb-2 truncate">
+                    {request.requirement?.title || "Unknown"}
+                  </p>
+                  <div className="flex items-center justify-between text-xs text-muted-foreground">
+                    <span>
                       {request.sent_at
-                        ? format(new Date(request.sent_at), "MMM d, yyyy")
-                        : "—"}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {request.completed_at
-                        ? format(new Date(request.completed_at), "MMM d, yyyy h:mm a")
-                        : "—"}
-                    </TableCell>
-                    <TableCell>
-                      {request.signed_name ? (
-                        <span className="font-medium text-foreground">
-                          {request.signed_name}
-                        </span>
-                      ) : (
-                        <span className="text-muted-foreground">—</span>
+                        ? `Sent ${format(new Date(request.sent_at), "MMM d")}`
+                        : "Not sent"}
+                    </span>
+                    <div className="flex gap-1">
+                      {request.status === "completed" && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDownloadPdf(request)}
+                          className="h-7 px-2"
+                        >
+                          <FileText className="h-4 w-4" />
+                        </Button>
                       )}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-1">
-                        {request.status === "completed" && (
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => handleDownloadPdf(request)}
-                            className="h-8 px-2"
-                            title="Download PDF certificate"
-                          >
-                            <FileText className="h-4 w-4" />
-                            <span className="sr-only">Download PDF</span>
-                          </Button>
-                        )}
-                        {isRequestPendingOrExpired(request) && (
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => handleResendClick(request)}
-                            className="hover:bg-primary hover:text-primary-foreground"
-                          >
-                            <Send className="h-4 w-4" />
-                            Resend
-                          </Button>
-                        )}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
+                      {isRequestPendingOrExpired(request) && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleResendClick(request)}
+                          className="h-7 px-2"
+                        >
+                          <Send className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop table view */}
+            <div className="hidden md:block">
+              <ScrollArea className="w-full">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Recipient</TableHead>
+                      <TableHead>Requirement</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Sent</TableHead>
+                      <TableHead>Completed</TableHead>
+                      <TableHead>Signed As</TableHead>
+                      <TableHead className="w-[100px]">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredRequests.map((request) => (
+                      <TableRow key={request.id}>
+                        <TableCell>
+                          <div>
+                            <p className="font-medium text-foreground">
+                              {request.recipient?.full_name || "Unknown"}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              {request.recipient?.email || "—"}
+                            </p>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <span className="font-medium">
+                            {request.requirement?.title || "Unknown"}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          {getStatusBadge(request.status, request.expires_at)}
+                        </TableCell>
+                        <TableCell className="text-muted-foreground">
+                          {request.sent_at
+                            ? format(new Date(request.sent_at), "MMM d, yyyy")
+                            : "—"}
+                        </TableCell>
+                        <TableCell className="text-muted-foreground">
+                          {request.completed_at
+                            ? format(new Date(request.completed_at), "MMM d, yyyy h:mm a")
+                            : "—"}
+                        </TableCell>
+                        <TableCell>
+                          {request.signed_name ? (
+                            <span className="font-medium text-foreground">
+                              {request.signed_name}
+                            </span>
+                          ) : (
+                            <span className="text-muted-foreground">—</span>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex gap-1">
+                            {request.status === "completed" && (
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => handleDownloadPdf(request)}
+                                className="h-8 px-2"
+                                title="Download PDF certificate"
+                              >
+                                <FileText className="h-4 w-4" />
+                                <span className="sr-only">Download PDF</span>
+                              </Button>
+                            )}
+                            {isRequestPendingOrExpired(request) && (
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => handleResendClick(request)}
+                                className="hover:bg-primary hover:text-primary-foreground"
+                              >
+                                <Send className="h-4 w-4" />
+                                Resend
+                              </Button>
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
+            </div>
+          </>
         )}
       </div>
 

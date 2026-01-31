@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -33,7 +33,8 @@ import {
   Eye,
   Search,
   Archive,
-  X
+  X,
+  Paperclip
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -85,6 +86,11 @@ export default function Requirements() {
   const [description, setDescription] = useState("");
   const [frequency, setFrequency] = useState("one-time");
   const [dueDate, setDueDate] = useState("");
+  
+  // Attachment state
+  const [attachmentFile, setAttachmentFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSendForSignature = (requirement: Requirement) => {
     setSelectedRequirement(requirement);
@@ -135,6 +141,41 @@ export default function Requirements() {
     }
   };
 
+  const allowedTypes = [
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "image/png",
+    "image/jpeg",
+    "image/jpg",
+  ];
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!allowedTypes.includes(file.type)) {
+      toast.error("Only PDF, Word documents, and images (PNG, JPG) are allowed");
+      return;
+    }
+
+    // Validate file size (10MB max)
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("File size must be less than 10MB");
+      return;
+    }
+
+    setAttachmentFile(file);
+  };
+
+  const handleRemoveFile = () => {
+    setAttachmentFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   const handleCreateRequirement = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!organization?.id) {
@@ -151,7 +192,8 @@ export default function Requirements() {
     setFormLoading(true);
 
     try {
-      const { error } = await supabase
+      // First create the requirement to get the ID
+      const { data: newReq, error: createError } = await supabase
         .from('requirements')
         .insert({
           organization_id: organization.id,
@@ -160,9 +202,41 @@ export default function Requirements() {
           frequency,
           due_date: dueDate || null,
           status: 'draft',
-        });
+        })
+        .select('id')
+        .single();
 
-      if (error) throw error;
+      if (createError) throw createError;
+
+      // If there's a file to upload, upload it now
+      if (attachmentFile && newReq) {
+        setUploading(true);
+        const fileExt = attachmentFile.name.split(".").pop();
+        const fileName = `${organization.id}/${newReq.id}/${Date.now()}.${fileExt}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from("requirement-attachments")
+          .upload(fileName, attachmentFile, { upsert: true });
+
+        if (uploadError) {
+          console.error("Upload error:", uploadError);
+          toast.error("Requirement created but file upload failed");
+        } else {
+          // Get public URL and update the requirement
+          const { data: urlData } = supabase.storage
+            .from("requirement-attachments")
+            .getPublicUrl(fileName);
+
+          await supabase
+            .from('requirements')
+            .update({
+              attachment_url: urlData.publicUrl,
+              attachment_name: attachmentFile.name,
+            })
+            .eq('id', newReq.id);
+        }
+        setUploading(false);
+      }
 
       toast.success(`Created requirement: ${title}`);
       setDialogOpen(false);
@@ -170,12 +244,15 @@ export default function Requirements() {
       setDescription("");
       setFrequency("one-time");
       setDueDate("");
+      setAttachmentFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
       fetchRequirements();
     } catch (error: any) {
       console.error('Error creating requirement:', error);
       toast.error(error.message || 'Failed to create requirement');
     } finally {
       setFormLoading(false);
+      setUploading(false);
     }
   };
 
@@ -401,15 +478,50 @@ export default function Requirements() {
               </div>
               <div className="space-y-2">
                 <Label>Attachment</Label>
-                <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-accent/50 transition-colors cursor-pointer">
-                  <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
-                  <p className="text-sm text-muted-foreground">
-                    Click to upload or drag and drop
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    PDF, Word, or images up to 10MB
-                  </p>
-                </div>
+                {attachmentFile ? (
+                  <div className="flex items-center gap-3 p-3 rounded-lg border border-border bg-muted/30">
+                    <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                      <Paperclip className="h-5 w-5 text-accent" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground truncate">
+                        {attachmentFile.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {(attachmentFile.size / 1024 / 1024).toFixed(2)} MB
+                      </p>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleRemoveFile}
+                      className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ) : (
+                  <div
+                    className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-accent/50 transition-colors cursor-pointer"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+                    <p className="text-sm text-muted-foreground">
+                      Click to upload or drag and drop
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      PDF, Word, or images up to 10MB
+                    </p>
+                  </div>
+                )}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                />
               </div>
               <div className="flex gap-3 pt-4">
                 <Button
@@ -424,12 +536,12 @@ export default function Requirements() {
                   type="submit"
                   variant="hero"
                   className="flex-1"
-                  disabled={formLoading}
+                  disabled={formLoading || uploading}
                 >
-                  {formLoading ? (
+                  {formLoading || uploading ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      Creating...
+                      {uploading ? "Uploading..." : "Creating..."}
                     </>
                   ) : (
                     "Create as Draft"
