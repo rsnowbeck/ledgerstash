@@ -1,0 +1,131 @@
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, Shield, Mail } from "lucide-react";
+
+export default function Privacy() {
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-sm">A</span>
+            </div>
+            <span className="font-semibold text-foreground">Attestly</span>
+          </Link>
+          <Button variant="ghost" size="sm" asChild>
+            <Link to="/">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back
+            </Link>
+          </Button>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-16">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="h-14 w-14 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+              <Shield className="h-7 w-7 text-primary" />
+            </div>
+            <h1 className="text-3xl font-bold text-foreground mb-3">Privacy Policy</h1>
+            <p className="text-muted-foreground">Effective Date: [Add date]</p>
+          </div>
+
+          <div className="card-elevated p-8 space-y-8">
+            <p className="text-muted-foreground">
+              Attestly ("we," "our," or "us") respects your privacy. This Privacy Policy explains how we collect, use, and protect information when you use our website and web application (the "Service").
+            </p>
+
+            <section className="space-y-4">
+              <h2 className="text-xl font-semibold text-foreground">Information We Collect</h2>
+              <p className="text-muted-foreground">
+                We collect only the information necessary to operate and improve the Service, including:
+              </p>
+              <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
+                <li><strong className="text-foreground">Account information:</strong> name, email address, and login credentials</li>
+                <li><strong className="text-foreground">Usage data:</strong> actions taken within the app (e.g., acknowledgements created or completed)</li>
+                <li><strong className="text-foreground">Technical data:</strong> IP address, browser type, and device information</li>
+                <li><strong className="text-foreground">Communications:</strong> messages you send us via forms or email</li>
+              </ul>
+              <p className="text-muted-foreground">
+                We do not collect sensitive personal information unless you choose to provide it as part of your use of the Service.
+              </p>
+            </section>
+
+            <section className="space-y-4">
+              <h2 className="text-xl font-semibold text-foreground">How We Use Information</h2>
+              <p className="text-muted-foreground">We use collected information to:</p>
+              <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
+                <li>Provide and operate the Service</li>
+                <li>Authenticate users and manage accounts</li>
+                <li>Communicate with you about your account or support requests</li>
+                <li>Improve product functionality and performance</li>
+                <li>Comply with legal obligations</li>
+              </ul>
+            </section>
+
+            <section className="space-y-4">
+              <h2 className="text-xl font-semibold text-foreground">Data Sharing</h2>
+              <p className="text-muted-foreground">We do not sell your data.</p>
+              <p className="text-muted-foreground">We may share information only with:</p>
+              <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
+                <li>Trusted service providers (hosting, email delivery, analytics) necessary to operate the Service</li>
+                <li>Legal authorities if required by law</li>
+              </ul>
+              <p className="text-muted-foreground">All service providers are required to protect your data.</p>
+            </section>
+
+            <section className="space-y-4">
+              <h2 className="text-xl font-semibold text-foreground">Data Retention</h2>
+              <p className="text-muted-foreground">
+                We retain account and usage data for as long as your account is active or as needed to provide the Service. You may request deletion of your account and associated data by contacting us.
+              </p>
+            </section>
+
+            <section className="space-y-4">
+              <h2 className="text-xl font-semibold text-foreground">Security</h2>
+              <p className="text-muted-foreground">
+                We use reasonable administrative, technical, and organizational safeguards to protect your information. No system is 100% secure, but we take data protection seriously.
+              </p>
+            </section>
+
+            <section className="space-y-4">
+              <h2 className="text-xl font-semibold text-foreground">Your Rights</h2>
+              <p className="text-muted-foreground">Depending on your location, you may have rights to:</p>
+              <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
+                <li>Access your data</li>
+                <li>Correct inaccurate data</li>
+                <li>Request deletion of your data</li>
+              </ul>
+              <p className="text-muted-foreground">You can exercise these rights by contacting us.</p>
+            </section>
+
+            <section className="space-y-4">
+              <h2 className="text-xl font-semibold text-foreground">Changes to This Policy</h2>
+              <p className="text-muted-foreground">
+                We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated effective date.
+              </p>
+            </section>
+
+            <section className="space-y-4 pt-4 border-t border-border">
+              <h2 className="text-xl font-semibold text-foreground">Contact</h2>
+              <p className="text-muted-foreground">
+                Questions about privacy?
+              </p>
+              <a 
+                href="mailto:hello@attestly.com" 
+                className="text-primary hover:underline inline-flex items-center gap-2"
+              >
+                <Mail className="h-4 w-4" />
+                hello@attestly.com
+              </a>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
