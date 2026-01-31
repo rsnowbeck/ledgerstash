@@ -189,6 +189,54 @@ export type Database = {
           },
         ]
       }
+      reminder_logs: {
+        Row: {
+          email_sent: boolean
+          error_message: string | null
+          id: string
+          organization_id: string
+          sent_at: string
+          sent_by: string | null
+          signing_request_id: string
+          trigger_type: string
+        }
+        Insert: {
+          email_sent?: boolean
+          error_message?: string | null
+          id?: string
+          organization_id: string
+          sent_at?: string
+          sent_by?: string | null
+          signing_request_id: string
+          trigger_type?: string
+        }
+        Update: {
+          email_sent?: boolean
+          error_message?: string | null
+          id?: string
+          organization_id?: string
+          sent_at?: string
+          sent_by?: string | null
+          signing_request_id?: string
+          trigger_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reminder_logs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reminder_logs_signing_request_id_fkey"
+            columns: ["signing_request_id"]
+            isOneToOne: false
+            referencedRelation: "signing_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       requirements: {
         Row: {
           attachment_name: string | null

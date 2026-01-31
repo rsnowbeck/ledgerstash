@@ -27,6 +27,8 @@ import { toast } from "sonner";
 import { OrganizationSettingsForm } from "@/components/settings/OrganizationSettingsForm";
 import { TeamManagement } from "@/components/settings/TeamManagement";
 import { EmailSettingsForm } from "@/components/settings/EmailSettingsForm";
+import { AutoReminderSettings } from "@/components/settings/AutoReminderSettings";
+import { ReminderLogTable } from "@/components/signatures/ReminderLogTable";
 
 // Common timezones
 const TIMEZONES = [
@@ -549,10 +551,29 @@ export default function Settings() {
           {/* Emails Tab */}
           <TabsContent value="emails" className="space-y-6">
             {organization ? (
-              <EmailSettingsForm 
-                organization={organization}
-                onUpdate={refetchOrg}
-              />
+              <>
+                <EmailSettingsForm 
+                  organization={organization}
+                  onUpdate={refetchOrg}
+                />
+                <AutoReminderSettings
+                  organizationId={organization.id}
+                  autoReminderEnabled={organization.auto_reminder_enabled ?? false}
+                  autoReminderDays={organization.auto_reminder_days ?? 7}
+                  onUpdate={refetchOrg}
+                />
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Reminder History</CardTitle>
+                    <CardDescription>
+                      Recent reminder emails sent to recipients
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ReminderLogTable organizationId={organization.id} limit={25} />
+                  </CardContent>
+                </Card>
+              </>
             ) : (
               <Card>
                 <CardContent className="py-8 text-center text-muted-foreground">

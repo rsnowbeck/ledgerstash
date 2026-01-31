@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -37,6 +38,7 @@ export function BulkReminderDialog({
   organizationName,
   onSuccess,
 }: BulkReminderDialogProps) {
+  const { user } = useAuth();
   const [pendingSignatures, setPendingSignatures] = useState<PendingSignature[]>([]);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(false);
@@ -159,9 +161,29 @@ export function BulkReminderDialog({
 
         if (emailError) throw emailError;
 
+        // Log the reminder
+        await supabase.from("reminder_logs").insert({
+          signing_request_id: signature.id,
+          organization_id: organizationId,
+          sent_by: user?.id || null,
+          trigger_type: "manual",
+          email_sent: true,
+        });
+
         successCount++;
-      } catch (error) {
+      } catch (error: any) {
         console.error(`Error sending reminder to ${signature.recipientEmail}:`, error);
+        
+        // Log failed reminder attempt
+        await supabase.from("reminder_logs").insert({
+          signing_request_id: signature.id,
+          organization_id: organizationId,
+          sent_by: user?.id || null,
+          trigger_type: "manual",
+          email_sent: false,
+          error_message: error?.message || "Unknown error",
+        });
+        
         errorCount++;
       }
     }
