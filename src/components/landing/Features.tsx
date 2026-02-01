@@ -1,8 +1,21 @@
 import { Users, FileText, Send, BarChart3, Download, Shield, Clock, Bell } from "lucide-react";
-const features = [{
+
+interface Feature {
+  icon: any;
+  title: string;
+  description: string;
+  bullets?: string[];
+}
+
+const features: Feature[] = [{
   icon: Users,
   title: "Recipient Management",
-  description: "Add employees, contractors, and vendors. Organize by department or group. Track everyone in one place."
+  description: "Import employees, contractors, or vendors. Add names and emails manually, or bulk import via CSV.",
+  bullets: [
+    "Add recipients manually or import via CSV",
+    "Organize by groups or roles",
+    "No recipient limits on Pro plan"
+  ]
 }, {
   icon: FileText,
   title: "Flexible Requirements",
@@ -32,6 +45,7 @@ const features = [{
   title: "Enterprise Security",
   description: "HTTPS everywhere. Hashed tokens. Rate limiting. Database backups. Your data is protected."
 }];
+
 export function Features() {
   return <section id="features" className="py-20 lg:py-32 bg-card">
       <div className="container">
@@ -51,6 +65,16 @@ export function Features() {
               <p className="text-sm text-muted-foreground leading-relaxed">
                 {feature.description}
               </p>
+              {feature.bullets && (
+                <ul className="mt-3 space-y-1">
+                  {feature.bullets.map((bullet, idx) => (
+                    <li key={idx} className="text-xs text-muted-foreground flex items-start gap-1.5">
+                      <span className="text-accent mt-0.5">•</span>
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>)}
         </div>
       </div>
