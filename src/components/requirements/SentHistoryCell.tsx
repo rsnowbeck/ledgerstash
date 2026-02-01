@@ -100,7 +100,7 @@ export function SentHistoryCell({
       ) : events.length === 0 ? (
         <p className="text-sm text-muted-foreground py-2">No email history found.</p>
       ) : (
-        <ScrollArea className="max-h-48">
+        <ScrollArea className="max-h-72">
           <div className="space-y-2">
             {events.map((event) => (
               <div
