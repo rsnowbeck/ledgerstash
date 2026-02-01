@@ -17,26 +17,41 @@ export default function ResetPassword() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user has a valid session from the reset link
-    const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setHasSession(!!session);
-      setChecking(false);
-    };
+    let timeoutId: NodeJS.Timeout;
 
     // Listen for auth state changes (user clicking reset link)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        if (event === "PASSWORD_RECOVERY") {
+        // PASSWORD_RECOVERY or SIGNED_IN events indicate valid reset link
+        if (event === "PASSWORD_RECOVERY" || (event === "SIGNED_IN" && session)) {
           setHasSession(true);
           setChecking(false);
+          if (timeoutId) clearTimeout(timeoutId);
         }
       }
     );
 
+    // Check if user already has a valid session (from the URL hash tokens)
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        setHasSession(true);
+        setChecking(false);
+      } else {
+        // Give the auth state listener time to process URL hash tokens
+        // Only show "invalid link" after a reasonable delay
+        timeoutId = setTimeout(() => {
+          setChecking(false);
+        }, 2000);
+      }
+    };
+
     checkSession();
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
