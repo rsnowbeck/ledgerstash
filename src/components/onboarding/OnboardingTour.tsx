@@ -176,9 +176,9 @@ export function OnboardingTour({ organizationId }: OnboardingTourProps) {
         onClick={skipTour}
       />
       
-      {/* Tour Card */}
-      <div className="fixed inset-x-4 bottom-4 sm:inset-auto sm:bottom-6 sm:right-6 sm:w-[420px] z-50 animate-in slide-in-from-bottom-4 duration-300">
-        <Card className="shadow-xl border-primary/20">
+      {/* Tour Card - Centered */}
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-in fade-in zoom-in-95 duration-300">
+        <Card className="shadow-xl border-primary/20 w-full max-w-md">
           <CardContent className="pt-6 pb-6">
             {/* Header with close button */}
             <div className="flex items-start justify-between mb-4">
