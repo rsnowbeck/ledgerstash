@@ -9,6 +9,8 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+type EmailType = "initial" | "reminder" | "escalated" | "overdue";
+
 interface SigningEmailRequest {
   recipientName: string;
   recipientEmail: string;
@@ -18,8 +20,112 @@ interface SigningEmailRequest {
   senderName?: string;
   senderEmail?: string;
   logoUrl?: string;
-  isReminder?: boolean;
+  emailType?: EmailType;
+  dueDate?: string; // ISO date string
   daysUntilDue?: number;
+  sendCount?: number;
+}
+
+function formatDueDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+}
+
+function getEmailContent(
+  emailType: EmailType,
+  requirementTitle: string,
+  displaySenderName: string,
+  dueDate?: string,
+  daysUntilDue?: number
+): { subject: string; intro: string; buttonText: string; dueText: string; closing: string } {
+  const formattedDueDate = dueDate ? formatDueDate(dueDate) : null;
+  
+  switch (emailType) {
+    case "initial":
+      return {
+        subject: formattedDueDate 
+          ? `Signature requested for "${requirementTitle}" — due ${formattedDueDate}`
+          : `Action required: Please sign "${requirementTitle}"`,
+        intro: `You've been requested to review and sign the following document:`,
+        buttonText: "Review & Sign Now",
+        dueText: formattedDueDate 
+          ? `Please complete your signature by <strong>${formattedDueDate}</strong>.`
+          : `Please complete your signature as soon as possible.`,
+        closing: `This request was sent by ${displaySenderName} to confirm acknowledgment of this document.`,
+      };
+    
+    case "reminder":
+      return {
+        subject: formattedDueDate
+          ? `Reminder: Signature needed for "${requirementTitle}" (due ${formattedDueDate})`
+          : `Reminder: Please sign "${requirementTitle}"`,
+        intro: `This is a reminder that your signature is still needed for:`,
+        buttonText: "Review & Sign Now",
+        dueText: formattedDueDate
+          ? `Please review and sign by <strong>${formattedDueDate}</strong>.`
+          : `Please review and sign as soon as possible.`,
+        closing: `Thank you for taking care of this.`,
+      };
+    
+    case "escalated":
+      const daysText = daysUntilDue !== undefined && daysUntilDue > 0
+        ? `${daysUntilDue} day${daysUntilDue === 1 ? "" : "s"}`
+        : "soon";
+      return {
+        subject: formattedDueDate
+          ? `Action required: "${requirementTitle}" signature due in ${daysText}`
+          : `Action required: Please sign "${requirementTitle}"`,
+        intro: `Your signature is still required for the document below:`,
+        buttonText: "Review & Sign Now",
+        dueText: formattedDueDate
+          ? `⏰ <strong>Due in ${daysText} (${formattedDueDate})</strong>`
+          : `Please complete this as soon as possible.`,
+        closing: `Please complete this as soon as possible.`,
+      };
+    
+    case "overdue":
+      return {
+        subject: formattedDueDate
+          ? `Overdue: "${requirementTitle}" signature was due ${formattedDueDate}`
+          : `Overdue: Please sign "${requirementTitle}"`,
+        intro: `Your signature for the document below is now overdue:`,
+        buttonText: "Review & Sign Now",
+        dueText: formattedDueDate
+          ? `The due date was <strong>${formattedDueDate}</strong>.`
+          : `This signature request is now overdue.`,
+        closing: `Please complete your signature immediately or contact your organization administrator if you need assistance.`,
+      };
+    
+    default:
+      return {
+        subject: `Action Required: Please sign "${requirementTitle}"`,
+        intro: `${displaySenderName} has requested your signature on the following document:`,
+        buttonText: "Review & Sign Document",
+        dueText: formattedDueDate
+          ? `Please complete by <strong>${formattedDueDate}</strong>.`
+          : `Please complete as soon as possible.`,
+        closing: ``,
+      };
+  }
+}
+
+function determineEmailType(
+  explicitType?: EmailType,
+  daysUntilDue?: number,
+  sendCount?: number
+): EmailType {
+  // If explicit type provided, use it
+  if (explicitType) return explicitType;
+  
+  // Auto-determine based on context
+  if (daysUntilDue !== undefined) {
+    if (daysUntilDue < 0) return "overdue";
+    if (daysUntilDue <= 5 || (sendCount && sendCount >= 3)) return "escalated";
+  }
+  
+  if (sendCount && sendCount > 1) return "reminder";
+  
+  return "initial";
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -38,8 +144,10 @@ const handler = async (req: Request): Promise<Response> => {
       senderName,
       senderEmail,
       logoUrl,
-      isReminder = false,
-      daysUntilDue
+      emailType: explicitEmailType,
+      dueDate,
+      daysUntilDue,
+      sendCount
     }: SigningEmailRequest = await req.json();
 
     // Validate required fields
@@ -49,26 +157,31 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const displaySenderName = senderName || organizationName;
-    const subject = isReminder 
-      ? `Reminder: Please sign "${requirementTitle}"`
-      : `Action Required: Please sign "${requirementTitle}"`;
     
-    const introText = isReminder
-      ? `This is a friendly reminder that your signature is still needed on the following document:`
-      : `${displaySenderName} has requested your signature on the following document:`;
+    // Determine email type based on context
+    const emailType = determineEmailType(explicitEmailType, daysUntilDue, sendCount);
+    const { subject, intro, buttonText, dueText, closing } = getEmailContent(
+      emailType,
+      requirementTitle,
+      displaySenderName,
+      dueDate,
+      daysUntilDue
+    );
 
-    const buttonText = isReminder ? "Review & Sign Now" : "Review & Sign Document";
-
-    // Build due date warning HTML if this is a reminder with days until due
-    let dueWarningHtml = "";
-    if (isReminder && daysUntilDue !== undefined) {
-      const urgencyColor = daysUntilDue <= 1 ? "#ef4444" : daysUntilDue <= 3 ? "#f59e0b" : "#3b82f6";
-      const dueText = daysUntilDue <= 0 ? "Due today" : daysUntilDue === 1 ? "Due tomorrow" : `Due in ${daysUntilDue} days`;
-      dueWarningHtml = `
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-bottom: 16px;">
+    // Build due date display HTML
+    let dueDateHtml = "";
+    if (dueText) {
+      const isOverdue = emailType === "overdue";
+      const isEscalated = emailType === "escalated";
+      const bgColor = isOverdue ? "#fef2f2" : isEscalated ? "#fffbeb" : "#f0f9ff";
+      const borderColor = isOverdue ? "#ef4444" : isEscalated ? "#f59e0b" : "#3b82f6";
+      const textColor = isOverdue ? "#dc2626" : isEscalated ? "#d97706" : "#2563eb";
+      
+      dueDateHtml = `
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top: 16px; margin-bottom: 16px;">
           <tr>
-            <td style="padding: 12px 16px; background-color: ${urgencyColor}15; border-radius: 8px; border-left: 4px solid ${urgencyColor};">
-              <p style="margin: 0; font-size: 14px; color: ${urgencyColor}; font-weight: 500;">⏰ ${dueText}</p>
+            <td style="padding: 12px 16px; background-color: ${bgColor}; border-radius: 8px; border-left: 4px solid ${borderColor};">
+              <p style="margin: 0; font-size: 14px; color: ${textColor}; font-weight: 500;">${dueText}</p>
             </td>
           </tr>
         </table>
@@ -83,7 +196,7 @@ const handler = async (req: Request): Promise<Response> => {
       `;
     }
 
-    console.log(`Sending ${isReminder ? "reminder" : "signing request"} email to ${recipientEmail} for "${requirementTitle}"`);
+    console.log(`Sending ${emailType} email to ${recipientEmail} for "${requirementTitle}"`);
 
     const emailResponse = await resend.emails.send({
       from: `Attestly <noreply@getattestly.com>`,
@@ -117,11 +230,11 @@ const handler = async (req: Request): Promise<Response> => {
                         Hi ${recipientName},
                       </p>
                       <p style="margin: 0 0 24px; font-size: 16px; color: #3f3f46; line-height: 1.6;">
-                        ${introText}
+                        ${intro}
                       </p>
                       
                       <!-- Document Card -->
-                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #fafafa; border-radius: 8px; border: 1px solid #e4e4e7; margin-bottom: 16px;">
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #fafafa; border-radius: 8px; border: 1px solid #e4e4e7; margin-bottom: 8px;">
                         <tr>
                           <td style="padding: 16px;">
                             <p style="margin: 0; font-size: 14px; color: #71717a; text-transform: uppercase; letter-spacing: 0.5px;">Document</p>
@@ -130,7 +243,9 @@ const handler = async (req: Request): Promise<Response> => {
                         </tr>
                       </table>
 
-                      ${dueWarningHtml}
+                      ${dueDateHtml}
+                      
+                      ${closing ? `<p style="margin: 0 0 24px; font-size: 14px; color: #52525b; line-height: 1.5;">${closing}</p>` : ""}
                       
                       <!-- CTA Button -->
                       <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
@@ -144,7 +259,7 @@ const handler = async (req: Request): Promise<Response> => {
                       </table>
                       
                       <p style="margin: 24px 0 0; font-size: 14px; color: #71717a; line-height: 1.6;">
-                        If you have any questions, please contact your organization administrator${senderEmail ? ` at <a href="mailto:${senderEmail}" style="color: #2563eb;">${senderEmail}</a>` : ""} or reach out to Support at <a href="mailto:hello@attestly.com" style="color: #2563eb;">hello@attestly.com</a>.
+                        If you have questions, contact your organization administrator${senderEmail ? ` at <a href="mailto:${senderEmail}" style="color: #2563eb;">${senderEmail}</a>` : ""} or Attestly Support at <a href="mailto:hello@attestly.com" style="color: #2563eb;">hello@attestly.com</a>.
                       </p>
                     </td>
                   </tr>
@@ -157,9 +272,6 @@ const handler = async (req: Request): Promise<Response> => {
                       </p>
                       <p style="margin: 8px 0 0; font-size: 12px; color: #a1a1aa;">
                         If you didn't expect this email, you can safely ignore it.
-                      </p>
-                      <p style="margin: 12px 0 0; font-size: 11px; color: #d4d4d8;">
-                        Support: <a href="mailto:hello@attestly.com" style="color: #a1a1aa;">hello@attestly.com</a>
                       </p>
                     </td>
                   </tr>
