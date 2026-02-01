@@ -3,9 +3,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Loader2, Mail, Send, Info } from "lucide-react";
+import { Loader2, Mail, Send, Info, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import { EmailTemplatePreview } from "./EmailTemplatePreview";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -16,6 +17,7 @@ interface Organization {
   logo_url: string | null;
   sender_name: string | null;
   sender_email: string | null;
+  custom_recipient_message: string | null;
 }
 
 interface EmailSettingsFormProps {
@@ -27,9 +29,29 @@ export function EmailSettingsForm({ organization, onUpdate }: EmailSettingsFormP
   const [saving, setSaving] = useState(false);
   const [senderName, setSenderName] = useState(organization.sender_name || "");
   const [senderEmail, setSenderEmail] = useState(organization.sender_email || "");
-  const [supportEmail, setSupportEmail] = useState("support@attestly.com");
+  const [customMessage, setCustomMessage] = useState(organization.custom_recipient_message || "");
+
+  // Validate custom message - plain text only, no links
+  const validateCustomMessage = (msg: string): string | null => {
+    if (msg.length > 240) {
+      return "Message must be 240 characters or less";
+    }
+    // Check for URLs/links
+    const urlPattern = /(https?:\/\/|www\.|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/gi;
+    if (urlPattern.test(msg)) {
+      return "Links are not allowed in custom messages";
+    }
+    return null;
+  };
 
   const handleSave = async () => {
+    // Validate custom message
+    const messageError = validateCustomMessage(customMessage);
+    if (messageError) {
+      toast.error(messageError);
+      return;
+    }
+
     setSaving(true);
     try {
       const { error } = await supabase
@@ -37,6 +59,7 @@ export function EmailSettingsForm({ organization, onUpdate }: EmailSettingsFormP
         .update({
           sender_name: senderName || null,
           sender_email: senderEmail || null,
+          custom_recipient_message: customMessage.trim() || null,
           updated_at: new Date().toISOString(),
         })
         .eq("id", organization.id);
@@ -103,8 +126,49 @@ export function EmailSettingsForm({ organization, onUpdate }: EmailSettingsFormP
           <Alert>
             <Info className="h-4 w-4" />
             <AlertDescription>
-              All emails include Support contact (<strong>hello@attestly.com</strong>) by default 
-              to help recipients with any issues.
+              All emails are sent from <strong>noreply@getattestly.com</strong>. 
+              Support contact (<strong>hello@attestly.com</strong>) is included by default.
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+
+      {/* Custom Message */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <MessageSquare className="h-5 w-5" />
+            Optional Message to Recipients
+          </CardTitle>
+          <CardDescription>
+            Add a personal note that appears in all signing request emails
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="customMessage">Custom Message</Label>
+            <Textarea
+              id="customMessage"
+              value={customMessage}
+              onChange={(e) => setCustomMessage(e.target.value)}
+              placeholder="e.g., Please complete this by Friday. Contact HR if you have questions."
+              maxLength={240}
+              rows={3}
+              className="resize-none"
+            />
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>Plain text only. No links allowed.</span>
+              <span className={customMessage.length > 200 ? "text-amber-500" : ""}>
+                {customMessage.length}/240
+              </span>
+            </div>
+          </div>
+
+          <Alert>
+            <Info className="h-4 w-4" />
+            <AlertDescription>
+              This message appears as a note between the document details and the sign button. 
+              Leave empty to skip.
             </AlertDescription>
           </Alert>
         </CardContent>
@@ -115,6 +179,7 @@ export function EmailSettingsForm({ organization, onUpdate }: EmailSettingsFormP
         organizationName={organization.name}
         senderName={senderName || organization.name}
         logoUrl={organization.logo_url}
+        customMessage={customMessage}
       />
 
       {/* Email Types Reference */}

@@ -15,6 +15,7 @@ interface Organization {
   default_due_days: number | null;
   auto_reminder_enabled: boolean | null;
   auto_reminder_days: number | null;
+  custom_recipient_message: string | null;
 }
 
 interface Profile {
@@ -50,7 +51,7 @@ export function useOrganization(user: User | null) {
       if (profileData?.organization_id) {
         const { data: orgData, error: orgError } = await supabase
           .from('organizations')
-          .select('id, name, plan, trial_ends_at, recipient_limit, requirement_limit, logo_url, sender_name, sender_email, default_due_days, auto_reminder_enabled, auto_reminder_days')
+          .select('id, name, plan, trial_ends_at, recipient_limit, requirement_limit, logo_url, sender_name, sender_email, default_due_days, auto_reminder_enabled, auto_reminder_days, custom_recipient_message')
           .eq('id', profileData.organization_id)
           .single();
 

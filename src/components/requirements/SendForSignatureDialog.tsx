@@ -48,6 +48,7 @@ interface SendForSignatureDialogProps {
   senderName?: string | null;
   senderEmail?: string | null;
   logoUrl?: string | null;
+  customMessage?: string | null;
   isPro?: boolean;
   onSuccess?: () => void;
 }
@@ -63,6 +64,7 @@ export function SendForSignatureDialog({
   senderName,
   senderEmail,
   logoUrl,
+  customMessage,
   isPro = false,
   onSuccess,
 }: SendForSignatureDialogProps) {
@@ -250,10 +252,11 @@ export function SendForSignatureDialog({
               recipientEmail: link.email,
               requirementTitle,
               signingUrl: link.url,
-              organizationName: organizationName || "Your organization",
-              senderName: senderName || null,
-              senderEmail: senderEmail || null,
-              logoUrl: logoUrl || null,
+              organizationName: organizationName || undefined,
+              senderName: senderName || undefined,
+              senderEmail: senderEmail || undefined,
+              logoUrl: logoUrl || undefined,
+              customMessage: customMessage || undefined,
               dueDate,
               daysUntilDue,
               isPro,

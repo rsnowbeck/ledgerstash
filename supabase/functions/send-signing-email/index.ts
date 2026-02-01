@@ -25,6 +25,7 @@ interface SigningEmailRequest {
   daysUntilDue?: number;
   sendCount?: number;
   isPro?: boolean; // Whether the org is on Pro plan (for branding)
+  customMessage?: string; // Optional plain-text message from the org
 }
 
 function formatDueDate(dateStr: string): string {
@@ -32,30 +33,56 @@ function formatDueDate(dateStr: string): string {
   return date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 }
 
+/**
+ * Build the intro line with proper requester attribution.
+ * Priority: requester + org → show both, requester only → show requester, 
+ * org only → show org, never show Attestly as requester when either exists
+ */
+function buildIntroLine(
+  senderName: string | undefined,
+  organizationName: string | undefined
+): string {
+  const hasRequester = senderName && senderName.trim().length > 0;
+  const hasOrg = organizationName && organizationName.trim().length > 0;
+
+  if (hasRequester && hasOrg) {
+    return `${senderName} has requested that you review and sign the following document on behalf of ${organizationName}:`;
+  } else if (hasRequester) {
+    return `${senderName} has requested that you review and sign the following document:`;
+  } else if (hasOrg) {
+    return `${organizationName} has requested that you review and sign the following document:`;
+  } else {
+    // Fallback only when nothing is available
+    return `You have been requested to review and sign the following document:`;
+  }
+}
+
+/**
+ * Build vendor-safe closing statement.
+ * Uses neutral language that works for both employees and external parties.
+ */
+function buildClosingStatement(organizationName: string | undefined): string {
+  if (organizationName && organizationName.trim().length > 0) {
+    return `This request is part of a formal document acknowledgment process initiated by ${organizationName}.`;
+  }
+  return `This request is part of a formal document acknowledgment process.`;
+}
+
 function getEmailContent(
   emailType: EmailType,
   requirementTitle: string,
   senderName: string | undefined,
-  organizationName: string,
-  isPro: boolean,
+  organizationName: string | undefined,
   dueDate?: string,
   daysUntilDue?: number
-): { subject: string; intro: string; buttonText: string; dueText: string; consequence: string; closing: string; footer: string } {
+): { subject: string; intro: string; buttonText: string; dueText: string; consequence: string; closing: string } {
   const formattedDueDate = dueDate ? formatDueDate(dueDate) : null;
   
-  // For non-Pro users, use Attestly branding only
-  const displayOrg = isPro ? organizationName : "Attestly";
+  const intro = buildIntroLine(senderName, organizationName);
+  const closing = buildClosingStatement(organizationName);
   
-  // Build the intro line - include "on behalf of [Org]" only for Pro users with a sender name
-  const intro = (isPro && senderName)
-    ? `${senderName} has requested that you review and sign the following document on behalf of ${organizationName}:`
-    : `${displayOrg} has requested that you review and sign the following document:`;
-  
-  // Standard closing for all email types
-  const closing = `This request is part of a formal document acknowledgment process initiated by ${displayOrg}.`;
-  
-  // Standard footer for all email types
-  const footer = `If you have questions, please contact the requester or your primary contact at ${displayOrg}.`;
+  // Build subject lines with proper due date handling
+  const dueTextForSubject = formattedDueDate ? ` (due ${formattedDueDate})` : "";
   
   switch (emailType) {
     case "initial":
@@ -68,7 +95,6 @@ function getEmailContent(
           : `Please complete your signature as soon as possible.`,
         consequence: ``,
         closing,
-        footer,
       };
     
     case "reminder":
@@ -81,7 +107,6 @@ function getEmailContent(
           : `Please complete your signature as soon as possible.`,
         consequence: ``,
         closing,
-        footer,
       };
     
     case "escalated":
@@ -95,22 +120,22 @@ function getEmailContent(
         dueText: formattedDueDate
           ? `⏰ Due in ${daysText} (${formattedDueDate})`
           : `Please complete this as soon as possible.`,
-        consequence: `Missing this deadline may be flagged in your organization's compliance records.`,
+        consequence: `Missing this deadline may be flagged in compliance records.`,
         closing,
-        footer,
       };
     
     case "overdue":
       return {
-        subject: `Overdue: ${requirementTitle} signature was due ${formattedDueDate || "recently"}`,
+        subject: formattedDueDate 
+          ? `Overdue: ${requirementTitle} signature was due ${formattedDueDate}`
+          : `Overdue: ${requirementTitle} signature is past due`,
         intro,
         buttonText: "Review & Sign Now",
         dueText: formattedDueDate
           ? `The due date was ${formattedDueDate}.`
           : `This signature request is now overdue.`,
-        consequence: `This has been marked as incomplete in your organization's compliance records.`,
+        consequence: `This has been marked as incomplete in compliance records.`,
         closing,
-        footer,
       };
     
     default:
@@ -123,7 +148,6 @@ function getEmailContent(
           : `Please complete your signature as soon as possible.`,
         consequence: ``,
         closing,
-        footer,
       };
   }
 }
@@ -147,6 +171,35 @@ function determineEmailType(
   return "initial";
 }
 
+/**
+ * Build the custom message HTML block if a message is provided.
+ * Rendered as a note/callout between the document card and the CTA.
+ */
+function buildCustomMessageHtml(customMessage?: string): string {
+  if (!customMessage || customMessage.trim().length === 0) {
+    return "";
+  }
+  
+  // Sanitize the message - escape HTML entities
+  const sanitized = customMessage
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+  
+  return `
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top: 16px; margin-bottom: 16px;">
+      <tr>
+        <td style="padding: 12px 16px; background-color: #f0f9ff; border-radius: 8px; border-left: 4px solid #0ea5e9;">
+          <p style="margin: 0 0 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #0369a1; font-weight: 600;">Note from sender</p>
+          <p style="margin: 0; font-size: 14px; color: #0c4a6e; line-height: 1.5;">${sanitized}</p>
+        </td>
+      </tr>
+    </table>
+  `;
+}
+
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
@@ -159,7 +212,7 @@ const handler = async (req: Request): Promise<Response> => {
       recipientEmail, 
       requirementTitle, 
       signingUrl,
-      organizationName = "Your organization",
+      organizationName,
       senderName,
       senderEmail,
       logoUrl,
@@ -167,7 +220,8 @@ const handler = async (req: Request): Promise<Response> => {
       dueDate,
       daysUntilDue,
       sendCount,
-      isPro = false
+      isPro = false,
+      customMessage
     }: SigningEmailRequest = await req.json();
 
     // Validate required fields
@@ -178,12 +232,11 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Determine email type based on context
     const emailType = determineEmailType(explicitEmailType, daysUntilDue, sendCount);
-    const { subject, intro, buttonText, dueText, consequence, closing, footer } = getEmailContent(
+    const { subject, intro, buttonText, dueText, consequence, closing } = getEmailContent(
       emailType,
       requirementTitle,
       senderName,
       organizationName,
-      isPro,
       dueDate,
       daysUntilDue
     );
@@ -214,13 +267,22 @@ const handler = async (req: Request): Promise<Response> => {
       }
     }
 
+    // Build custom message HTML
+    const customMessageHtml = buildCustomMessageHtml(customMessage);
+
     // Build logo HTML - only for Pro users with a custom logo
     let logoHtml = "";
     if (isPro && logoUrl) {
+      const logoAlt = organizationName ? `${organizationName} logo` : "Organization logo";
       logoHtml = `
-        <img src="${logoUrl}" alt="${organizationName} logo" style="height: 32px; max-width: 120px; object-fit: contain; margin-bottom: 8px;" />
+        <img src="${logoUrl}" alt="${logoAlt}" style="height: 32px; max-width: 120px; object-fit: contain; margin-bottom: 8px;" />
       `;
     }
+
+    // Build footer with proper attribution
+    const footerText = organizationName 
+      ? `If you have questions, please contact ${senderName || "the requester"} or your primary contact at ${organizationName}.`
+      : `If you have questions, please contact ${senderName || "the requester"}.`;
 
     console.log(`Sending ${emailType} email to ${recipientEmail} for "${requirementTitle}"`);
 
@@ -272,6 +334,8 @@ const handler = async (req: Request): Promise<Response> => {
 
                       ${dueDateHtml}
 
+                      ${customMessageHtml}
+
                       ${consequence ? `<p style="margin: 0 0 16px; font-size: 13px; color: #71717a; font-style: italic; line-height: 1.5;">${consequence}</p>` : ""}
                       
                       ${closing ? `<p style="margin: 0 0 24px; font-size: 14px; color: #52525b; line-height: 1.5;">${closing}</p>` : ""}
@@ -288,7 +352,7 @@ const handler = async (req: Request): Promise<Response> => {
                       </table>
                       
                       <p style="margin: 24px 0 0; font-size: 14px; color: #71717a; line-height: 1.6;">
-                        ${footer}
+                        ${footerText}
                       </p>
                     </td>
                   </tr>
@@ -298,6 +362,9 @@ const handler = async (req: Request): Promise<Response> => {
                     <td style="padding: 24px 32px; border-top: 1px solid #e4e4e7; text-align: center;">
                       <p style="margin: 0; font-size: 12px; color: #a1a1aa;">
                         If you didn't expect this email, you can safely ignore it.
+                      </p>
+                      <p style="margin: 8px 0 0; font-size: 12px; color: #a1a1aa;">
+                        Need help? Contact <a href="mailto:hello@attestly.com" style="color: #71717a;">hello@attestly.com</a>
                       </p>
                       <p style="margin: 12px 0 0; font-size: 11px; color: #d4d4d8;">
                         Powered by <a href="https://getattestly.com" style="color: #a1a1aa; text-decoration: none;">Attestly</a>

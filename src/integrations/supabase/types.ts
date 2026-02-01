@@ -49,6 +49,7 @@ export type Database = {
           auto_reminder_days: number | null
           auto_reminder_enabled: boolean | null
           created_at: string
+          custom_recipient_message: string | null
           default_due_days: number | null
           id: string
           logo_url: string | null
@@ -67,6 +68,7 @@ export type Database = {
           auto_reminder_days?: number | null
           auto_reminder_enabled?: boolean | null
           created_at?: string
+          custom_recipient_message?: string | null
           default_due_days?: number | null
           id?: string
           logo_url?: string | null
@@ -85,6 +87,7 @@ export type Database = {
           auto_reminder_days?: number | null
           auto_reminder_enabled?: boolean | null
           created_at?: string
+          custom_recipient_message?: string | null
           default_due_days?: number | null
           id?: string
           logo_url?: string | null

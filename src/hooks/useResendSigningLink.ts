@@ -12,6 +12,7 @@ interface ResendOptions {
   senderName?: string | null;
   senderEmail?: string | null;
   logoUrl?: string | null;
+  customMessage?: string | null;
   isPro?: boolean;
   userId?: string;
   onSuccess?: () => void;
@@ -45,6 +46,7 @@ export function useResendSigningLink() {
       senderName,
       senderEmail,
       logoUrl,
+      customMessage,
       isPro = false,
       userId,
       onSuccess,
@@ -83,6 +85,7 @@ export function useResendSigningLink() {
           senderName,
           senderEmail,
           logoUrl,
+          customMessage,
           isPro,
           isReminder: true,
         },

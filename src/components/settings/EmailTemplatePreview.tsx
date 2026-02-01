@@ -7,14 +7,30 @@ interface EmailTemplatePreviewProps {
   organizationName: string;
   senderName: string;
   logoUrl?: string | null;
+  customMessage?: string | null;
 }
 
 export function EmailTemplatePreview({
   organizationName,
   senderName,
-  logoUrl
+  logoUrl,
+  customMessage
 }: EmailTemplatePreviewProps) {
   const displaySender = senderName || organizationName || "Your Organization";
+  
+  // Build intro line matching the edge function logic
+  const buildIntro = () => {
+    if (senderName && organizationName) {
+      return `${senderName} has requested that you review and sign the following document on behalf of ${organizationName}:`;
+    } else if (senderName) {
+      return `${senderName} has requested that you review and sign the following document:`;
+    } else if (organizationName) {
+      return `${organizationName} has requested that you review and sign the following document:`;
+    }
+    return `You have been requested to review and sign the following document:`;
+  };
+  
+  const intro = buildIntro();
   
   return (
     <Card>
@@ -50,54 +66,55 @@ export function EmailTemplatePreview({
 
           <TabsContent value="initial" className="mt-4">
             <EmailPreviewFrame 
-              subject="Signature requested for Annual Compliance Policy — due February 23, 2026" 
+              subject="Action required: Please sign Annual Compliance Policy" 
               senderName={displaySender}
             >
               <EmailHeader logoUrl={logoUrl} />
               <div className="py-6">
                 <p className="text-muted-foreground mb-4">Hi John Smith,</p>
                 <p className="text-muted-foreground mb-6">
-                  {displaySender} has requested that you review and sign the following document:
+                  {intro}
                 </p>
                 <DocumentCard title="Annual Compliance Policy" />
                 <DueDateBanner 
                   text="Please complete your signature by February 23, 2026." 
                   variant="info" 
                 />
+                {customMessage && <CustomMessageBanner message={customMessage} />}
                 <p className="text-sm text-muted-foreground mb-6">
-                  This request was sent to confirm acknowledgment of this document.
+                  This request is part of a formal document acknowledgment process initiated by {organizationName || "the requester"}.
                 </p>
                 <CTAButton text="Review & Sign Now" />
-                <ContactFooter senderEmail={null} />
+                <ContactFooter senderName={senderName} organizationName={organizationName} />
               </div>
-              <EmailFooter senderName={displaySender} organizationName={organizationName} />
+              <EmailFooter />
             </EmailPreviewFrame>
           </TabsContent>
 
           <TabsContent value="reminder" className="mt-4">
             <EmailPreviewFrame 
-              subject="Reminder: Signature needed for Annual Compliance Policy (due February 23, 2026)" 
+              subject="Reminder: Please sign Annual Compliance Policy" 
               senderName={displaySender}
             >
               <EmailHeader logoUrl={logoUrl} />
               <div className="py-6">
                 <p className="text-muted-foreground mb-4">Hi John Smith,</p>
                 <p className="text-muted-foreground mb-6">
-                  This is a reminder that your signature is still needed for:
+                  {intro}
                 </p>
                 <DocumentCard title="Annual Compliance Policy" />
                 <DueDateBanner 
-                  text="Please review and sign by February 23, 2026." 
+                  text="Please complete your signature by February 23, 2026." 
                   variant="info" 
                 />
-                <ConsequenceText text="Your acknowledgment is required to complete this compliance requirement." />
+                {customMessage && <CustomMessageBanner message={customMessage} />}
                 <p className="text-sm text-muted-foreground mb-6">
-                  Thank you for taking care of this.
+                  This request is part of a formal document acknowledgment process initiated by {organizationName || "the requester"}.
                 </p>
                 <CTAButton text="Review & Sign Now" />
-                <ContactFooter senderEmail={null} />
+                <ContactFooter senderName={senderName} organizationName={organizationName} />
               </div>
-              <EmailFooter senderName={displaySender} organizationName={organizationName} />
+              <EmailFooter />
             </EmailPreviewFrame>
           </TabsContent>
 
@@ -110,21 +127,22 @@ export function EmailTemplatePreview({
               <div className="py-6">
                 <p className="text-muted-foreground mb-4">Hi John Smith,</p>
                 <p className="text-muted-foreground mb-6">
-                  Your signature is still required for the document below:
+                  {intro}
                 </p>
                 <DocumentCard title="Annual Compliance Policy" />
                 <DueDateBanner 
                   text="⏰ Due in 5 days (February 23, 2026)" 
                   variant="warning" 
                 />
-                <ConsequenceText text="Missing this deadline may be flagged in your organization's compliance records." variant="warning" />
+                {customMessage && <CustomMessageBanner message={customMessage} />}
+                <ConsequenceText text="Missing this deadline may be flagged in compliance records." variant="warning" />
                 <p className="text-sm text-muted-foreground mb-6">
-                  Please complete this as soon as possible.
+                  This request is part of a formal document acknowledgment process initiated by {organizationName || "the requester"}.
                 </p>
                 <CTAButton text="Review & Sign Now" />
-                <ContactFooter senderEmail={null} />
+                <ContactFooter senderName={senderName} organizationName={organizationName} />
               </div>
-              <EmailFooter senderName={displaySender} organizationName={organizationName} />
+              <EmailFooter />
             </EmailPreviewFrame>
           </TabsContent>
 
@@ -137,21 +155,22 @@ export function EmailTemplatePreview({
               <div className="py-6">
                 <p className="text-muted-foreground mb-4">Hi John Smith,</p>
                 <p className="text-muted-foreground mb-6">
-                  Your signature for the document below is now overdue:
+                  {intro}
                 </p>
                 <DocumentCard title="Annual Compliance Policy" />
                 <DueDateBanner 
                   text="The due date was February 23, 2026." 
                   variant="error" 
                 />
-                <ConsequenceText text="This has been marked as incomplete in your organization's compliance records." variant="error" />
+                {customMessage && <CustomMessageBanner message={customMessage} />}
+                <ConsequenceText text="This has been marked as incomplete in compliance records." variant="error" />
                 <p className="text-sm text-muted-foreground mb-6">
-                  Please complete your signature immediately or contact your organization administrator if you need assistance.
+                  This request is part of a formal document acknowledgment process initiated by {organizationName || "the requester"}.
                 </p>
                 <CTAButton text="Review & Sign Now" />
-                <ContactFooter senderEmail={null} />
+                <ContactFooter senderName={senderName} organizationName={organizationName} />
               </div>
-              <EmailFooter senderName={displaySender} organizationName={organizationName} />
+              <EmailFooter />
             </EmailPreviewFrame>
           </TabsContent>
         </Tabs>
@@ -208,6 +227,15 @@ function ConsequenceText({ text, variant = "default" }: { text: string; variant?
   );
 }
 
+function CustomMessageBanner({ message }: { message: string }) {
+  return (
+    <div className="bg-sky-500/10 border-l-4 border-sky-500 rounded-lg p-3 mb-4">
+      <p className="text-xs text-sky-700 dark:text-sky-400 uppercase tracking-wide font-semibold mb-1">Note from sender</p>
+      <p className="text-sm text-sky-800 dark:text-sky-300">{message}</p>
+    </div>
+  );
+}
+
 function CTAButton({ text }: { text: string }) {
   return (
     <div className="text-center">
@@ -218,26 +246,23 @@ function CTAButton({ text }: { text: string }) {
   );
 }
 
-function ContactFooter({ senderEmail }: { senderEmail: string | null }) {
+function ContactFooter({ senderName, organizationName }: { senderName?: string; organizationName?: string }) {
+  const contactText = organizationName 
+    ? `If you have questions, please contact ${senderName || "the requester"} or your primary contact at ${organizationName}.`
+    : `If you have questions, please contact ${senderName || "the requester"}.`;
+  
   return (
     <p className="text-sm text-muted-foreground mt-6">
-      If you have questions, contact your organization administrator
-      {senderEmail && (
-        <> at <span className="text-primary">{senderEmail}</span></>
-      )} or Attestly Support at <span className="text-primary">hello@attestly.com</span>.
+      {contactText}
     </p>
   );
 }
 
-function EmailFooter({ senderName, organizationName }: { senderName: string; organizationName?: string }) {
-  const footerText = organizationName && senderName !== organizationName
-    ? `This request was sent by ${senderName} on behalf of ${organizationName}.`
-    : `This request was sent by ${senderName}.`;
-  
+function EmailFooter() {
   return (
     <div className="pt-4 border-t border-border text-center text-xs text-muted-foreground">
-      <p>{footerText}</p>
-      <p className="mt-1">If you didn't expect this email, you can safely ignore it.</p>
+      <p>If you didn't expect this email, you can safely ignore it.</p>
+      <p className="mt-2">Need help? Contact <span className="text-primary">hello@attestly.com</span></p>
       <p className="mt-2 text-[11px] text-muted-foreground/60">
         Powered by <span className="text-muted-foreground/80">Attestly</span>
       </p>

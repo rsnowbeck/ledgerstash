@@ -20,6 +20,7 @@ interface ResendLinkDialogProps {
   recipientName: string;
   recipientEmail: string;
   requirementTitle: string;
+  customMessage?: string | null;
   onSuccess?: () => void;
 }
 
@@ -30,6 +31,7 @@ export function ResendLinkDialog({
   recipientName,
   recipientEmail,
   requirementTitle,
+  customMessage,
   onSuccess,
 }: ResendLinkDialogProps) {
   const { user } = useAuth();
@@ -106,6 +108,7 @@ export function ResendLinkDialog({
           senderName: effectiveSenderName,
           senderEmail: organization.sender_email,
           logoUrl: organization.logo_url,
+          customMessage: customMessage || organization.custom_recipient_message,
           isReminder: true,
         },
       });
