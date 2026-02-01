@@ -34,11 +34,18 @@ function formatDueDate(dateStr: string): string {
 function getEmailContent(
   emailType: EmailType,
   requirementTitle: string,
-  displaySenderName: string,
+  senderName: string | undefined,
+  organizationName: string,
   dueDate?: string,
   daysUntilDue?: number
 ): { subject: string; intro: string; buttonText: string; dueText: string; consequence: string; closing: string } {
   const formattedDueDate = dueDate ? formatDueDate(dueDate) : null;
+  const displaySenderName = senderName || organizationName;
+  
+  // Build the attribution line: "This request was sent by [Sender] on behalf of [Org]..."
+  const attribution = senderName 
+    ? `This request was sent by ${senderName} on behalf of ${organizationName}`
+    : `This request was sent by ${organizationName}`;
   
   switch (emailType) {
     case "initial":
@@ -52,7 +59,7 @@ function getEmailContent(
           ? `Please complete your signature by <strong>${formattedDueDate}</strong>.`
           : `Please complete your signature as soon as possible to meet your organization's requirements.`,
         consequence: ``,
-        closing: `This request was sent to confirm acknowledgment of this document.`,
+        closing: `${attribution} to confirm acknowledgment of this document.`,
       };
     
     case "reminder":
@@ -60,13 +67,13 @@ function getEmailContent(
         subject: formattedDueDate
           ? `Reminder: Signature needed for "${requirementTitle}" (due ${formattedDueDate})`
           : `Reminder: Please sign "${requirementTitle}"`,
-        intro: `This is a reminder that your signature is still needed for:`,
+        intro: `This is a friendly reminder that ${displaySenderName} is waiting for your signature on:`,
         buttonText: "Review & Sign Now",
         dueText: formattedDueDate
           ? `Please review and sign by <strong>${formattedDueDate}</strong>.`
           : `Please review and sign as soon as possible to meet your organization's requirements.`,
-        consequence: `Your acknowledgment is required to complete this compliance requirement.`,
-        closing: `Thank you for taking care of this.`,
+        consequence: ``,
+        closing: `${attribution} to confirm acknowledgment of this document.`,
       };
     
     case "escalated":
@@ -83,7 +90,7 @@ function getEmailContent(
           ? `⏰ <strong>Due in ${daysText} (${formattedDueDate})</strong>`
           : `Please complete this as soon as possible to meet your organization's requirements.`,
         consequence: `Missing this deadline may be flagged in your organization's compliance records.`,
-        closing: ``,
+        closing: `${attribution} to confirm acknowledgment of this document.`,
       };
     
     case "overdue":
@@ -97,7 +104,7 @@ function getEmailContent(
           ? `The due date was <strong>${formattedDueDate}</strong>.`
           : `This signature request is now overdue.`,
         consequence: `This has been marked as incomplete in your organization's compliance records.`,
-        closing: `Please complete your signature immediately or contact your organization administrator if you need assistance.`,
+        closing: `${attribution}. Please complete your signature immediately or contact your organization administrator if you need assistance.`,
       };
     
     default:
@@ -108,8 +115,8 @@ function getEmailContent(
         dueText: formattedDueDate
           ? `Please complete by <strong>${formattedDueDate}</strong>.`
           : `Please complete as soon as possible to meet your organization's requirements.`,
-        consequence: `Your acknowledgment is needed to complete this requirement.`,
-        closing: ``,
+        consequence: ``,
+        closing: `${attribution} to confirm acknowledgment of this document.`,
       };
   }
 }
@@ -161,14 +168,13 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error("Missing required fields: recipientName, recipientEmail, requirementTitle, signingUrl");
     }
 
-    const displaySenderName = senderName || organizationName;
-    
     // Determine email type based on context
     const emailType = determineEmailType(explicitEmailType, daysUntilDue, sendCount);
     const { subject, intro, buttonText, dueText, consequence, closing } = getEmailContent(
       emailType,
       requirementTitle,
-      displaySenderName,
+      senderName,
+      organizationName,
       dueDate,
       daysUntilDue
     );
@@ -275,9 +281,6 @@ const handler = async (req: Request): Promise<Response> => {
                   <tr>
                     <td style="padding: 24px 32px; border-top: 1px solid #e4e4e7; text-align: center;">
                       <p style="margin: 0; font-size: 12px; color: #a1a1aa;">
-                        This request was sent by ${senderName ? senderName : organizationName}${senderName && organizationName ? ` on behalf of ${organizationName}` : ""}.
-                      </p>
-                      <p style="margin: 8px 0 0; font-size: 12px; color: #a1a1aa;">
                         If you didn't expect this email, you can safely ignore it.
                       </p>
                       <p style="margin: 12px 0 0; font-size: 11px; color: #d4d4d8;">
