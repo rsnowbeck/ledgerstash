@@ -191,11 +191,32 @@ export function SendForSignatureDialog({
       );
 
       // Insert signing requests (without the plain token and recipient info)
-      const { error } = await supabase.from("signing_requests").insert(
-        signingRequests.map(({ _plain_token, _recipient_name, _recipient_email, ...rest }) => rest)
-      );
+      const { data: insertedRequests, error } = await supabase
+        .from("signing_requests")
+        .insert(
+          signingRequests.map(({ _plain_token, _recipient_name, _recipient_email, ...rest }) => rest)
+        )
+        .select("id, recipient_id");
 
       if (error) throw error;
+
+      // Log initial send events for each signing request
+      if (insertedRequests && insertedRequests.length > 0) {
+        const reminderLogs = insertedRequests.map((req) => ({
+          signing_request_id: req.id,
+          organization_id: organizationId,
+          trigger_type: "initial",
+          email_sent: true,
+        }));
+
+        const { error: logError } = await supabase
+          .from("reminder_logs")
+          .insert(reminderLogs);
+
+        if (logError) {
+          console.error("Failed to log initial sends:", logError);
+        }
+      }
 
       // Use production custom domain
       const baseUrl = "https://getattestly.com";

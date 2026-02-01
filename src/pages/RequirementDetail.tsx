@@ -34,6 +34,7 @@ import { format, isPast, isToday } from "date-fns";
 import { useResendSigningLink } from "@/hooks/useResendSigningLink";
 import { RequirementEditForm } from "@/components/requirements/RequirementEditForm";
 import { SendForSignatureDialog } from "@/components/requirements/SendForSignatureDialog";
+import { SentHistoryCell } from "@/components/requirements/SentHistoryCell";
 
 interface Requirement {
   id: string;
@@ -62,6 +63,8 @@ interface SigningRequestWithRecipient {
     email: string;
     department: string | null;
   };
+  sendCount: number;
+  lastSentAt: string | null;
 }
 
 export default function RequirementDetail() {
@@ -120,11 +123,38 @@ export default function RequirementDetail() {
         .order("sent_at", { ascending: false });
 
       if (reqsError) throw reqsError;
+
+      // Fetch reminder counts for all signing requests
+      const requestIds = (requests || []).map((r: any) => r.id);
+      let reminderCounts: Record<string, { count: number; lastSentAt: string | null }> = {};
+
+      if (requestIds.length > 0) {
+        const { data: logs, error: logsError } = await supabase
+          .from("reminder_logs")
+          .select("signing_request_id, sent_at")
+          .in("signing_request_id", requestIds)
+          .order("sent_at", { ascending: false });
+
+        if (!logsError && logs) {
+          // Group by signing_request_id
+          logs.forEach((log) => {
+            if (!reminderCounts[log.signing_request_id]) {
+              reminderCounts[log.signing_request_id] = {
+                count: 0,
+                lastSentAt: log.sent_at, // First one is the most recent due to ordering
+              };
+            }
+            reminderCounts[log.signing_request_id].count++;
+          });
+        }
+      }
       
       // Transform the data to match our interface
       const transformedRequests = (requests || []).map((r: any) => ({
         ...r,
         recipient: r.recipient,
+        sendCount: reminderCounts[r.id]?.count || 0,
+        lastSentAt: reminderCounts[r.id]?.lastSentAt || r.sent_at,
       }));
       
       setSigningRequests(transformedRequests);
@@ -461,8 +491,12 @@ export default function RequirementDetail() {
                     {request.recipient.department || "—"}
                   </TableCell>
                   <TableCell>{getRecipientStatusBadge(request.status)}</TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
-                    {request.sent_at ? format(new Date(request.sent_at), "MMM d, yyyy") : "—"}
+                  <TableCell>
+                    <SentHistoryCell
+                      signingRequestId={request.id}
+                      lastSentAt={request.lastSentAt}
+                      sendCount={request.sendCount}
+                    />
                   </TableCell>
                   <TableCell>
                     {request.completed_at ? (
