@@ -9,7 +9,15 @@ let globalUser: User | null = null;
 let globalLoading = true;
 let listeners: Set<() => void> = new Set();
 
+// Cache the snapshot object to prevent infinite re-renders
+let cachedSnapshot = { session: globalSession, user: globalUser, loading: globalLoading };
+
+function updateSnapshot() {
+  cachedSnapshot = { session: globalSession, user: globalUser, loading: globalLoading };
+}
+
 function notifyListeners() {
+  updateSnapshot();
   listeners.forEach((listener) => listener());
 }
 
@@ -19,7 +27,7 @@ function subscribe(callback: () => void) {
 }
 
 function getSnapshot() {
-  return { session: globalSession, user: globalUser, loading: globalLoading };
+  return cachedSnapshot;
 }
 
 // Initialize auth listener once
