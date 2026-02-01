@@ -23,7 +23,7 @@ export function Hero() {
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-slide-up" style={{
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8 animate-slide-up" style={{
           animationDelay: "0.2s"
         }}>
             <Button variant="hero" size="xl" asChild>
@@ -59,7 +59,7 @@ export function Hero() {
         </div>
 
         {/* Feature Cards Preview */}
-        <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto animate-slide-up" style={{
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto animate-slide-up" style={{
         animationDelay: "0.4s"
       }}>
           <div className="card-elevated p-6 text-center">
