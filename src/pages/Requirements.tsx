@@ -414,8 +414,8 @@ export default function Requirements() {
 
   return (
     <DashboardLayout>
-      {/* Plan Limit Banner */}
-      {planLimits.isAtRequirementLimit && (
+      {/* Plan Limit Banner - only show after data has loaded */}
+      {!requirementsLoading && organization && planLimits.isAtRequirementLimit && (
         <PlanLimitBanner
           type="requirement"
           limit={planLimits.requirementLimit}
@@ -426,7 +426,7 @@ export default function Requirements() {
       )}
 
       {/* Trial Warning Banner */}
-      {!planLimits.isAtRequirementLimit && planLimits.trialDaysRemaining !== null && planLimits.trialDaysRemaining <= 3 && planLimits.trialDaysRemaining > 0 && (
+      {!requirementsLoading && organization && !planLimits.isAtRequirementLimit && planLimits.trialDaysRemaining !== null && planLimits.trialDaysRemaining <= 3 && planLimits.trialDaysRemaining > 0 && (
         <PlanLimitBanner
           type="requirement"
           limit={planLimits.requirementLimit}
