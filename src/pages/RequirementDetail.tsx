@@ -214,17 +214,66 @@ export default function RequirementDetail() {
     }
   };
 
+  const handleMarkComplete = async () => {
+    if (!requirement) return;
+    
+    try {
+      const { error } = await supabase
+        .from("requirements")
+        .update({ status: "completed" })
+        .eq("id", requirement.id);
+
+      if (error) throw error;
+      
+      fetchRequirementDetails();
+    } catch (error) {
+      console.error("Error completing requirement:", error);
+    }
+  };
+
+  const handleReopen = async () => {
+    if (!requirement) return;
+    
+    try {
+      const { error } = await supabase
+        .from("requirements")
+        .update({ status: "published" })
+        .eq("id", requirement.id);
+
+      if (error) throw error;
+      
+      fetchRequirementDetails();
+    } catch (error) {
+      console.error("Error reopening requirement:", error);
+    }
+  };
+
+  // Auto-complete check: if all recipients have signed
+  useEffect(() => {
+    if (
+      requirement?.status === "published" &&
+      signingRequests.length > 0 &&
+      signingRequests.every((r) => r.status === "completed")
+    ) {
+      // Auto-mark as completed
+      handleMarkComplete();
+    }
+  }, [signingRequests, requirement?.status]);
+
   const getStatusBadge = (status: string | null, dueDate: string | null) => {
     const isOverdue = dueDate && isPast(new Date(dueDate)) && !isToday(new Date(dueDate));
 
     if (status === "draft") {
       return <Badge variant="secondary">Draft</Badge>;
     }
+    if (status === "completed") {
+      return <Badge className="bg-accent text-accent-foreground">Completed</Badge>;
+    }
     if (isOverdue && status === "published") {
       return <Badge variant="destructive">Overdue</Badge>;
     }
     if (status === "published") {
-      return <Badge className="bg-accent text-accent-foreground">Active</Badge>;
+      return <Badge className="bg-success text-success-foreground">Active</Badge>;
     }
     return <Badge variant="outline">{status || "Unknown"}</Badge>;
   };
@@ -326,6 +375,18 @@ export default function RequirementDetail() {
               <Button variant="hero" onClick={handlePublish}>
                 <Send className="h-4 w-4 mr-2" />
                 Publish
+              </Button>
+            )}
+            {!isEditing && requirement.status === "published" && (
+              <Button variant="outline" onClick={handleMarkComplete}>
+                <CheckCircle2 className="h-4 w-4 mr-2" />
+                Mark Complete
+              </Button>
+            )}
+            {!isEditing && requirement.status === "completed" && (
+              <Button variant="outline" onClick={handleReopen}>
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Reopen
               </Button>
             )}
             {!isEditing && (
@@ -451,7 +512,7 @@ export default function RequirementDetail() {
               {totalCount} recipient{totalCount !== 1 ? "s" : ""} assigned to this requirement
             </p>
           </div>
-          {requirement.status === "published" && (
+          {(requirement.status === "published" || requirement.status === "completed") && (
             <Button variant="outline" size="sm" onClick={() => setSendDialogOpen(true)}>
               <UserPlus className="h-4 w-4 mr-2" />
               Add Recipients
