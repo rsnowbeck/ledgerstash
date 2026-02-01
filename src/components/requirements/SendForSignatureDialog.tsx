@@ -197,8 +197,8 @@ export function SendForSignatureDialog({
 
       if (error) throw error;
 
-      // Use published lovable.app URL until custom domain DNS is configured
-      const baseUrl = "https://getattestly.lovable.app";
+      // Use production custom domain
+      const baseUrl = "https://getattestly.com";
       const links: SigningLink[] = signingRequests.map((req) => ({
         recipientName: req._recipient_name,
         email: req._recipient_email,
