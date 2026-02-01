@@ -31,7 +31,7 @@ import {
   Edit,
   Eye,
   Search,
-  Archive,
+  CheckCircle2,
   X,
   Paperclip
 } from "lucide-react";
@@ -321,8 +321,8 @@ export default function Requirements() {
     switch (status) {
       case 'published':
         return 'bg-success/10 text-success';
-      case 'archived':
-        return 'bg-muted/50 text-muted-foreground';
+      case 'completed':
+        return 'bg-accent/10 text-accent';
       case 'draft':
       default:
         return 'bg-muted text-muted-foreground';
@@ -359,23 +359,23 @@ export default function Requirements() {
     setSelectedIds(new Set());
   };
 
-  const handleBulkArchive = async () => {
+  const handleBulkComplete = async () => {
     if (selectedIds.size === 0) return;
     setBulkActionLoading(true);
     
     try {
       const { error } = await supabase
         .from('requirements')
-        .update({ status: 'archived' })
+        .update({ status: 'completed' })
         .in('id', Array.from(selectedIds));
 
       if (error) throw error;
 
-      toast.success(`Archived ${selectedIds.size} requirement(s)`);
+      toast.success(`Marked ${selectedIds.size} requirement(s) as completed`);
       setSelectedIds(new Set());
       fetchRequirements();
     } catch (error: any) {
-      toast.error('Failed to archive requirements');
+      toast.error('Failed to complete requirements');
     } finally {
       setBulkActionLoading(false);
     }
@@ -599,7 +599,7 @@ export default function Requirements() {
             <SelectItem value="all">All statuses</SelectItem>
             <SelectItem value="draft">Draft</SelectItem>
             <SelectItem value="published">Published</SelectItem>
-            <SelectItem value="archived">Archived</SelectItem>
+            <SelectItem value="completed">Completed</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -624,15 +624,15 @@ export default function Requirements() {
             <Button
               variant="outline"
               size="sm"
-              onClick={handleBulkArchive}
+              onClick={handleBulkComplete}
               disabled={bulkActionLoading}
             >
               {bulkActionLoading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
-                <Archive className="h-4 w-4" />
+                <CheckCircle2 className="h-4 w-4" />
               )}
-              Archive
+              Mark Complete
             </Button>
             <Button
               variant="destructive"
@@ -758,18 +758,18 @@ export default function Requirements() {
                           Send for Signature
                         </DropdownMenuItem>
                       )}
-                      {requirement.status !== 'archived' && (
+                      {requirement.status === 'published' && (
                         <DropdownMenuItem onClick={async () => {
                           try {
-                            await supabase.from('requirements').update({ status: 'archived' }).eq('id', requirement.id);
-                            toast.success(`Archived "${requirement.title}"`);
+                            await supabase.from('requirements').update({ status: 'completed' }).eq('id', requirement.id);
+                            toast.success(`Marked "${requirement.title}" as completed`);
                             fetchRequirements();
                           } catch {
-                            toast.error('Failed to archive');
+                            toast.error('Failed to mark as complete');
                           }
                         }}>
-                          <Archive className="h-4 w-4 mr-2" />
-                          Archive
+                          <CheckCircle2 className="h-4 w-4 mr-2" />
+                          Mark Complete
                         </DropdownMenuItem>
                       )}
                       <DropdownMenuItem 
