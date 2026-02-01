@@ -72,8 +72,8 @@ export function ResendLinkDialog({
 
       if (error) throw error;
 
-      // Always use production URL so the link works for recipients outside the preview.
-      const baseUrl = "https://getattestly.com";
+      // Use published lovable.app URL until custom domain DNS is configured
+      const baseUrl = "https://getattestly.lovable.app";
       setSigningUrl(`${baseUrl}/sign/${token}`);
       toast.success("New signing link generated");
       onSuccess?.();
