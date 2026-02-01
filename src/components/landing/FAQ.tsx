@@ -29,7 +29,7 @@ const faqs = [
   {
     question: "Do signers need an account or login?",
     answer:
-      "No. Signers can acknowledge documents securely without creating an account or remembering passwords.",
+      "No. Signers can securely review and acknowledge documents without creating an account or remembering passwords.",
   },
   {
     question: "Can Attestly work with our existing HR tools?",
