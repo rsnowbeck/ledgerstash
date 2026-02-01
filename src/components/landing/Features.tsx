@@ -10,12 +10,7 @@ interface Feature {
 const features: Feature[] = [{
   icon: Users,
   title: "Recipient Management",
-  description: "Import employees, contractors, or vendors. Add names and emails manually, or bulk import via CSV.",
-  bullets: [
-    "Add recipients manually or import via CSV",
-    "Organize by groups or roles",
-    "No recipient limits on Pro plan"
-  ]
+  description: "Import employees, contractors, or vendors. Add names and emails manually, or bulk import via CSV."
 }, {
   icon: FileText,
   title: "Flexible Requirements",
