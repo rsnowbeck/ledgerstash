@@ -27,7 +27,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Fetch organizations with auto-reminders enabled
     const { data: organizations, error: orgError } = await supabase
       .from("organizations")
-      .select("id, name, auto_reminder_days, sender_name, sender_email, logo_url")
+      .select("id, name, plan, auto_reminder_days, sender_name, sender_email, logo_url")
       .eq("auto_reminder_enabled", true)
       .not("auto_reminder_days", "is", null);
 
@@ -131,13 +131,15 @@ const handler = async (req: Request): Promise<Response> => {
 
         // Send the reminder email
         try {
-          const displaySenderName = org.sender_name || org.name;
+          const isPro = org.plan === "pro";
+          const displayOrg = isPro ? org.name : "Attestly";
+          const displaySenderName = isPro ? (org.sender_name || org.name) : "Attestly";
           const subject = `Reminder: Please sign "${requirement.title || "Document"}"`;
 
-          // Build due date warning HTML
+          // Build due date warning HTML - only for escalated (close to due) reminders
           let dueWarningHtml = "";
-          if (daysUntilDue !== undefined) {
-            const urgencyColor = daysUntilDue <= 1 ? "#ef4444" : daysUntilDue <= 3 ? "#f59e0b" : "#3b82f6";
+          if (daysUntilDue !== undefined && daysUntilDue <= 3) {
+            const urgencyColor = daysUntilDue <= 1 ? "#ef4444" : "#f59e0b";
             const dueText = daysUntilDue <= 0 ? "Due today" : daysUntilDue === 1 ? "Due tomorrow" : `Due in ${daysUntilDue} days`;
             dueWarningHtml = `
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-bottom: 16px;">
@@ -150,11 +152,19 @@ const handler = async (req: Request): Promise<Response> => {
             `;
           }
 
-          // Build logo HTML
+          // Build logo HTML - only for Pro users
           let logoHtml = "";
-          if (org.logo_url) {
+          if (isPro && org.logo_url) {
             logoHtml = `<img src="${org.logo_url}" alt="${org.name} logo" style="height: 32px; max-width: 120px; object-fit: contain; margin-bottom: 8px;" />`;
           }
+          
+          // Build intro line - include org name only for Pro users
+          const intro = (isPro && org.sender_name)
+            ? `${org.sender_name} has requested that you review and sign the following document on behalf of ${org.name}:`
+            : `${displayOrg} has requested that you review and sign the following document:`;
+            
+          const closing = `This request is part of a formal document acknowledgment process initiated by ${displayOrg}.`;
+          const footer = `If you have questions, please contact the requester or your primary contact at ${displayOrg}.`;
 
           const emailHtml = `
 <!DOCTYPE html>
@@ -170,9 +180,10 @@ const handler = async (req: Request): Promise<Response> => {
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 520px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
           <!-- Header -->
           <tr>
-            <td style="padding: 32px 32px 24px; text-align: center; border-bottom: 1px solid #e4e4e7;">
+            <td style="padding: 32px 32px 24px; text-align: center;">
               ${logoHtml}
               <h1 style="margin: 0; font-size: 24px; font-weight: 600; color: #18181b;">Attestly</h1>
+              <hr style="margin-top: 20px; border: none; border-top: 1px solid #e4e4e7;" />
             </td>
           </tr>
           
@@ -183,11 +194,11 @@ const handler = async (req: Request): Promise<Response> => {
                 Hi ${recipient.full_name || "there"},
               </p>
               <p style="margin: 0 0 24px; font-size: 16px; color: #3f3f46; line-height: 1.6;">
-                This is a friendly reminder that your signature is still needed on the following document:
+                ${intro}
               </p>
               
               <!-- Document Card -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #fafafa; border-radius: 8px; border: 1px solid #e4e4e7; margin-bottom: 16px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #fafafa; border-radius: 8px; border: 1px solid #e4e4e7; margin-bottom: 8px;">
                 <tr>
                   <td style="padding: 16px;">
                     <p style="margin: 0; font-size: 14px; color: #71717a; text-transform: uppercase; letter-spacing: 0.5px;">Document</p>
@@ -197,6 +208,8 @@ const handler = async (req: Request): Promise<Response> => {
               </table>
 
               ${dueWarningHtml}
+              
+              <p style="margin: 16px 0 24px; font-size: 14px; color: #52525b; line-height: 1.5;">${closing}</p>
               
               <!-- CTA Button -->
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
@@ -210,7 +223,7 @@ const handler = async (req: Request): Promise<Response> => {
               </table>
               
               <p style="margin: 24px 0 0; font-size: 14px; color: #71717a; line-height: 1.6;">
-                If you have any questions, please contact your organization administrator${org.sender_email ? ` at <a href="mailto:${org.sender_email}" style="color: #2563eb;">${org.sender_email}</a>` : ""} or reach out to Support at <a href="mailto:hello@attestly.com" style="color: #2563eb;">hello@attestly.com</a>.
+                ${footer}
               </p>
             </td>
           </tr>
@@ -219,13 +232,10 @@ const handler = async (req: Request): Promise<Response> => {
           <tr>
             <td style="padding: 24px 32px; border-top: 1px solid #e4e4e7; text-align: center;">
               <p style="margin: 0; font-size: 12px; color: #a1a1aa;">
-                This email was sent by Attestly on behalf of ${displaySenderName}.
-              </p>
-              <p style="margin: 8px 0 0; font-size: 12px; color: #a1a1aa;">
                 If you didn't expect this email, you can safely ignore it.
               </p>
               <p style="margin: 12px 0 0; font-size: 11px; color: #d4d4d8;">
-                Support: <a href="mailto:hello@attestly.com" style="color: #a1a1aa;">hello@attestly.com</a>
+                Powered by <a href="https://getattestly.com" style="color: #a1a1aa; text-decoration: none;">Attestly</a>
               </p>
             </td>
           </tr>

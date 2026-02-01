@@ -809,6 +809,7 @@ export default function Requirements() {
           senderEmail={organization.sender_email || profile?.email}
           logoUrl={organization.logo_url}
           requirementDueDate={selectedRequirement.due_date}
+          isPro={organization.plan === "pro"}
         />
       )}
     </DashboardLayout>

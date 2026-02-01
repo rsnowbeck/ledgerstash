@@ -12,6 +12,7 @@ interface ResendOptions {
   senderName?: string | null;
   senderEmail?: string | null;
   logoUrl?: string | null;
+  isPro?: boolean;
   userId?: string;
   onSuccess?: () => void;
 }
@@ -44,6 +45,7 @@ export function useResendSigningLink() {
       senderName,
       senderEmail,
       logoUrl,
+      isPro = false,
       userId,
       onSuccess,
     } = options;
@@ -81,6 +83,7 @@ export function useResendSigningLink() {
           senderName,
           senderEmail,
           logoUrl,
+          isPro,
           isReminder: true,
         },
       });

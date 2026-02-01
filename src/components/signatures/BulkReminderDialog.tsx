@@ -32,6 +32,7 @@ interface BulkReminderDialogProps {
   senderName?: string | null;
   senderEmail?: string | null;
   logoUrl?: string | null;
+  isPro?: boolean;
   onSuccess?: () => void;
 }
 
@@ -43,6 +44,7 @@ export function BulkReminderDialog({
   senderName,
   senderEmail,
   logoUrl,
+  isPro = false,
   onSuccess,
 }: BulkReminderDialogProps) {
   const { user } = useAuth();
@@ -171,6 +173,7 @@ export function BulkReminderDialog({
             daysUntilDue: signature.requirementDueDate
               ? Math.ceil((new Date(signature.requirementDueDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
               : undefined,
+            isPro,
           },
         });
 
