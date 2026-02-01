@@ -71,7 +71,7 @@ export function EmailTemplatePreview({
                 <CTAButton text="Review & Sign Now" />
                 <ContactFooter senderEmail={null} />
               </div>
-              <EmailFooter senderName={displaySender} />
+              <EmailFooter senderName={displaySender} organizationName={organizationName} />
             </EmailPreviewFrame>
           </TabsContent>
 
@@ -98,7 +98,7 @@ export function EmailTemplatePreview({
                 <CTAButton text="Review & Sign Now" />
                 <ContactFooter senderEmail={null} />
               </div>
-              <EmailFooter senderName={displaySender} />
+              <EmailFooter senderName={displaySender} organizationName={organizationName} />
             </EmailPreviewFrame>
           </TabsContent>
 
@@ -125,7 +125,7 @@ export function EmailTemplatePreview({
                 <CTAButton text="Review & Sign Now" />
                 <ContactFooter senderEmail={null} />
               </div>
-              <EmailFooter senderName={displaySender} />
+              <EmailFooter senderName={displaySender} organizationName={organizationName} />
             </EmailPreviewFrame>
           </TabsContent>
 
@@ -152,7 +152,7 @@ export function EmailTemplatePreview({
                 <CTAButton text="Review & Sign Now" />
                 <ContactFooter senderEmail={null} />
               </div>
-              <EmailFooter senderName={displaySender} />
+              <EmailFooter senderName={displaySender} organizationName={organizationName} />
             </EmailPreviewFrame>
           </TabsContent>
         </Tabs>
@@ -230,10 +230,14 @@ function ContactFooter({ senderEmail }: { senderEmail: string | null }) {
   );
 }
 
-function EmailFooter({ senderName }: { senderName: string }) {
+function EmailFooter({ senderName, organizationName }: { senderName: string; organizationName?: string }) {
+  const footerText = organizationName && senderName !== organizationName
+    ? `This request was sent by ${senderName} on behalf of ${organizationName}.`
+    : `This request was sent by ${senderName}.`;
+  
   return (
     <div className="pt-4 border-t border-border text-center text-xs text-muted-foreground">
-      <p>This email was sent by Attestly on behalf of {senderName}.</p>
+      <p>{footerText}</p>
       <p className="mt-1">If you didn't expect this email, you can safely ignore it.</p>
     </div>
   );

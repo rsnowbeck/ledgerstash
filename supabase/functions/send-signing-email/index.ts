@@ -275,7 +275,7 @@ const handler = async (req: Request): Promise<Response> => {
                   <tr>
                     <td style="padding: 24px 32px; border-top: 1px solid #e4e4e7; text-align: center;">
                       <p style="margin: 0; font-size: 12px; color: #a1a1aa;">
-                        This email was sent by Attestly on behalf of ${displaySenderName}.
+                        This request was sent by ${senderName ? senderName : displaySenderName}${senderName ? ` on behalf of ${organizationName}` : ""}.
                       </p>
                       <p style="margin: 8px 0 0; font-size: 12px; color: #a1a1aa;">
                         If you didn't expect this email, you can safely ignore it.
