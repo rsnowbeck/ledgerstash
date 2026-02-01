@@ -57,7 +57,7 @@ export function EmailTemplatePreview({
               <div className="py-6">
                 <p className="text-muted-foreground mb-4">Hi John Smith,</p>
                 <p className="text-muted-foreground mb-6">
-                  You've been requested to review and sign the following document:
+                  {displaySender} has requested your signature on the following document:
                 </p>
                 <DocumentCard title="Annual Compliance Policy" />
                 <DueDateBanner 
@@ -65,9 +65,6 @@ export function EmailTemplatePreview({
                   variant="info" 
                 />
                 <ConsequenceText text="Without your signature, this acknowledgment will remain incomplete in your organization's records." />
-                <p className="text-sm text-muted-foreground mb-6">
-                  This request was sent by {displaySender} to confirm acknowledgment of this document.
-                </p>
                 <CTAButton text="Review & Sign Now" />
                 <ContactFooter senderEmail={null} />
               </div>
