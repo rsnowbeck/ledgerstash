@@ -35,17 +35,23 @@ export async function generateSignaturePdf(data: SignatureData): Promise<void> {
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
   
-  // Brand colors - Deep slate navy from design system
-  const primaryColor: [number, number, number] = [30, 41, 59]; // Slate navy
-  const accentColor: [number, number, number] = [20, 184, 166]; // Teal accent
-  const textColor: [number, number, number] = [31, 41, 55]; // Dark gray
-  const mutedColor: [number, number, number] = [107, 114, 128]; // Gray
+  // ===== Attestly Design System Colors (converted from HSL to RGB) =====
+  // Primary - Deep Slate Navy: HSL(215, 50%, 23%) → #1D2F49
+  const primaryColor: [number, number, number] = [29, 47, 73];
+  // Accent - Teal: HSL(173, 58%, 39%) → #2A9D8F
+  const accentColor: [number, number, number] = [42, 157, 143];
+  // Foreground text: HSL(215, 25%, 15%) → #1D232C
+  const textColor: [number, number, number] = [29, 35, 44];
+  // Muted foreground: HSL(215, 15%, 45%) → #626B7A
+  const mutedColor: [number, number, number] = [98, 107, 122];
+  // Light section background (similar to --muted)
+  const sectionBgColor: [number, number, number] = [241, 243, 245];
 
-  // Header with organization branding
+  // Header with organization branding - Deep Slate Navy background
   doc.setFillColor(...primaryColor);
   doc.rect(0, 0, pageWidth, 50, "F");
   
-  // Add accent line
+  // Add teal accent stripe
   doc.setFillColor(...accentColor);
   doc.rect(0, 50, pageWidth, 3, "F");
 
@@ -101,8 +107,8 @@ export async function generateSignaturePdf(data: SignatureData): Promise<void> {
   doc.line(20, yPos, pageWidth - 20, yPos);
   yPos += 15;
 
-  // Signer Information Section
-  doc.setFillColor(249, 250, 251);
+  // Signer Information Section - uses the light section background
+  doc.setFillColor(...sectionBgColor);
   doc.roundedRect(20, yPos, pageWidth - 40, 50, 3, 3, "F");
   
   doc.setTextColor(...textColor);
@@ -131,7 +137,7 @@ export async function generateSignaturePdf(data: SignatureData): Promise<void> {
   yPos += 65;
 
   // Signature Details Section
-  doc.setFillColor(249, 250, 251);
+  doc.setFillColor(...sectionBgColor);
   doc.roundedRect(20, yPos, pageWidth - 40, 40, 3, 3, "F");
   
   doc.setTextColor(...textColor);
@@ -162,7 +168,7 @@ export async function generateSignaturePdf(data: SignatureData): Promise<void> {
   yPos += 55;
 
   // Audit Trail Section
-  doc.setFillColor(249, 250, 251);
+  doc.setFillColor(...sectionBgColor);
   doc.roundedRect(20, yPos, pageWidth - 40, 40, 3, 3, "F");
   
   doc.setTextColor(...textColor);
