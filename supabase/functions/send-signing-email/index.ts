@@ -38,9 +38,8 @@ function getEmailContent(
   organizationName: string,
   dueDate?: string,
   daysUntilDue?: number
-): { subject: string; intro: string; buttonText: string; dueText: string; consequence: string; closing: string } {
+): { subject: string; intro: string; buttonText: string; dueText: string; consequence: string; closing: string; footer: string } {
   const formattedDueDate = dueDate ? formatDueDate(dueDate) : null;
-  const displaySenderName = senderName || organizationName;
   
   // Build the intro line - include "on behalf of [Org]" only if we have both sender and org
   const intro = senderName 
@@ -48,34 +47,36 @@ function getEmailContent(
     : `${organizationName} has requested that you review and sign the following document:`;
   
   // Standard closing for all email types
-  const closing = "This request is part of your organization's acknowledgment process.";
+  const closing = `This request is part of a formal document acknowledgment process initiated by ${organizationName}.`;
   
-  // Build subject with due date if available
-  const subjectDate = formattedDueDate ? ` by ${formattedDueDate}` : "";
+  // Standard footer for all email types
+  const footer = `If you have questions, please contact the requester or your primary contact at ${organizationName}.`;
   
   switch (emailType) {
     case "initial":
       return {
-        subject: `Action required: Please sign ${requirementTitle}${subjectDate}`,
+        subject: `Action required: Please sign ${requirementTitle}`,
         intro,
         buttonText: "Review & Sign Now",
         dueText: formattedDueDate 
-          ? `⏰ Please complete your signature by ${formattedDueDate}.`
+          ? `Please complete your signature by ${formattedDueDate}.`
           : `Please complete your signature as soon as possible.`,
         consequence: ``,
         closing,
+        footer,
       };
     
     case "reminder":
       return {
-        subject: `Reminder: Please sign ${requirementTitle}${subjectDate}`,
+        subject: `Reminder: Please sign ${requirementTitle}`,
         intro,
         buttonText: "Review & Sign Now",
         dueText: formattedDueDate
-          ? `⏰ Please complete your signature by ${formattedDueDate}.`
+          ? `Please complete your signature by ${formattedDueDate}.`
           : `Please complete your signature as soon as possible.`,
         consequence: ``,
         closing,
+        footer,
       };
     
     case "escalated":
@@ -91,6 +92,7 @@ function getEmailContent(
           : `Please complete this as soon as possible.`,
         consequence: `Missing this deadline may be flagged in your organization's compliance records.`,
         closing,
+        footer,
       };
     
     case "overdue":
@@ -103,18 +105,20 @@ function getEmailContent(
           : `This signature request is now overdue.`,
         consequence: `This has been marked as incomplete in your organization's compliance records.`,
         closing,
+        footer,
       };
     
     default:
       return {
-        subject: `Action required: Please sign ${requirementTitle}${subjectDate}`,
+        subject: `Action required: Please sign ${requirementTitle}`,
         intro,
         buttonText: "Review & Sign Now",
         dueText: formattedDueDate
-          ? `⏰ Please complete your signature by ${formattedDueDate}.`
+          ? `Please complete your signature by ${formattedDueDate}.`
           : `Please complete your signature as soon as possible.`,
         consequence: ``,
         closing,
+        footer,
       };
   }
 }
@@ -168,7 +172,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Determine email type based on context
     const emailType = determineEmailType(explicitEmailType, daysUntilDue, sendCount);
-    const { subject, intro, buttonText, dueText, consequence, closing } = getEmailContent(
+    const { subject, intro, buttonText, dueText, consequence, closing, footer } = getEmailContent(
       emailType,
       requirementTitle,
       senderName,
@@ -177,24 +181,30 @@ const handler = async (req: Request): Promise<Response> => {
       daysUntilDue
     );
 
-    // Build due date display HTML
+    // Build due date display HTML - simple text for initial, styled box for escalated/overdue
     let dueDateHtml = "";
     if (dueText) {
       const isOverdue = emailType === "overdue";
       const isEscalated = emailType === "escalated";
-      const bgColor = isOverdue ? "#fef2f2" : isEscalated ? "#fffbeb" : "#f0f9ff";
-      const borderColor = isOverdue ? "#ef4444" : isEscalated ? "#f59e0b" : "#3b82f6";
-      const textColor = isOverdue ? "#dc2626" : isEscalated ? "#d97706" : "#2563eb";
       
-      dueDateHtml = `
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top: 16px; margin-bottom: 16px;">
-          <tr>
-            <td style="padding: 12px 16px; background-color: ${bgColor}; border-radius: 8px; border-left: 4px solid ${borderColor};">
-              <p style="margin: 0; font-size: 14px; color: ${textColor}; font-weight: 500;">${dueText}</p>
-            </td>
-          </tr>
-        </table>
-      `;
+      if (isOverdue || isEscalated) {
+        const bgColor = isOverdue ? "#fef2f2" : "#fffbeb";
+        const borderColor = isOverdue ? "#ef4444" : "#f59e0b";
+        const textColor = isOverdue ? "#dc2626" : "#d97706";
+        
+        dueDateHtml = `
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top: 16px; margin-bottom: 16px;">
+            <tr>
+              <td style="padding: 12px 16px; background-color: ${bgColor}; border-radius: 8px; border-left: 4px solid ${borderColor};">
+                <p style="margin: 0; font-size: 14px; color: ${textColor}; font-weight: 500;">${dueText}</p>
+              </td>
+            </tr>
+          </table>
+        `;
+      } else {
+        // Simple text for initial/reminder
+        dueDateHtml = `<p style="margin: 16px 0; font-size: 14px; color: #3f3f46;">${dueText}</p>`;
+      }
     }
 
     // Build logo HTML if provided
@@ -271,7 +281,7 @@ const handler = async (req: Request): Promise<Response> => {
                       </table>
                       
                       <p style="margin: 24px 0 0; font-size: 14px; color: #71717a; line-height: 1.6;">
-                        If you have questions, please contact your organization administrator.
+                        ${footer}
                       </p>
                     </td>
                   </tr>
