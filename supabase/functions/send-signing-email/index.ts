@@ -42,9 +42,9 @@ function getEmailContent(
   const formattedDueDate = dueDate ? formatDueDate(dueDate) : null;
   const displaySenderName = senderName || organizationName;
   
-  // Build the attribution line: "This request was sent by [Sender] on behalf of [Org]..."
+  // Build the attribution line: "This request was sent by [Sender] on behalf of your organization..."
   const attribution = senderName 
-    ? `This request was sent by ${senderName} on behalf of ${organizationName}`
+    ? `This request was sent by ${senderName} on behalf of your organization`
     : `This request was sent by ${organizationName}`;
   
   switch (emailType) {
