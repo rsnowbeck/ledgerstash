@@ -15,7 +15,7 @@ export function Hero() {
           <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-6xl mb-6 animate-slide-up">Compliance&nbsp;Acknowledgments<br /><span className="text-accent font-bold inline-block mt-2">Simplified</span></h1>
 
           {/* Subheadline */}
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground mb-10 animate-slide-up" style={{
+          <p className="mx-auto max-w-[65ch] text-lg text-muted-foreground mb-10 animate-slide-up" style={{
           animationDelay: "0.1s"
         }}>
             Collect legally defensible signatures for policies, NDAs, and training. 
