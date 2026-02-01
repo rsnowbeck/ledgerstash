@@ -49,7 +49,7 @@ Deno.serve(async (req) => {
           organization_id,
           recipients!inner(full_name, email),
           requirements!inner(title, description, attachment_url, attachment_name),
-          organizations!inner(name)
+          organizations!inner(name, logo_url)
         `)
         .eq('token_hash', tokenHash)
         .single();
@@ -85,7 +85,36 @@ Deno.serve(async (req) => {
       // Extract from joined data (single record due to !inner)
       const recipient = signingRequest.recipients as unknown as { full_name: string; email: string };
       const requirement = signingRequest.requirements as unknown as { title: string; description: string | null; attachment_url: string | null; attachment_name: string | null };
-      const organization = signingRequest.organizations as unknown as { name: string };
+      const organization = signingRequest.organizations as unknown as { name: string; logo_url: string | null };
+
+      // Attachment URLs are stored as a "public URL" today, but the bucket may not actually be public.
+      // To ensure recipients can always open the document without being logged in, generate a signed URL
+      // using the service role key (time-limited).
+      let attachmentUrl: string | null = requirement.attachment_url;
+      if (attachmentUrl) {
+        try {
+          // Expecting a Supabase storage URL shape like:
+          // .../storage/v1/object/public/<bucket>/<path>
+          // .../storage/v1/object/<bucket>/<path>
+          const match = attachmentUrl.match(/\/storage\/v1\/object\/(?:public\/)?([^/]+)\/(.+)$/);
+          if (match) {
+            const bucket = match[1];
+            const path = decodeURIComponent(match[2]);
+            const { data: signed, error: signedErr } = await supabase
+              .storage
+              .from(bucket)
+              .createSignedUrl(path, 60 * 60); // 1 hour
+
+            if (!signedErr && signed?.signedUrl) {
+              attachmentUrl = signed.signedUrl;
+            } else {
+              console.warn('Unable to create signed URL for attachment:', signedErr);
+            }
+          }
+        } catch (e) {
+          console.warn('Failed to generate signed attachment URL:', e);
+        }
+      }
 
       return new Response(
         JSON.stringify({
@@ -93,9 +122,10 @@ Deno.serve(async (req) => {
           recipientEmail: recipient.email,
           requirementTitle: requirement.title,
           requirementDescription: requirement.description,
-          attachmentUrl: requirement.attachment_url,
+          attachmentUrl,
           attachmentName: requirement.attachment_name,
           organizationName: organization.name,
+          organizationLogo: organization.logo_url,
         }),
         { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );

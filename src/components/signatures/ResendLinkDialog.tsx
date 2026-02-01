@@ -72,7 +72,8 @@ export function ResendLinkDialog({
 
       if (error) throw error;
 
-      const baseUrl = window.location.origin;
+      // Always use production URL so the link works for recipients outside the preview.
+      const baseUrl = "https://getattestly.com";
       setSigningUrl(`${baseUrl}/sign/${token}`);
       toast.success("New signing link generated");
       onSuccess?.();
@@ -93,7 +94,15 @@ export function ResendLinkDialog({
   };
 
   const handleSendEmail = async () => {
-    if (!signingUrl || !organization) return;
+    if (!signingUrl) {
+      toast.error("Please generate a new link first");
+      return;
+    }
+
+    if (!organization) {
+      toast.error("Organization settings are still loading—try again in a moment");
+      return;
+    }
     
     setSendingEmail(true);
     try {
@@ -154,7 +163,13 @@ export function ResendLinkDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        if (!nextOpen) handleClose();
+        else onOpenChange(true);
+      }}
+    >
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
@@ -217,7 +232,7 @@ export function ResendLinkDialog({
                 className="w-full"
                 variant="hero"
                 onClick={handleSendEmail}
-                disabled={sendingEmail}
+                 disabled={sendingEmail || !organization}
               >
                 {sendingEmail ? (
                   <>
