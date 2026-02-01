@@ -30,7 +30,7 @@ const features: Feature[] = [{
 }, {
   icon: Bell,
   title: "Automated Reminders",
-  description: "Automatically remind recipients who haven't completed acknowledgments. No manual follow-ups."
+  description: "Automatically remind recipients who haven't completed acknowledgments."
 }, {
   icon: Download,
   title: "Export & Audit Proof",
