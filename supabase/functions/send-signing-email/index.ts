@@ -51,8 +51,8 @@ function getEmailContent(
         dueText: formattedDueDate 
           ? `Please complete your signature by <strong>${formattedDueDate}</strong>.`
           : `Please complete your signature as soon as possible to meet your organization's requirements.`,
-        consequence: `Without your signature, this acknowledgment will remain incomplete in your organization's records.`,
-        closing: ``,
+        consequence: ``,
+        closing: `This request was sent to confirm acknowledgment of this document.`,
       };
     
     case "reminder":
@@ -275,10 +275,13 @@ const handler = async (req: Request): Promise<Response> => {
                   <tr>
                     <td style="padding: 24px 32px; border-top: 1px solid #e4e4e7; text-align: center;">
                       <p style="margin: 0; font-size: 12px; color: #a1a1aa;">
-                        This request was sent by ${senderName ? senderName : displaySenderName}${senderName ? ` on behalf of ${organizationName}` : ""}.
+                        This request was sent by ${senderName ? senderName : organizationName}${senderName && organizationName ? ` on behalf of ${organizationName}` : ""}.
                       </p>
                       <p style="margin: 8px 0 0; font-size: 12px; color: #a1a1aa;">
                         If you didn't expect this email, you can safely ignore it.
+                      </p>
+                      <p style="margin: 12px 0 0; font-size: 11px; color: #d4d4d8;">
+                        Powered by <a href="https://getattestly.com" style="color: #a1a1aa; text-decoration: none;">Attestly</a>
                       </p>
                     </td>
                   </tr>

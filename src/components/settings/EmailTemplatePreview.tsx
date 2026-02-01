@@ -64,7 +64,9 @@ export function EmailTemplatePreview({
                   text="Please complete your signature by February 23, 2026." 
                   variant="info" 
                 />
-                <ConsequenceText text="Without your signature, this acknowledgment will remain incomplete in your organization's records." />
+                <p className="text-sm text-muted-foreground mb-6">
+                  This request was sent to confirm acknowledgment of this document.
+                </p>
                 <CTAButton text="Review & Sign Now" />
                 <ContactFooter senderEmail={null} />
               </div>
@@ -236,6 +238,9 @@ function EmailFooter({ senderName, organizationName }: { senderName: string; org
     <div className="pt-4 border-t border-border text-center text-xs text-muted-foreground">
       <p>{footerText}</p>
       <p className="mt-1">If you didn't expect this email, you can safely ignore it.</p>
+      <p className="mt-2 text-[11px] text-muted-foreground/60">
+        Powered by <span className="text-muted-foreground/80">Attestly</span>
+      </p>
     </div>
   );
 }
