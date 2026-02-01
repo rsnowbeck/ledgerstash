@@ -1,10 +1,27 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Shield, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { User } from "@supabase/supabase-js";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
@@ -33,12 +50,20 @@ export function Header() {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <Button variant="ghost" asChild>
-            <Link to="/login">Sign In</Link>
-          </Button>
-          <Button variant="hero" asChild>
-            <Link to="/signup">Start Free Trial</Link>
-          </Button>
+          {user ? (
+            <Button variant="hero" asChild>
+              <Link to="/dashboard">Dashboard</Link>
+            </Button>
+          ) : (
+            <>
+              <Button variant="ghost" asChild>
+                <Link to="/login">Sign In</Link>
+              </Button>
+              <Button variant="hero" asChild>
+                <Link to="/signup">Start Free Trial</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -89,12 +114,20 @@ export function Header() {
               </Link>
             </nav>
             <div className="flex flex-col gap-2 pt-4 border-t border-border">
-              <Button variant="ghost" className="w-full justify-center" asChild>
-                <Link to="/login">Sign In</Link>
-              </Button>
-              <Button variant="hero" className="w-full justify-center" asChild>
-                <Link to="/signup">Start Free Trial</Link>
-              </Button>
+              {user ? (
+                <Button variant="hero" className="w-full justify-center" asChild>
+                  <Link to="/dashboard">Dashboard</Link>
+                </Button>
+              ) : (
+                <>
+                  <Button variant="ghost" className="w-full justify-center" asChild>
+                    <Link to="/login">Sign In</Link>
+                  </Button>
+                  <Button variant="hero" className="w-full justify-center" asChild>
+                    <Link to="/signup">Start Free Trial</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
