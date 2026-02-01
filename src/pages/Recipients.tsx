@@ -213,8 +213,8 @@ export default function Recipients() {
 
   return (
     <DashboardLayout>
-      {/* Plan Limit Banner */}
-      {planLimits.isAtRecipientLimit && (
+      {/* Plan Limit Banner - only show after data has loaded */}
+      {!recipientsLoading && organization && planLimits.isAtRecipientLimit && (
         <PlanLimitBanner
           type="recipient"
           limit={planLimits.recipientLimit}
@@ -225,7 +225,7 @@ export default function Recipients() {
       )}
 
       {/* Trial Warning Banner */}
-      {!planLimits.isAtRecipientLimit && planLimits.trialDaysRemaining !== null && planLimits.trialDaysRemaining <= 3 && planLimits.trialDaysRemaining > 0 && (
+      {!recipientsLoading && organization && !planLimits.isAtRecipientLimit && planLimits.trialDaysRemaining !== null && planLimits.trialDaysRemaining <= 3 && planLimits.trialDaysRemaining > 0 && (
         <PlanLimitBanner
           type="recipient"
           limit={planLimits.recipientLimit}
