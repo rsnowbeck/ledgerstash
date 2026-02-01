@@ -177,18 +177,18 @@ export function ResendLinkDialog({
           {!signingUrl ? (
             <div className="text-center py-4">
               <p className="text-sm text-muted-foreground mb-4">
-                This will invalidate the previous link and generate a new one.
+                This will invalidate the previous link, generate a new one, and send a reminder email.
               </p>
-              <Button onClick={handleResend} disabled={generating}>
+              <Button onClick={handleResend} disabled={generating || !organization}>
                 {generating ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Generating...
+                    Sending...
                   </>
                 ) : (
                   <>
                     <RefreshCw className="h-4 w-4" />
-                    Generate New Link
+                    Resend Link
                   </>
                 )}
               </Button>
