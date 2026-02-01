@@ -22,7 +22,7 @@ const features: Feature[] = [{
 }, {
   icon: Clock,
   title: "No-Login Signing",
-  description: "Recipients click, review, and acknowledge in seconds. No passwords. No accounts. No friction."
+  description: "Recipients click, review, and acknowledge in seconds. No accounts or passwords required."
 }, {
   icon: BarChart3,
   title: "Real-Time Dashboard",
