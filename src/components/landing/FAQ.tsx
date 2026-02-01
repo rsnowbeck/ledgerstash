@@ -24,7 +24,7 @@ const faqs = [
   {
     question: "Who is Attestly designed for?",
     answer:
-      "Attestly is designed for teams that need simple, audit-ready compliance acknowledgments without the cost or complexity of full HR platforms. It's ideal for organizations that want a focused solution that works alongside existing HR or payroll tools.",
+      "Attestly is designed for teams that need simple, audit-ready compliance acknowledgments without the cost or complexity of a full HR platform. It supports employees, contractors, and vendors.",
   },
   {
     question: "Do signers need an account or login?",
