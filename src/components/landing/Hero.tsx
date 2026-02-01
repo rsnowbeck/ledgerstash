@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, CheckCircle2, Shield, Clock, FileCheck } from "lucide-react";
 export function Hero() {
-  return <section className="section-hero py-20 lg:py-32">
+  return <section className="section-hero pt-28 lg:pt-40 pb-20 lg:pb-32">
       <div className="container">
         <div className="mx-auto max-w-4xl text-center">
           {/* Badge */}
