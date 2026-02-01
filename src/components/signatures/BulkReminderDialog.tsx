@@ -20,6 +20,7 @@ interface PendingSignature {
   recipientName: string;
   recipientEmail: string;
   requirementTitle: string;
+  requirementDueDate: string | null;
   sentAt: string | null;
 }
 
@@ -63,7 +64,7 @@ export function BulkReminderDialog({
           id,
           sent_at,
           recipient:recipients(full_name, email),
-          requirement:requirements(title)
+          requirement:requirements(title, due_date)
         `)
         .eq("organization_id", organizationId)
         .eq("status", "pending")
@@ -77,6 +78,7 @@ export function BulkReminderDialog({
         recipientName: item.recipient?.full_name || "Unknown",
         recipientEmail: item.recipient?.email || "",
         requirementTitle: item.requirement?.title || "Unknown",
+        requirementDueDate: item.requirement?.due_date || null,
         sentAt: item.sent_at,
       }));
 
@@ -165,6 +167,10 @@ export function BulkReminderDialog({
             senderName: senderName || null,
             senderEmail: senderEmail || null,
             logoUrl: logoUrl || null,
+            dueDate: signature.requirementDueDate || undefined,
+            daysUntilDue: signature.requirementDueDate
+              ? Math.ceil((new Date(signature.requirementDueDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+              : undefined,
           },
         });
 

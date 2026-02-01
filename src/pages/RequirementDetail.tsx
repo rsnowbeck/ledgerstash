@@ -549,6 +549,7 @@ export default function RequirementDetail() {
           onOpenChange={setSendDialogOpen}
           requirementId={requirement.id}
           requirementTitle={requirement.title}
+          requirementDueDate={requirement.due_date}
           organizationId={organization.id}
           organizationName={organization.name}
           senderName={organization.sender_name || profile?.full_name}

@@ -66,7 +66,7 @@ interface Requirement {
 export default function Requirements() {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
-  const { organization } = useOrganization(user);
+  const { organization, profile } = useOrganization(user);
   const [requirements, setRequirements] = useState<Requirement[]>([]);
   const [requirementsLoading, setRequirementsLoading] = useState(true);
   const [templatePickerOpen, setTemplatePickerOpen] = useState(false);
@@ -805,6 +805,10 @@ export default function Requirements() {
           requirementTitle={selectedRequirement.title}
           organizationId={organization.id}
           organizationName={organization.name}
+          senderName={organization.sender_name || profile?.full_name}
+          senderEmail={organization.sender_email || profile?.email}
+          logoUrl={organization.logo_url}
+          requirementDueDate={selectedRequirement.due_date}
         />
       )}
     </DashboardLayout>

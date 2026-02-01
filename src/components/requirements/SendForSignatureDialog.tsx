@@ -42,6 +42,7 @@ interface SendForSignatureDialogProps {
   onOpenChange: (open: boolean) => void;
   requirementId: string;
   requirementTitle: string;
+  requirementDueDate?: string | null;
   organizationId: string;
   organizationName?: string;
   senderName?: string | null;
@@ -55,6 +56,7 @@ export function SendForSignatureDialog({
   onOpenChange,
   requirementId,
   requirementTitle,
+  requirementDueDate,
   organizationId,
   organizationName,
   senderName,
@@ -235,6 +237,11 @@ export function SendForSignatureDialog({
       // Send emails to each recipient
       const emailPromises = links.map(async (link) => {
         try {
+          const dueDate = requirementDueDate || undefined;
+          const daysUntilDue = dueDate
+            ? Math.ceil((new Date(dueDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+            : undefined;
+
           const response = await supabase.functions.invoke("send-signing-email", {
             body: {
               recipientName: link.recipientName,
@@ -245,6 +252,8 @@ export function SendForSignatureDialog({
               senderName: senderName || null,
               senderEmail: senderEmail || null,
               logoUrl: logoUrl || null,
+              dueDate,
+              daysUntilDue,
             },
           });
           
