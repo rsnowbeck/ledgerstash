@@ -220,9 +220,9 @@ export function ResendLinkDialog({
             </div>
           ) : (
             <div className="space-y-3">
-              <div className="p-3 rounded-lg border border-border bg-background">
+              <div className="p-3 rounded-lg border border-border bg-background overflow-hidden">
                 <p className="text-xs text-muted-foreground mb-2">New signing link:</p>
-                <code className="text-xs text-foreground block truncate">
+                <code className="text-xs text-foreground block break-all">
                   {signingUrl}
                 </code>
               </div>
