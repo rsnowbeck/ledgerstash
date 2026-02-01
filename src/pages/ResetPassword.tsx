@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,16 +16,24 @@ export default function ResetPassword() {
   const [checking, setChecking] = useState(true);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const hasVerified = useRef(false);
 
   const token = searchParams.get("token");
 
   useEffect(() => {
+    // Prevent re-verification if already done or if success
+    if (hasVerified.current || success) {
+      return;
+    }
+
     const verifyToken = async () => {
       if (!token) {
         setTokenValid(false);
         setChecking(false);
         return;
       }
+
+      hasVerified.current = true;
 
       try {
         const { data, error } = await supabase.functions.invoke("verify-reset-token", {
@@ -49,7 +57,7 @@ export default function ResetPassword() {
     };
 
     verifyToken();
-  }, [token]);
+  }, [token, success]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,10 +99,10 @@ export default function ResetPassword() {
         setSuccess(true);
         toast.success("Password updated successfully!");
         
-        // Redirect to login after a short delay
+        // Redirect to login immediately with replace to prevent back navigation
         setTimeout(() => {
-          navigate("/login");
-        }, 2000);
+          navigate("/login", { replace: true });
+        }, 1500);
       } else {
         toast.error("Failed to reset password. Please try again.");
       }
