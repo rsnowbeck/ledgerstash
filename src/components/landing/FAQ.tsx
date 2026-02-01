@@ -39,7 +39,7 @@ const faqs = [
   {
     question: "What types of compliance does Attestly support?",
     answer:
-      "Attestly is industry-agnostic and supports any policy or training that requires acknowledgment and audit-ready proof. Common use cases include employee handbooks and codes of conduct, privacy and security policies (HIPAA, GDPR/CCPA), safety training, NDAs, vendor agreements, and annual policy renewals.",
+      "Attestly is industry-agnostic and supports any policy or training that requires acknowledgment and audit-ready proof. Common use cases include employee handbooks and codes of conduct, privacy and security policies (HIPAA, GDPR/CCPA), safety training, NDAs, vendor agreements, and annual renewals.",
   },
 ];
 
