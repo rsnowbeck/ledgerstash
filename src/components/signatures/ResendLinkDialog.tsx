@@ -33,7 +33,7 @@ export function ResendLinkDialog({
   onSuccess,
 }: ResendLinkDialogProps) {
   const { user } = useAuth();
-  const { organization } = useOrganization(user);
+  const { organization, profile } = useOrganization(user);
   const [generating, setGenerating] = useState(false);
   const [signingUrl, setSigningUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -95,6 +95,7 @@ export function ResendLinkDialog({
       setSigningUrl(newSigningUrl);
 
       // Auto-send email with the new link
+      const effectiveSenderName = organization.sender_name || profile?.full_name || undefined;
       const { error: emailError } = await supabase.functions.invoke("send-signing-email", {
         body: {
           recipientName,
@@ -102,7 +103,7 @@ export function ResendLinkDialog({
           requirementTitle,
           signingUrl: newSigningUrl,
           organizationName: organization.name,
-          senderName: organization.sender_name,
+          senderName: effectiveSenderName,
           senderEmail: organization.sender_email,
           logoUrl: organization.logo_url,
           isReminder: true,
