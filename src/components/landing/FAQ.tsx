@@ -32,9 +32,9 @@ const faqs = [
       "No. Signers can securely review and acknowledge documents without creating an account or remembering passwords.",
   },
   {
-    question: "Can Attestly work with our existing HR tools?",
+    question: "Can Attestly work with our existing tools?",
     answer:
-      "Yes. Attestly complements tools like Paylocity, ADP, and BambooHR by handling acknowledgments separately.",
+      "Yes. Attestly works alongside your existing HR or payroll tools by handling compliance acknowledgments separately.",
   },
   {
     question: "What types of compliance does Attestly support?",
