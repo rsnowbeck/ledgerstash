@@ -28,9 +28,10 @@ import {
   Paperclip,
   Edit,
   UserPlus,
+  Loader2,
 } from "lucide-react";
 import { format, isPast, isToday } from "date-fns";
-import { ResendLinkDialog } from "@/components/signatures/ResendLinkDialog";
+import { useResendSigningLink } from "@/hooks/useResendSigningLink";
 import { RequirementEditForm } from "@/components/requirements/RequirementEditForm";
 import { SendForSignatureDialog } from "@/components/requirements/SendForSignatureDialog";
 
@@ -71,10 +72,9 @@ export default function RequirementDetail() {
   const [requirement, setRequirement] = useState<Requirement | null>(null);
   const [signingRequests, setSigningRequests] = useState<SigningRequestWithRecipient[]>([]);
   const [loading, setLoading] = useState(true);
-  const [resendDialogOpen, setResendDialogOpen] = useState(false);
   const [sendDialogOpen, setSendDialogOpen] = useState(false);
-  const [selectedRequest, setSelectedRequest] = useState<SigningRequestWithRecipient | null>(null);
   const [isEditing, setIsEditing] = useState(searchParams.get("edit") === "true");
+  const { resend, resending } = useResendSigningLink();
 
   // Update editing state when URL changes
   useEffect(() => {
@@ -136,8 +136,21 @@ export default function RequirementDetail() {
   };
 
   const handleResendClick = (request: SigningRequestWithRecipient) => {
-    setSelectedRequest(request);
-    setResendDialogOpen(true);
+    if (!organization || !requirement) return;
+    
+    resend({
+      signingRequestId: request.id,
+      recipientName: request.recipient.full_name,
+      recipientEmail: request.recipient.email,
+      requirementTitle: requirement.title,
+      organizationId: organization.id,
+      organizationName: organization.name,
+      senderName: organization.sender_name,
+      senderEmail: organization.sender_email,
+      logoUrl: organization.logo_url,
+      userId: user?.id,
+      onSuccess: fetchRequirementDetails,
+    });
   };
 
   const handleEditSave = () => {
@@ -471,10 +484,15 @@ export default function RequirementDetail() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleResendClick(request)}
+                        disabled={resending === request.id}
                         className="hover:bg-primary hover:text-primary-foreground"
                       >
-                        <Send className="h-4 w-4" />
-                        Resend
+                        {resending === request.id ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Send className="h-4 w-4" />
+                        )}
+                        {resending === request.id ? "Sending..." : "Resend"}
                       </Button>
                     )}
                     {request.status === "completed" && request.ip_address && (
@@ -489,19 +507,6 @@ export default function RequirementDetail() {
           </TableBody>
         </Table>
       </div>
-
-      {/* Resend Dialog */}
-      {selectedRequest && (
-        <ResendLinkDialog
-          open={resendDialogOpen}
-          onOpenChange={setResendDialogOpen}
-          recipientName={selectedRequest.recipient.full_name}
-          recipientEmail={selectedRequest.recipient.email}
-          requirementTitle={requirement.title}
-          signingRequestId={selectedRequest.id}
-          onSuccess={fetchRequirementDetails}
-        />
-      )}
 
       {/* Send for Signature Dialog */}
       {organization && (

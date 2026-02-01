@@ -24,9 +24,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Search, FileSignature, Clock, CheckCircle2, XCircle, Send, Download, FileText, Bell, AlertTriangle } from "lucide-react";
+import { Search, FileSignature, Clock, CheckCircle2, XCircle, Send, Download, FileText, Bell, AlertTriangle, Loader2 } from "lucide-react";
 import { format, isPast } from "date-fns";
-import { ResendLinkDialog } from "@/components/signatures/ResendLinkDialog";
+import { useResendSigningLink } from "@/hooks/useResendSigningLink";
 import { BulkReminderDialog } from "@/components/signatures/BulkReminderDialog";
 import { toast } from "sonner";
 import { generateSignaturePdf } from "@/lib/generateSignaturePdf";
@@ -58,9 +58,8 @@ export default function Signatures() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>(searchParams.get("status") || "all");
-  const [resendDialogOpen, setResendDialogOpen] = useState(false);
   const [bulkReminderDialogOpen, setBulkReminderDialogOpen] = useState(false);
-  const [selectedRequest, setSelectedRequest] = useState<SigningRequest | null>(null);
+  const { resend, resending } = useResendSigningLink();
 
   // Sync status filter with URL params
   useEffect(() => {
@@ -194,8 +193,21 @@ export default function Signatures() {
   };
 
   const handleResendClick = (request: SigningRequest) => {
-    setSelectedRequest(request);
-    setResendDialogOpen(true);
+    if (!organization) return;
+    
+    resend({
+      signingRequestId: request.id,
+      recipientName: request.recipient?.full_name || "Unknown",
+      recipientEmail: request.recipient?.email || "",
+      requirementTitle: request.requirement?.title || "Unknown",
+      organizationId: organization.id,
+      organizationName: organization.name,
+      senderName: organization.sender_name,
+      senderEmail: organization.sender_email,
+      logoUrl: organization.logo_url,
+      userId: user?.id,
+      onSuccess: fetchSigningRequests,
+    });
   };
 
   const handleDownloadPdf = async (request: SigningRequest) => {
@@ -479,10 +491,15 @@ export default function Signatures() {
                                 size="sm"
                                 variant="ghost"
                                 onClick={() => handleResendClick(request)}
+                                disabled={resending === request.id}
                                 className="hover:bg-primary hover:text-primary-foreground"
                               >
-                                <Send className="h-4 w-4" />
-                                Resend
+                                {resending === request.id ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                  <Send className="h-4 w-4" />
+                                )}
+                                {resending === request.id ? "Sending..." : "Resend"}
                               </Button>
                             )}
                           </div>
@@ -511,19 +528,6 @@ export default function Signatures() {
             Pending: {filteredRequests.filter((r) => r.status === "pending" && !(r.expires_at && new Date(r.expires_at) < new Date())).length}
           </span>
         </div>
-      )}
-
-      {/* Resend Link Dialog */}
-      {selectedRequest && (
-        <ResendLinkDialog
-          open={resendDialogOpen}
-          onOpenChange={setResendDialogOpen}
-          signingRequestId={selectedRequest.id}
-          recipientName={selectedRequest.recipient?.full_name || "Unknown"}
-          recipientEmail={selectedRequest.recipient?.email || ""}
-          requirementTitle={selectedRequest.requirement?.title || "Unknown"}
-          onSuccess={fetchSigningRequests}
-        />
       )}
 
       {/* Bulk Reminder Dialog */}
