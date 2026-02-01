@@ -64,6 +64,7 @@ export function EmailTemplatePreview({
                   text="Please complete your signature by February 23, 2026." 
                   variant="info" 
                 />
+                <ConsequenceText text="Without your signature, this acknowledgment will remain incomplete in your organization's records." />
                 <p className="text-sm text-muted-foreground mb-6">
                   This request was sent by {displaySender} to confirm acknowledgment of this document.
                 </p>
@@ -90,6 +91,7 @@ export function EmailTemplatePreview({
                   text="Please review and sign by February 23, 2026." 
                   variant="info" 
                 />
+                <ConsequenceText text="Your acknowledgment is required to complete this compliance requirement." />
                 <p className="text-sm text-muted-foreground mb-6">
                   Thank you for taking care of this.
                 </p>
@@ -116,6 +118,7 @@ export function EmailTemplatePreview({
                   text="⏰ Due in 5 days (February 23, 2026)" 
                   variant="warning" 
                 />
+                <ConsequenceText text="Missing this deadline may be flagged in your organization's compliance records." variant="warning" />
                 <p className="text-sm text-muted-foreground mb-6">
                   Please complete this as soon as possible.
                 </p>
@@ -142,6 +145,7 @@ export function EmailTemplatePreview({
                   text="The due date was February 23, 2026." 
                   variant="error" 
                 />
+                <ConsequenceText text="This has been marked as incomplete in your organization's compliance records." variant="error" />
                 <p className="text-sm text-muted-foreground mb-6">
                   Please complete your signature immediately or contact your organization administrator if you need assistance.
                 </p>
@@ -188,6 +192,20 @@ function DueDateBanner({ text, variant }: { text: string; variant: "info" | "war
     <div className={`rounded-lg p-3 mb-4 text-sm font-medium ${variantStyles[variant]}`}>
       {text}
     </div>
+  );
+}
+
+function ConsequenceText({ text, variant = "default" }: { text: string; variant?: "default" | "warning" | "error" }) {
+  const variantStyles = {
+    default: "text-muted-foreground",
+    warning: "text-amber-700 dark:text-amber-400",
+    error: "text-red-700 dark:text-red-400",
+  };
+
+  return (
+    <p className={`text-sm mb-4 italic ${variantStyles[variant]}`}>
+      {text}
+    </p>
   );
 }
 

@@ -37,7 +37,7 @@ function getEmailContent(
   displaySenderName: string,
   dueDate?: string,
   daysUntilDue?: number
-): { subject: string; intro: string; buttonText: string; dueText: string; closing: string } {
+): { subject: string; intro: string; buttonText: string; dueText: string; consequence: string; closing: string } {
   const formattedDueDate = dueDate ? formatDueDate(dueDate) : null;
   
   switch (emailType) {
@@ -51,6 +51,7 @@ function getEmailContent(
         dueText: formattedDueDate 
           ? `Please complete your signature by <strong>${formattedDueDate}</strong>.`
           : `Please complete your signature as soon as possible.`,
+        consequence: `Without your signature, this acknowledgment will remain incomplete in your organization's records.`,
         closing: `This request was sent by ${displaySenderName} to confirm acknowledgment of this document.`,
       };
     
@@ -64,6 +65,7 @@ function getEmailContent(
         dueText: formattedDueDate
           ? `Please review and sign by <strong>${formattedDueDate}</strong>.`
           : `Please review and sign as soon as possible.`,
+        consequence: `Your acknowledgment is required to complete this compliance requirement.`,
         closing: `Thank you for taking care of this.`,
       };
     
@@ -80,6 +82,7 @@ function getEmailContent(
         dueText: formattedDueDate
           ? `⏰ <strong>Due in ${daysText} (${formattedDueDate})</strong>`
           : `Please complete this as soon as possible.`,
+        consequence: `Missing this deadline may be flagged in your organization's compliance records.`,
         closing: `Please complete this as soon as possible.`,
       };
     
@@ -93,6 +96,7 @@ function getEmailContent(
         dueText: formattedDueDate
           ? `The due date was <strong>${formattedDueDate}</strong>.`
           : `This signature request is now overdue.`,
+        consequence: `This has been marked as incomplete in your organization's compliance records.`,
         closing: `Please complete your signature immediately or contact your organization administrator if you need assistance.`,
       };
     
@@ -104,6 +108,7 @@ function getEmailContent(
         dueText: formattedDueDate
           ? `Please complete by <strong>${formattedDueDate}</strong>.`
           : `Please complete as soon as possible.`,
+        consequence: `Your acknowledgment is needed to complete this requirement.`,
         closing: ``,
       };
   }
@@ -160,7 +165,7 @@ const handler = async (req: Request): Promise<Response> => {
     
     // Determine email type based on context
     const emailType = determineEmailType(explicitEmailType, daysUntilDue, sendCount);
-    const { subject, intro, buttonText, dueText, closing } = getEmailContent(
+    const { subject, intro, buttonText, dueText, consequence, closing } = getEmailContent(
       emailType,
       requirementTitle,
       displaySenderName,
@@ -244,6 +249,8 @@ const handler = async (req: Request): Promise<Response> => {
                       </table>
 
                       ${dueDateHtml}
+
+                      ${consequence ? `<p style="margin: 0 0 16px; font-size: 13px; color: #71717a; font-style: italic; line-height: 1.5;">${consequence}</p>` : ""}
                       
                       ${closing ? `<p style="margin: 0 0 24px; font-size: 14px; color: #52525b; line-height: 1.5;">${closing}</p>` : ""}
                       
