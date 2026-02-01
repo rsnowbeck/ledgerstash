@@ -1,19 +1,23 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Mail, Bell, AlertTriangle, UserPlus } from "lucide-react";
+import { Mail, Bell, AlertTriangle, Clock } from "lucide-react";
+
 interface EmailTemplatePreviewProps {
   organizationName: string;
   senderName: string;
   logoUrl?: string | null;
 }
+
 export function EmailTemplatePreview({
   organizationName,
   senderName,
   logoUrl
 }: EmailTemplatePreviewProps) {
   const displaySender = senderName || organizationName || "Your Organization";
-  return <Card>
+  
+  return (
+    <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Mail className="h-5 w-5" />
@@ -24,172 +28,212 @@ export function EmailTemplatePreview({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="signing" className="w-full">
+        <Tabs defaultValue="initial" className="w-full">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="signing" className="text-xs">
+            <TabsTrigger value="initial" className="text-xs">
               <Mail className="h-3 w-3 mr-1" />
-              Signing
+              Initial
             </TabsTrigger>
             <TabsTrigger value="reminder" className="text-xs">
               <Bell className="h-3 w-3 mr-1" />
               Reminder
             </TabsTrigger>
-            <TabsTrigger value="invite" className="text-xs">
-              <UserPlus className="h-3 w-3 mr-1" />
-              Invite
-            </TabsTrigger>
-            <TabsTrigger value="trial" className="text-xs">
+            <TabsTrigger value="escalated" className="text-xs">
               <AlertTriangle className="h-3 w-3 mr-1" />
-              Trial
+              Escalated
+            </TabsTrigger>
+            <TabsTrigger value="overdue" className="text-xs">
+              <Clock className="h-3 w-3 mr-1" />
+              Overdue
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="signing" className="mt-4">
-            <EmailPreviewFrame subject={`Action Required: Please sign "Annual Compliance Policy"`} senderName={displaySender}>
-              <div className="text-center pb-6 border-b border-border">
-                {logoUrl ? <img src={logoUrl} alt="Logo" className="h-8 mx-auto mb-2" /> : null}
-                <h2 className="text-xl font-semibold text-foreground">Attestly</h2>
-              </div>
+          <TabsContent value="initial" className="mt-4">
+            <EmailPreviewFrame 
+              subject="Signature requested for Annual Compliance Policy — due February 23, 2026" 
+              senderName={displaySender}
+            >
+              <EmailHeader logoUrl={logoUrl} />
               <div className="py-6">
                 <p className="text-muted-foreground mb-4">Hi John Smith,</p>
                 <p className="text-muted-foreground mb-6">
-                  {displaySender} has requested your signature on the following document:
+                  You've been requested to review and sign the following document:
                 </p>
-                <div className="bg-muted rounded-lg p-4 mb-6">
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Document</p>
-                  <p className="font-semibold text-foreground">Annual Compliance Policy</p>
-                </div>
-                <div className="text-center">
-                  <span className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium">
-                    Review & Sign Document
-                  </span>
-                </div>
-                <p className="text-sm text-muted-foreground mt-6">
-                  If you have any questions, please contact your organization administrator or email hello@attestly.com.
+                <DocumentCard title="Annual Compliance Policy" />
+                <DueDateBanner 
+                  text="Please complete your signature by February 23, 2026." 
+                  variant="info" 
+                />
+                <p className="text-sm text-muted-foreground mb-6">
+                  This request was sent by {displaySender} to confirm acknowledgment of this document.
                 </p>
+                <CTAButton text="Review & Sign Now" />
+                <ContactFooter senderEmail={null} />
               </div>
-              <div className="pt-4 border-t border-border text-center text-xs text-muted-foreground">
-                <p>This email was sent by Attestly on behalf of {displaySender}.</p>
-                <p className="mt-1">If you didn't expect this email, you can safely ignore it.</p>
-              </div>
+              <EmailFooter senderName={displaySender} />
             </EmailPreviewFrame>
           </TabsContent>
 
           <TabsContent value="reminder" className="mt-4">
-            <EmailPreviewFrame subject={`Reminder: Please sign "Annual Compliance Policy"`} senderName={displaySender}>
-              <div className="text-center pb-6 border-b border-border">
-                {logoUrl ? <img src={logoUrl} alt="Logo" className="h-8 mx-auto mb-2" /> : null}
-                <h2 className="text-xl font-semibold text-foreground">Attestly</h2>
-              </div>
+            <EmailPreviewFrame 
+              subject="Reminder: Signature needed for Annual Compliance Policy (due February 23, 2026)" 
+              senderName={displaySender}
+            >
+              <EmailHeader logoUrl={logoUrl} />
               <div className="py-6">
                 <p className="text-muted-foreground mb-4">Hi John Smith,</p>
                 <p className="text-muted-foreground mb-6">
-                  This is a friendly reminder that your signature is still needed on the following document:
+                  This is a reminder that your signature is still needed for:
                 </p>
-                <div className="bg-muted rounded-lg p-4 mb-2">
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Document</p>
-                  <p className="font-semibold text-foreground">Annual Compliance Policy</p>
-                </div>
-                <div className="bg-amber-500/10 text-amber-700 dark:text-amber-400 rounded-lg p-3 mb-6 text-sm">
-                  ⏰ Due in 3 days
-                </div>
-                <div className="text-center">
-                  <span className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium">
-                    Review & Sign Now
-                  </span>
-                </div>
-                <p className="text-sm text-muted-foreground mt-6">
-                  Need help? Contact support@attestly.com
+                <DocumentCard title="Annual Compliance Policy" />
+                <DueDateBanner 
+                  text="Please review and sign by February 23, 2026." 
+                  variant="info" 
+                />
+                <p className="text-sm text-muted-foreground mb-6">
+                  Thank you for taking care of this.
                 </p>
+                <CTAButton text="Review & Sign Now" />
+                <ContactFooter senderEmail={null} />
               </div>
-              <div className="pt-4 border-t border-border text-center text-xs text-muted-foreground">
-                <p>This reminder was sent by Attestly on behalf of {displaySender}.</p>
-              </div>
+              <EmailFooter senderName={displaySender} />
             </EmailPreviewFrame>
           </TabsContent>
 
-          <TabsContent value="invite" className="mt-4">
-            <EmailPreviewFrame subject={`You've been invited to join ${displaySender} on Attestly`} senderName={displaySender}>
-              <div className="text-center pb-6 border-b border-border">
-                <h2 className="text-xl font-semibold text-foreground">Attestly</h2>
-              </div>
+          <TabsContent value="escalated" className="mt-4">
+            <EmailPreviewFrame 
+              subject="Action required: Annual Compliance Policy signature due in 5 days" 
+              senderName={displaySender}
+            >
+              <EmailHeader logoUrl={logoUrl} />
               <div className="py-6">
-                <p className="text-muted-foreground mb-4">Hi there,</p>
+                <p className="text-muted-foreground mb-4">Hi John Smith,</p>
                 <p className="text-muted-foreground mb-6">
-                  You've been invited to join <strong>{displaySender}</strong> on Attestly as a team member.
+                  Your signature is still required for the document below:
                 </p>
-                <div className="bg-muted rounded-lg p-4 mb-6">
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Role</p>
-                  <p className="font-semibold text-foreground">Admin</p>
-                </div>
-                <div className="text-center">
-                  <span className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium">
-                    Accept Invitation
-                  </span>
-                </div>
-                <p className="text-sm text-muted-foreground mt-6">
-                  This invitation expires in 7 days. Questions? Contact support@attestly.com
+                <DocumentCard title="Annual Compliance Policy" />
+                <DueDateBanner 
+                  text="⏰ Due in 5 days (February 23, 2026)" 
+                  variant="warning" 
+                />
+                <p className="text-sm text-muted-foreground mb-6">
+                  Please complete this as soon as possible.
                 </p>
+                <CTAButton text="Review & Sign Now" />
+                <ContactFooter senderEmail={null} />
               </div>
-              <div className="pt-4 border-t border-border text-center text-xs text-muted-foreground">
-                <p>If you didn't expect this invitation, you can safely ignore it.</p>
-              </div>
+              <EmailFooter senderName={displaySender} />
             </EmailPreviewFrame>
           </TabsContent>
 
-          <TabsContent value="trial" className="mt-4">
-            <EmailPreviewFrame subject="Your Attestly trial ends in 3 days" senderName="Attestly">
-              <div className="text-center pb-6 border-b border-border">
-                <h2 className="text-xl font-semibold text-foreground">Attestly</h2>
-              </div>
+          <TabsContent value="overdue" className="mt-4">
+            <EmailPreviewFrame 
+              subject="Overdue: Annual Compliance Policy signature was due February 23, 2026" 
+              senderName={displaySender}
+            >
+              <EmailHeader logoUrl={logoUrl} />
               <div className="py-6">
-                <p className="text-muted-foreground mb-4">Hi there,</p>
+                <p className="text-muted-foreground mb-4">Hi John Smith,</p>
                 <p className="text-muted-foreground mb-6">
-                  Your free trial of Attestly is ending soon. Here's a quick summary of what you've accomplished:
+                  Your signature for the document below is now overdue:
                 </p>
-                <div className="grid grid-cols-3 gap-3 mb-6">
-                  <div className="bg-muted rounded-lg p-3 text-center">
-                    <p className="text-2xl font-bold text-foreground">5</p>
-                    <p className="text-xs text-muted-foreground">Recipients</p>
-                  </div>
-                  <div className="bg-muted rounded-lg p-3 text-center">
-                    <p className="text-2xl font-bold text-foreground">3</p>
-                    <p className="text-xs text-muted-foreground">Requirements</p>
-                  </div>
-                  <div className="bg-muted rounded-lg p-3 text-center">
-                    <p className="text-2xl font-bold text-foreground">12</p>
-                    <p className="text-xs text-muted-foreground">Signatures</p>
-                  </div>
-                </div>
-                <div className="text-center">
-                  <span className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium">
-                    Upgrade Now
-                  </span>
-                </div>
-                <p className="text-sm text-muted-foreground mt-6 text-center">
-                  Questions about plans? Contact support@attestly.com
+                <DocumentCard title="Annual Compliance Policy" />
+                <DueDateBanner 
+                  text="The due date was February 23, 2026." 
+                  variant="error" 
+                />
+                <p className="text-sm text-muted-foreground mb-6">
+                  Please complete your signature immediately or contact your organization administrator if you need assistance.
                 </p>
+                <CTAButton text="Review & Sign Now" />
+                <ContactFooter senderEmail={null} />
               </div>
-              <div className="pt-4 border-t border-border text-center text-xs text-muted-foreground">
-                <p>© 2025 Attestly. All rights reserved.</p>
-              </div>
+              <EmailFooter senderName={displaySender} />
             </EmailPreviewFrame>
           </TabsContent>
         </Tabs>
       </CardContent>
-    </Card>;
+    </Card>
+  );
 }
+
+// Sub-components for cleaner organization
+
+function EmailHeader({ logoUrl }: { logoUrl?: string | null }) {
+  return (
+    <div className="text-center pb-6 border-b border-border">
+      {logoUrl ? <img src={logoUrl} alt="Logo" className="h-8 mx-auto mb-2" /> : null}
+      <h2 className="text-xl font-semibold text-foreground">Attestly</h2>
+    </div>
+  );
+}
+
+function DocumentCard({ title }: { title: string }) {
+  return (
+    <div className="bg-muted rounded-lg p-4 mb-2">
+      <p className="text-xs text-muted-foreground uppercase tracking-wide">Document</p>
+      <p className="font-semibold text-foreground">{title}</p>
+    </div>
+  );
+}
+
+function DueDateBanner({ text, variant }: { text: string; variant: "info" | "warning" | "error" }) {
+  const variantStyles = {
+    info: "bg-blue-500/10 text-blue-700 dark:text-blue-400 border-l-4 border-blue-500",
+    warning: "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-l-4 border-amber-500",
+    error: "bg-red-500/10 text-red-700 dark:text-red-400 border-l-4 border-red-500",
+  };
+
+  return (
+    <div className={`rounded-lg p-3 mb-4 text-sm font-medium ${variantStyles[variant]}`}>
+      {text}
+    </div>
+  );
+}
+
+function CTAButton({ text }: { text: string }) {
+  return (
+    <div className="text-center">
+      <span className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium">
+        {text}
+      </span>
+    </div>
+  );
+}
+
+function ContactFooter({ senderEmail }: { senderEmail: string | null }) {
+  return (
+    <p className="text-sm text-muted-foreground mt-6">
+      If you have questions, contact your organization administrator
+      {senderEmail && (
+        <> at <span className="text-primary">{senderEmail}</span></>
+      )} or Attestly Support at <span className="text-primary">hello@attestly.com</span>.
+    </p>
+  );
+}
+
+function EmailFooter({ senderName }: { senderName: string }) {
+  return (
+    <div className="pt-4 border-t border-border text-center text-xs text-muted-foreground">
+      <p>This email was sent by Attestly on behalf of {senderName}.</p>
+      <p className="mt-1">If you didn't expect this email, you can safely ignore it.</p>
+    </div>
+  );
+}
+
 interface EmailPreviewFrameProps {
   subject: string;
   senderName: string;
   children: React.ReactNode;
 }
+
 function EmailPreviewFrame({
   subject,
   senderName,
   children
 }: EmailPreviewFrameProps) {
-  return <div className="border rounded-lg overflow-hidden bg-card">
+  return (
+    <div className="border rounded-lg overflow-hidden bg-card">
       {/* Email Header */}
       <div className="bg-muted/50 px-4 py-3 border-b">
         <div className="flex items-center gap-2 mb-1">
@@ -198,7 +242,7 @@ function EmailPreviewFrame({
         <div className="space-y-1 text-sm">
           <div className="flex">
             <span className="text-muted-foreground w-16">From:</span>
-            <span className="text-foreground">{senderName} &lt;noreply@getattestly.com&gt;</span>
+            <span className="text-foreground">Attestly &lt;noreply@getattestly.com&gt;</span>
           </div>
           <div className="flex">
             <span className="text-muted-foreground w-16">Subject:</span>
@@ -211,5 +255,6 @@ function EmailPreviewFrame({
       <div className="p-6 max-h-[400px] overflow-y-auto">
         {children}
       </div>
-    </div>;
+    </div>
+  );
 }
