@@ -12,9 +12,9 @@ const faqs = [
       "No. Attestly is purpose-built for compliance acknowledgments and works alongside your existing HR or payroll tools.",
   },
   {
-    question: "Why not just use Paylocity, ADP, or Rippling?",
+    question: "Why not just use Paylocity, ADP, Rippling, or BambooHR?",
     answer:
-      "Those platforms include acknowledgments as part of a full HR system. Attestly is purpose-built for fast, audit-ready compliance tracking and can be used alongside existing HR tools.",
+      "Those platforms include acknowledgments as part of a full HR system. Attestly is purpose-built for fast, audit-ready compliance tracking—without the overhead of implementing or managing a complete HR platform—and can be used alongside existing tools.",
   },
   {
     question: "Is Attestly legally defensible for audits and disputes?",
