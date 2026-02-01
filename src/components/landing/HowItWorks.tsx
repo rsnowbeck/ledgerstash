@@ -10,7 +10,7 @@ const steps = [
   {
     number: "02",
     title: "Create a requirement",
-    description: "Define what needs to be acknowledged. Attach a policy document, set a due date, and choose one-time or recurring.",
+    description: "Define what needs to be acknowledged. Attach a policy document and choose one-time or recurring.",
     details: ["Attach policy documents (PDF, Word, or image files)", "Set recurring acknowledgments", "Preview before publishing"]
   },
   {
