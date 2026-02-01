@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Loader2, Copy, Check, RefreshCw, Send, Mail } from "lucide-react";
+import { Loader2, Copy, Check, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 
 interface ResendLinkDialogProps {
@@ -35,7 +35,6 @@ export function ResendLinkDialog({
   const { user } = useAuth();
   const { organization } = useOrganization(user);
   const [generating, setGenerating] = useState(false);
-  const [sendingEmail, setSendingEmail] = useState(false);
   const [signingUrl, setSigningUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
@@ -54,6 +53,11 @@ export function ResendLinkDialog({
   };
 
   const handleResend = async () => {
+    if (!organization) {
+      toast.error("Organization settings are still loading—try again in a moment");
+      return;
+    }
+
     setGenerating(true);
 
     try {
@@ -74,8 +78,40 @@ export function ResendLinkDialog({
 
       // Use production custom domain
       const baseUrl = "https://getattestly.com";
-      setSigningUrl(`${baseUrl}/sign/${token}`);
-      toast.success("New signing link generated");
+      const newSigningUrl = `${baseUrl}/sign/${token}`;
+      setSigningUrl(newSigningUrl);
+
+      // Auto-send email with the new link
+      const { error: emailError } = await supabase.functions.invoke("send-signing-email", {
+        body: {
+          recipientName,
+          recipientEmail,
+          requirementTitle,
+          signingUrl: newSigningUrl,
+          organizationName: organization.name,
+          senderName: organization.sender_name,
+          senderEmail: organization.sender_email,
+          logoUrl: organization.logo_url,
+          isReminder: true,
+        },
+      });
+
+      if (emailError) {
+        console.error("Error sending email:", emailError);
+        toast.error("Link generated but failed to send email. You can copy the link below.");
+      } else {
+        // Log the reminder
+        await supabase.from("reminder_logs").insert({
+          signing_request_id: signingRequestId,
+          organization_id: organization.id,
+          sent_by: user?.id || null,
+          trigger_type: "manual",
+          email_sent: true,
+        });
+
+        toast.success(`New link generated and email sent to ${recipientEmail}`);
+      }
+
       onSuccess?.();
     } catch (error: any) {
       console.error("Error resending link:", error);
@@ -91,67 +127,6 @@ export function ResendLinkDialog({
     setCopied(true);
     toast.success("Link copied!");
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleSendEmail = async () => {
-    if (!signingUrl) {
-      toast.error("Please generate a new link first");
-      return;
-    }
-
-    if (!organization) {
-      toast.error("Organization settings are still loading—try again in a moment");
-      return;
-    }
-    
-    setSendingEmail(true);
-    try {
-      const { error: emailError } = await supabase.functions.invoke("send-signing-email", {
-        body: {
-          recipientName,
-          recipientEmail,
-          requirementTitle,
-          signingUrl,
-          organizationName: organization.name,
-          senderName: organization.sender_name,
-          senderEmail: organization.sender_email,
-          logoUrl: organization.logo_url,
-          isReminder: true,
-        },
-      });
-
-      if (emailError) throw emailError;
-
-      // Log the reminder
-      await supabase.from("reminder_logs").insert({
-        signing_request_id: signingRequestId,
-        organization_id: organization.id,
-        sent_by: user?.id || null,
-        trigger_type: "manual",
-        email_sent: true,
-      });
-
-      toast.success(`Reminder email sent to ${recipientEmail}`);
-      handleClose();
-    } catch (error: any) {
-      console.error("Error sending reminder email:", error);
-      
-      // Log failed attempt
-      if (organization) {
-        await supabase.from("reminder_logs").insert({
-          signing_request_id: signingRequestId,
-          organization_id: organization.id,
-          sent_by: user?.id || null,
-          trigger_type: "manual",
-          email_sent: false,
-          error_message: error?.message || "Unknown error",
-        });
-      }
-      
-      toast.error("Failed to send email. You can still copy the link.");
-    } finally {
-      setSendingEmail(false);
-    }
   };
 
   const handleClose = () => {
@@ -221,31 +196,11 @@ export function ResendLinkDialog({
           ) : (
             <div className="space-y-3">
               <div className="p-3 rounded-lg border border-border bg-background overflow-hidden">
-                <p className="text-xs text-muted-foreground mb-2">New signing link:</p>
+                <p className="text-xs text-muted-foreground mb-2">New signing link (email sent):</p>
                 <code className="text-xs text-foreground block break-all">
                   {signingUrl}
                 </code>
               </div>
-              
-              {/* Send Email Button */}
-              <Button
-                className="w-full"
-                variant="hero"
-                onClick={handleSendEmail}
-                 disabled={sendingEmail || !organization}
-              >
-                {sendingEmail ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Sending Email...
-                  </>
-                ) : (
-                  <>
-                    <Mail className="h-4 w-4" />
-                    Send Reminder Email
-                  </>
-                )}
-              </Button>
               
               <div className="flex gap-3">
                 <Button
