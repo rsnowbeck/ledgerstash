@@ -26,7 +26,7 @@ const features: Feature[] = [{
 }, {
   icon: BarChart3,
   title: "Real-Time Dashboard",
-  description: "See compliance status at a glance. Track pending, completed, and overdue acknowledgments."
+  description: "See compliance status at a glance in real time. Track pending, completed, and overdue items."
 }, {
   icon: Bell,
   title: "Automated Reminders",
