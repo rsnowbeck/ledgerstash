@@ -205,6 +205,7 @@ export default function Signatures() {
       senderName: organization.sender_name,
       senderEmail: organization.sender_email,
       logoUrl: organization.logo_url,
+      isPro: organization.plan === "pro",
       userId: user?.id,
       onSuccess: fetchSigningRequests,
     });
@@ -540,6 +541,7 @@ export default function Signatures() {
           senderName={organization.sender_name || profile?.full_name}
           senderEmail={organization.sender_email || profile?.email}
           logoUrl={organization.logo_url}
+          isPro={organization.plan === "pro"}
           onSuccess={fetchSigningRequests}
         />
       )}

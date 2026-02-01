@@ -24,6 +24,7 @@ interface SigningEmailRequest {
   dueDate?: string; // ISO date string
   daysUntilDue?: number;
   sendCount?: number;
+  isPro?: boolean; // Whether the org is on Pro plan (for branding)
 }
 
 function formatDueDate(dateStr: string): string {
@@ -36,21 +37,25 @@ function getEmailContent(
   requirementTitle: string,
   senderName: string | undefined,
   organizationName: string,
+  isPro: boolean,
   dueDate?: string,
   daysUntilDue?: number
 ): { subject: string; intro: string; buttonText: string; dueText: string; consequence: string; closing: string; footer: string } {
   const formattedDueDate = dueDate ? formatDueDate(dueDate) : null;
   
-  // Build the intro line - include "on behalf of [Org]" only if we have both sender and org
-  const intro = senderName 
+  // For non-Pro users, use Attestly branding only
+  const displayOrg = isPro ? organizationName : "Attestly";
+  
+  // Build the intro line - include "on behalf of [Org]" only for Pro users with a sender name
+  const intro = (isPro && senderName)
     ? `${senderName} has requested that you review and sign the following document on behalf of ${organizationName}:`
-    : `${organizationName} has requested that you review and sign the following document:`;
+    : `${displayOrg} has requested that you review and sign the following document:`;
   
   // Standard closing for all email types
-  const closing = `This request is part of a formal document acknowledgment process initiated by ${organizationName}.`;
+  const closing = `This request is part of a formal document acknowledgment process initiated by ${displayOrg}.`;
   
   // Standard footer for all email types
-  const footer = `If you have questions, please contact the requester or your primary contact at ${organizationName}.`;
+  const footer = `If you have questions, please contact the requester or your primary contact at ${displayOrg}.`;
   
   switch (emailType) {
     case "initial":
@@ -161,7 +166,8 @@ const handler = async (req: Request): Promise<Response> => {
       emailType: explicitEmailType,
       dueDate,
       daysUntilDue,
-      sendCount
+      sendCount,
+      isPro = false
     }: SigningEmailRequest = await req.json();
 
     // Validate required fields
@@ -177,6 +183,7 @@ const handler = async (req: Request): Promise<Response> => {
       requirementTitle,
       senderName,
       organizationName,
+      isPro,
       dueDate,
       daysUntilDue
     );
@@ -207,9 +214,9 @@ const handler = async (req: Request): Promise<Response> => {
       }
     }
 
-    // Build logo HTML if provided
+    // Build logo HTML - only for Pro users with a custom logo
     let logoHtml = "";
-    if (logoUrl) {
+    if (isPro && logoUrl) {
       logoHtml = `
         <img src="${logoUrl}" alt="${organizationName} logo" style="height: 32px; max-width: 120px; object-fit: contain; margin-bottom: 8px;" />
       `;

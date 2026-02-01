@@ -48,6 +48,7 @@ interface SendForSignatureDialogProps {
   senderName?: string | null;
   senderEmail?: string | null;
   logoUrl?: string | null;
+  isPro?: boolean;
   onSuccess?: () => void;
 }
 
@@ -62,6 +63,7 @@ export function SendForSignatureDialog({
   senderName,
   senderEmail,
   logoUrl,
+  isPro = false,
   onSuccess,
 }: SendForSignatureDialogProps) {
   const [recipients, setRecipients] = useState<Recipient[]>([]);
@@ -254,6 +256,7 @@ export function SendForSignatureDialog({
               logoUrl: logoUrl || null,
               dueDate,
               daysUntilDue,
+              isPro,
             },
           });
           
