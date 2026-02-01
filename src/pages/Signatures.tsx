@@ -198,13 +198,15 @@ export default function Signatures() {
     setResendDialogOpen(true);
   };
 
-  const handleDownloadPdf = (request: SigningRequest) => {
+  const handleDownloadPdf = async (request: SigningRequest) => {
     if (request.status !== "completed") {
       toast.error("PDF export is only available for completed signatures");
       return;
     }
 
-    generateSignaturePdf({
+    toast.info("Generating PDF...");
+
+    await generateSignaturePdf({
       recipientName: request.recipient?.full_name || "Unknown",
       recipientEmail: request.recipient?.email || "",
       requirementTitle: request.requirement?.title || "Unknown",
@@ -214,6 +216,8 @@ export default function Signatures() {
       ipAddress: request.ip_address,
       userAgent: request.user_agent,
       signingRequestId: request.id,
+      organizationName: organization?.name,
+      organizationLogoUrl: organization?.logo_url,
     });
 
     toast.success("PDF certificate downloaded");

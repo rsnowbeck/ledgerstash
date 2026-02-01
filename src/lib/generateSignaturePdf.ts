@@ -11,33 +11,79 @@ interface SignatureData {
   ipAddress: string | null;
   userAgent: string | null;
   signingRequestId: string;
+  organizationName?: string;
+  organizationLogoUrl?: string | null;
 }
 
-export function generateSignaturePdf(data: SignatureData): void {
+// Helper function to load image as base64
+async function loadImageAsBase64(url: string): Promise<string | null> {
+  try {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(blob);
+    });
+  } catch {
+    return null;
+  }
+}
+
+export async function generateSignaturePdf(data: SignatureData): Promise<void> {
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
   
-  // Colors
-  const primaryColor: [number, number, number] = [59, 130, 246]; // Blue
+  // Brand colors - Deep slate navy from design system
+  const primaryColor: [number, number, number] = [30, 41, 59]; // Slate navy
+  const accentColor: [number, number, number] = [20, 184, 166]; // Teal accent
   const textColor: [number, number, number] = [31, 41, 55]; // Dark gray
   const mutedColor: [number, number, number] = [107, 114, 128]; // Gray
 
-  // Header
+  // Header with organization branding
   doc.setFillColor(...primaryColor);
-  doc.rect(0, 0, pageWidth, 40, "F");
+  doc.rect(0, 0, pageWidth, 50, "F");
   
+  // Add accent line
+  doc.setFillColor(...accentColor);
+  doc.rect(0, 50, pageWidth, 3, "F");
+
+  let headerTextY = 20;
+
+  // Try to add organization logo
+  if (data.organizationLogoUrl) {
+    const logoBase64 = await loadImageAsBase64(data.organizationLogoUrl);
+    if (logoBase64) {
+      try {
+        doc.addImage(logoBase64, "PNG", 15, 10, 30, 30);
+        headerTextY = 25;
+      } catch (e) {
+        console.error("Failed to add logo to PDF:", e);
+      }
+    }
+  }
+
+  // Organization name or Attestly
   doc.setTextColor(255, 255, 255);
-  doc.setFontSize(24);
+  doc.setFontSize(12);
+  doc.setFont("helvetica", "normal");
+  const orgDisplayName = data.organizationName || "Attestly";
+  doc.text(orgDisplayName, pageWidth / 2, headerTextY - 5, { align: "center" });
+  
+  // Certificate title
+  doc.setFontSize(22);
   doc.setFont("helvetica", "bold");
-  doc.text("Certificate of Acknowledgment", pageWidth / 2, 25, { align: "center" });
+  doc.text("Certificate of Acknowledgment", pageWidth / 2, headerTextY + 10, { align: "center" });
 
   // Document ID
-  doc.setFontSize(10);
+  doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
-  doc.text(`Document ID: ${data.signingRequestId}`, pageWidth / 2, 35, { align: "center" });
+  doc.setTextColor(200, 200, 200);
+  doc.text(`Document ID: ${data.signingRequestId}`, pageWidth / 2, headerTextY + 20, { align: "center" });
 
   // Main content area
-  let yPos = 60;
+  let yPos = 70;
 
   // Requirement title
   doc.setTextColor(...textColor);
@@ -155,19 +201,26 @@ export function generateSignaturePdf(data: SignatureData): void {
   doc.text(splitText, 20, yPos);
 
   // Footer
-  const footerY = doc.internal.pageSize.getHeight() - 20;
+  const footerY = doc.internal.pageSize.getHeight() - 25;
   doc.setDrawColor(229, 231, 235);
-  doc.line(20, footerY - 10, pageWidth - 20, footerY - 10);
+  doc.line(20, footerY - 5, pageWidth - 20, footerY - 5);
   
   doc.setTextColor(...mutedColor);
-  doc.setFontSize(9);
+  doc.setFontSize(8);
   doc.setFont("helvetica", "normal");
   doc.text(
     `Generated on ${format(new Date(), "MMMM d, yyyy 'at' h:mm a")}`,
     pageWidth / 2,
-    footerY,
+    footerY + 5,
     { align: "center" }
   );
+  
+  // Powered by Attestly (if org-branded)
+  if (data.organizationName) {
+    doc.setFontSize(7);
+    doc.setTextColor(180, 180, 180);
+    doc.text("Powered by Attestly", pageWidth / 2, footerY + 12, { align: "center" });
+  }
 
   // Download the PDF
   const fileName = `signature-certificate-${data.signingRequestId.substring(0, 8)}.pdf`;
