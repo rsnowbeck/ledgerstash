@@ -18,7 +18,7 @@ const features: Feature[] = [{
 }, {
   icon: Send,
   title: "Secure Signing Links",
-  description: "Generate unique, single-use tokens. Send via email. Links expire automatically after completion."
+  description: "Generate unique, single-use signing links. Send via email. Links expire after completion."
 }, {
   icon: Clock,
   title: "No-Login Signing",
