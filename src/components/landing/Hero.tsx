@@ -6,7 +6,7 @@ export function Hero() {
       <div className="container">
         <div className="mx-auto max-w-4xl text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-sm text-muted-foreground mb-8 -mt-2 animate-fade-in">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-sm text-muted-foreground mb-8 -mt-4 animate-fade-in">
             <Shield className="h-4 w-4 text-accent" />
             <span>Audit-ready proof, without complexity</span>
           </div>
