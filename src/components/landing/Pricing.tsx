@@ -68,10 +68,10 @@ const plans: {
       "Priority support"
     ],
     proOnlyFeatures: [
-      "Requirement file attachments",
       "Custom branding",
+      "Advanced audit logs",
       "API access",
-      "Advanced audit logs"
+      "Requirement file attachments"
     ],
     cta: "Start Free Trial",
     featured: false
