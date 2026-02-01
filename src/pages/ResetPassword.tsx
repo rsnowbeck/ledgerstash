@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,79 +12,44 @@ export default function ResetPassword() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [hasSession, setHasSession] = useState(false);
+  const [tokenValid, setTokenValid] = useState<boolean | null>(null);
   const [checking, setChecking] = useState(true);
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
+  const token = searchParams.get("token");
+
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-    let sessionEstablished = false;
-
-    // Newer auth flows can land on /reset-password?code=...&type=recovery
-    // We must exchange that code for a session before updateUser() will work.
-    const exchangeIfNeeded = async () => {
-      const url = new URL(window.location.href);
-      const code = url.searchParams.get("code");
-
-      if (!code) return;
-
-      const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-      if (error) {
-        console.error("exchangeCodeForSession error:", error);
-        toast.error("This reset link is invalid or has expired. Please request a new one.");
-        setHasSession(false);
+    const verifyToken = async () => {
+      if (!token) {
+        setTokenValid(false);
         setChecking(false);
         return;
       }
 
-      if (data.session) {
-        sessionEstablished = true;
-        setHasSession(true);
-        setChecking(false);
-        return;
-      }
-    };
+      try {
+        const { data, error } = await supabase.functions.invoke("verify-reset-token", {
+          body: { token },
+        });
 
-    // Listen for auth state changes (user clicking reset link)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        // PASSWORD_RECOVERY or SIGNED_IN events indicate valid reset link
-        if (event === "PASSWORD_RECOVERY" || (event === "SIGNED_IN" && session)) {
-          setHasSession(true);
-          setChecking(false);
-          if (timeoutId) clearTimeout(timeoutId);
+        if (error) {
+          console.error("Token verification error:", error);
+          setTokenValid(false);
+        } else if (data?.valid) {
+          setTokenValid(true);
+        } else {
+          setTokenValid(false);
         }
-      }
-    );
-
-    // Check if user already has a valid session (from the URL hash tokens)
-    const checkSession = async () => {
-      await exchangeIfNeeded();
-
-      // If we already got a session via exchange, no need to keep checking.
-      if (sessionEstablished) return;
-
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        setHasSession(true);
+      } catch (err) {
+        console.error("Unexpected error verifying token:", err);
+        setTokenValid(false);
+      } finally {
         setChecking(false);
-      } else {
-        // Give the auth state listener time to process URL hash tokens
-        // Only show "invalid link" after a reasonable delay
-        timeoutId = setTimeout(() => {
-          setChecking(false);
-        }, 2000);
       }
     };
 
-    checkSession();
-
-    return () => {
-      subscription.unsubscribe();
-      if (timeoutId) clearTimeout(timeoutId);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    verifyToken();
+  }, [token]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,26 +64,42 @@ export default function ResetPassword() {
       return;
     }
 
+    if (!token) {
+      toast.error("Invalid reset token");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.updateUser({
-        password: password,
+      const { data, error } = await supabase.functions.invoke("verify-reset-token?action=reset", {
+        body: { token, newPassword: password },
       });
 
       if (error) {
-        toast.error(error.message);
+        console.error("Password reset error:", error);
+        toast.error("Failed to reset password. Please try again.");
         return;
       }
 
-      setSuccess(true);
-      toast.success("Password updated successfully!");
-      
-      // Redirect to dashboard after a short delay
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 2000);
+      if (data?.error) {
+        toast.error(data.error);
+        return;
+      }
+
+      if (data?.success) {
+        setSuccess(true);
+        toast.success("Password updated successfully!");
+        
+        // Redirect to login after a short delay
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
+      } else {
+        toast.error("Failed to reset password. Please try again.");
+      }
     } catch (error) {
+      console.error("Unexpected error:", error);
       toast.error("An unexpected error occurred");
     } finally {
       setLoading(false);
@@ -133,7 +114,7 @@ export default function ResetPassword() {
     );
   }
 
-  if (!hasSession) {
+  if (!tokenValid) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
         <header className="border-b border-border">
@@ -199,7 +180,7 @@ export default function ResetPassword() {
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">Password Updated</h3>
                   <p className="text-sm text-muted-foreground">
-                    Your password has been successfully updated. Redirecting to dashboard...
+                    Your password has been successfully updated. Redirecting to login...
                   </p>
                 </div>
               </div>

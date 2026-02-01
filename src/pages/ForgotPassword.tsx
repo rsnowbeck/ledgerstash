@@ -19,18 +19,26 @@ export default function ForgotPassword() {
     try {
       const redirectUrl = `${window.location.origin}/reset-password`;
       
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: redirectUrl,
+      // Call our custom edge function instead of Supabase's built-in reset
+      const { data, error } = await supabase.functions.invoke("send-password-reset", {
+        body: { email, redirectUrl },
       });
 
       if (error) {
-        toast.error(error.message);
+        console.error("Error sending reset email:", error);
+        toast.error("Failed to send reset email. Please try again.");
+        return;
+      }
+
+      if (data?.error) {
+        toast.error(data.error);
         return;
       }
 
       setSent(true);
       toast.success("Password reset email sent!");
     } catch (error) {
+      console.error("Unexpected error:", error);
       toast.error("An unexpected error occurred");
     } finally {
       setLoading(false);
