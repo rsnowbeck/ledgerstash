@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useOrganization } from "@/hooks/useOrganization";
@@ -37,6 +37,7 @@ export function ResendLinkDialog({
   const [generating, setGenerating] = useState(false);
   const [signingUrl, setSigningUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const hasTriggered = useRef(false);
 
   const generateSecureToken = (): string => {
     const array = new Uint8Array(32);
@@ -51,6 +52,18 @@ export function ResendLinkDialog({
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
   };
+
+  // Auto-trigger resend when dialog opens and organization is ready
+  useEffect(() => {
+    if (open && organization && !hasTriggered.current && !signingUrl && !generating) {
+      hasTriggered.current = true;
+      handleResend();
+    }
+    // Reset trigger flag when dialog closes
+    if (!open) {
+      hasTriggered.current = false;
+    }
+  }, [open, organization]);
 
   const handleResend = async () => {
     if (!organization) {
@@ -175,23 +188,11 @@ export function ResendLinkDialog({
           </div>
 
           {!signingUrl ? (
-            <div className="text-center py-4">
-              <p className="text-sm text-muted-foreground mb-4">
-                This will invalidate the previous link, generate a new one, and send a reminder email.
+            <div className="text-center py-6">
+              <Loader2 className="h-6 w-6 animate-spin mx-auto mb-3 text-muted-foreground" />
+              <p className="text-sm text-muted-foreground">
+                Generating new link and sending email...
               </p>
-              <Button onClick={handleResend} disabled={generating || !organization}>
-                {generating ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <RefreshCw className="h-4 w-4" />
-                    Resend Link
-                  </>
-                )}
-              </Button>
             </div>
           ) : (
             <div className="space-y-3">
