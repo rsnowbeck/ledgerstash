@@ -28,6 +28,9 @@ interface BulkReminderDialogProps {
   onOpenChange: (open: boolean) => void;
   organizationId: string;
   organizationName: string;
+  senderName?: string | null;
+  senderEmail?: string | null;
+  logoUrl?: string | null;
   onSuccess?: () => void;
 }
 
@@ -36,6 +39,9 @@ export function BulkReminderDialog({
   onOpenChange,
   organizationId,
   organizationName,
+  senderName,
+  senderEmail,
+  logoUrl,
   onSuccess,
 }: BulkReminderDialogProps) {
   const { user } = useAuth();
@@ -156,6 +162,9 @@ export function BulkReminderDialog({
             requirementTitle: signature.requirementTitle,
             signingUrl,
             organizationName,
+            senderName: senderName || null,
+            senderEmail: senderEmail || null,
+            logoUrl: logoUrl || null,
           },
         });
 

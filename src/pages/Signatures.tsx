@@ -52,7 +52,7 @@ interface SigningRequest {
 
 export default function Signatures() {
   const { user, loading: authLoading } = useAuth();
-  const { organization, loading: orgLoading } = useOrganization(user);
+  const { organization, profile, loading: orgLoading } = useOrganization(user);
   const [searchParams, setSearchParams] = useSearchParams();
   const [signingRequests, setSigningRequests] = useState<SigningRequest[]>([]);
   const [loading, setLoading] = useState(true);
@@ -537,6 +537,9 @@ export default function Signatures() {
           onOpenChange={setBulkReminderDialogOpen}
           organizationId={organization.id}
           organizationName={organization.name}
+          senderName={organization.sender_name || profile?.full_name}
+          senderEmail={organization.sender_email || profile?.email}
+          logoUrl={organization.logo_url}
           onSuccess={fetchSigningRequests}
         />
       )}

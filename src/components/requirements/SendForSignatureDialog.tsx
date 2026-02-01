@@ -44,6 +44,9 @@ interface SendForSignatureDialogProps {
   requirementTitle: string;
   organizationId: string;
   organizationName?: string;
+  senderName?: string | null;
+  senderEmail?: string | null;
+  logoUrl?: string | null;
   onSuccess?: () => void;
 }
 
@@ -54,6 +57,9 @@ export function SendForSignatureDialog({
   requirementTitle,
   organizationId,
   organizationName,
+  senderName,
+  senderEmail,
+  logoUrl,
   onSuccess,
 }: SendForSignatureDialogProps) {
   const [recipients, setRecipients] = useState<Recipient[]>([]);
@@ -236,6 +242,9 @@ export function SendForSignatureDialog({
               requirementTitle,
               signingUrl: link.url,
               organizationName: organizationName || "Your organization",
+              senderName: senderName || null,
+              senderEmail: senderEmail || null,
+              logoUrl: logoUrl || null,
             },
           });
           

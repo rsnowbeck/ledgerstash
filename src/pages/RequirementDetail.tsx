@@ -71,7 +71,7 @@ export default function RequirementDetail() {
   const { id } = useParams<{ id: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
   const { user, loading: authLoading } = useAuth();
-  const { organization, loading: orgLoading } = useOrganization(user);
+  const { organization, profile, loading: orgLoading } = useOrganization(user);
   const [requirement, setRequirement] = useState<Requirement | null>(null);
   const [signingRequests, setSigningRequests] = useState<SigningRequestWithRecipient[]>([]);
   const [loading, setLoading] = useState(true);
@@ -551,6 +551,9 @@ export default function RequirementDetail() {
           requirementTitle={requirement.title}
           organizationId={organization.id}
           organizationName={organization.name}
+          senderName={organization.sender_name || profile?.full_name}
+          senderEmail={organization.sender_email || profile?.email}
+          logoUrl={organization.logo_url}
           onSuccess={fetchRequirementDetails}
         />
       )}
