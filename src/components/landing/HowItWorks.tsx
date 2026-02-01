@@ -4,8 +4,8 @@ const steps = [
   {
     number: "01",
     title: "Add your recipients",
-    description: "Import employees, contractors, or vendors. Add names and emails manually, or bulk import via CSV.",
-    details: ["Add recipients manually or import via CSV", "Organize by groups or roles", "No recipient limits on Pro plan"]
+    description: "Import employees, contractors, or vendors and keep your recipient list organized from the start.",
+    details: ["Add recipients manually or bulk import via CSV", "Organize by groups or roles", "No recipient limits on Pro plan"]
   },
   {
     number: "02",
