@@ -8,6 +8,11 @@ import { useEffect } from "react";
 
 const faqs = [
   {
+    question: "Why not just use DocuSign?",
+    answer:
+      "DocuSign is built for contracts—complex documents with multiple signature fields, negotiations, and legal review. That's overkill (and expensive) for compliance acknowledgments. Attestly is purpose-built for the simpler use case: getting employees to quickly acknowledge policies, handbooks, and training. No signer accounts, no complex workflows, just fast one-click signatures with audit-ready proof.",
+  },
+  {
     question: "Is Attestly a good DocuSign alternative?",
     answer:
       "Yes. Attestly is the best DocuSign alternative for HR compliance and policy acknowledgments. While DocuSign focuses on contract negotiations with multiple signature fields, Attestly is purpose-built for employee handbook signatures, policy attestations, and training acknowledgments. It's simpler, faster, and up to 80% more affordable than DocuSign for compliance use cases.",
