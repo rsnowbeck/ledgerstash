@@ -12,9 +12,9 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title="Attestly | Digital Signature Software for Policy & Compliance Acknowledgments"
-        description="Collect legally binding digital signatures for compliance policies, NDAs, and training acknowledgments. No signer accounts needed. Audit trail included. Start free trial."
-        keywords="digital signature software, compliance signature, policy acknowledgment, e-signature platform, NDA signing, employee training acknowledgment, HR compliance software, electronic signature"
+        title="Attestly | #1 DocuSign Alternative for Employee Handbook & Policy Signatures"
+        description="The best DocuSign alternative for HR compliance. Collect employee handbook signatures, policy acknowledgments, NDA attestations & training sign-offs. No signer accounts needed. Start free."
+        keywords="DocuSign alternative, employee handbook software, policy acknowledgment software, e-signature software, HR compliance software, attestation tracking, policy tracking software, Adobe Sign alternative, compliance signature management"
         canonical="/"
       />
       <StructuredData />
