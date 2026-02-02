@@ -2,10 +2,17 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Shield, Mail } from "lucide-react";
 import { Footer } from "@/components/landing/Footer";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 export default function Privacy() {
   return (
     <div className="min-h-screen bg-background">
+      <PageSEO
+        title="Privacy Policy | How Attestly Handles Your Data"
+        description="Read Attestly's Privacy Policy to understand how we collect, use, and protect your information. We never sell your data and use industry-standard security practices."
+        keywords="attestly privacy policy, digital signature privacy, data protection policy, e-signature data handling"
+        canonical="/privacy"
+      />
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
         <div className="container flex h-16 items-center justify-between">

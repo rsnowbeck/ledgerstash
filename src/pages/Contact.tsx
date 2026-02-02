@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { ArrowLeft, Send, CheckCircle2, Mail, MessageSquare, Shield } from "lucide-react";
 import { z } from "zod";
+import { PageSEO } from "@/components/seo/PageSEO";
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
   email: z.string().trim().email("Please enter a valid email").max(255, "Email must be less than 255 characters"),
@@ -93,6 +94,12 @@ export default function Contact() {
       </div>;
   }
   return <div className="min-h-screen bg-background">
+      <PageSEO
+        title="Contact Us | Get Help with Attestly"
+        description="Have questions about digital signature compliance? Contact our team for support, sales inquiries, or partnership opportunities. We typically respond within 24 hours."
+        keywords="contact attestly, digital signature support, compliance software help, e-signature questions"
+        canonical="/contact"
+      />
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
         <div className="container flex h-16 items-center justify-between">

@@ -2,10 +2,17 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, FileText, Mail, Shield } from "lucide-react";
 import { Footer } from "@/components/landing/Footer";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 export default function Terms() {
   return (
     <div className="min-h-screen bg-background">
+      <PageSEO
+        title="Terms of Service | Attestly Usage Agreement"
+        description="Read Attestly's Terms of Service covering acceptable use, customer data ownership, service availability, and liability limitations for our digital signature platform."
+        keywords="attestly terms of service, digital signature terms, e-signature agreement, compliance software terms"
+        canonical="/terms"
+      />
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
         <div className="container flex h-16 items-center justify-between">

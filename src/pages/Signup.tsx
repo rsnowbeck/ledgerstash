@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Shield, ArrowLeft, Loader2, CheckCircle2, Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -53,6 +54,12 @@ export default function Signup() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <PageSEO
+        title="Start Free Trial | Create Your Attestly Account"
+        description="Sign up for a 14-day free trial of Attestly. No credit card required. Start collecting digital signatures for compliance policies in minutes."
+        keywords="attestly free trial, digital signature signup, compliance software trial, e-signature account"
+        canonical="/signup"
+      />
       {/* Header */}
       <header className="border-b border-border">
         <div className="container flex h-16 items-center">

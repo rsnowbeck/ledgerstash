@@ -2,10 +2,17 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Lock, Mail, Shield } from "lucide-react";
 import { Footer } from "@/components/landing/Footer";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 export default function Security() {
   return (
     <div className="min-h-screen bg-background">
+      <PageSEO
+        title="Security | How Attestly Protects Your Data"
+        description="Learn about Attestly's security practices including data encryption, access controls, backups, and incident response. Your compliance data is protected by industry-standard safeguards."
+        keywords="attestly security, digital signature security, data protection, compliance data encryption, e-signature privacy"
+        canonical="/security"
+      />
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
         <div className="container flex h-16 items-center justify-between">

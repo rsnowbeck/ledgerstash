@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Shield, ArrowLeft, Loader2, Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -44,6 +45,13 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <PageSEO
+        title="Sign In | Access Your Attestly Dashboard"
+        description="Sign in to your Attestly account to manage digital signatures, track compliance acknowledgments, and send signature requests to your team."
+        keywords="attestly login, digital signature login, compliance dashboard sign in"
+        canonical="/login"
+        noindex
+      />
       {/* Header */}
       <header className="border-b border-border">
         <div className="container flex h-16 items-center">
