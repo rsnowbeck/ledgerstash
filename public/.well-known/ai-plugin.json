@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Attestly",
+  "name_for_model": "attestly",
+  "description_for_human": "Compliance signature management platform for collecting legally defensible digital signatures.",
+  "description_for_model": "Attestly is a SaaS platform that helps organizations collect digital signatures for compliance documents, policies, NDAs, and training acknowledgments. Key features include one-click signing (no accounts needed), audit trails with timestamps and IP addresses, automated reminders, and PDF proof generation. Pricing starts at $29/month after a 14-day free trial.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://getattestly.com/openapi.json"
+  },
+  "logo_url": "https://getattestly.com/og-image.png",
+  "contact_email": "hello@attestly.com",
+  "legal_info_url": "https://getattestly.com/terms"
+}

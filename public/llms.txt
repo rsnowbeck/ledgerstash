@@ -1,0 +1,51 @@
+# Attestly - Compliance Signature Management Platform
+
+> Attestly helps organizations collect legally defensible digital signatures for policies, NDAs, training acknowledgments, and compliance documents. No signer accounts required.
+
+## What Attestly Does
+
+Attestly is a SaaS platform for managing compliance acknowledgments and policy sign-offs. Organizations use it to:
+
+- Send signature requests via email with secure one-click signing links
+- Track completion status across teams and departments
+- Generate audit-ready PDF proof with timestamps and IP addresses
+- Automate reminder emails for pending signatures
+- Manage multiple compliance requirements in one dashboard
+
+## Key Features
+
+- **One-Click Signatures**: Recipients sign without creating accounts or passwords
+- **Audit Trail**: Every signature includes timestamp, IP address, and browser info
+- **Automated Reminders**: Set up automatic follow-ups for unsigned requests
+- **PDF Export**: Generate legally defensible proof documents instantly
+- **Team Management**: Invite team members and manage organization settings
+- **Bulk Operations**: Send to multiple recipients, import from CSV
+
+## Use Cases
+
+- Annual policy acknowledgments (employee handbooks, code of conduct)
+- NDA and confidentiality agreements
+- Training completion confirmations
+- Regulatory compliance documentation
+- Vendor and contractor agreements
+- Safety protocol acknowledgments
+
+## Pricing
+
+- **Free Trial**: 14 days, no credit card required
+- **Starter**: $29/month - 100 recipients, 10 requirements
+- **Pro**: $79/month - 500 recipients, unlimited requirements, custom branding
+- **Enterprise**: Custom pricing for large organizations
+
+## Contact
+
+- Website: https://getattestly.com
+- Email: hello@attestly.com
+
+## Technical Details
+
+- Built with React and TypeScript
+- Secure cloud infrastructure
+- SOC 2 Type II compliant practices
+- Data encrypted at rest and in transit
+- GDPR compliant
