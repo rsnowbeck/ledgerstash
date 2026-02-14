@@ -4,26 +4,26 @@ const steps = [
   {
     number: "01",
     title: "Add your recipients",
-    description: "Import employees, contractors, or vendors and keep your recipient list organized from the start.",
+    description: "Import employees, contractors, or vendors and keep your compliance list organized from day one.",
     details: ["Add recipients manually or bulk import via CSV", "Organize by groups or roles", "No recipient limits on Pro plan"]
   },
   {
     number: "02",
     title: "Create a requirement",
-    description: "Create the policy or training recipients need to review. Attach a document and choose delivery type.",
-    details: ["Attach policy documents (PDF, Word, or image files)", "Set one-time or recurring acknowledgments", "Preview before publishing"]
+    description: "Create the policy, training, or compliance item recipients need to complete.",
+    details: ["Attach a document for read-and-acknowledge workflows", "Or upload a PDF and add fillable fields", "Add required inputs, dates, or signatures", "Set one-time or recurring requirements", "Preview before publishing"]
   },
   {
     number: "03",
     title: "Publish & send",
-    description: "With one click, generate secure signing links and email them to selected recipients.",
-    details: ["Unique single-use tokens", "Automatic email delivery", "Custom email templates"]
+    description: "Generate secure signing links and send them instantly.",
+    details: ["Unique single-use tokens", "Automatic email delivery", "Custom email templates", "No login required for recipients"]
   },
   {
     number: "04",
     title: "Track & export",
-    description: "Watch completion status in real-time. Send reminders. Export audit-ready proof anytime.",
-    details: ["Live compliance dashboard", "PDF proof generation", "Full audit trail"]
+    description: "Monitor completion status in real time and export everything you need for audits.",
+    details: ["Live compliance dashboard", "Automated reminders", "Download completed PDF copies", "Export structured response data via CSV", "Full audit trail with timestamps and IP tracking"]
   }
 ];
 
@@ -36,7 +36,7 @@ export function HowItWorks() {
             How it works
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Get started in minutes. No complex setup, no training required.
+            Get started in minutes. No complex setup. No training required.
           </p>
         </div>
 
