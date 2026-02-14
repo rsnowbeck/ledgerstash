@@ -42,17 +42,19 @@ const features: Feature[] = [{
 }];
 
 export function Features() {
-  return <section id="features" className="pt-12 lg:pt-20 pb-20 lg:pb-32 bg-card">
+  return <section id="features" className="mt-16 pt-12 lg:pt-20 pb-20 lg:pb-32 bg-card">
       <div className="container">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-[2.75rem] mb-3">
+          <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-[2.75rem] mb-6">
             Everything You Need for Compliance
           </h2>
-          <p className="mx-auto max-w-[46rem] text-lg text-muted-foreground">From read-and-acknowledge policies to structured compliance forms and audit-ready exports, Attestly keeps your documentation organized, trackable, and defensible — without enterprise complexity.</p>
+          <p className="mx-auto max-w-[47rem] text-lg text-muted-foreground leading-relaxed">
+            From read-and-acknowledge policies to structured compliance forms and audit-ready exports, Attestly keeps your documentation organized, trackable, and defensible — without enterprise complexity.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map(feature => <div key={feature.title} className="group p-6 rounded-xl bg-background border border-border hover:border-accent/50 transition-all duration-300">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
+          {features.map(feature => <div key={feature.title} className="group p-7 rounded-xl bg-background border border-border hover:border-accent/50 transition-all duration-300">
               <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-accent/10 text-accent mb-4 group-hover:bg-accent group-hover:text-accent-foreground transition-colors duration-300">
                 <feature.icon className="h-5 w-5" />
               </div>
