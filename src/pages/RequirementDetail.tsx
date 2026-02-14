@@ -87,10 +87,19 @@ export default function RequirementDetail() {
   const [showFormBuilder, setShowFormBuilder] = useState(false);
   const [activeTab, setActiveTab] = useState("recipients");
 
-  // Update editing state when URL changes
+  // Update editing state and form detection from URL params
   useEffect(() => {
     const editParam = searchParams.get("edit") === "true";
     setIsEditing(editParam);
+    
+    const formParam = searchParams.get("form");
+    if (formParam === "detect") {
+      setShowFormBuilder(true);
+      setActiveTab("form");
+      // Clean up the URL param
+      searchParams.delete("form");
+      setSearchParams(searchParams, { replace: true });
+    }
   }, [searchParams]);
 
   useEffect(() => {
