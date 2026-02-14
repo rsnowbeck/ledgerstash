@@ -28,8 +28,8 @@ const baseNavItems = [
   { label: "Settings", icon: Settings, href: "/settings" },
 ];
 
-const adminNavItems = [
-  { label: "Inquiries", icon: MessageSquare, href: "/contact-submissions" },
+const ownerNavItems = [
+  { label: "Inquiries", icon: MessageSquare, href: "/owner/inquiries" },
 ];
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
@@ -38,7 +38,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { signOut, isAdmin } = useAuth();
 
   const navItems = isAdmin
-    ? [...baseNavItems.slice(0, 4), ...adminNavItems, baseNavItems[4]]
+    ? [...baseNavItems.slice(0, 4), ...ownerNavItems, baseNavItems[4]]
     : baseNavItems;
   const handleLogout = async () => {
     await signOut();
