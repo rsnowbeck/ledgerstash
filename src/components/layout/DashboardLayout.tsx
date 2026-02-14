@@ -10,7 +10,8 @@ import {
   X,
   FileSignature,
   HelpCircle,
-  Settings
+  Settings,
+  MessageSquare
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -24,6 +25,7 @@ const navItems = [
   { label: "Recipients", icon: Users, href: "/recipients" },
   { label: "Requirements", icon: FileText, href: "/requirements" },
   { label: "Signatures", icon: FileSignature, href: "/signatures" },
+  { label: "Inquiries", icon: MessageSquare, href: "/contact-submissions" },
   { label: "Settings", icon: Settings, href: "/settings" },
 ];
 
