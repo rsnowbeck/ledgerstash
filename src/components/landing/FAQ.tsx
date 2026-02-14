@@ -10,52 +10,47 @@ const faqs = [
   {
     question: "Why not just use DocuSign?",
     answer:
-      "DocuSign is built for contracts—complex documents with multiple signature fields, negotiations, and legal review. That's overkill (and expensive) for compliance acknowledgments. Attestly is purpose-built for the simpler use case: getting employees to quickly acknowledge policies, handbooks, and training. No signer accounts, no complex workflows, just fast one-click signatures with audit-ready proof.",
+      "DocuSign is built for complex contracts — multi-party agreements, legal negotiations, and enterprise workflows. That's powerful, but often excessive (and expensive) for internal compliance needs.\n\nAttestly is purpose-built for compliance workflows. Send policies for read-and-acknowledge, or turn PDFs into fillable forms with required fields and signatures. No signer accounts. No complex setup. Just structured, audit-ready compliance tracking.",
   },
   {
     question: "What is employee handbook software?",
     answer:
-      "Employee handbook software helps organizations distribute handbooks and collect legally binding acknowledgment signatures from employees. Attestly lets recipients sign with one click—no accounts needed—while creating audit-ready proof with timestamps and IP addresses for HR compliance.",
+      "Employee handbook software helps businesses distribute policies and track acknowledgment from employees. Instead of printing documents or chasing email confirmations, you can send policies digitally, collect signatures, and maintain audit-ready records.\n\nAttestly goes further by supporting both simple acknowledgments and fillable compliance forms — all stored securely with exportable records.",
   },
   {
     question: "Are digital signatures legally binding for compliance?",
     answer:
-      "Yes. Digital signatures collected through Attestly are legally defensible under the ESIGN Act and UETA. Each signature includes a timestamp, IP address, browser information, and the exact document version acknowledged. These records meet audit and compliance requirements for employee handbooks, NDAs, training acknowledgments, and policy sign-offs.",
+      "Yes. Electronic signatures are legally recognized in most jurisdictions under laws like the ESIGN Act and UETA in the United States.\n\nAttestly captures timestamped signatures, IP addresses, and a full audit trail to provide defensible proof of acknowledgment or completion.",
   },
   {
-    question: "How much does Attestly cost?",
+    question: "Can I collect more than just a signature?",
     answer:
-      "Attestly offers a 14-day free trial with no credit card required. Paid plans start at $29/month for up to 100 recipients—typically 50-80% less than DocuSign for policy acknowledgments. The Pro plan at $79/month includes 500 recipients and custom branding. Enterprise pricing is available.",
+      "Yes. In addition to read-and-acknowledge workflows, you can upload a PDF and add required fields such as text inputs, dates, dropdowns, checkboxes, initials, and signatures. Structured response data is securely stored and exportable via CSV.",
+  },
+  {
+    question: "What documents can I send?",
+    answer:
+      "You can upload PDFs, Word documents, or image files for acknowledgment. PDFs can be converted into fillable compliance forms with required fields and signatures.\n\nCommon use cases include employee handbooks, workplace policies, NDA agreements, training confirmations, vendor compliance forms, and contractor onboarding forms.",
+  },
+  {
+    question: "Can I export records for audits?",
+    answer:
+      "Yes. You can download completed PDF copies and export structured response data via CSV — complete with timestamps, IP tracking, and full audit metadata.",
   },
   {
     question: "Do signers need to create an account?",
     answer:
-      "No. Attestly signers receive a secure email link and can review and sign instantly—no account creation, passwords, or app downloads required. This dramatically improves completion rates compared to DocuSign or HR platforms that require signer registration.",
-  },
-  {
-    question: "Why use Attestly instead of my HR platform?",
-    answer:
-      "HR platforms like ADP, Paylocity, and BambooHR include acknowledgments as a small feature within larger systems. Attestly is dedicated policy acknowledgment software built for fast, audit-ready compliance tracking—and it works for contractors and vendors outside your HR system too.",
-  },
-  {
-    question: "What documents can I send for signature?",
-    answer:
-      "Any document requiring acknowledgment: employee handbooks, codes of conduct, privacy policies (HIPAA, GDPR, CCPA), safety training, NDAs, vendor agreements, and annual policy renewals. Attach PDFs for recipients to review before signing.",
-  },
-  {
-    question: "Can I export signature records for audits?",
-    answer:
-      "Yes. Attestly generates PDF proof documents with signer name, email, timestamp, IP address, browser info, and the exact document version acknowledged. Export individual records or bulk export for audits and legal proceedings.",
+      "No. Recipients click a secure link, review the document or complete required fields, and sign. No accounts or passwords required.",
   },
   {
     question: "Is Attestly secure?",
     answer:
-      "Yes. Bank-level encryption for data at rest and in transit. Each signing link is unique and expires after use. SOC 2 Type II compliant practices, GDPR compliant, with regular backups.",
+      "Yes. Attestly uses HTTPS encryption, secure tokens, encrypted storage, and system safeguards to protect your compliance data. Audit logs and structured exports ensure defensible recordkeeping.",
   },
   {
     question: "How do I get started?",
     answer:
-      "Sign up for a free 14-day trial—no credit card required. Create your first policy or handbook requirement, add recipients (manually or via CSV), and send signature requests in minutes. Most teams are set up in under 5 minutes.",
+      "Start a 14-day free trial — no credit card required. Add your recipients, create your first requirement, and send secure links in minutes.",
   },
 ];
 
@@ -113,8 +108,10 @@ export function FAQ() {
                 <AccordionTrigger className="text-left text-foreground hover:no-underline">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">
-                  {faq.answer}
+                <AccordionContent className="text-muted-foreground space-y-3">
+                  {faq.answer.split('\n\n').map((paragraph, pIdx) => (
+                    <p key={pIdx}>{paragraph}</p>
+                  ))}
                 </AccordionContent>
               </AccordionItem>
             ))}
