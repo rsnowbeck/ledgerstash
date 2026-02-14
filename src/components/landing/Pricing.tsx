@@ -16,16 +16,17 @@ const plans: {
     name: "Starter",
     price: "$9",
     period: "/month",
-    description: "For solo business owners and small teams just getting started.",
+    description: "For solo business owners and small teams getting started with compliance.",
     features: [
       "Up to 10 recipients",
       "5 active requirements",
+      "Read-and-acknowledge workflows",
       "Pre-built compliance templates",
       "No-login signing",
-      "Secure one-time links",
+      "Secure single-use links",
       "Real-time dashboard",
       "Standard email delivery",
-      "PDF exports"
+      "PDF proof downloads"
     ],
     cta: "Start Free Trial",
     featured: false
@@ -34,18 +35,21 @@ const plans: {
     name: "Team",
     price: "$19",
     period: "/month",
-    description: "For growing businesses with 20-100 people to manage.",
+    description: "For growing businesses that need structured compliance tracking and exports.",
     features: [
       "Up to 100 recipients",
       "Unlimited requirements",
-      "Pre-built compliance templates",
+      "Read-and-acknowledge workflows",
+      "Fillable PDF forms",
+      "Auto-detect form fields",
+      "Structured response storage",
+      "CSV & PDF exports",
       "No-login signing",
-      "Secure one-time links",
+      "Secure single-use links",
       "Real-time dashboard",
       "Automated reminders",
       "Team collaboration",
       "Priority email delivery",
-      "CSV & PDF exports",
       "Bulk reminders"
     ],
     cta: "Start Free Trial",
@@ -55,13 +59,17 @@ const plans: {
     name: "Pro",
     price: "$39",
     period: "/month",
-    description: "For established organizations with compliance needs at scale.",
+    description: "For established organizations managing compliance at scale.",
     features: [
       "Unlimited recipients",
       "Unlimited requirements",
-      "Pre-built compliance templates",
+      "Read-and-acknowledge workflows",
+      "Fillable PDF forms",
+      "Auto-detect form fields",
+      "Structured response storage",
+      "Advanced CSV & PDF exports",
       "No-login signing",
-      "Secure one-time links",
+      "Secure single-use links",
       "Real-time dashboard",
       "Automated reminders",
       "Team collaboration",
@@ -156,7 +164,7 @@ export function Pricing() {
         </div>
 
         <p className="text-center text-sm text-muted-foreground mt-8">
-          All plans include SSL encryption, daily backups, and 99.9% uptime SLA.
+          All plans include SSL encryption, encrypted storage, daily backups, and 99.9% uptime SLA.
         </p>
       </div>
     </section>
