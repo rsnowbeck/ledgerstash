@@ -29,16 +29,17 @@ const baseNavItems = [
 ];
 
 const ownerNavItems = [
+  { label: "Owner Dashboard", icon: BarChart3, href: "/owner" },
   { label: "Inquiries", icon: MessageSquare, href: "/owner/inquiries" },
 ];
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
-  const { signOut, isAdmin } = useAuth();
+  const { signOut, isOwner } = useAuth();
 
-  const navItems = isAdmin
-    ? [...baseNavItems.slice(0, 4), ...ownerNavItems, baseNavItems[4]]
+  const navItems = isOwner
+    ? [...baseNavItems, ...ownerNavItems]
     : baseNavItems;
   const handleLogout = async () => {
     await signOut();
