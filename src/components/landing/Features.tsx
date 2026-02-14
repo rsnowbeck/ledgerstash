@@ -42,7 +42,7 @@ const features: Feature[] = [{
 }];
 
 export function Features() {
-  return <section id="features" className="mt-16 pt-12 lg:pt-20 pb-20 lg:pb-32 bg-card">
+  return <section id="features" className="pt-12 lg:pt-20 pb-20 lg:pb-32 bg-card">
       <div className="container">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-[2.75rem] mb-6">
