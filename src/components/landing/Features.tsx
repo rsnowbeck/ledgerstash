@@ -46,7 +46,7 @@ export function Features() {
       <div className="container">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-[2.75rem] mb-3">
-            Compliance forms &amp; signatures
+            Everything You Need for Compliance
           </h2>
           <p className="mx-auto max-w-[46rem] text-lg text-muted-foreground">From read-and-acknowledge policies to structured compliance forms and audit-ready exports, Attestly keeps your documentation organized, trackable, and defensible — without enterprise complexity. Works for employees, contractors, and vendors — even if they're not in your HR system.</p>
         </div>
