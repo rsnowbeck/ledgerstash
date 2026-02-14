@@ -11,7 +11,7 @@ export function useOrganizationSchema() {
       "name": "Attestly",
       "url": "https://getattestly.com",
       "logo": "https://getattestly.com/og-image.png",
-      "description": "Compliance signature management platform for collecting legally defensible digital signatures for policies, NDAs, and training acknowledgments.",
+      "description": "Compliance software for small businesses. Collect policy acknowledgments, employee handbook signatures, and fillable PDF forms with audit-ready tracking. No signer accounts required.",
       "foundingDate": "2025",
       "contactPoint": {
         "@type": "ContactPoint",
@@ -47,7 +47,7 @@ export function useWebsiteSchema() {
       "@type": "WebSite",
       "name": "Attestly",
       "url": "https://getattestly.com",
-      "description": "Streamline compliance acknowledgments with secure digital signatures. Track, manage, and automate policy sign-offs for your organization.",
+      "description": "Compliance software for small businesses. Streamline policy acknowledgments, employee handbook signatures, and fillable PDF compliance forms with audit-ready tracking.",
       "potentialAction": {
         "@type": "SearchAction",
         "target": "https://getattestly.com/?q={search_term_string}",
@@ -78,8 +78,9 @@ export function useSoftwareApplicationSchema() {
       "@type": "SoftwareApplication",
       "name": "Attestly",
       "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "Compliance Software",
       "operatingSystem": "Web",
-      "description": "Compliance signature management platform for collecting legally defensible digital signatures without requiring signer accounts.",
+      "description": "Compliance form software for small businesses. Collect policy acknowledgments, fillable PDF forms, and employee handbook signatures with no signer accounts required and audit-ready tracking.",
       "offers": [
         {
           "@type": "Offer",
@@ -99,9 +100,12 @@ export function useSoftwareApplicationSchema() {
         }
       ],
       "featureList": [
-        "One-click digital signatures",
-        "No signer accounts required",
-        "Audit trail with timestamps and IP addresses",
+        "Compliance form software for small businesses",
+        "Policy acknowledgment tracking",
+        "Employee acknowledgment tracking",
+        "Fillable PDF compliance forms",
+        "No-login e-signatures for internal use",
+        "Audit-ready compliance tracking with timestamps and IP addresses",
         "Automated reminder emails",
         "PDF proof export",
         "CSV recipient import",

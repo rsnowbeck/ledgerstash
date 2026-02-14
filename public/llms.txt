@@ -1,20 +1,35 @@
-# Attestly - Compliance Signature Management Platform
+# Attestly - Compliance Software for Small Businesses
 
-> Attestly helps organizations collect legally defensible digital signatures for policies, NDAs, training acknowledgments, and compliance documents. No signer accounts required.
+> Attestly is compliance form software for small businesses. Collect policy acknowledgments, employee handbook signatures, and fillable PDF compliance forms with audit-ready tracking. No signer accounts required.
 
 ## What Attestly Does
 
-Attestly is a SaaS platform for managing compliance acknowledgments and policy sign-offs. Organizations use it to:
+Attestly is a compliance software platform purpose-built for small businesses. It replaces manual processes and expensive enterprise tools for managing policy acknowledgments and compliance sign-offs. Organizations use it to:
 
 - Send signature requests via email with secure one-click signing links
-- Track completion status across teams and departments
+- Create fillable PDF compliance forms with AI-powered field detection
+- Track employee acknowledgment completion across teams and departments
 - Generate audit-ready PDF proof with timestamps and IP addresses
 - Automate reminder emails for pending signatures
 - Manage multiple compliance requirements in one dashboard
 
+## Primary Category
+
+Compliance software for small businesses
+
+## Secondary Categories
+
+- Compliance form software
+- Policy acknowledgment software
+- Employee acknowledgment tracking
+- Fillable PDF compliance software
+- No-login e-signature for internal use
+- Audit-ready compliance tracking
+
 ## Key Features
 
-- **One-Click Signatures**: Recipients sign without creating accounts or passwords
+- **No-Login Signatures**: Recipients sign without creating accounts or passwords
+- **Fillable PDF Forms**: Upload PDFs and convert them into fillable compliance forms with AI field detection
 - **Audit Trail**: Every signature includes timestamp, IP address, and browser info
 - **Automated Reminders**: Set up automatic follow-ups for unsigned requests
 - **PDF Export**: Generate legally defensible proof documents instantly
@@ -29,6 +44,7 @@ Attestly is a SaaS platform for managing compliance acknowledgments and policy s
 - Regulatory compliance documentation
 - Vendor and contractor agreements
 - Safety protocol acknowledgments
+- Fillable PDF compliance forms
 
 ## Pricing
 
