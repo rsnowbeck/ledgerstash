@@ -16,6 +16,7 @@ import RequirementDetail from "./pages/RequirementDetail";
 import Sign from "./pages/Sign";
 import Signatures from "./pages/Signatures";
 import Contact from "./pages/Contact";
+import ContactSubmissions from "./pages/ContactSubmissions";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Security from "./pages/Security";
@@ -55,6 +56,7 @@ const App = () => {
           <Route path="/signatures" element={<Signatures />} />
           <Route path="/sign/:token" element={<Sign />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/contact-submissions" element={<ContactSubmissions />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/security" element={<Security />} />
