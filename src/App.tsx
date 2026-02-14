@@ -28,6 +28,7 @@ import PolicyAcknowledgment from "./pages/seo/PolicyAcknowledgment";
 import FillablePdfForms from "./pages/seo/FillablePdfForms";
 import DigitalPolicySignature from "./pages/seo/DigitalPolicySignature";
 import DocusignAlternative from "./pages/seo/DocusignAlternative";
+import TrackPolicyAcknowledgments from "./pages/blog/TrackPolicyAcknowledgments";
 
 const queryClient = new QueryClient();
 
@@ -65,6 +66,7 @@ const App = () => {
           <Route path="/fillable-pdf-compliance-forms" element={<FillablePdfForms />} />
           <Route path="/digital-policy-signature-software" element={<DigitalPolicySignature />} />
           <Route path="/docusign-alternative-compliance" element={<DocusignAlternative />} />
+          <Route path="/blog/track-employee-policy-acknowledgments" element={<TrackPolicyAcknowledgments />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
