@@ -18,14 +18,7 @@ export function Hero() {
           <p className="mx-auto max-w-[42rem] text-base text-muted-foreground mb-4 animate-slide-up" style={{
             animationDelay: "0.08s"
           }}>
-            Attestly is compliance software designed for small and mid-sized businesses. It helps organizations distribute policies, collect legally defensible acknowledgments or fillable form data, and maintain audit-ready records without enterprise complexity.
-          </p>
-
-          {/* Subheadline */}
-          <p className="mx-auto max-w-[39rem] text-lg text-muted-foreground mb-10 animate-slide-up" style={{
-          animationDelay: "0.1s"
-        }}>
-            Collect signatures and required compliance forms for policies, onboarding, NDAs, and training — with audit-ready proof in seconds.
+            Attestly is compliance software designed for small and mid-sized businesses. Distribute policies, collect legally defensible acknowledgments or fillable form data, and maintain audit-ready records — without enterprise complexity.
           </p>
 
           {/* CTAs */}
