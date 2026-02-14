@@ -317,7 +317,7 @@ export function SignatureMetrics({ organizationId, timeRangeDays = 14 }: Signatu
             </div>
             <div>
               <h3 className="font-semibold text-foreground">Completion Rate</h3>
-              <p className="text-sm text-muted-foreground">Overall signature progress</p>
+              <p className="text-sm text-muted-foreground">Overall compliance progress</p>
             </div>
           </div>
 
@@ -325,7 +325,7 @@ export function SignatureMetrics({ organizationId, timeRangeDays = 14 }: Signatu
             <div className="flex items-end justify-between">
               <span className="text-4xl font-bold text-foreground">{completionRate}%</span>
               <span className="text-sm text-muted-foreground">
-                {metrics.completed} of {metrics.total} signed
+                {metrics.completed} of {metrics.total} completed
               </span>
             </div>
             <Progress value={completionRate} className="h-3" />
@@ -355,7 +355,7 @@ export function SignatureMetrics({ organizationId, timeRangeDays = 14 }: Signatu
             </div>
             <div>
               <h3 className="font-semibold text-foreground">Status Breakdown</h3>
-              <p className="text-sm text-muted-foreground">Signature request distribution</p>
+              <p className="text-sm text-muted-foreground">Compliance status distribution</p>
             </div>
           </div>
 
@@ -407,8 +407,8 @@ export function SignatureMetrics({ organizationId, timeRangeDays = 14 }: Signatu
                 <Activity className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold text-foreground">{effectiveDays}-Day Activity</h3>
-                <p className="text-sm text-muted-foreground">Signatures sent vs completed</p>
+                <h3 className="font-semibold text-foreground">Compliance Activity ({effectiveDays} days)</h3>
+                <p className="text-sm text-muted-foreground">Completions vs pending</p>
               </div>
             </div>
 
@@ -476,7 +476,7 @@ export function SignatureMetrics({ organizationId, timeRangeDays = 14 }: Signatu
               </div>
               <div>
                 <h3 className="font-semibold text-foreground">Top Requirements</h3>
-                <p className="text-sm text-muted-foreground">By signature volume</p>
+                <p className="text-sm text-muted-foreground">By completion volume</p>
               </div>
             </div>
 

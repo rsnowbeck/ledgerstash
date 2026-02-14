@@ -215,7 +215,7 @@ export default function Dashboard() {
     }
     if (stats.overdueSignatures > 0) {
       return {
-        title: `${stats.overdueSignatures} overdue signature${stats.overdueSignatures !== 1 ? 's' : ''}`,
+        title: `${stats.overdueSignatures} overdue completion${stats.overdueSignatures !== 1 ? 's' : ''}`,
         description: "Send reminders to recipients who haven't responded",
         action: "/signatures?status=overdue",
         buttonText: "View Overdue",
@@ -225,7 +225,7 @@ export default function Dashboard() {
     }
     if (stats.pendingSignatures > 0) {
       return {
-        title: `${stats.pendingSignatures} pending signature${stats.pendingSignatures !== 1 ? 's' : ''}`,
+        title: `${stats.pendingSignatures} pending completion${stats.pendingSignatures !== 1 ? 's' : ''}`,
         description: "Track progress and send reminders as needed",
         action: "/signatures?status=pending",
         buttonText: "View Pending",
@@ -273,7 +273,7 @@ export default function Dashboard() {
       clickAction: 'requirements',
     },
     { 
-      label: "Pending Signatures", 
+      label: "Pending Completions", 
       value: stats.pendingSignatures.toString(), 
       icon: Clock, 
       change: stats.overdueSignatures > 0 
@@ -286,7 +286,7 @@ export default function Dashboard() {
       label: "Compliance Rate", 
       value: stats.complianceRate !== null ? `${stats.complianceRate}%` : "—", 
       icon: BarChart3, 
-      change: stats.complianceRate !== null ? "Overall completion" : "No data yet",
+      change: stats.complianceRate !== null ? "Overall compliance completion" : "No data yet",
       clickAction: 'compliance',
     },
   ];
