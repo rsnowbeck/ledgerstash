@@ -97,11 +97,26 @@ export function useAuth(options: UseAuthOptions = {}) {
     staleTime: 5 * 60 * 1000,
   });
 
+  const { data: isOwner = false } = useQuery({
+    queryKey: ["user-is-owner", authState.user?.id],
+    queryFn: async () => {
+      if (!authState.user) return false;
+      const { data } = await supabase.rpc("has_role", {
+        _user_id: authState.user.id,
+        _role: "owner",
+      });
+      return !!data;
+    },
+    enabled: !!authState.user,
+    staleTime: 5 * 60 * 1000,
+  });
+
   return { 
     user: authState.user, 
     session: authState.session, 
     loading: authState.loading, 
     isAdmin,
+    isOwner,
     signOut 
   };
 }
