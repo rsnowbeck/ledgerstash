@@ -14,15 +14,15 @@ const features: Feature[] = [{
 }, {
   icon: FileText,
   title: "Flexible Requirements",
-  description: "Create one-time or recurring compliance requirements. Upload documents or turn PDFs into fillable forms with required fields, dates, and signatures — all in one workflow."
+  description: "Create one-time or recurring compliance requirements. Attach policies for read-and-acknowledge workflows or upload a PDF and turn it into a fillable form with required fields, dates, and signatures — all in one streamlined process."
 }, {
   icon: Send,
   title: "Secure Signing Links",
-  description: "Generate unique, single-use signing links and send them instantly. Links are secure, trackable, and expire automatically after completion."
+  description: "Generate unique, single-use signing links and send them instantly. Links are secure, trackable, and automatically expire after completion."
 }, {
   icon: Clock,
   title: "No-Login Completion",
-  description: "Recipients review, complete required fields, and sign — no accounts, no passwords, no friction."
+  description: "Recipients review policies, complete required fields when needed, and sign — no accounts, no passwords, no friction."
 }, {
   icon: BarChart3,
   title: "Real-Time Dashboard",
@@ -30,7 +30,7 @@ const features: Feature[] = [{
 }, {
   icon: Bell,
   title: "Automated Reminders",
-  description: "Automatically follow up with recipients who haven't completed their forms or signatures — so nothing slips through the cracks."
+  description: "Automatically follow up with recipients who haven't completed required forms or acknowledgments so nothing slips through the cracks."
 }, {
   icon: Download,
   title: "Structured Exports & Audit Proof",
@@ -48,7 +48,7 @@ export function Features() {
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-4">
             Everything you need to manage compliance
           </h2>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">From compliance forms and signatures to structured audit exports, Attestly keeps your documentation organized, trackable, and defensible — without enterprise complexity. Works for employees, contractors, and vendors — even if they're not in your HR system.</p>
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">From read-and-acknowledge policies to structured compliance forms and audit-ready exports, Attestly keeps your documentation organized, trackable, and defensible — without enterprise complexity. Works for employees, contractors, and vendors — even if they're not in your HR system.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
