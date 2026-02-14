@@ -432,12 +432,6 @@ export default function RequirementDetail() {
                 Edit
               </Button>
             )}
-            {!isEditing && requirement.attachment_url && requirement.attachment_name?.endsWith(".pdf") && (
-              <Button variant="outline" onClick={() => { setShowFormBuilder(true); setActiveTab("form"); }}>
-                <Wand2 className="h-4 w-4 mr-2" />
-                {formTemplate ? "Edit Form" : "Create Form"}
-              </Button>
-            )}
           </div>
         </div>
       </div>
@@ -542,6 +536,28 @@ export default function RequirementDetail() {
               </div>
               <Download className="h-4 w-4 text-muted-foreground" />
             </a>
+
+            {/* Inline fillable form prompt for PDFs without a form template */}
+            {requirement.attachment_name?.toLowerCase().endsWith(".pdf") && !formTemplate && !showFormBuilder && (
+              <div className="mt-4 flex items-center gap-3 p-3 rounded-lg border border-accent/20 bg-accent/5">
+                <div className="h-8 w-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                  <Wand2 className="h-4 w-4 text-accent" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-foreground">This PDF is attached as <span className="font-medium">read-only</span>.</p>
+                  <p className="text-xs text-muted-foreground">Want to collect responses with fillable fields?</p>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => { setShowFormBuilder(true); setActiveTab("form"); }}
+                  className="flex-shrink-0"
+                >
+                  <Wand2 className="h-3.5 w-3.5 mr-1.5" />
+                  Create Fillable Form
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </div>
