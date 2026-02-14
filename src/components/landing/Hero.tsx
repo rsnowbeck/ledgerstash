@@ -12,7 +12,7 @@ export function Hero() {
           </div>
 
           {/* Headline */}
-          <h1 className="text-[2.1rem] font-extrabold tracking-tight text-foreground sm:text-[3.2rem] lg:text-[3.8rem] mb-5 animate-slide-up">Compliance <span className="text-accent font-bold">Simplified.</span></h1>
+          <h1 className="text-[2.1rem] font-extrabold tracking-tight leading-[1.12] text-foreground sm:text-[3.2rem] lg:text-[3.8rem] mb-5 animate-slide-up">Compliance <span className="text-accent font-bold">Simplified.</span></h1>
 
           {/* Subheadline */}
           <p className="mx-auto max-w-[39rem] text-lg text-muted-foreground mb-10 animate-slide-up" style={{
