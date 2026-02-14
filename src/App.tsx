@@ -23,6 +23,11 @@ import Pricing from "./pages/Pricing";
 import Settings from "./pages/Settings";
 import AcceptInvite from "./pages/AcceptInvite";
 import NotFound from "./pages/NotFound";
+import ComplianceSoftware from "./pages/seo/ComplianceSoftware";
+import PolicyAcknowledgment from "./pages/seo/PolicyAcknowledgment";
+import FillablePdfForms from "./pages/seo/FillablePdfForms";
+import DigitalPolicySignature from "./pages/seo/DigitalPolicySignature";
+import DocusignAlternative from "./pages/seo/DocusignAlternative";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +60,11 @@ const App = () => {
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/accept-invite" element={<AcceptInvite />} />
+          <Route path="/compliance-software-small-business" element={<ComplianceSoftware />} />
+          <Route path="/policy-acknowledgment-software" element={<PolicyAcknowledgment />} />
+          <Route path="/fillable-pdf-compliance-forms" element={<FillablePdfForms />} />
+          <Route path="/digital-policy-signature-software" element={<DigitalPolicySignature />} />
+          <Route path="/docusign-alternative-compliance" element={<DocusignAlternative />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

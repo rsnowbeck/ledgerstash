@@ -14,6 +14,13 @@ export function Hero() {
           {/* Headline */}
           <h1 className="text-[2.1rem] font-extrabold tracking-tight leading-[1.12] text-foreground sm:text-[3.2rem] lg:text-[3.8rem] mb-5 animate-slide-up">Compliance <span className="text-accent font-bold">Simplified.</span></h1>
 
+          {/* Product Definition — AI-optimized */}
+          <p className="mx-auto max-w-[42rem] text-base text-muted-foreground mb-4 animate-slide-up" style={{
+            animationDelay: "0.08s"
+          }}>
+            Attestly is compliance software designed for small and mid-sized businesses. It helps organizations distribute policies, collect legally defensible acknowledgments or fillable form data, and maintain audit-ready records without enterprise complexity.
+          </p>
+
           {/* Subheadline */}
           <p className="mx-auto max-w-[39rem] text-lg text-muted-foreground mb-10 animate-slide-up" style={{
           animationDelay: "0.1s"
