@@ -34,7 +34,9 @@ import {
   CheckCircle2,
   RefreshCw,
   X,
-  Paperclip
+  Paperclip,
+  Wand2,
+  FileText as FileTextIcon,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -80,6 +82,9 @@ export default function Requirements() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [bulkActionLoading, setBulkActionLoading] = useState(false);
   const [recipientCount, setRecipientCount] = useState(0);
+  const [pdfPromptOpen, setPdfPromptOpen] = useState(false);
+  const [createdRequirementId, setCreatedRequirementId] = useState<string | null>(null);
+  const [createdRequirementTitle, setCreatedRequirementTitle] = useState("");
 
   // Plan limits (we need recipient count for the hook, but use requirement count for limits)
   const planLimits = usePlanLimits(organization, recipientCount, requirements.length);
@@ -270,6 +275,15 @@ export default function Requirements() {
 
       toast.success(`Created requirement: ${title}`);
       setDialogOpen(false);
+      
+      // If a PDF was uploaded, show the fillable form prompt
+      const isPdf = attachmentFile?.name?.toLowerCase().endsWith(".pdf");
+      if (isPdf && newReq) {
+        setCreatedRequirementId(newReq.id);
+        setCreatedRequirementTitle(title);
+        setPdfPromptOpen(true);
+      }
+      
       setTitle("");
       setDescription("");
       setFrequency("one-time");
@@ -580,6 +594,50 @@ export default function Requirements() {
           </DialogContent>
         </Dialog>
       </div>
+
+      {/* PDF Fillable Form Prompt */}
+      <Dialog open={pdfPromptOpen} onOpenChange={setPdfPromptOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Wand2 className="h-5 w-5 text-accent" />
+              Fillable Form Detected
+            </DialogTitle>
+            <DialogDescription>
+              Your PDF "{createdRequirementTitle}" can be converted into a fillable form. AI will detect input fields like names, signatures, dates, and checkboxes.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 pt-2">
+            <Button
+              variant="hero"
+              onClick={() => {
+                setPdfPromptOpen(false);
+                if (createdRequirementId) {
+                  navigate(`/requirements/${createdRequirementId}?form=detect`);
+                }
+              }}
+            >
+              <Wand2 className="h-4 w-4 mr-2" />
+              Detect Fields
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setPdfPromptOpen(false);
+                if (createdRequirementId) {
+                  navigate(`/requirements/${createdRequirementId}`);
+                }
+              }}
+            >
+              <FileTextIcon className="h-4 w-4 mr-2" />
+              Keep as Read-Only
+            </Button>
+            <p className="text-xs text-muted-foreground text-center">
+              You can always convert to a fillable form later from the requirement detail page.
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Search and Filters */}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
