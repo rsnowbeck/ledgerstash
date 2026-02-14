@@ -20,20 +20,26 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
-const navItems = [
+const baseNavItems = [
   { label: "Dashboard", icon: BarChart3, href: "/dashboard" },
   { label: "Recipients", icon: Users, href: "/recipients" },
   { label: "Requirements", icon: FileText, href: "/requirements" },
   { label: "Signatures", icon: FileSignature, href: "/signatures" },
-  { label: "Inquiries", icon: MessageSquare, href: "/contact-submissions" },
   { label: "Settings", icon: Settings, href: "/settings" },
+];
+
+const adminNavItems = [
+  { label: "Inquiries", icon: MessageSquare, href: "/contact-submissions" },
 ];
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
-  const { signOut } = useAuth();
+  const { signOut, isAdmin } = useAuth();
 
+  const navItems = isAdmin
+    ? [...baseNavItems.slice(0, 4), ...adminNavItems, baseNavItems[4]]
+    : baseNavItems;
   const handleLogout = async () => {
     await signOut();
     toast.success("Logged out successfully");
