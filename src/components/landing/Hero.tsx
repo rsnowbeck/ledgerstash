@@ -65,9 +65,9 @@ export function Hero() {
             <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent mb-4">
               <FileCheck className="h-6 w-6" />
             </div>
-            <h3 className="font-semibold text-foreground mb-2">One-Click Signatures</h3>
+            <h3 className="font-semibold text-foreground mb-2">Forms & Signatures</h3>
             <p className="text-sm text-muted-foreground">
-              Signers acknowledge in seconds. No accounts, no passwords.
+              Upload a PDF, auto-detect fields, and collect required information and signatures in one seamless step.
             </p>
           </div>
 
@@ -77,7 +77,7 @@ export function Hero() {
             </div>
             <h3 className="font-semibold text-foreground mb-2">Audit-Ready Proof</h3>
             <p className="text-sm text-muted-foreground">
-              Timestamped records with IP tracking. Export PDFs instantly.
+              Timestamped records with IP tracking, structured response storage, and instant PDF exports.
             </p>
           </div>
 
@@ -87,7 +87,7 @@ export function Hero() {
             </div>
             <h3 className="font-semibold text-foreground mb-2">Automated Reminders</h3>
             <p className="text-sm text-muted-foreground">
-              Never chase signatures again. We remind them for you.
+              Automatically follow up on incomplete forms and acknowledgments so nothing falls through the cracks.
             </p>
           </div>
         </div>
