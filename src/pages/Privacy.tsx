@@ -124,11 +124,11 @@ export default function Privacy() {
                 Questions about privacy?
               </p>
               <a 
-                href="mailto:hello@attestly.com" 
+                href="mailto:hello@getattestly.com" 
                 className="text-primary hover:underline inline-flex items-center gap-2"
               >
                 <Mail className="h-4 w-4" />
-                hello@attestly.com
+                hello@getattestly.com
               </a>
             </section>
           </div>

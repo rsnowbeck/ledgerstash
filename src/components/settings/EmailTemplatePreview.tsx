@@ -268,7 +268,7 @@ function EmailFooter() {
   return (
     <div className="pt-4 border-t border-border text-center text-xs text-muted-foreground">
       <p>If you didn't expect this email, you can safely ignore it.</p>
-      <p className="mt-2">Need help? Contact <span className="text-primary">hello@attestly.com</span></p>
+      <p className="mt-2">Need help? Contact <span className="text-primary">hello@getattestly.com</span></p>
       <p className="mt-2 text-[11px] text-muted-foreground/60">
         Powered by <span className="text-muted-foreground/80">Attestly</span>
       </p>

@@ -126,7 +126,7 @@ const handler = async (req: Request): Promise<Response> => {
           <tr>
             <td style="padding: 0 32px 32px 32px;">
               <p style="margin: 0; font-size: 12px; line-height: 18px; color: #a1a1aa;">
-                This invitation will expire in 7 days. If you have questions, contact Support at <a href="mailto:hello@attestly.com" style="color: #3b82f6;">hello@attestly.com</a>.
+                This invitation will expire in 7 days. If you have questions, contact Support at <a href="mailto:hello@getattestly.com" style="color: #3b82f6;">hello@getattestly.com</a>.
               </p>
               <p style="margin: 8px 0 0 0; font-size: 12px; line-height: 18px; color: #a1a1aa;">
                 If you didn't expect this invitation, you can safely ignore this email.
@@ -141,7 +141,7 @@ const handler = async (req: Request): Promise<Response> => {
                 Attestly — Compliance signature management
               </p>
               <p style="margin: 8px 0 0 0; font-size: 11px; color: #d4d4d8;">
-                Support: <a href="mailto:hello@attestly.com" style="color: #a1a1aa;">hello@attestly.com</a>
+                Support: <a href="mailto:hello@getattestly.com" style="color: #a1a1aa;">hello@getattestly.com</a>
               </p>
             </td>
           </tr>

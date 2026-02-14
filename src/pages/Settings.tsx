@@ -208,7 +208,7 @@ export default function Settings() {
 
     setDeleting(true);
     try {
-      toast.info("Account deletion request submitted. Please contact support@attestly.com to complete the process.");
+      toast.info("Account deletion request submitted. Please contact support@getattestly.com to complete the process.");
       await signOut();
     } catch (error: any) {
       console.error("Error deleting account:", error);

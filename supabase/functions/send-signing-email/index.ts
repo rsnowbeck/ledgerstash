@@ -371,7 +371,7 @@ const handler = async (req: Request): Promise<Response> => {
                         If you didn't expect this email, you can safely ignore it.
                       </p>
                       <p style="margin: 8px 0 0; font-size: 12px; color: #a1a1aa;">
-                        Need help? Contact <a href="mailto:hello@attestly.com" style="color: #71717a;">hello@attestly.com</a>
+                        Need help? Contact <a href="mailto:hello@getattestly.com" style="color: #71717a;">hello@getattestly.com</a>
                       </p>
                       <p style="margin: 12px 0 0; font-size: 11px; color: #d4d4d8;">
                         Powered by <a href="https://getattestly.com" style="color: #a1a1aa; text-decoration: none;">Attestly</a>

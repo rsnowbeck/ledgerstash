@@ -15,7 +15,7 @@ export function useOrganizationSchema() {
       "foundingDate": "2025",
       "contactPoint": {
         "@type": "ContactPoint",
-        "email": "hello@attestly.com",
+        "email": "hello@getattestly.com",
         "contactType": "customer support",
         "availableLanguage": "English"
       },

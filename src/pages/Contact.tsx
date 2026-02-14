@@ -166,9 +166,9 @@ We're here to help.</p>
           <div className="mt-8 text-center">
             <p className="text-sm text-muted-foreground">
               Prefer email?{" "}
-              <a href="mailto:hello@attestly.com" className="text-primary hover:underline inline-flex items-center gap-1">
+              <a href="mailto:hello@getattestly.com" className="text-primary hover:underline inline-flex items-center gap-1">
                 <Mail className="h-3 w-3" />
-                hello@attestly.com
+                hello@getattestly.com
               </a>
             </p>
           </div>
