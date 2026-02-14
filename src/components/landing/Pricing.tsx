@@ -88,22 +88,22 @@ const plans: {
 
 export function Pricing() {
   return (
-    <section id="pricing" className="py-20 lg:py-32 bg-card">
+    <section id="pricing" className="pt-12 lg:pt-20 pb-20 lg:pb-32 bg-card">
       <div className="container">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-4">
-            Pricing for small businesses
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-[2.75rem] mb-4">
+            Simple, transparent pricing
           </h2>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+          <p className="mx-auto max-w-[46rem] text-base text-muted-foreground">
             Start free for 14 days. No credit card required. Cancel anytime.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-stretch">
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={plan.featured ? "card-pricing-featured" : "card-pricing"}
+              className={`${plan.featured ? "card-pricing-featured" : "card-pricing"} flex flex-col`}
             >
               {plan.featured && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
@@ -126,7 +126,7 @@ export function Pricing() {
                 </p>
               </div>
 
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-3 mb-8 flex-1">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-center gap-3 text-sm">
                     <Check className="h-4 w-4 text-accent flex-shrink-0" />
@@ -163,9 +163,14 @@ export function Pricing() {
           ))}
         </div>
 
-        <p className="text-center text-sm text-muted-foreground mt-8">
-          All plans include SSL encryption, encrypted storage, daily backups, and 99.9% uptime SLA.
-        </p>
+        <div className="text-center mt-10">
+          <p className="text-sm text-muted-foreground mb-1">
+            Still have questions?
+          </p>
+          <p className="text-sm text-muted-foreground">
+            See our <a href="#faq" className="text-accent hover:underline">FAQ</a> or start your free trial — no commitment required.
+          </p>
+        </div>
       </div>
     </section>
   );
