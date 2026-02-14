@@ -29,13 +29,13 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-20 lg:py-32">
+    <section id="how-it-works" className="pt-12 lg:pt-20 pb-20 lg:pb-32">
       <div className="container">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-4">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-[2.75rem] mb-3">
             How Attestly simplifies compliance
           </h2>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+          <p className="mx-auto max-w-[46rem] text-lg text-muted-foreground">
             Get started in minutes. No complex setup. No training required.
           </p>
         </div>
