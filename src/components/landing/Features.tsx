@@ -48,7 +48,7 @@ export function Features() {
           <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-[2.75rem] mb-3">
             Everything You Need for Compliance
           </h2>
-          <p className="mx-auto max-w-[46rem] text-lg text-muted-foreground">From read-and-acknowledge policies to structured compliance forms and audit-ready exports, Attestly keeps your documentation organized, trackable, and defensible — without enterprise complexity. Works for employees, contractors, and vendors — even if they're not in your HR system.</p>
+          <p className="mx-auto max-w-[46rem] text-lg text-muted-foreground">From read-and-acknowledge policies to structured compliance forms and audit-ready exports, Attestly keeps your documentation organized, trackable, and defensible — without enterprise complexity.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
