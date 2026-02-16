@@ -4,6 +4,7 @@ import { PageSEO } from "@/components/seo/PageSEO";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, CheckCircle2, Clock, Shield, FileCheck, Download } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export default function EmployeeAcknowledgments() {
   return (
@@ -150,20 +151,20 @@ export default function EmployeeAcknowledgments() {
             {/* FAQ */}
             <section className="mb-14">
               <h2 className="text-2xl font-bold text-foreground mb-6">Frequently Asked Questions</h2>
-              <dl className="space-y-6">
-                <div>
-                  <dt className="font-medium text-foreground mb-1">Can I require recurring annual acknowledgments?</dt>
-                  <dd className="text-muted-foreground">Yes. You can schedule recurring acknowledgment cycles so employees are automatically notified when renewal is required.</dd>
-                </div>
-                <div>
-                  <dt className="font-medium text-foreground mb-1">What happens when an employee leaves the company?</dt>
-                  <dd className="text-muted-foreground">You can archive recipients while keeping historical completion records intact for reporting or audits.</dd>
-                </div>
-                <div>
-                  <dt className="font-medium text-foreground mb-1">Can I export acknowledgment records for audits?</dt>
-                  <dd className="text-muted-foreground">Yes. Every completed acknowledgment includes timestamped activity logs, IP tracking, and downloadable PDF proof.</dd>
-                </div>
-              </dl>
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="recurring">
+                  <AccordionTrigger>Can I require recurring annual acknowledgments?</AccordionTrigger>
+                  <AccordionContent>Yes. You can schedule recurring acknowledgment cycles so employees are automatically notified when renewal is required.</AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="offboarding">
+                  <AccordionTrigger>What happens when an employee leaves the company?</AccordionTrigger>
+                  <AccordionContent>You can archive recipients while keeping historical completion records intact for reporting or audits.</AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="export">
+                  <AccordionTrigger>Can I export acknowledgment records for audits?</AccordionTrigger>
+                  <AccordionContent>Yes. Every completed acknowledgment includes timestamped activity logs, IP tracking, and downloadable PDF proof.</AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </section>
 
             {/* CTA */}
