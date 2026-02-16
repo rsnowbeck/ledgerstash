@@ -4,21 +4,21 @@ import { Link } from "react-router-dom";
 const useCases = [
   {
     icon: Building2,
-    title: "HR & Internal Policy Tracking",
+    title: "Track Employee Acknowledgments",
     description:
       "Track employee acknowledgments, recurring policy updates, and proof of completion — without chasing signatures or managing spreadsheets.",
     link: "/signup",
   },
   {
     icon: Handshake,
-    title: "Contractors & Vendor Documentation",
+    title: "Manage Contractor & Vendor Agreements",
     description:
       "Collect agreements, certifications, and confirmations from contractors and vendors in one organized, trackable system.",
     link: "/signup",
   },
   {
     icon: FileText,
-    title: "Client Intake & Consent Forms",
+    title: "Simplify Client Intake Forms",
     description:
       "Send intake forms, waivers, and agreements before appointments — and keep structured records with built-in signature proof.",
     link: "/signup",
