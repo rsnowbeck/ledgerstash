@@ -8,7 +8,7 @@ export function Hero() {
           {/* Badge */}
           <div className="inline-flex -translate-y-2 items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-sm text-muted-foreground mb-8 -mt-4 animate-fade-in">
             <Shield className="h-4 w-4 text-accent" />
-            <span>Audit-ready compliance, without the complexity</span>
+            <span>Built-in Audit-Ready Proof</span>
           </div>
 
           {/* Headline */}
