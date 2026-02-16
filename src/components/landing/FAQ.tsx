@@ -8,44 +8,44 @@ import { useEffect } from "react";
 
 const faqs = [
   {
-    question: "What is compliance software for small businesses?",
+    question: "What is document collection software?",
     answer:
-      "Compliance software helps businesses distribute policies, collect acknowledgments or required form data, and maintain audit-ready records. Attestly simplifies this process by combining fillable forms, signatures, and structured exports in one streamlined platform — purpose-built for small and mid-sized businesses without enterprise complexity.",
+      "Document collection software helps businesses send, track, and manage signed documents and structured forms in one place. Instead of emailing PDFs and manually tracking responses, you can see who has completed a document, who hasn't, and download organized records anytime.\n\nAttestly combines document sending, signature capture, reminders, and audit-ready proof in one simple workflow.",
   },
   {
-    question: "What is policy acknowledgment software?",
+    question: "What types of documents can I send with Attestly?",
     answer:
-      "Policy acknowledgment software allows businesses to send digital policies to employees or contractors and track legally defensible acknowledgment. Instead of chasing email confirmations or paper signatures, Attestly provides timestamped proof with exportable records, eliminating manual tracking entirely.",
+      "You can send a wide range of documents, including employee policies and acknowledgments, client intake forms, vendor agreements, waivers and consent forms, contracts, and read-and-acknowledge documents.\n\nAttestly works for internal teams and external recipients alike.",
   },
   {
-    question: "Can I create fillable compliance forms?",
+    question: "Can I create fillable forms from a PDF?",
     answer:
-      "Yes. You can upload a PDF and convert it into a fillable compliance form with required fields and signatures. AI-powered field detection identifies text inputs, checkboxes, dates, and signature areas automatically. Structured responses are securely stored and exportable via CSV.",
+      "Yes. Upload a PDF and Attestly can auto-detect form fields to quickly convert it into a fillable document. You can add required fields, dates, and signatures in minutes — no complex setup required.\n\nAll responses are stored in a structured format and tied to a secure activity log.",
   },
   {
     question: "Is Attestly a replacement for DocuSign?",
     answer:
-      "Attestly is purpose-built for internal compliance workflows, not contract negotiation. It's ideal for policy acknowledgments, onboarding forms, and audit documentation without enterprise complexity. Unlike DocuSign, recipients don't need accounts or passwords — they simply click a secure link and sign.",
+      "Attestly is designed for businesses that need simple, structured document tracking with built-in proof — without the complexity of enterprise contract platforms.\n\nIf you primarily need lightweight document requests, signature tracking, automated reminders, and organized records, Attestly is often a simpler and more cost-effective option.",
   },
   {
-    question: "Are digital signatures legally binding for compliance?",
+    question: "Are digital signatures legally binding?",
     answer:
-      "Yes. Electronic signatures are legally recognized in most jurisdictions under laws like the ESIGN Act and UETA in the United States.\n\nAttestly captures timestamped signatures, IP addresses, and a full audit trail to provide defensible proof of acknowledgment or completion.",
+      "Yes. Electronic signatures are legally binding in most jurisdictions under laws such as the ESIGN Act and UETA in the United States.\n\nAttestly includes timestamping, IP tracking, and full activity logs to help provide defensible proof of document completion.",
   },
   {
-    question: "Can I export records for audits?",
+    question: "Can I export records and activity logs?",
     answer:
-      "Yes. You can download completed PDF copies and export structured response data via CSV — complete with timestamps, IP tracking, and full audit metadata. Attestly is designed to produce audit-ready documentation that meets regulatory requirements.",
+      "Yes. You can download completed PDF copies, export structured response data via CSV, and access full activity logs with timestamps and IP tracking at any time.\n\nThis makes it easy to provide documentation if proof is ever required.",
   },
   {
     question: "Do signers need to create an account?",
     answer:
-      "No. Recipients click a secure link, review the document or complete required fields, and sign. No accounts or passwords required. This no-login approach removes friction and improves completion rates.",
+      "No. Recipients can review documents, complete required fields, and sign securely without creating an account or password.\n\nThis reduces friction and improves completion rates.",
   },
   {
     question: "Is Attestly secure?",
     answer:
-      "Yes. Attestly uses HTTPS encryption, secure tokens, encrypted storage, and system safeguards to protect your compliance data. Audit logs and structured exports ensure defensible recordkeeping.",
+      "Yes. Attestly uses encrypted data storage and secure infrastructure to protect your documents and recipient information.\n\nSecurity and data protection are built into every step of the workflow.",
   },
 ];
 
