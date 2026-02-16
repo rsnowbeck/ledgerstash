@@ -77,7 +77,7 @@ export function Hero() {
             </div>
             <h3 className="font-semibold text-foreground mb-2">Audit-Ready Proof</h3>
             <p className="text-sm text-muted-foreground">
-              Timestamped records with IP tracking, organized response storage, and exportable completion reports.
+              Timestamped records with IP tracking, organized document storage, and exportable completion reports.
             </p>
           </div>
 
