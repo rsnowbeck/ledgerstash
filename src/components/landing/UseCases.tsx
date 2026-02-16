@@ -13,14 +13,14 @@ const useCases = [
     icon: Handshake,
     title: "Contractors & Vendor Documentation",
     description:
-      "Collect agreements, certifications, and confirmations from external partners in one organized, trackable system.",
+      "Collect agreements, certifications, and confirmations from contractors and vendors in one organized, trackable system.",
     link: "/signup",
   },
   {
     icon: FileText,
     title: "Client Intake & Consent Forms",
     description:
-      "Send intake forms, waivers, and agreements before appointments — and keep structured records with built-in proof.",
+      "Send intake forms, waivers, and agreements before appointments — and keep structured records with built-in signature proof.",
     link: "/signup",
   },
 ];
@@ -34,7 +34,7 @@ export function UseCases() {
             Built for How You Work
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed">
-            Attestly adapts to your workflow — whether you're managing internal
+            Attestly adapts to your workflow — whether you're managing employee
             policies, contractor documentation, or client forms.
           </p>
         </div>
