@@ -37,7 +37,7 @@ const plans: {
     period: "/month",
     description: "For growing businesses that need structured document tracking, reporting, and team collaboration.",
     features: [
-      "Up to 100 recipients",
+      "Up to 100 active recipients",
       "Unlimited requirements",
       "Read-and-acknowledge workflows",
       "Fillable PDF forms",
