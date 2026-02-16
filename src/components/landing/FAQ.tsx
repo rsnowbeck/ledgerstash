@@ -15,7 +15,7 @@ const faqs = [
   {
     question: "What types of documents can I send with Attestly?",
     answer:
-      "You can send a wide range of documents, including employee policies and acknowledgments, client intake forms, vendor agreements, waivers and consent forms, contracts, and read-and-acknowledge documents.\n\nAttestly works for internal teams and external recipients alike.",
+      "You can send a wide range of documents, including:\n\n• Employee policies and handbook acknowledgments\n• Contractor and vendor agreements\n• Internal security or compliance confirmations\n• Client intake forms\n• Waivers and consent forms\n• Read-and-acknowledge documents",
   },
   {
     question: "Can I create fillable forms from a PDF?",
