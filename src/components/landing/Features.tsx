@@ -49,7 +49,7 @@ export function Features() {
             Everything You Need to Send, Track & Prove Documents
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed mb-12">
-            From employee policies to client intake forms, Attestly keeps your documents organized, trackable, and easy to prove — without enterprise complexity.
+            From internal policies and contractor agreements to structured form workflows, Attestly keeps your documents organized, trackable, and easy to prove — without enterprise complexity.
           </p>
         </div>
 
