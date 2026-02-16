@@ -47,6 +47,11 @@ const faqs = [
     answer:
       "Yes. Attestly uses encrypted data storage and secure infrastructure to protect your documents and recipient information.\n\nSecurity and data protection are built into every step of the workflow.",
   },
+  {
+    question: "What counts as an active recipient?",
+    answer:
+      "An active recipient is anyone currently stored in your account or with an open document request — including employees, contractors, vendors, clients, or patients. Archived recipients do not count toward your limit.",
+  },
 ];
 
 // Generate FAQ Schema for AI and search engines

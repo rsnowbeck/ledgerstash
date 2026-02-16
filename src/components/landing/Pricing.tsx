@@ -18,7 +18,7 @@ const plans: {
     period: "/month",
     description: "For individuals and small teams getting started with document collection and signature tracking.",
     features: [
-      "Up to 10 recipients",
+      "Up to 10 active recipients",
       "5 active requirements",
       "Read-and-acknowledge workflows",
       "Pre-built document and policy templates",
