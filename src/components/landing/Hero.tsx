@@ -18,7 +18,7 @@ export function Hero() {
           <p className="mx-auto max-w-[42rem] text-base text-muted-foreground mb-8 animate-slide-up" style={{
             animationDelay: "0.08s"
           }}>
-            Attestly helps small and mid-sized businesses send, collect, and track completed and signed documents — from employee policies to client intake forms — with built-in audit-ready proof and automated follow-ups.
+            Attestly helps small and mid-sized businesses send, collect, and track completed and signed documents — from employee policies and contractor agreements to client intake forms — with built-in audit-ready proof and automated follow-ups.
           </p>
 
           {/* CTAs */}
