@@ -67,7 +67,7 @@ export function Hero() {
             </div>
             <h3 className="font-semibold text-foreground mb-2">Forms & Signatures</h3>
             <p className="text-sm text-muted-foreground">
-              Upload a PDF, auto-detect fields, and collect required information and signatures in one structured workflow.
+              Upload a PDF, auto-detect fields, and collect required information, form responses, and signatures in one structured workflow.
             </p>
           </div>
 
