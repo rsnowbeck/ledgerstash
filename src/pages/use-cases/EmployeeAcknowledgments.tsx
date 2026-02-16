@@ -147,6 +147,25 @@ export default function EmployeeAcknowledgments() {
               </p>
             </section>
 
+            {/* FAQ */}
+            <section className="mb-14">
+              <h2 className="text-2xl font-bold text-foreground mb-6">Frequently Asked Questions</h2>
+              <dl className="space-y-6">
+                <div>
+                  <dt className="font-medium text-foreground mb-1">Can I require recurring annual acknowledgments?</dt>
+                  <dd className="text-muted-foreground">Yes. You can schedule recurring acknowledgment cycles so employees are automatically notified when renewal is required.</dd>
+                </div>
+                <div>
+                  <dt className="font-medium text-foreground mb-1">What happens when an employee leaves the company?</dt>
+                  <dd className="text-muted-foreground">You can archive recipients while keeping historical completion records intact for reporting or audits.</dd>
+                </div>
+                <div>
+                  <dt className="font-medium text-foreground mb-1">Can I export acknowledgment records for audits?</dt>
+                  <dd className="text-muted-foreground">Yes. Every completed acknowledgment includes timestamped activity logs, IP tracking, and downloadable PDF proof.</dd>
+                </div>
+              </dl>
+            </section>
+
             {/* CTA */}
             <section className="text-center py-8">
               <h2 className="text-2xl font-bold text-foreground mb-4">Ready to simplify employee acknowledgment tracking?</h2>
