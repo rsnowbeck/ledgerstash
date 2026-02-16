@@ -3,7 +3,7 @@ import { Footer } from "@/components/landing/Footer";
 import { PageSEO } from "@/components/seo/PageSEO";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, CheckCircle2, AlertTriangle, Shield, Clock, FileCheck, Download, Users } from "lucide-react";
+import { ArrowRight, CheckCircle2, Clock, Shield, FileCheck, Download } from "lucide-react";
 
 export default function EmployeeAcknowledgments() {
   return (
@@ -15,155 +15,85 @@ export default function EmployeeAcknowledgments() {
         canonical="/employee-acknowledgment-tracking"
       />
       <Header />
-      <main>
-        {/* Hero */}
-        <section className="pt-28 lg:pt-40 pb-16 lg:pb-24">
-          <div className="container">
-            <div className="mx-auto max-w-3xl text-center">
-              <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl mb-6">
-                Employee Policy & Acknowledgment Tracking <span className="text-accent">for SMBs</span>
-              </h1>
-              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Manage employee policy acknowledgments, recurring document requirements, and signed confirmations in one organized system. Attestly makes it easy to send, track, and prove completion — without spreadsheets or manual follow-ups.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button variant="hero" size="xl" asChild>
-                  <Link to="/signup" className="gap-2">
-                    Start 14-Day Free Trial
-                    <ArrowRight className="h-5 w-5" />
-                  </Link>
-                </Button>
-                <Button variant="heroOutline" size="xl" asChild>
-                  <Link to="/pricing">View Pricing</Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
+      <main className="pt-28 lg:pt-40 pb-16">
+        <article className="container">
+          <div className="mx-auto max-w-3xl">
 
-        {/* Who This Is For */}
-        <section className="py-16 bg-card">
-          <div className="container">
-            <div className="mx-auto max-w-3xl">
-              <h2 className="text-2xl font-bold text-foreground mb-4">Who This Is For</h2>
-              <p className="text-muted-foreground mb-6">
-                Attestly is built for growing businesses that need structured internal document tracking without enterprise software complexity. This is especially useful for:
-              </p>
-              <ul className="space-y-3">
-                {[
-                  "HR managers at small and mid-sized businesses",
-                  "Operations leaders managing compliance documentation",
-                  "Founders overseeing internal policy distribution",
-                  "Franchise operators tracking acknowledgments across locations",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <Users className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground">{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="text-muted-foreground mt-6">
-                If you need to prove that employees received and acknowledged important documents, Attestly gives you visibility and defensible proof.
-              </p>
+            {/* Hero */}
+            <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl mb-6">
+              Employee Policy & Acknowledgment Tracking{" "}
+              <span className="text-accent">for SMBs</span>
+            </h1>
+            <p className="text-lg text-muted-foreground mb-4">
+              Managing employee policy acknowledgments shouldn't rely on spreadsheets, email reminders, or manual tracking. Attestly gives growing businesses a structured way to distribute internal documents, require acknowledgments, and maintain clear proof of completion — all in one system.
+            </p>
+            <p className="text-lg text-muted-foreground mb-8">
+              Whether you're rolling out a new handbook, updating security policies, or managing recurring confirmations, Attestly keeps everything organized and easy to verify.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 mb-16">
+              <Button variant="hero" size="xl" asChild>
+                <Link to="/signup" className="gap-2">
+                  Start Free Trial
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              </Button>
+              <Button variant="heroOutline" size="xl" asChild>
+                <Link to="/pricing">View Pricing</Link>
+              </Button>
             </div>
-          </div>
-        </section>
 
-        {/* The Challenge */}
-        <section className="py-16">
-          <div className="container">
-            <div className="mx-auto max-w-3xl">
-              <h2 className="text-2xl font-bold text-foreground mb-4">The Challenge</h2>
-              <p className="text-muted-foreground mb-6">
-                Internal document tracking often breaks down because it relies on email, spreadsheets, and manual follow-ups. Common issues include:
+            {/* Why It Breaks Down */}
+            <section className="mb-14">
+              <h2 className="text-2xl font-bold text-foreground mb-4">Why Internal Document Tracking Breaks Down</h2>
+              <p className="text-muted-foreground mb-4">
+                Most companies start with simple tools — email attachments and spreadsheets. That works at first, but as teams grow, it creates operational risk.
               </p>
-              <ul className="space-y-3">
-                {[
-                  "Employees forget to acknowledge updated policies",
-                  "Acknowledgments get buried in inboxes",
-                  "Spreadsheets become outdated or incomplete",
-                  "There's no centralized visibility",
-                  "Producing proof during audits is stressful",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <AlertTriangle className="h-5 w-5 text-warning flex-shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground">{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="text-muted-foreground mt-6 font-medium">
-                Manual systems create operational risk.
+              <p className="text-muted-foreground mb-4">
+                Policy acknowledgments get buried in inboxes. Spreadsheets fall out of date. Version control becomes unclear. And when leadership asks, "Who signed this?", the answer isn't immediate.
               </p>
-            </div>
-          </div>
-        </section>
+              <p className="text-muted-foreground font-medium">
+                The problem isn't sending documents.
+                <br />
+                It's tracking and proving completion.
+              </p>
+            </section>
 
-        {/* How Attestly Helps */}
-        <section className="py-16 bg-card">
-          <div className="container">
-            <div className="mx-auto max-w-3xl">
-              <h2 className="text-2xl font-bold text-foreground mb-4">How Attestly Helps</h2>
-              <p className="text-muted-foreground mb-6">
-                Attestly replaces scattered tracking systems with a structured workflow designed specifically for internal document management. With Attestly, you can:
+            {/* A Structured System */}
+            <section className="mb-14">
+              <h2 className="text-2xl font-bold text-foreground mb-4">A Structured System for Employee Acknowledgments</h2>
+              <p className="text-muted-foreground mb-4">
+                Attestly replaces scattered tracking systems with a purpose-built workflow for internal document management.
               </p>
-              <ul className="space-y-3">
-                {[
-                  "Upload employee handbooks and policy documents",
-                  "Require signatures and required fields",
-                  "Assign documents to individuals or groups",
-                  "Set one-time or recurring acknowledgment cycles",
-                  "Automatically remind employees who haven't completed",
-                  "Monitor completion in real time",
-                  "Export full activity logs and signed documents anytime",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground">{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="text-muted-foreground mt-6">
-                Everything stays organized in one dashboard.
+              <p className="text-muted-foreground mb-4">
+                Upload a policy or handbook once. Assign it to the appropriate employees or groups. Require a signature and any additional fields. Monitor completion in real time.
               </p>
-            </div>
-          </div>
-        </section>
+              <p className="text-muted-foreground mb-4">
+                Instead of chasing responses, you see exactly who has completed the document and who still needs to respond.
+              </p>
+              <p className="text-muted-foreground font-medium">
+                Everything lives in one organized dashboard.
+              </p>
+            </section>
 
-        {/* Recurring Acknowledgments */}
-        <section className="py-16">
-          <div className="container">
-            <div className="mx-auto max-w-3xl">
-              <h2 className="text-2xl font-bold text-foreground mb-4">Manage Recurring Policy Acknowledgments</h2>
-              <p className="text-muted-foreground mb-6">
-                Many internal documents require annual or periodic acknowledgment — such as security policies, codes of conduct, or handbook updates. Attestly allows you to:
+            {/* Recurring Requirements */}
+            <section className="mb-14">
+              <h2 className="text-2xl font-bold text-foreground mb-4">Built for Recurring Policy Requirements</h2>
+              <p className="text-muted-foreground mb-4">
+                Many internal documents aren't one-time events. Security policies, codes of conduct, and compliance confirmations often require annual or periodic acknowledgment.
               </p>
-              <ul className="space-y-3">
-                {[
-                  "Schedule recurring acknowledgment cycles",
-                  "Automatically notify employees when renewal is due",
-                  "Track completion for each cycle",
-                  "Maintain historical records over time",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground">{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="text-muted-foreground mt-6">
-                No manual resets. No separate tracking spreadsheets.
+              <p className="text-muted-foreground mb-4">
+                Attestly allows you to schedule recurring cycles so acknowledgments renew automatically. Employees are notified when action is required, and historical completion records are preserved across cycles.
               </p>
-            </div>
-          </div>
-        </section>
+              <p className="text-muted-foreground font-medium">
+                No resets. No duplicate tracking systems.
+              </p>
+            </section>
 
-        {/* Common Use Cases */}
-        <section className="py-16 bg-card">
-          <div className="container">
-            <div className="mx-auto max-w-3xl">
-              <h2 className="text-2xl font-bold text-foreground mb-4">Common Internal Document Use Cases</h2>
-              <p className="text-muted-foreground mb-6">Businesses use Attestly to manage:</p>
-              <ul className="space-y-3">
+            {/* Use Cases */}
+            <section className="mb-14">
+              <h2 className="text-2xl font-bold text-foreground mb-4">Designed for Real-World Internal Use Cases</h2>
+              <p className="text-muted-foreground mb-4">Attestly is commonly used to manage:</p>
+              <ul className="space-y-3 mb-4">
                 {[
                   "Employee handbook acknowledgments",
                   "Code of conduct confirmations",
@@ -173,39 +103,34 @@ export default function EmployeeAcknowledgments() {
                   "Workplace safety confirmations",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <FileCheck className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                    <CheckCircle2 className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
                     <span className="text-muted-foreground">{item}</span>
                   </li>
                 ))}
               </ul>
-              <p className="text-muted-foreground mt-6">
-                If it requires a signature and proof of completion, Attestly keeps it structured and trackable.
+              <p className="text-muted-foreground">
+                If it requires a signature and proof of completion, Attestly keeps it structured and visible.
               </p>
-            </div>
-          </div>
-        </section>
+            </section>
 
-        {/* Why It's Different */}
-        <section className="py-16">
-          <div className="container">
-            <div className="mx-auto max-w-3xl">
-              <h2 className="text-2xl font-bold text-foreground mb-4">Why It's Different from Basic E-Signature Tools</h2>
+            {/* Why Not E-Signature */}
+            <section className="mb-14">
+              <h2 className="text-2xl font-bold text-foreground mb-4">Why Not Just Use an E-Signature Tool?</h2>
               <p className="text-muted-foreground mb-4">
-                Most e-signature platforms are built for one-off contracts. Attestly is designed for ongoing internal document tracking — giving you recurring workflows, structured visibility, automated reminders, and organized proof in one system.
+                Traditional e-signature platforms are designed for contracts and one-off transactions.
+              </p>
+              <p className="text-muted-foreground mb-4">
+                Internal document tracking is different. It requires recurring workflows, visibility across teams, automated reminders, and easy access to historical records.
               </p>
               <p className="text-muted-foreground">
-                You can see who has completed what at a glance — without digging through email threads or shared drives.
+                Attestly is built specifically for that ongoing internal process — without enterprise software complexity.
               </p>
-            </div>
-          </div>
-        </section>
+            </section>
 
-        {/* Built-In Proof */}
-        <section className="py-16 bg-card">
-          <div className="container">
-            <div className="mx-auto max-w-3xl">
-              <h2 className="text-2xl font-bold text-foreground mb-6">Built-In Proof & Audit Logs</h2>
-              <p className="text-muted-foreground mb-6">Every completed document includes:</p>
+            {/* Proof */}
+            <section className="mb-14">
+              <h2 className="text-2xl font-bold text-foreground mb-4">Proof When You Need It</h2>
+              <p className="text-muted-foreground mb-4">Every completed acknowledgment includes:</p>
               <ul className="space-y-3">
                 {[
                   { icon: Clock, text: "Timestamped activity history" },
@@ -220,28 +145,27 @@ export default function EmployeeAcknowledgments() {
                   </li>
                 ))}
               </ul>
-              <p className="text-muted-foreground mt-6">
-                So you always have documentation when you need it.
+              <p className="text-muted-foreground mt-4">
+                So when you need documentation, it's ready.
               </p>
-            </div>
-          </div>
-        </section>
+            </section>
 
-        {/* CTA */}
-        <section className="py-16">
-          <div className="container text-center">
-            <h2 className="text-2xl font-bold text-foreground mb-4">Start Tracking Employee Acknowledgments in Minutes</h2>
-            <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
-              No complex setup. No training required.
-            </p>
-            <Button variant="hero" size="xl" asChild>
-              <Link to="/signup" className="gap-2">
-                Start 14-Day Free Trial
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            </Button>
+            {/* CTA */}
+            <section className="text-center py-8">
+              <h2 className="text-2xl font-bold text-foreground mb-4">Start Tracking Employee Acknowledgments in Minutes</h2>
+              <p className="text-muted-foreground mb-8">
+                No complex setup. No training required.
+              </p>
+              <Button variant="hero" size="xl" asChild>
+                <Link to="/signup" className="gap-2">
+                  Start Your 14-Day Free Trial
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              </Button>
+            </section>
+
           </div>
-        </section>
+        </article>
       </main>
       <Footer />
     </div>
