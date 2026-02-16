@@ -30,16 +30,15 @@ export default function EmployeeAcknowledgments() {
             <p className="text-lg text-muted-foreground mb-8">
               Whether you're rolling out a new handbook, updating security policies, or managing recurring confirmations, Attestly keeps everything organized and easy to verify.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 mb-16">
-              <Button variant="hero" size="xl" asChild>
+            <div className="flex items-center gap-4 mb-16">
+              <Button variant="hero" size="lg" asChild>
                 <Link to="/signup" className="gap-2">
                   Start Free Trial
-                  <ArrowRight className="h-5 w-5" />
                 </Link>
               </Button>
-              <Button variant="heroOutline" size="xl" asChild>
-                <Link to="/pricing">View Pricing</Link>
-              </Button>
+              <Link to="/pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1">
+                View Pricing <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
 
             {/* Why It Breaks Down */}
