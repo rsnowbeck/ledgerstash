@@ -168,7 +168,7 @@ export default function EmployeeAcknowledgments() {
 
             {/* CTA */}
             <section className="text-center py-8">
-              <h2 className="text-2xl font-bold text-foreground mb-4">Ready to simplify employee acknowledgment tracking?</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-4">Start tracking employee acknowledgments in minutes</h2>
               <p className="text-muted-foreground mb-8">
                 No complex setup. No training required.
               </p>
