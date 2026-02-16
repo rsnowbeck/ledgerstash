@@ -10,7 +10,7 @@ const faqs = [
   {
     question: "What is document collection software?",
     answer:
-      "Document collection software helps businesses send, track, and manage signed documents and structured forms in one place. Instead of emailing PDFs and manually tracking responses, you can see who has completed a document, who hasn't, and download organized records anytime.\n\nAttestly combines document sending, signature capture, reminders, and audit-ready proof in one simple workflow.",
+      "Document collection software helps businesses send, track, and manage completed and signed documents in one place. Instead of emailing PDFs and manually tracking responses, you can see who has completed or signed a document, who hasn't, and download organized records anytime.\n\nAttestly combines document sending, form completion, signature capture, reminders, and audit-ready proof in one simple workflow.",
   },
   {
     question: "What types of documents can I send with Attestly?",
