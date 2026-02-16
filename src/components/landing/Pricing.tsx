@@ -16,12 +16,12 @@ const plans: {
     name: "Starter",
     price: "$9",
     period: "/month",
-    description: "For solo business owners and small teams getting started with compliance.",
+    description: "For individuals and small teams getting started with document collection and signature tracking.",
     features: [
       "Up to 10 recipients",
       "5 active requirements",
       "Read-and-acknowledge workflows",
-      "Pre-built compliance templates",
+      "Pre-built document templates",
       "No-login signing",
       "Secure single-use links",
       "Real-time dashboard",
@@ -35,7 +35,7 @@ const plans: {
     name: "Team",
     price: "$19",
     period: "/month",
-    description: "For growing businesses that need structured compliance tracking and exports.",
+    description: "For growing businesses that need structured document tracking, reporting, and team collaboration.",
     features: [
       "Up to 100 recipients",
       "Unlimited requirements",
@@ -43,7 +43,7 @@ const plans: {
       "Fillable PDF forms",
       "Auto-detect form fields",
       "Structured response storage",
-      "CSV & PDF exports",
+      "Completion reports & exports",
       "No-login signing",
       "Secure single-use links",
       "Real-time dashboard",
@@ -59,7 +59,7 @@ const plans: {
     name: "Pro",
     price: "$39",
     period: "/month",
-    description: "For established organizations managing compliance at scale.",
+    description: "For established organizations managing high-volume document workflows at scale.",
     features: [
       "Unlimited recipients",
       "Unlimited requirements",
@@ -77,9 +77,9 @@ const plans: {
     ],
     proOnlyFeatures: [
       "Custom branding",
-      "Advanced audit logs",
+      "Advanced activity logs",
       "API access",
-      "Requirement file attachments"
+      "File attachments for document requests"
     ],
     cta: "Start Free Trial",
     featured: false
