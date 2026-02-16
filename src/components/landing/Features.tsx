@@ -10,35 +10,35 @@ interface Feature {
 const features: Feature[] = [{
   icon: Users,
   title: "Recipient Management",
-  description: "Import employees, contractors, or vendors in seconds. Add recipients manually or upload via CSV to keep your compliance list organized and up to date."
+  description: "Import employees, clients, contractors, or vendors in seconds. Add recipients manually or upload a CSV to keep your document lists organized."
 }, {
   icon: FileText,
-  title: "Flexible Requirements",
-  description: "Create one-time or recurring compliance requirements. Attach policies for read-and-acknowledge workflows or upload a PDF and turn it into a fillable form with required fields, dates, and signatures — all in one streamlined process."
+  title: "Flexible Workflows",
+  description: "Create one-time or recurring document requests. Turn policies or PDFs into structured workflows in minutes."
 }, {
   icon: Send,
   title: "Secure Signing Links",
-  description: "Generate unique, single-use signing links and send them instantly. Links are secure, trackable, and automatically expire after completion."
+  description: "Generate secure, single-use signing links that automatically track completion and expire when needed."
 }, {
   icon: Clock,
   title: "No-Login Completion",
-  description: "Recipients review policies, complete required fields when needed, and sign — no accounts, no passwords, no friction."
+  description: "Recipients review documents, complete required fields, and sign — no accounts, passwords, or friction required."
 }, {
   icon: BarChart3,
   title: "Real-Time Dashboard",
-  description: "See compliance status at a glance. Track pending, completed, and overdue forms and acknowledgments in real time."
+  description: "See completion status at a glance. Track who's signed, who hasn't, and what's overdue in one view."
 }, {
   icon: Bell,
   title: "Automated Reminders",
-  description: "Automatically follow up with recipients who haven't completed required forms or acknowledgments so nothing slips through the cracks."
+  description: "Automatically follow up on incomplete documents so nothing gets missed."
 }, {
   icon: Download,
-  title: "Structured Exports & Audit Proof",
-  description: "Download completed PDF copies and export structured response data via CSV — complete with timestamps, IP tracking, and full audit metadata."
+  title: "Completion Reports & Audit Logs",
+  description: "Download completed documents with timestamps, IP tracking, and full activity history anytime."
 }, {
   icon: Shield,
   title: "Enterprise-Grade Security",
-  description: "HTTPS everywhere. Secure tokens, encrypted storage, and system safeguards protect your compliance data at every step."
+  description: "Encrypted data storage and secure infrastructure protect your documents at every step."
 }];
 
 export function Features() {
@@ -46,10 +46,10 @@ export function Features() {
       <div className="container">
         <div className="text-center">
           <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2] mb-4">
-            Everything You Need for Compliance
+            Everything You Need to Send, Track & Prove Documents
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed mb-12">
-            From read-and-acknowledge policies to structured compliance forms and audit-ready exports, Attestly keeps your documentation organized, trackable, and defensible — without enterprise complexity.
+            From employee policies to client intake forms, Attestly keeps your documents organized, trackable, and easy to prove — without enterprise complexity.
           </p>
         </div>
 
