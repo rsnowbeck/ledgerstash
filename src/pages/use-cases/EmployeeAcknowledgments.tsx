@@ -24,13 +24,7 @@ export default function EmployeeAcknowledgments() {
               Employee Policy & Acknowledgment Tracking{" "}
               <span className="text-accent">for SMBs</span>
             </h1>
-            <p className="text-lg text-muted-foreground mb-4">
-              Managing employee policy acknowledgments shouldn't rely on spreadsheets, email reminders, or manual tracking. Attestly gives growing businesses a structured way to distribute internal documents, require acknowledgments, and maintain clear proof of completion — all in one system.
-            </p>
-            <p className="text-lg text-muted-foreground mb-8">
-              Whether you're rolling out a new handbook, updating security policies, or managing recurring confirmations, Attestly keeps everything organized and easy to verify.
-            </p>
-            <div className="flex flex-col items-start gap-2 mb-10">
+            <div className="flex flex-col items-start gap-2 mb-8">
               <Button variant="hero" size="lg" asChild>
                 <Link to="/signup">Start Free Trial</Link>
               </Button>
@@ -38,6 +32,12 @@ export default function EmployeeAcknowledgments() {
                 View Pricing <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
+            <p className="text-lg text-muted-foreground mb-4">
+              Managing employee policy acknowledgments shouldn't rely on spreadsheets, email reminders, or manual tracking. Attestly gives growing businesses a structured way to distribute internal documents, require acknowledgments, and maintain clear proof of completion — all in one system.
+            </p>
+            <p className="text-lg text-muted-foreground mb-14">
+              Whether you're rolling out a new handbook, updating security policies, or managing recurring confirmations, Attestly keeps everything organized and easy to verify.
+            </p>
 
             {/* Why It Breaks Down */}
             <section className="mb-14">
