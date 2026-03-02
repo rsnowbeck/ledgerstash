@@ -2,16 +2,16 @@
   "schema_version": "v1",
   "name_for_human": "VaultLedger",
   "name_for_model": "vaultledger",
-  "description_for_human": "Secure client vault for accounting and tax firms — encrypted document exchange, PBC task management, and automated follow-ups.",
-  "description_for_model": "VaultLedger is a SaaS platform that helps accounting and tax firms securely exchange documents with clients. Key features include encrypted document vaults, PBC (Provided By Client) task lists, per-client folders, automated reminders, and audit trails. Pricing starts at $19/month after a 14-day free trial.",
+  "description_for_human": "Secure client vault for boutique accounting and tax firms — encrypted document exchange, PBC task management, and automated follow-ups.",
+  "description_for_model": "VaultLedger is a SaaS platform that helps boutique accounting and tax firms securely exchange documents with clients. Key features include encrypted document vaults, PBC (Provided By Client) task lists, per-client folders, white-label branding, Busy Season auto-reminders, and audit trails. Pricing: Solo CPA $29/mo, Boutique Firm $79/mo, Enterprise Vault $199/mo. 14-day free trial.",
   "auth": {
     "type": "none"
   },
   "api": {
     "type": "openapi",
-    "url": "https://getattestly.com/openapi.json"
+    "url": "https://getvaultledger.com/openapi.json"
   },
-  "logo_url": "https://getattestly.com/og-image.png",
-  "contact_email": "hello@getattestly.com",
-  "legal_info_url": "https://getattestly.com/terms"
+  "logo_url": "https://getvaultledger.com/og-image.png",
+  "contact_email": "hello@vaultledger.com",
+  "legal_info_url": "https://getvaultledger.com/terms"
 }

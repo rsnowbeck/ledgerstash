@@ -24,7 +24,7 @@ export default function ContractorAgreements() {
                 Manage Contractor & Vendor Agreements <span className="text-accent">in One Organized System</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Keeping track of contractor agreements, vendor documentation, and required confirmations can quickly become messy. Attestly centralizes your external documentation and gives you structured visibility — without chasing signatures.
+                Keeping track of contractor agreements, vendor documentation, and required confirmations can quickly become messy. VaultLedger centralizes your external documentation and gives you structured visibility — without chasing signatures.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button variant="hero" size="xl" asChild>
@@ -70,13 +70,13 @@ export default function ContractorAgreements() {
           </div>
         </section>
 
-        {/* How Attestly Helps */}
+        {/* How VaultLedger Helps */}
         <section className="py-16">
           <div className="container">
             <div className="mx-auto max-w-3xl">
-              <h2 className="text-2xl font-bold text-foreground mb-4">How Attestly Helps</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-4">How VaultLedger Helps</h2>
               <p className="text-muted-foreground mb-6">
-                Attestly provides a structured workflow for managing external partners. You can:
+                VaultLedger provides a structured workflow for managing external partners. You can:
               </p>
               <ul className="space-y-3">
                 {[
@@ -128,7 +128,7 @@ export default function ContractorAgreements() {
             <div className="mx-auto max-w-3xl">
               <h2 className="text-2xl font-bold text-foreground mb-4">Why It Works for Growing Businesses</h2>
               <p className="text-muted-foreground">
-                Unlike contract lifecycle platforms built for legal teams, Attestly is designed for simple, ongoing document tracking — perfect for operations teams managing external relationships.
+                Unlike contract lifecycle platforms built for legal teams, VaultLedger is designed for simple, ongoing document tracking — perfect for operations teams managing external relationships.
               </p>
             </div>
           </div>
