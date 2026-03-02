@@ -23,7 +23,7 @@ export default function ComplianceSoftware() {
                 Compliance Software for <span className="text-accent">Small Businesses</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                VedgerStash is compliance software designed for small and mid-sized businesses. Distribute policies, collect legally defensible acknowledgments or fillable form data, and maintain audit-ready records — without enterprise complexity or pricing.
+                LedgerStash is compliance software designed for small and mid-sized businesses. Distribute policies, collect legally defensible acknowledgments or fillable form data, and maintain audit-ready records — without enterprise complexity or pricing.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button variant="hero" size="xl" asChild>
