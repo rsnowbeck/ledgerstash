@@ -41,15 +41,15 @@ export function Hero() {
           <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground animate-slide-up" style={{ animationDelay: "0.3s" }}>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-success" />
-              <span>No credit card required</span>
+              <span>IRS Pub 4557 Compliant</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-success" />
-              <span>Live in 5 minutes</span>
+              <span>Bank-Grade Data Isolation</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-success" />
-              <span>Cancel anytime</span>
+              <span>White-Label Ready</span>
             </div>
           </div>
         </div>
