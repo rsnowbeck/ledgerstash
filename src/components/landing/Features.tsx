@@ -4,41 +4,40 @@ interface Feature {
   icon: any;
   title: string;
   description: string;
-  bullets?: string[];
 }
 
 const features: Feature[] = [{
   icon: Users,
-  title: "Recipient Management",
-  description: "Import employees, clients, contractors, or vendors in seconds. Add recipients manually or upload a CSV to keep your document lists organized."
-}, {
-  icon: FileText,
-  title: "Flexible Workflows",
-  description: "Create one-time or recurring document requests. Turn policies or PDFs into structured workflows in minutes."
-}, {
-  icon: Send,
-  title: "Secure Signing Links",
-  description: "Generate secure, single-use signing links that automatically track completion and expire when needed."
-}, {
-  icon: Clock,
-  title: "No-Login Completion",
-  description: "Recipients review documents, complete required fields, and sign — no accounts, passwords, or friction required."
-}, {
-  icon: BarChart3,
-  title: "Real-Time Dashboard",
-  description: "See completion status at a glance. Track who's signed, who hasn't, and what's overdue in one view."
-}, {
-  icon: Bell,
-  title: "Automated Reminders",
-  description: "Automatically follow up on incomplete documents so nothing gets missed."
-}, {
-  icon: Download,
-  title: "Completion Reports & Audit Logs",
-  description: "Download completed documents with timestamps, IP tracking, and full activity history anytime."
+  title: "Secure PBC List Management",
+  description: "Create and track 'Provided By Client' task lists using the specific language accountants use. Clients see exactly what to upload and when."
 }, {
   icon: Shield,
-  title: "Enterprise-Grade Security",
-  description: "Encrypted data storage and secure infrastructure protect your documents at every step."
+  title: "Bank-Grade Compliance Vault",
+  description: "Encrypted document storage with per-client folders, version tracking, and full audit trails. Your clients' data is safe at rest and in transit."
+}, {
+  icon: Clock,
+  title: "Busy Season Auto-Pilot",
+  description: "Automated reminders chase missing documents for you during busy season. Set it and forget it — your clients stay on track."
+}, {
+  icon: Send,
+  title: "Frictionless Client Experience",
+  description: "High-net-worth clients hate creating accounts. VaultLedger makes it effortless — simple invites, no passwords to remember, instant access."
+}, {
+  icon: BarChart3,
+  title: "Real-Time Firm Dashboard",
+  description: "See every client's completion status at a glance. Track who's uploaded, who hasn't, and what's overdue across your entire book."
+}, {
+  icon: Bell,
+  title: "White-Label Client Portal",
+  description: "Your logo, your colors, your brand. Clients see your firm's identity — not ours. Build trust with a professional, branded experience."
+}, {
+  icon: Download,
+  title: "Audit-Ready Export",
+  description: "Download organized document packages with timestamps, IP tracking, and full activity history for any client or engagement."
+}, {
+  icon: FileText,
+  title: "Engagement Letter Tracking",
+  description: "Send engagement letters, fee agreements, and authorization forms. Track who has signed and automate follow-ups for the rest."
 }];
 
 export function Features() {
@@ -46,10 +45,10 @@ export function Features() {
       <div className="container">
         <div className="text-center">
           <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2] mb-4">
-            Everything You Need to Send, Track & Prove Documents
+            Everything Your Firm Needs to Look Professional
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed mb-12">
-            From internal policies and contractor agreements to structured form workflows, Attestly keeps your documents organized, trackable, and easy to prove — without enterprise complexity.
+            From PBC list management and secure document exchange to white-label branding, VaultLedger replaces scattered emails with one organized, encrypted vault.
           </p>
         </div>
 
@@ -62,16 +61,6 @@ export function Features() {
               <p className="text-sm text-muted-foreground leading-relaxed">
                 {feature.description}
               </p>
-              {feature.bullets && (
-                <ul className="mt-3 space-y-1">
-                  {feature.bullets.map((bullet, idx) => (
-                    <li key={idx} className="text-xs text-muted-foreground flex items-start gap-1.5">
-                      <span className="text-accent mt-0.5">•</span>
-                      {bullet}
-                    </li>
-                  ))}
-                </ul>
-              )}
             </div>)}
         </div>
       </div>

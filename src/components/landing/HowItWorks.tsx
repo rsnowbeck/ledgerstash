@@ -3,27 +3,27 @@ import { CheckCircle2 } from "lucide-react";
 const steps = [
   {
     number: "01",
-    title: "Add Recipients",
-    description: "Import employees, clients, contractors, or vendors and keep your document list organized from day one.",
-    details: ["Add recipients manually or bulk import via CSV", "Organize by groups or roles", "No recipient limits on Pro plan"]
+    title: "Add Your Clients",
+    description: "Import your client list or add them one by one. Each client gets their own secure, organized vault.",
+    details: ["Add clients manually or bulk import via CSV", "Each client gets private folders", "No client limits on Enterprise plan"]
   },
   {
     number: "02",
-    title: "Create a Document Request",
-    description: "Upload a policy, form, or PDF and define what recipients need to complete.",
-    details: ["Attach a document for review and acknowledgment", "Upload a PDF and add fillable fields", "Add required inputs, dates, or signatures", "Set one-time or recurring requests", "Preview before publishing"]
+    title: "Create PBC Task Lists",
+    description: "Define exactly what documents each client needs to provide — W-2s, K-1s, receipts, engagement letters.",
+    details: ["Use accounting-specific task templates", "Set due dates and priorities", "Attach reference documents", "Clients see clear action items"]
   },
   {
     number: "03",
-    title: "Publish & Send",
-    description: "Generate secure signing links and send instantly.",
-    details: ["Unique single-use tokens", "Automatic email delivery", "Custom email templates", "No login required for recipients"]
+    title: "Invite & Exchange",
+    description: "Send branded invitations. Clients upload documents directly to their vault — no email attachments.",
+    details: ["White-labeled client portal", "Drag-and-drop file uploads", "Automatic email notifications", "Frictionless client experience"]
   },
   {
     number: "04",
-    title: "Track & Export",
-    description: "Monitor completion status in real time and download completed documents and activity history anytime.",
-    details: ["Live dashboard", "Automated reminders", "Download completed PDF copies", "Export structured response data via CSV", "Full audit trail with timestamps and IP tracking"]
+    title: "Track & Close",
+    description: "Monitor completion across your entire book. Auto-remind stragglers. Export audit-ready packages.",
+    details: ["Real-time firm dashboard", "Busy Season auto-reminders", "Download organized document packages", "Full audit trail with timestamps"]
   }
 ];
 
@@ -33,7 +33,7 @@ export function HowItWorks() {
       <div className="container">
         <div className="text-center">
           <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2] mb-4">
-            How Attestly Works
+            How VaultLedger Works
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed mb-12">
             Get started in minutes. No complex setup. No training required.

@@ -1,23 +1,23 @@
-import { FileText, Receipt, Briefcase, ArrowRight } from "lucide-react";
+import { FileText, Receipt, Briefcase } from "lucide-react";
 
 const useCases = [
   {
     icon: Receipt,
     title: "Tax Document Collection",
     description:
-      "Collect W-2s, 1099s, receipts, and supporting documents from clients in organized folders. No more email attachments.",
+      "Collect W-2s, 1099s, K-1s, receipts, and supporting documents from clients in organized folders. No more chasing email attachments during busy season.",
   },
   {
     icon: FileText,
     title: "Engagement Letters & Agreements",
     description:
-      "Send engagement letters, fee agreements, and authorization forms. Track who has signed and who needs a reminder.",
+      "Send engagement letters, fee agreements, and authorization forms. Track who has signed and automate follow-ups for the rest.",
   },
   {
     icon: Briefcase,
     title: "Client Onboarding",
     description:
-      "Streamline new client setup with task lists, document requests, and a branded portal experience from day one.",
+      "Streamline new client setup with PBC task lists, document requests, and a branded portal experience that builds trust from day one.",
   },
 ];
 
@@ -30,7 +30,7 @@ export function UseCases() {
             Built for Accounting Workflows
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed">
-            Attestly adapts to how your firm works — from tax season document 
+            VaultLedger adapts to how your firm works — from busy season document 
             collection to year-round client management.
           </p>
         </div>

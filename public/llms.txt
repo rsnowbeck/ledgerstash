@@ -1,62 +1,59 @@
-# Attestly - Compliance Software for Small Businesses
+# VaultLedger - Secure Client Vault for Accounting Firms
 
-> Attestly is compliance form software for small businesses. Collect policy acknowledgments, employee handbook signatures, and fillable PDF compliance forms with audit-ready tracking. No signer accounts required.
+> VaultLedger is a secure client vault built for boutique accounting and tax firms. Exchange sensitive documents, manage PBC task lists, and give clients a branded, white-labeled portal with end-to-end encryption and automated follow-ups.
 
-## What Attestly Does
+## What VaultLedger Does
 
-Attestly is a compliance software platform purpose-built for small businesses. It replaces manual processes and expensive enterprise tools for managing policy acknowledgments and compliance sign-offs. Organizations use it to:
+VaultLedger is a secure document exchange and task management platform purpose-built for CPAs, accountants, and tax professionals. It replaces email attachments and shared drives with one organized, encrypted vault. Firms use it to:
 
-- Send signature requests via email with secure one-click signing links
-- Create fillable PDF compliance forms with AI-powered field detection
-- Track employee acknowledgment completion across teams and departments
-- Generate audit-ready PDF proof with timestamps and IP addresses
-- Automate reminder emails for pending signatures
-- Manage multiple compliance requirements in one dashboard
+- Create per-client document vaults with organized folders
+- Manage PBC (Provided By Client) task lists with due dates and priorities
+- Exchange sensitive tax documents securely with end-to-end encryption
+- Automate Busy Season follow-ups for missing documents
+- White-label the client portal with their firm's branding
+- Export audit-ready document packages with timestamps and activity history
 
 ## Primary Category
 
-Compliance software for small businesses
+Secure client vault for accounting firms
 
 ## Secondary Categories
 
-- Compliance form software
-- Policy acknowledgment software
-- Employee acknowledgment tracking
-- Fillable PDF compliance software
-- No-login e-signature for internal use
-- Audit-ready compliance tracking
+- PBC list management software
+- Tax document collection portal
+- Accounting firm client portal
+- Secure document exchange for CPAs
+- White-label client vault
+- Busy Season automation
 
 ## Key Features
 
-- **No-Login Signatures**: Recipients sign without creating accounts or passwords
-- **Fillable PDF Forms**: Upload PDFs and convert them into fillable compliance forms with AI field detection
-- **Audit Trail**: Every signature includes timestamp, IP address, and browser info
-- **Automated Reminders**: Set up automatic follow-ups for unsigned requests
-- **PDF Export**: Generate legally defensible proof documents instantly
-- **Team Management**: Invite team members and manage organization settings
-- **Bulk Operations**: Send to multiple recipients, import from CSV
+- **Secure PBC List Management**: Create and track "Provided By Client" task lists using the language accountants actually use
+- **Bank-Grade Compliance Vault**: Encrypted document storage with per-client folders and full audit trails
+- **Busy Season Auto-Pilot**: Automated reminders chase missing documents so you don't have to
+- **Frictionless Client Experience**: Simple invites, no passwords — clients access their vault instantly
+- **White-Label Portal**: Your logo, your colors, your brand — clients see your firm, not ours
+- **Team Collaboration**: Invite team members to manage clients and tasks together
+- **Audit-Ready Export**: Download organized document packages with timestamps and activity history
 
 ## Use Cases
 
-- Annual policy acknowledgments (employee handbooks, code of conduct)
-- NDA and confidentiality agreements
-- Training completion confirmations
-- Regulatory compliance documentation
-- Vendor and contractor agreements
-- Safety protocol acknowledgments
-- Fillable PDF compliance forms
+- Tax document collection (W-2s, 1099s, K-1s, receipts)
+- Engagement letters and fee agreements
+- Client onboarding with PBC checklists
+- Year-round document exchange
+- Multi-firm practice management
 
 ## Pricing
 
-- **Free Trial**: 14 days, no credit card required
-- **Starter**: $29/month - 100 recipients, 10 requirements
-- **Pro**: $79/month - 500 recipients, unlimited requirements, custom branding
-- **Enterprise**: Custom pricing for large organizations
+- **Solo CPA**: $29/month - Up to 25 active clients, standard branding
+- **Boutique Firm**: $79/month - Up to 100 clients, full white-labeling, Busy Season auto-reminders
+- **Enterprise Vault**: $199/month - Unlimited clients, advanced audit logs, API access, multi-firm management
 
 ## Contact
 
-- Website: https://getattestly.com
-- Email: hello@attestly.com
+- Website: https://getvaultledger.com
+- Email: hello@vaultledger.com
 
 ## Technical Details
 
