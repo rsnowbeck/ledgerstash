@@ -4,15 +4,15 @@ import { Check } from "lucide-react";
 
 const plans = [
   {
-    name: "Solo",
-    price: "$19",
+    name: "Solo CPA",
+    price: "$29",
     period: "/month",
     description: "For solo practitioners managing a small book of clients.",
     features: [
-      "Up to 15 clients",
-      "Secure document exchange",
-      "Client task management",
-      "Branded client portal",
+      "Up to 25 active clients",
+      "Secure document vault",
+      "PBC task lists",
+      "Standard branding",
       "Email notifications",
       "Per-client folders",
       "Standard support",
@@ -21,35 +21,35 @@ const plans = [
     featured: false,
   },
   {
-    name: "Firm",
-    price: "$49",
+    name: "Boutique Firm",
+    price: "$79",
     period: "/month",
-    description: "For growing firms that need team collaboration and more capacity.",
+    description: "For growing firms that need white-labeling and automation.",
     features: [
-      "Up to 100 clients",
-      "Everything in Solo",
+      "Up to 100 active clients",
+      "Everything in Solo CPA",
+      "Full white-labeling",
+      "Busy Season auto-reminders",
       "Team member accounts",
-      "Automated reminders",
       "In-app comments",
-      "Bulk document upload",
       "Priority support",
     ],
     cta: "Start Free Trial",
     featured: true,
   },
   {
-    name: "Practice",
-    price: "$99",
+    name: "Enterprise Vault",
+    price: "$199",
     period: "/month",
     description: "For established practices managing high client volumes at scale.",
     features: [
       "Unlimited clients",
-      "Everything in Firm",
-      "Custom branding",
-      "Advanced reporting",
-      "API access",
-      "Dedicated support",
+      "Everything in Boutique",
+      "Advanced audit logs",
       "Multi-firm management",
+      "API access for CRM",
+      "Dedicated support",
+      "Custom integrations",
     ],
     cta: "Start Free Trial",
     featured: false,
@@ -62,7 +62,7 @@ export function Pricing() {
       <div className="container">
         <div className="text-center">
           <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2] mb-4">
-            Simple, transparent pricing
+            Pricing that scales with your practice
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed mb-12">
             Start free for 14 days. No credit card required. Cancel anytime.

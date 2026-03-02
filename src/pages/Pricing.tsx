@@ -8,7 +8,7 @@ export default function Pricing() {
     <div className="min-h-screen bg-background flex flex-col">
       <PageSEO
         title="Pricing | Secure Client Vault Plans | VaultLedger"
-        description="Simple, transparent pricing for your secure client vault. Solo plan $19/mo, Firm $49/mo, Practice $99/mo. 14-day free trial included."
+        description="Simple, transparent pricing for your secure client vault. Solo CPA $29/mo, Boutique Firm $79/mo, Enterprise Vault $199/mo. 14-day free trial included."
         keywords="client vault pricing, accounting portal cost, CPA software pricing, secure document exchange plans"
         canonical="/pricing"
       />
