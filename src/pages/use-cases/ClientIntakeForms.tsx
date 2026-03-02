@@ -24,7 +24,7 @@ export default function ClientIntakeForms() {
                 Simplify Client Intake Forms <span className="text-accent">with Built-In Signature Proof</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Collecting intake forms and consent documents shouldn't require printing, scanning, or chasing clients. Attestly lets you send structured forms and track completion securely — all before appointments.
+                Collecting intake forms and consent documents shouldn't require printing, scanning, or chasing clients. VaultLedger lets you send structured forms and track completion securely — all before appointments.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button variant="hero" size="xl" asChild>
@@ -70,12 +70,12 @@ export default function ClientIntakeForms() {
           </div>
         </section>
 
-        {/* How Attestly Helps */}
+        {/* How VaultLedger Helps */}
         <section className="py-16">
           <div className="container">
             <div className="mx-auto max-w-3xl">
-              <h2 className="text-2xl font-bold text-foreground mb-4">How Attestly Helps</h2>
-              <p className="text-muted-foreground mb-6">With Attestly, you can:</p>
+              <h2 className="text-2xl font-bold text-foreground mb-4">How VaultLedger Helps</h2>
+              <p className="text-muted-foreground mb-6">With VaultLedger, you can:</p>
               <ul className="space-y-3">
                 {[
                   "Upload intake PDFs",
@@ -127,7 +127,7 @@ export default function ClientIntakeForms() {
             <div className="mx-auto max-w-3xl">
               <h2 className="text-2xl font-bold text-foreground mb-6">Designed for Structured Tracking</h2>
               <p className="text-muted-foreground mb-6">
-                Unlike basic form builders, Attestly ties each completed form to:
+                Unlike basic form builders, VaultLedger ties each completed form to:
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {[

@@ -15,8 +15,8 @@ export function PageSEO({
   canonical,
   noindex = false 
 }: PageSEOProps) {
-  const fullTitle = title.includes("Attestly") ? title : `${title} | Attestly`;
-  const baseUrl = "https://getattestly.com";
+  const fullTitle = title.includes("VaultLedger") ? title : `${title} | VaultLedger`;
+  const baseUrl = "https://getvaultledger.com";
   const canonicalUrl = canonical ? `${baseUrl}${canonical}` : undefined;
 
   return (

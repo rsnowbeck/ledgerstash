@@ -106,9 +106,9 @@ export default function Privacy() {
             <section className="space-y-4 pt-4 border-t border-border">
               <h2 className="text-xl font-semibold text-foreground">Contact</h2>
               <p className="text-muted-foreground">Questions about privacy?</p>
-              <a href="mailto:hello@getattestly.com" className="text-primary hover:underline inline-flex items-center gap-2">
+              <a href="mailto:hello@vaultledger.com" className="text-primary hover:underline inline-flex items-center gap-2">
                 <Mail className="h-4 w-4" />
-                hello@getattestly.com
+                hello@vaultledger.com
               </a>
             </section>
           </div>

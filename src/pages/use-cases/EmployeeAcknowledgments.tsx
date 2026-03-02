@@ -26,10 +26,10 @@ export default function EmployeeAcknowledgments() {
               <span className="text-accent">for SMBs</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-4">
-              Managing employee policy acknowledgments shouldn't rely on spreadsheets, email reminders, or manual tracking. Attestly gives growing businesses a structured way to distribute internal documents, require acknowledgments, and maintain clear proof of completion — all in one system.
+              Managing employee policy acknowledgments shouldn't rely on spreadsheets, email reminders, or manual tracking. VaultLedger gives growing businesses a structured way to distribute internal documents, require acknowledgments, and maintain clear proof of completion — all in one system.
             </p>
             <p className="text-lg text-muted-foreground mb-8">
-              Whether you're rolling out a new handbook, updating security policies, or managing recurring confirmations, Attestly keeps everything organized and easy to verify.
+              Whether you're rolling out a new handbook, updating security policies, or managing recurring confirmations, VaultLedger keeps everything organized and easy to verify.
             </p>
             <div className="flex flex-col items-start gap-2 mb-14">
               <Button variant="hero" size="lg" asChild>
@@ -60,7 +60,7 @@ export default function EmployeeAcknowledgments() {
             <section className="mb-14">
               <h2 className="text-2xl font-bold text-foreground mb-4">A Structured System for Employee Acknowledgments</h2>
               <p className="text-muted-foreground mb-4">
-                Attestly replaces scattered tracking systems with a purpose-built workflow for internal document management.
+                VaultLedger replaces scattered tracking systems with a purpose-built workflow for internal document management.
               </p>
               <p className="text-muted-foreground mb-4">
                 Upload a policy or handbook once. Assign it to the appropriate employees or groups. Require a signature and any additional fields. Monitor completion in real time.
@@ -80,7 +80,7 @@ export default function EmployeeAcknowledgments() {
                 Many internal documents aren't one-time events. Security policies, codes of conduct, and compliance confirmations often require annual or periodic acknowledgment.
               </p>
               <p className="text-muted-foreground mb-4">
-                Attestly allows you to schedule recurring cycles so acknowledgments renew automatically. Employees are notified when action is required, and historical completion records are preserved across cycles.
+                VaultLedger allows you to schedule recurring cycles so acknowledgments renew automatically. Employees are notified when action is required, and historical completion records are preserved across cycles.
               </p>
               <p className="text-muted-foreground font-medium">
                 No resets. No duplicate tracking systems.
@@ -90,7 +90,7 @@ export default function EmployeeAcknowledgments() {
             {/* Use Cases */}
             <section className="mb-14">
               <h2 className="text-2xl font-bold text-foreground mb-4">Designed for Real-World Internal Use Cases</h2>
-              <p className="text-muted-foreground mb-4">Attestly is commonly used to manage:</p>
+              <p className="text-muted-foreground mb-4">VaultLedger is commonly used to manage:</p>
               <ul className="space-y-3 mb-4">
                 {[
                   "Employee handbook acknowledgments",
@@ -107,7 +107,7 @@ export default function EmployeeAcknowledgments() {
                 ))}
               </ul>
               <p className="text-muted-foreground">
-                If it requires a signature and proof of completion, Attestly keeps it structured and visible.
+                If it requires a signature and proof of completion, VaultLedger keeps it structured and visible.
               </p>
             </section>
 
@@ -121,7 +121,7 @@ export default function EmployeeAcknowledgments() {
                 Internal document tracking is different. It requires recurring workflows, visibility across teams, automated reminders, and easy access to historical records.
               </p>
               <p className="text-muted-foreground">
-                Attestly is built specifically for that ongoing internal process — without enterprise software complexity.
+                VaultLedger is built specifically for that ongoing internal process — without enterprise software complexity.
               </p>
             </section>
 
