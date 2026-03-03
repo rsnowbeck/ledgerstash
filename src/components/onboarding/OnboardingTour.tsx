@@ -288,7 +288,7 @@ export function useOnboardingTour(organizationId: string | undefined) {
 
   const clearForceShow = () => {
     if (organizationId) {
-      localStorage.removeItem(`attestly_tour_force_show_${organizationId}`);
+      localStorage.removeItem(`ledgerstash_tour_force_show_${organizationId}`);
     }
   };
 
