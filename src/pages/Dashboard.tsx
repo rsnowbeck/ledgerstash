@@ -17,9 +17,12 @@ import {
 } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useAuth } from "@/hooks/useAuth";
+import { useOrganization } from "@/hooks/useOrganization";
+import { OnboardingTour } from "@/components/onboarding/OnboardingTour";
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth();
+  const { organization } = useOrganization(user);
   const navigate = useNavigate();
   const [stats, setStats] = useState({
     totalClients: 0,
@@ -439,6 +442,7 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+      <OnboardingTour organizationId={organization?.id} />
     </DashboardLayout>
   );
 }
