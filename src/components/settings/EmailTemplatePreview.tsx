@@ -191,7 +191,7 @@ function EmailHeader({ logoUrl }: { logoUrl?: string | null }) {
           <Shield className="h-6 w-6 text-primary-foreground" />
         </div>
       )}
-      <h2 className="text-xl font-semibold text-foreground">Attestly</h2>
+      <h2 className="text-xl font-semibold text-foreground">LedgerStash</h2>
     </div>
   );
 }
