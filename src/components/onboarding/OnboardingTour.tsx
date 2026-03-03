@@ -283,7 +283,7 @@ export function useOnboardingTour(organizationId: string | undefined) {
 
   const shouldForceShow = () => {
     if (!organizationId) return false;
-    return localStorage.getItem(`attestly_tour_force_show_${organizationId}`) === 'true';
+    return localStorage.getItem(`ledgerstash_tour_force_show_${organizationId}`) === 'true';
   };
 
   const clearForceShow = () => {
