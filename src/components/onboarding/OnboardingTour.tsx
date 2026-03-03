@@ -131,7 +131,7 @@ export function OnboardingTour({ organizationId }: OnboardingTourProps) {
 
   const completeTour = () => {
     if (organizationId) {
-      localStorage.setItem(`attestly_tour_completed_${organizationId}`, 'true');
+      localStorage.setItem(`ledgerstash_tour_completed_${organizationId}`, 'true');
     }
     setHasCompletedTour(true);
     setIsVisible(false);
