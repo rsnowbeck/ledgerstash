@@ -126,8 +126,8 @@ export function EmailSettingsForm({ organization, onUpdate }: EmailSettingsFormP
           <Alert>
             <Info className="h-4 w-4" />
             <AlertDescription>
-              All emails are sent from <strong>noreply@getattestly.com</strong>. 
-              Support contact (<strong>hello@attestly.com</strong>) is included by default.
+              All emails are sent from <strong>noreply@ledgerstash.com</strong>. 
+              Support contact (<strong>hello@ledgerstash.com</strong>) is included by default.
             </AlertDescription>
           </Alert>
         </CardContent>
