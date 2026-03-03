@@ -84,8 +84,8 @@ export function OnboardingTour({ organizationId }: OnboardingTourProps) {
   useEffect(() => {
     if (!organizationId) return;
     
-    const tourKey = `attestly_tour_completed_${organizationId}`;
-    const forceShowKey = `attestly_tour_force_show_${organizationId}`;
+    const tourKey = `ledgerstash_tour_completed_${organizationId}`;
+    const forceShowKey = `ledgerstash_tour_force_show_${organizationId}`;
     const completed = localStorage.getItem(tourKey);
     const forceShow = localStorage.getItem(forceShowKey);
     
