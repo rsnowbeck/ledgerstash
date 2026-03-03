@@ -268,9 +268,9 @@ export function useOnboardingTour(organizationId: string | undefined) {
   const resetTour = () => {
     if (organizationId) {
       // Clear the completion flag
-      localStorage.removeItem(`attestly_tour_completed_${organizationId}`);
+      localStorage.removeItem(`ledgerstash_tour_completed_${organizationId}`);
       // Also set a flag to force show tour even if org has data
-      localStorage.setItem(`attestly_tour_force_show_${organizationId}`, 'true');
+      localStorage.setItem(`ledgerstash_tour_force_show_${organizationId}`, 'true');
       // Navigate to dashboard and reload
       window.location.href = '/dashboard';
     }
