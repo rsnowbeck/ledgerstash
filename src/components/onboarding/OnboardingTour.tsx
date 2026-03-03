@@ -86,29 +86,35 @@ export function OnboardingTour({ organizationId }: OnboardingTourProps) {
     
     const tourKey = `ledgerstash_tour_completed_${organizationId}`;
     const forceShowKey = `ledgerstash_tour_force_show_${organizationId}`;
-    const completed = localStorage.getItem(tourKey);
     const forceShow = localStorage.getItem(forceShowKey);
     
     // If force show is set, show the tour regardless of other conditions
     if (forceShow) {
-      localStorage.removeItem(forceShowKey); // Clear the flag
       setHasCompletedTour(false);
-      setTimeout(() => setIsVisible(true), 500);
-      return;
+      setCurrentStep(0);
+      const timer = setTimeout(() => {
+        localStorage.removeItem(forceShowKey); // Clear the flag only after showing
+        setIsVisible(true);
+      }, 500);
+      return () => clearTimeout(timer);
     }
     
+    const completed = localStorage.getItem(tourKey);
     if (completed) {
       setHasCompletedTour(true);
       return;
     }
 
     // Check if this is a truly new organization (no data yet)
+    let cancelled = false;
     const checkIfNewOrg = async () => {
       const [recipientsRes, requirementsRes, signaturesRes] = await Promise.all([
         supabase.from('recipients').select('id', { count: 'exact', head: true }).eq('organization_id', organizationId),
         supabase.from('requirements').select('id', { count: 'exact', head: true }).eq('organization_id', organizationId),
         supabase.from('signing_requests').select('id', { count: 'exact', head: true }).eq('organization_id', organizationId),
       ]);
+
+      if (cancelled) return;
 
       const hasRecipients = (recipientsRes.count ?? 0) > 0;
       const hasRequirements = (requirementsRes.count ?? 0) > 0;
@@ -127,6 +133,7 @@ export function OnboardingTour({ organizationId }: OnboardingTourProps) {
     };
 
     checkIfNewOrg();
+    return () => { cancelled = true; };
   }, [organizationId]);
 
   const completeTour = () => {
