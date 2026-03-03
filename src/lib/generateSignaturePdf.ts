@@ -74,7 +74,7 @@ export async function generateSignaturePdf(data: SignatureData): Promise<void> {
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(12);
   doc.setFont("helvetica", "normal");
-  const orgDisplayName = data.organizationName || "VaultLedger";
+  const orgDisplayName = data.organizationName || "LedgerStash";
   doc.text(orgDisplayName, pageWidth / 2, headerTextY - 5, { align: "center" });
   
   // Certificate title
