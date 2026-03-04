@@ -93,7 +93,7 @@ export default function Terms() {
 
             <section className="space-y-4">
               <h2 className="text-xl font-semibold text-foreground">Governing Law</h2>
-              <p className="text-muted-foreground">These Terms are governed by the laws of [Your State/Country].</p>
+              <p className="text-muted-foreground">These Terms are governed by and construed in accordance with the laws of the State of Delaware, United States, without regard to its conflict of law provisions.</p>
             </section>
 
             <section className="space-y-4 pt-4 border-t border-border">

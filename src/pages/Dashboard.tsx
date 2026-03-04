@@ -392,7 +392,7 @@ export default function Dashboard() {
                             </div>
                           </td>
                           <td className="px-5 py-3 text-sm text-muted-foreground">{new Date(doc.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
-                          <td className="px-5 py-3 text-sm text-muted-foreground">{doc.file_size_bytes ? `${(doc.file_size_bytes / 1024 / 1024).toFixed(1)} MB` : '—'}</td>
+                          <td className="px-5 py-3 text-sm text-muted-foreground">{doc.file_size_bytes ? (doc.file_size_bytes >= 1048576 ? `${(doc.file_size_bytes / 1048576).toFixed(1)} MB` : `${(doc.file_size_bytes / 1024).toFixed(1)} KB`) : '—'}</td>
                         </tr>
                       ))}
                     </tbody>

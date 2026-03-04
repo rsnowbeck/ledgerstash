@@ -70,8 +70,8 @@ export default function OwnerDashboard() {
     { label: "Active Trials", value: metrics.activeTrials, icon: Clock, color: "text-warning" },
     { label: "Expired Trials", value: metrics.expiredTrials, icon: Clock, color: "text-destructive" },
     { label: "Paid Users", value: metrics.paidUsers, icon: CreditCard, color: "text-success" },
-    { label: "Total Signing Requests", value: metrics.totalSigningRequests, icon: FileSignature, color: "text-accent" },
-    { label: "Completed Signatures", value: metrics.completedSignatures, icon: TrendingUp, color: "text-success" },
+    { label: "Total Document Requests", value: metrics.totalSigningRequests, icon: FileSignature, color: "text-accent" },
+    { label: "Documents Submitted", value: metrics.completedSignatures, icon: TrendingUp, color: "text-success" },
   ];
 
   return (

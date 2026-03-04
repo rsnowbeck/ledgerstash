@@ -389,7 +389,7 @@ export default function Settings() {
                   <div className="space-y-0.5">
                     <Label htmlFor="reminderNotifications">Reminder Notifications</Label>
                     <p className="text-sm text-muted-foreground">
-                      Get notified when recipients haven't signed yet
+                      Get notified when clients haven't submitted documents yet
                     </p>
                   </div>
                   <Switch
