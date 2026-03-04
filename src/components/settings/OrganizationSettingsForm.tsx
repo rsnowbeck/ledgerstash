@@ -262,7 +262,7 @@ export function OrganizationSettingsForm({ organization, onUpdate }: Organizatio
               {/* Branding Preview */}
               {logoUrl && (
                 <div className="mt-4 p-4 rounded-lg border bg-muted/30">
-                  <p className="text-sm font-medium mb-2">Preview: Signing Page Header</p>
+                  <p className="text-sm font-medium mb-2">Preview: Client Portal Header</p>
                   <div className="flex items-center gap-3 p-3 bg-background rounded border">
                     <img src={logoUrl} alt="Logo" className="h-8 w-8 object-contain" />
                     <span className="font-semibold">{orgName || "Your Organization"}</span>
