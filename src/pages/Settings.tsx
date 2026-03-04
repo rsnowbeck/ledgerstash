@@ -22,7 +22,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { User, Building2, Shield, Loader2, Bell, Trash2, Users, Mail, RotateCcw } from "lucide-react";
+import { User, Building2, Shield, Loader2, Bell, Trash2, Users, Mail, RotateCcw, CreditCard } from "lucide-react";
 import { toast } from "sonner";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { OrganizationSettingsForm } from "@/components/settings/OrganizationSettingsForm";
@@ -31,6 +31,7 @@ import { EmailSettingsForm } from "@/components/settings/EmailSettingsForm";
 import { AutoReminderSettings } from "@/components/settings/AutoReminderSettings";
 import { ReminderLogTable } from "@/components/signatures/ReminderLogTable";
 import { useOnboardingTour } from "@/components/onboarding/OnboardingTour";
+import { BillingSettings } from "@/components/settings/BillingSettings";
 
 // Common timezones
 const TIMEZONES = [
@@ -253,6 +254,10 @@ export default function Settings() {
             <TabsTrigger value="security" className="gap-2">
               <Shield className="h-4 w-4" />
               Security
+            </TabsTrigger>
+            <TabsTrigger value="billing" className="gap-2">
+              <CreditCard className="h-4 w-4" />
+              Billing
             </TabsTrigger>
             <TabsTrigger value="organization" className="gap-2">
               <Building2 className="h-4 w-4" />
@@ -540,6 +545,16 @@ export default function Settings() {
                 </AlertDialog>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Billing Tab */}
+          <TabsContent value="billing" className="space-y-6">
+            {user && (
+              <BillingSettings
+                user={user}
+                trialEndsAt={organization?.trial_ends_at ?? null}
+              />
+            )}
           </TabsContent>
 
           {/* Organization Tab */}
