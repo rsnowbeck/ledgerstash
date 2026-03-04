@@ -315,9 +315,9 @@ export function OrganizationSettingsForm({ organization, onUpdate }: Organizatio
       {/* Compliance Defaults */}
       <Card>
         <CardHeader>
-          <CardTitle>Compliance Defaults</CardTitle>
+          <CardTitle>Document Request Defaults</CardTitle>
           <CardDescription>
-            Set default values for new requirements
+            Set default values for new document requests
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
