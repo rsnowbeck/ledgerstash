@@ -151,7 +151,7 @@ export function EmailSettingsForm({ organization, onUpdate }: EmailSettingsFormP
               id="customMessage"
               value={customMessage}
               onChange={(e) => setCustomMessage(e.target.value)}
-              placeholder="e.g., Please complete this by Friday. Contact HR if you have questions."
+              placeholder="e.g., Please upload these documents by Friday. Contact our office if you have questions."
               maxLength={240}
               rows={3}
               className="resize-none"
