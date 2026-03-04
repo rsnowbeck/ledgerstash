@@ -547,6 +547,16 @@ export default function Settings() {
             </Card>
           </TabsContent>
 
+          {/* Billing Tab */}
+          <TabsContent value="billing" className="space-y-6">
+            {user && (
+              <BillingSettings
+                user={user}
+                trialEndsAt={organization?.trial_ends_at ?? null}
+              />
+            )}
+          </TabsContent>
+
           {/* Organization Tab */}
           <TabsContent value="organization" className="space-y-6">
             {organization ? (
