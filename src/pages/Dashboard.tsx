@@ -327,7 +327,7 @@ export default function Dashboard() {
                   <div className="bg-primary-foreground/20 p-1.5 rounded-lg">
                     <Lock className="w-4 h-4 text-primary-foreground" />
                   </div>
-                  <span className="text-xs font-bold uppercase tracking-widest text-primary-foreground/70">End-to-End Encrypted</span>
+                  <span className="text-xs font-bold uppercase tracking-widest text-primary-foreground/70">AES-256 Encrypted</span>
                 </div>
                 <h3 className="text-lg font-bold mb-2">Your Private Vault</h3>
                 <p className="text-sm text-primary-foreground/80 leading-relaxed">
