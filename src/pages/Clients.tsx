@@ -16,6 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { useAuth } from "@/hooks/useAuth";
 import { Plus, Search, Users } from "lucide-react";
 import { toast } from "sonner";
