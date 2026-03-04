@@ -62,9 +62,9 @@ function buildIntroLine(
  */
 function buildClosingStatement(organizationName: string | undefined): string {
   if (organizationName && organizationName.trim().length > 0) {
-    return `This request is part of a formal document acknowledgment process initiated by ${organizationName}.`;
+    return `This request is part of your document preparation process with ${organizationName}.`;
   }
-  return `This request is part of a formal document acknowledgment process.`;
+  return `This request is part of your document preparation process.`;
 }
 
 function getEmailContent(
