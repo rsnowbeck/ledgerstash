@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { User, Building2, Shield, Loader2, Bell, Trash2, Users, Mail, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { OrganizationSettingsForm } from "@/components/settings/OrganizationSettingsForm";
 import { TeamManagement } from "@/components/settings/TeamManagement";
 import { EmailSettingsForm } from "@/components/settings/EmailSettingsForm";
