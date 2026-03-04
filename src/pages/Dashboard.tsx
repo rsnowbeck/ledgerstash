@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -21,6 +22,7 @@ import { useOrganization } from "@/hooks/useOrganization";
 import { OnboardingTour } from "@/components/onboarding/OnboardingTour";
 
 export default function Dashboard() {
+  usePageTitle("Dashboard");
   const { user, loading: authLoading } = useAuth();
   const { organization } = useOrganization(user);
   const navigate = useNavigate();
@@ -327,7 +329,7 @@ export default function Dashboard() {
                   <div className="bg-primary-foreground/20 p-1.5 rounded-lg">
                     <Lock className="w-4 h-4 text-primary-foreground" />
                   </div>
-                  <span className="text-xs font-bold uppercase tracking-widest text-primary-foreground/70">End-to-End Encrypted</span>
+                  <span className="text-xs font-bold uppercase tracking-widest text-primary-foreground/70">AES-256 Encrypted</span>
                 </div>
                 <h3 className="text-lg font-bold mb-2">Your Private Vault</h3>
                 <p className="text-sm text-primary-foreground/80 leading-relaxed">
@@ -392,7 +394,7 @@ export default function Dashboard() {
                             </div>
                           </td>
                           <td className="px-5 py-3 text-sm text-muted-foreground">{new Date(doc.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
-                          <td className="px-5 py-3 text-sm text-muted-foreground">{doc.file_size_bytes ? `${(doc.file_size_bytes / 1024 / 1024).toFixed(1)} MB` : '—'}</td>
+                          <td className="px-5 py-3 text-sm text-muted-foreground">{doc.file_size_bytes ? (doc.file_size_bytes >= 1048576 ? `${(doc.file_size_bytes / 1048576).toFixed(1)} MB` : `${(doc.file_size_bytes / 1024).toFixed(1)} KB`) : '—'}</td>
                         </tr>
                       ))}
                     </tbody>

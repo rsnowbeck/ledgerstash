@@ -21,13 +21,13 @@ export function EmailTemplatePreview({
   // Build intro line matching the edge function logic
   const buildIntro = () => {
     if (senderName && organizationName) {
-      return `${senderName} has requested that you review and sign the following document on behalf of ${organizationName}:`;
+      return `${senderName} from ${organizationName} has requested the following documents:`;
     } else if (senderName) {
-      return `${senderName} has requested that you review and sign the following document:`;
+      return `${senderName} has requested the following documents:`;
     } else if (organizationName) {
-      return `${organizationName} has requested that you review and sign the following document:`;
+      return `${organizationName} has requested the following documents:`;
     }
-    return `You have been requested to review and sign the following document:`;
+    return `Your accountant has requested the following documents:`;
   };
   
   const intro = buildIntro();
@@ -66,7 +66,7 @@ export function EmailTemplatePreview({
 
           <TabsContent value="initial" className="mt-4">
             <EmailPreviewFrame 
-              subject="Action required: Please sign Annual Compliance Policy" 
+              subject="Action required: Please upload your tax documents" 
               senderName={displaySender}
             >
               <EmailHeader logoUrl={logoUrl} />
@@ -75,16 +75,16 @@ export function EmailTemplatePreview({
                 <p className="text-muted-foreground mb-6">
                   {intro}
                 </p>
-                <DocumentCard title="Annual Compliance Policy" />
+                <DocumentCard title="2025 Tax Return Documents" />
                 <DueDateBanner 
-                  text="Please complete your signature by February 23, 2026." 
+                  text="Please submit your documents by February 23, 2026." 
                   variant="info" 
                 />
                 {customMessage && <CustomMessageBanner message={customMessage} />}
                 <p className="text-sm text-muted-foreground mb-6">
-                  This request is part of a formal document acknowledgment process initiated by {organizationName || "the requester"}.
+                  This request is part of your tax preparation process with {organizationName || "your accountant"}.
                 </p>
-                <CTAButton text="Review & Sign Now" />
+                <CTAButton text="Upload Documents" />
                 <ContactFooter senderName={senderName} organizationName={organizationName} />
               </div>
               <EmailFooter />
@@ -93,7 +93,7 @@ export function EmailTemplatePreview({
 
           <TabsContent value="reminder" className="mt-4">
             <EmailPreviewFrame 
-              subject="Reminder: Please sign Annual Compliance Policy" 
+              subject="Reminder: Your tax documents are still needed" 
               senderName={displaySender}
             >
               <EmailHeader logoUrl={logoUrl} />
@@ -102,16 +102,16 @@ export function EmailTemplatePreview({
                 <p className="text-muted-foreground mb-6">
                   {intro}
                 </p>
-                <DocumentCard title="Annual Compliance Policy" />
+                <DocumentCard title="2025 Tax Return Documents" />
                 <DueDateBanner 
-                  text="Please complete your signature by February 23, 2026." 
+                  text="Please submit your documents by February 23, 2026." 
                   variant="info" 
                 />
                 {customMessage && <CustomMessageBanner message={customMessage} />}
                 <p className="text-sm text-muted-foreground mb-6">
-                  This request is part of a formal document acknowledgment process initiated by {organizationName || "the requester"}.
+                  This request is part of your tax preparation process with {organizationName || "your accountant"}.
                 </p>
-                <CTAButton text="Review & Sign Now" />
+                <CTAButton text="Upload Documents" />
                 <ContactFooter senderName={senderName} organizationName={organizationName} />
               </div>
               <EmailFooter />
@@ -120,7 +120,7 @@ export function EmailTemplatePreview({
 
           <TabsContent value="escalated" className="mt-4">
             <EmailPreviewFrame 
-              subject="Action required: Annual Compliance Policy signature due in 5 days" 
+              subject="Urgent: Your tax documents are due in 5 days" 
               senderName={displaySender}
             >
               <EmailHeader logoUrl={logoUrl} />
@@ -129,17 +129,17 @@ export function EmailTemplatePreview({
                 <p className="text-muted-foreground mb-6">
                   {intro}
                 </p>
-                <DocumentCard title="Annual Compliance Policy" />
+                <DocumentCard title="2025 Tax Return Documents" />
                 <DueDateBanner 
                   text="⏰ Due in 5 days (February 23, 2026)" 
                   variant="warning" 
                 />
                 {customMessage && <CustomMessageBanner message={customMessage} />}
-                <ConsequenceText text="Missing this deadline may be flagged in compliance records." variant="warning" />
+                <ConsequenceText text="Missing this deadline may delay your tax filing." variant="warning" />
                 <p className="text-sm text-muted-foreground mb-6">
-                  This request is part of a formal document acknowledgment process initiated by {organizationName || "the requester"}.
+                  This request is part of your tax preparation process with {organizationName || "your accountant"}.
                 </p>
-                <CTAButton text="Review & Sign Now" />
+                <CTAButton text="Upload Documents" />
                 <ContactFooter senderName={senderName} organizationName={organizationName} />
               </div>
               <EmailFooter />
@@ -148,7 +148,7 @@ export function EmailTemplatePreview({
 
           <TabsContent value="overdue" className="mt-4">
             <EmailPreviewFrame 
-              subject="Overdue: Annual Compliance Policy signature was due February 23, 2026" 
+              subject="Final notice: Tax documents overdue — were due February 23, 2026" 
               senderName={displaySender}
             >
               <EmailHeader logoUrl={logoUrl} />
@@ -157,17 +157,17 @@ export function EmailTemplatePreview({
                 <p className="text-muted-foreground mb-6">
                   {intro}
                 </p>
-                <DocumentCard title="Annual Compliance Policy" />
+                <DocumentCard title="2025 Tax Return Documents" />
                 <DueDateBanner 
                   text="The due date was February 23, 2026." 
                   variant="error" 
                 />
                 {customMessage && <CustomMessageBanner message={customMessage} />}
-                <ConsequenceText text="This has been marked as incomplete in compliance records." variant="error" />
+                <ConsequenceText text="These documents are now overdue. Please submit them as soon as possible to avoid delays." variant="error" />
                 <p className="text-sm text-muted-foreground mb-6">
-                  This request is part of a formal document acknowledgment process initiated by {organizationName || "the requester"}.
+                  This request is part of your tax preparation process with {organizationName || "your accountant"}.
                 </p>
-                <CTAButton text="Review & Sign Now" />
+                <CTAButton text="Upload Documents" />
                 <ContactFooter senderName={senderName} organizationName={organizationName} />
               </div>
               <EmailFooter />

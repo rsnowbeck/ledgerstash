@@ -141,7 +141,7 @@ export function EmailSettingsForm({ organization, onUpdate }: EmailSettingsFormP
             Optional Message to Recipients
           </CardTitle>
           <CardDescription>
-            Add a personal note that appears in all signing request emails
+            Add a personal note that appears in all document request emails
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -151,7 +151,7 @@ export function EmailSettingsForm({ organization, onUpdate }: EmailSettingsFormP
               id="customMessage"
               value={customMessage}
               onChange={(e) => setCustomMessage(e.target.value)}
-              placeholder="e.g., Please complete this by Friday. Contact HR if you have questions."
+              placeholder="e.g., Please upload these documents by Friday. Contact our office if you have questions."
               maxLength={240}
               rows={3}
               className="resize-none"
@@ -167,7 +167,7 @@ export function EmailSettingsForm({ organization, onUpdate }: EmailSettingsFormP
           <Alert>
             <Info className="h-4 w-4" />
             <AlertDescription>
-              This message appears as a note between the document details and the sign button. 
+              This message appears as a note between the document details and the upload button. 
               Leave empty to skip.
             </AlertDescription>
           </Alert>
@@ -196,14 +196,14 @@ export function EmailSettingsForm({ organization, onUpdate }: EmailSettingsFormP
         <CardContent>
           <div className="space-y-4">
             <EmailTypeRow
-              name="Signing Request"
-              description="Sent when you request a signature from a recipient"
-              trigger="Manual - when you send for signature"
+              name="Document Request"
+              description="Sent when you request documents from a client"
+              trigger="Manual - when you send a document request"
             />
             <Separator />
             <EmailTypeRow
               name="Reminder"
-              description="Follow-up for pending signatures"
+              description="Follow-up for pending document submissions"
               trigger="Automatic - based on your reminder settings"
             />
             <Separator />

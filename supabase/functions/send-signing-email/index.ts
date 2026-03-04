@@ -46,14 +46,13 @@ function buildIntroLine(
   const hasOrg = organizationName && organizationName.trim().length > 0;
 
   if (hasRequester && hasOrg) {
-    return `${senderName} has requested that you review and sign the following document on behalf of ${organizationName}:`;
+    return `${senderName} from ${organizationName} has requested the following documents:`;
   } else if (hasRequester) {
-    return `${senderName} has requested that you review and sign the following document:`;
+    return `${senderName} has requested the following documents:`;
   } else if (hasOrg) {
-    return `${organizationName} has requested that you review and sign the following document:`;
+    return `${organizationName} has requested the following documents:`;
   } else {
-    // Fallback only when nothing is available
-    return `You have been requested to review and sign the following document:`;
+    return `Your accountant has requested the following documents:`;
   }
 }
 
@@ -63,9 +62,9 @@ function buildIntroLine(
  */
 function buildClosingStatement(organizationName: string | undefined): string {
   if (organizationName && organizationName.trim().length > 0) {
-    return `This request is part of a formal document acknowledgment process initiated by ${organizationName}.`;
+    return `This request is part of your document preparation process with ${organizationName}.`;
   }
-  return `This request is part of a formal document acknowledgment process.`;
+  return `This request is part of your document preparation process.`;
 }
 
 function getEmailContent(
@@ -87,24 +86,24 @@ function getEmailContent(
   switch (emailType) {
     case "initial":
       return {
-        subject: `Action required: Please sign ${requirementTitle}`,
+        subject: `Action required: Please upload your documents — ${requirementTitle}`,
         intro,
-        buttonText: "Review & Sign Now",
+        buttonText: "Upload Documents",
         dueText: formattedDueDate 
-          ? `Please complete your signature by ${formattedDueDate}.`
-          : `Please complete your signature as soon as possible.`,
+          ? `Please submit your documents by ${formattedDueDate}.`
+          : `Please submit your documents as soon as possible.`,
         consequence: ``,
         closing,
       };
     
     case "reminder":
       return {
-        subject: `Reminder: Please sign ${requirementTitle}`,
+        subject: `Reminder: Your documents are still needed — ${requirementTitle}`,
         intro,
-        buttonText: "Review & Sign Now",
+        buttonText: "Upload Documents",
         dueText: formattedDueDate
-          ? `Please complete your signature by ${formattedDueDate}.`
-          : `Please complete your signature as soon as possible.`,
+          ? `Please submit your documents by ${formattedDueDate}.`
+          : `Please submit your documents as soon as possible.`,
         consequence: ``,
         closing,
       };
@@ -114,38 +113,38 @@ function getEmailContent(
         ? `${daysUntilDue} day${daysUntilDue === 1 ? "" : "s"}`
         : "soon";
       return {
-        subject: `Action required: ${requirementTitle} signature due in ${daysText}`,
+        subject: `Urgent: ${requirementTitle} documents due in ${daysText}`,
         intro,
-        buttonText: "Review & Sign Now",
+        buttonText: "Upload Documents",
         dueText: formattedDueDate
           ? `⏰ Due in ${daysText} (${formattedDueDate})`
-          : `Please complete this as soon as possible.`,
-        consequence: `Missing this deadline may be flagged in compliance records.`,
+          : `Please submit as soon as possible.`,
+        consequence: `Missing this deadline may delay your tax filing.`,
         closing,
       };
     
     case "overdue":
       return {
         subject: formattedDueDate 
-          ? `Overdue: ${requirementTitle} signature was due ${formattedDueDate}`
-          : `Overdue: ${requirementTitle} signature is past due`,
+          ? `Final notice: ${requirementTitle} documents were due ${formattedDueDate}`
+          : `Final notice: ${requirementTitle} documents are overdue`,
         intro,
-        buttonText: "Review & Sign Now",
+        buttonText: "Upload Documents",
         dueText: formattedDueDate
           ? `The due date was ${formattedDueDate}.`
-          : `This signature request is now overdue.`,
-        consequence: `This has been marked as incomplete in compliance records.`,
+          : `These documents are now overdue.`,
+        consequence: `These documents are overdue. Please submit them as soon as possible to avoid delays.`,
         closing,
       };
     
     default:
       return {
-        subject: `Action required: Please sign ${requirementTitle}`,
+        subject: `Action required: Please upload your documents — ${requirementTitle}`,
         intro,
-        buttonText: "Review & Sign Now",
+        buttonText: "Upload Documents",
         dueText: formattedDueDate
-          ? `Please complete your signature by ${formattedDueDate}.`
-          : `Please complete your signature as soon as possible.`,
+          ? `Please submit your documents by ${formattedDueDate}.`
+          : `Please submit your documents as soon as possible.`,
         consequence: ``,
         closing,
       };

@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { User, Building2, Shield, Loader2, Bell, Trash2, Users, Mail, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { OrganizationSettingsForm } from "@/components/settings/OrganizationSettingsForm";
 import { TeamManagement } from "@/components/settings/TeamManagement";
 import { EmailSettingsForm } from "@/components/settings/EmailSettingsForm";
@@ -60,6 +61,7 @@ interface ProfileData {
 }
 
 export default function Settings() {
+  usePageTitle("Settings");
   const { user, signOut } = useAuth();
   const { organization, loading: orgLoading, refetch: refetchOrg } = useOrganization(user);
   const { resetTour } = useOnboardingTour(organization?.id);
@@ -373,7 +375,7 @@ export default function Settings() {
                   <div className="space-y-0.5">
                     <Label htmlFor="emailNotifications">Email Notifications</Label>
                     <p className="text-sm text-muted-foreground">
-                      Receive emails about signature completions and updates
+                      Receive emails about document submissions and updates
                     </p>
                   </div>
                   <Switch
@@ -389,7 +391,7 @@ export default function Settings() {
                   <div className="space-y-0.5">
                     <Label htmlFor="reminderNotifications">Reminder Notifications</Label>
                     <p className="text-sm text-muted-foreground">
-                      Get notified when recipients haven't signed yet
+                      Get notified when clients haven't submitted documents yet
                     </p>
                   </div>
                   <Switch

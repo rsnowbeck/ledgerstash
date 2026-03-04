@@ -16,11 +16,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { useAuth } from "@/hooks/useAuth";
 import { Plus, Search, Users } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Clients() {
+  usePageTitle("Clients");
   const { user, loading: authLoading } = useAuth();
   const [clients, setClients] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

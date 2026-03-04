@@ -43,8 +43,8 @@ export default function Security() {
             <section className="space-y-4">
               <h2 className="text-xl font-semibold text-foreground">Infrastructure</h2>
               <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
-                <li>LedgerStash is a web-based application</li>
-                <li>Hosted on reputable cloud infrastructure providers</li>
+                <li>Hosted on enterprise-grade cloud infrastructure with 99.9% uptime SLA</li>
+                <li>Data centers located in the United States</li>
                 <li>Access is restricted to authorized personnel only</li>
               </ul>
             </section>
@@ -52,8 +52,8 @@ export default function Security() {
             <section className="space-y-4">
               <h2 className="text-xl font-semibold text-foreground">Data Protection</h2>
               <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
-                <li>Data is encrypted in transit using HTTPS</li>
-                <li>Sensitive data is protected using industry-standard safeguards</li>
+                <li>AES-256 encryption at rest for all stored data</li>
+                <li>TLS 1.2+ encryption in transit for all connections</li>
                 <li>Customer data is logically isolated by account</li>
               </ul>
             </section>

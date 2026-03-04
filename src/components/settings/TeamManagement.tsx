@@ -53,7 +53,7 @@ interface TeamManagementProps {
 
 const ROLE_OPTIONS = [
   { value: "admin", label: "Admin", description: "Full access to all features", icon: Crown },
-  { value: "member", label: "Member", description: "Can manage recipients and requirements", icon: Shield },
+  { value: "member", label: "Member", description: "Can manage clients and PBC lists", icon: Shield },
   { value: "viewer", label: "Viewer", description: "Read-only access", icon: Eye },
 ];
 

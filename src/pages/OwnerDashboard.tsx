@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Loader2, Users, FileSignature, CreditCard, Clock, TrendingUp, Mail } from "lucide-react";
 import { format } from "date-fns";
 
@@ -16,6 +17,7 @@ interface Metrics {
 }
 
 export default function OwnerDashboard() {
+  usePageTitle("Owner Dashboard");
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -70,8 +72,8 @@ export default function OwnerDashboard() {
     { label: "Active Trials", value: metrics.activeTrials, icon: Clock, color: "text-warning" },
     { label: "Expired Trials", value: metrics.expiredTrials, icon: Clock, color: "text-destructive" },
     { label: "Paid Users", value: metrics.paidUsers, icon: CreditCard, color: "text-success" },
-    { label: "Total Signing Requests", value: metrics.totalSigningRequests, icon: FileSignature, color: "text-accent" },
-    { label: "Completed Signatures", value: metrics.completedSignatures, icon: TrendingUp, color: "text-success" },
+    { label: "Total Document Requests", value: metrics.totalSigningRequests, icon: FileSignature, color: "text-accent" },
+    { label: "Documents Submitted", value: metrics.completedSignatures, icon: TrendingUp, color: "text-success" },
   ];
 
   return (

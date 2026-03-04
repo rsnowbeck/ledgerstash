@@ -134,7 +134,7 @@ const handler = async (req: Request): Promise<Response> => {
           const isPro = org.plan === "pro";
           const displayOrg = isPro ? org.name : "LedgerStash";
           const displaySenderName = isPro ? (org.sender_name || org.name) : "LedgerStash";
-          const subject = `Reminder: Please sign "${requirement.title || "Document"}"`;
+          const subject = `Reminder: Your documents are still needed — "${requirement.title || "Document"}"`;
 
           // Build due date warning HTML - only for escalated (close to due) reminders
           let dueWarningHtml = "";
@@ -160,11 +160,11 @@ const handler = async (req: Request): Promise<Response> => {
           
           // Build intro line - include org name only for Pro users
           const intro = (isPro && org.sender_name)
-            ? `${org.sender_name} has requested that you review and sign the following document on behalf of ${org.name}:`
-            : `${displayOrg} has requested that you review and sign the following document:`;
+            ? `${org.sender_name} from ${org.name} has requested the following documents:`
+            : `${displayOrg} has requested the following documents:`;
             
-          const closing = `This request is part of a formal document acknowledgment process initiated by ${displayOrg}.`;
-          const footer = `If you have questions, please contact the requester or your primary contact at ${displayOrg}.`;
+          const closing = `This request is part of your document preparation process with ${displayOrg}.`;
+          const footer = `If you have questions, please contact your accountant or your primary contact at ${displayOrg}.`;
 
           const emailHtml = `
 <!DOCTYPE html>
@@ -216,7 +216,7 @@ const handler = async (req: Request): Promise<Response> => {
                 <tr>
                   <td align="center">
                     <a href="${signingUrl}" style="display: inline-block; padding: 14px 32px; background-color: #18181b; color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 500; border-radius: 8px;">
-                      Review & Sign Now
+                      Upload Documents
                     </a>
                   </td>
                 </tr>

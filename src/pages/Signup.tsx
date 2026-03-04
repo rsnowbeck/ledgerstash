@@ -7,8 +7,10 @@ import { Shield, ArrowLeft, Loader2, CheckCircle2, Eye, EyeOff } from "lucide-re
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { PageSEO } from "@/components/seo/PageSEO";
+import { usePageTitle } from "@/hooks/usePageTitle";
 
 export default function Signup() {
+  usePageTitle("Sign Up");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
