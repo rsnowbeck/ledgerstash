@@ -21,13 +21,13 @@ export function EmailTemplatePreview({
   // Build intro line matching the edge function logic
   const buildIntro = () => {
     if (senderName && organizationName) {
-      return `${senderName} has requested that you review and sign the following document on behalf of ${organizationName}:`;
+      return `${senderName} from ${organizationName} has requested the following documents:`;
     } else if (senderName) {
-      return `${senderName} has requested that you review and sign the following document:`;
+      return `${senderName} has requested the following documents:`;
     } else if (organizationName) {
-      return `${organizationName} has requested that you review and sign the following document:`;
+      return `${organizationName} has requested the following documents:`;
     }
-    return `You have been requested to review and sign the following document:`;
+    return `Your accountant has requested the following documents:`;
   };
   
   const intro = buildIntro();
