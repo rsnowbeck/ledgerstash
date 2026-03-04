@@ -346,7 +346,7 @@ export function OrganizationSettingsForm({ organization, onUpdate }: Organizatio
             <div className="space-y-0.5">
               <Label htmlFor="autoReminder">Automatic Reminders</Label>
               <p className="text-sm text-muted-foreground">
-                Automatically send reminder emails for pending signatures
+                Automatically send reminder emails for pending document requests
               </p>
             </div>
             <Switch
