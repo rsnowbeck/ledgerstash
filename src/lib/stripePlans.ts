@@ -2,13 +2,13 @@
 export const STRIPE_PLANS = {
   solo: {
     name: "Solo CPA",
-    product_id: "prod_U5aCOMMzw1ylC4",
+    product_id: "prod_U5Wn9ZDZbzbZKc",
     monthly: {
-      price_id: "price_1T7P1pQyBV5UJkhpLA5PjeXc",
+      price_id: "price_1T7LjxR9aaf2f8Yg6boZi82U",
       amount: 29,
     },
     annual: {
-      price_id: "price_1T7P27QyBV5UJkhpdpax2WIt",
+      price_id: "price_1T7LjzR9aaf2f8YgVk3Mwz51",
       amount: 290,
       monthlyEquivalent: 24.17,
     },
@@ -25,13 +25,13 @@ export const STRIPE_PLANS = {
   },
   boutique: {
     name: "Boutique Firm",
-    product_id: "prod_U5aCZPDuq2rfc2",
+    product_id: "prod_U5WnwTxMzxXkDt",
     monthly: {
-      price_id: "price_1T7P2LQyBV5UJkhp6OAl0UeB",
+      price_id: "price_1T7Lk0R9aaf2f8Yg565bOya4",
       amount: 79,
     },
     annual: {
-      price_id: "price_1T7P2XQyBV5UJkhp9QQkunu9",
+      price_id: "price_1T7LjzR9aaf2f8Yg3OXRNcjV",
       amount: 790,
       monthlyEquivalent: 65.83,
     },
@@ -78,8 +78,8 @@ export const PRODUCT_TO_PLAN: Record<string, keyof typeof STRIPE_PLANS> = {
   [STRIPE_PLANS.boutique.product_id]: "boutique",
   [STRIPE_PLANS.enterprise.product_id]: "enterprise",
   // Annual products map to same plan
-  "prod_U5aCseojrHsPF6": "solo",
-  "prod_U5aCMuX2vCp5JD": "boutique",
+  "prod_U5Wne3AbyHlVAb": "solo",
+  "prod_U5WnDWPwkTlVH3": "boutique",
   "prod_U5aRGby7IgSY8R": "enterprise",
 };
 
