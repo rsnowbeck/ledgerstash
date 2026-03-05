@@ -554,6 +554,7 @@ export type Database = {
           requirement_limit: number | null
           sender_email: string | null
           sender_name: string | null
+          session_timeout_minutes: number
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
           trial_ends_at: string | null
@@ -573,6 +574,7 @@ export type Database = {
           requirement_limit?: number | null
           sender_email?: string | null
           sender_name?: string | null
+          session_timeout_minutes?: number
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
           trial_ends_at?: string | null
@@ -592,6 +594,7 @@ export type Database = {
           requirement_limit?: number | null
           sender_email?: string | null
           sender_name?: string | null
+          session_timeout_minutes?: number
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
           trial_ends_at?: string | null

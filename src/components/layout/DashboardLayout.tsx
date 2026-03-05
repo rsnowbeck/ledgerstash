@@ -13,6 +13,7 @@ import {
   FolderOpen,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useOrganization } from "@/hooks/useOrganization";
 import { toast } from "sonner";
 import { useSessionTimeout } from "@/hooks/useSessionTimeout";
 import { SessionTimeoutDialog } from "@/components/common/SessionTimeoutDialog";
@@ -37,7 +38,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const { signOut, isOwner, user } = useAuth();
-  const { showWarning, remainingSeconds, extendSession } = useSessionTimeout(!!user);
+  const { organization } = useOrganization(user);
+  const timeoutMinutes = organization?.session_timeout_minutes ?? 30;
+  const { showWarning, remainingSeconds, extendSession } = useSessionTimeout(!!user, timeoutMinutes);
 
   const navItems = isOwner
     ? [...baseNavItems, ...ownerNavItems]

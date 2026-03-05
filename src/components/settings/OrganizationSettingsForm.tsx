@@ -25,6 +25,7 @@ interface Organization {
   default_due_days: number | null;
   auto_reminder_enabled: boolean | null;
   auto_reminder_days: number | null;
+  session_timeout_minutes: number | null;
 }
 
 interface OrganizationSettingsFormProps {
@@ -45,6 +46,7 @@ export function OrganizationSettingsForm({ organization, onUpdate }: Organizatio
   const [defaultDueDays, setDefaultDueDays] = useState(organization.default_due_days?.toString() || "30");
   const [autoReminderEnabled, setAutoReminderEnabled] = useState(organization.auto_reminder_enabled || false);
   const [autoReminderDays, setAutoReminderDays] = useState(organization.auto_reminder_days?.toString() || "7");
+  const [sessionTimeout, setSessionTimeout] = useState((organization.session_timeout_minutes ?? 30).toString());
 
   const isPro = organization.plan === "pro";
 
@@ -124,6 +126,7 @@ export function OrganizationSettingsForm({ organization, onUpdate }: Organizatio
           default_due_days: parseInt(defaultDueDays) || 30,
           auto_reminder_enabled: autoReminderEnabled,
           auto_reminder_days: parseInt(autoReminderDays) || 7,
+          session_timeout_minutes: parseInt(sessionTimeout) || 30,
           updated_at: new Date().toISOString(),
         })
         .eq("id", organization.id);
@@ -375,6 +378,36 @@ export function OrganizationSettingsForm({ organization, onUpdate }: Organizatio
               </p>
             </div>
           )}
+        </CardContent>
+      </Card>
+
+      {/* Session Security */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Session Security</CardTitle>
+          <CardDescription>
+            Control how long users can remain inactive before being automatically signed out
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="sessionTimeout">Inactivity Timeout</Label>
+            <Select value={sessionTimeout} onValueChange={setSessionTimeout}>
+              <SelectTrigger className="w-48">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="15">15 minutes</SelectItem>
+                <SelectItem value="30">30 minutes</SelectItem>
+                <SelectItem value="60">1 hour</SelectItem>
+                <SelectItem value="120">2 hours</SelectItem>
+                <SelectItem value="0">Never (not recommended)</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              Users will see a warning 2 minutes before timeout. IRS Publication 4557 recommends 15–30 minutes for firms handling taxpayer data.
+            </p>
+          </div>
         </CardContent>
       </Card>
 

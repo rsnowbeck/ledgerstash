@@ -1,8 +1,7 @@
 import { useEffect, useCallback, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-const TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
-const WARNING_MS = 2 * 60 * 1000; // Show warning 2 minutes before timeout
+const WARNING_BEFORE_MS = 2 * 60 * 1000; // Show warning 2 minutes before timeout
 
 interface UseSessionTimeoutReturn {
   showWarning: boolean;
@@ -10,31 +9,37 @@ interface UseSessionTimeoutReturn {
   extendSession: () => void;
 }
 
-export function useSessionTimeout(enabled: boolean = true): UseSessionTimeoutReturn {
+export function useSessionTimeout(enabled: boolean = true, timeoutMinutes: number = 30): UseSessionTimeoutReturn {
+  const timeoutMs = timeoutMinutes * 60 * 1000;
   const [showWarning, setShowWarning] = useState(false);
   const [remainingSeconds, setRemainingSeconds] = useState(120);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
   const warningRef = useRef<ReturnType<typeof setTimeout>>();
   const countdownRef = useRef<ReturnType<typeof setInterval>>();
-  const lastActivityRef = useRef(Date.now());
+  const showWarningRef = useRef(false);
 
   const signOut = useCallback(async () => {
     setShowWarning(false);
+    showWarningRef.current = false;
     await supabase.auth.signOut();
     window.location.href = "/login";
   }, []);
 
   const resetTimers = useCallback(() => {
-    lastActivityRef.current = Date.now();
     setShowWarning(false);
+    showWarningRef.current = false;
 
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     if (warningRef.current) clearTimeout(warningRef.current);
     if (countdownRef.current) clearInterval(countdownRef.current);
 
+    const warningDelay = Math.max(timeoutMs - WARNING_BEFORE_MS, 0);
+
     warningRef.current = setTimeout(() => {
       setShowWarning(true);
-      setRemainingSeconds(Math.floor(WARNING_MS / 1000));
+      showWarningRef.current = true;
+      const warningSeconds = Math.min(Math.floor(WARNING_BEFORE_MS / 1000), Math.floor(timeoutMs / 1000));
+      setRemainingSeconds(warningSeconds);
 
       countdownRef.current = setInterval(() => {
         setRemainingSeconds((prev) => {
@@ -45,17 +50,17 @@ export function useSessionTimeout(enabled: boolean = true): UseSessionTimeoutRet
           return prev - 1;
         });
       }, 1000);
-    }, TIMEOUT_MS - WARNING_MS);
+    }, warningDelay);
 
-    timeoutRef.current = setTimeout(signOut, TIMEOUT_MS);
-  }, [signOut]);
+    timeoutRef.current = setTimeout(signOut, timeoutMs);
+  }, [signOut, timeoutMs]);
 
   const extendSession = useCallback(() => {
     resetTimers();
   }, [resetTimers]);
 
   useEffect(() => {
-    if (!enabled) return;
+    if (!enabled || timeoutMinutes <= 0) return;
 
     const events = ["mousedown", "keydown", "scroll", "touchstart", "mousemove"];
 
@@ -64,8 +69,7 @@ export function useSessionTimeout(enabled: boolean = true): UseSessionTimeoutRet
       if (throttleTimer) return;
       throttleTimer = setTimeout(() => {
         throttleTimer = null;
-        // Only reset if warning isn't showing (don't reset during warning)
-        if (!showWarning) {
+        if (!showWarningRef.current) {
           resetTimers();
         }
       }, 1000);
@@ -81,7 +85,7 @@ export function useSessionTimeout(enabled: boolean = true): UseSessionTimeoutRet
       if (countdownRef.current) clearInterval(countdownRef.current);
       if (throttleTimer) clearTimeout(throttleTimer);
     };
-  }, [enabled, resetTimers, showWarning]);
+  }, [enabled, resetTimers, timeoutMinutes]);
 
   return { showWarning, remainingSeconds, extendSession };
 }
