@@ -46,6 +46,7 @@ export function OrganizationSettingsForm({ organization, onUpdate }: Organizatio
   const [defaultDueDays, setDefaultDueDays] = useState(organization.default_due_days?.toString() || "30");
   const [autoReminderEnabled, setAutoReminderEnabled] = useState(organization.auto_reminder_enabled || false);
   const [autoReminderDays, setAutoReminderDays] = useState(organization.auto_reminder_days?.toString() || "7");
+  const [sessionTimeout, setSessionTimeout] = useState((organization.session_timeout_minutes ?? 30).toString());
 
   const isPro = organization.plan === "pro";
 
