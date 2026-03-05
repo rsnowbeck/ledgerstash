@@ -31,6 +31,26 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://ledgerstash.com/client-intake-consent-forms</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ledgerstash.com/contractor-vendor-agreement-tracking</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ledgerstash.com/employee-acknowledgment-tracking</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ledgerstash.com/blog/track-employee-policy-acknowledgments</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ledgerstash.com/pricing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

@@ -24,6 +24,20 @@ import Settings from "./pages/Settings";
 import AcceptInvite from "./pages/AcceptInvite";
 import Welcome from "./pages/Welcome";
 import NotFound from "./pages/NotFound";
+import Recipients from "./pages/Recipients";
+import Requirements from "./pages/Requirements";
+import RequirementDetail from "./pages/RequirementDetail";
+import Signatures from "./pages/Signatures";
+import Sign from "./pages/Sign";
+import ComplianceSoftware from "./pages/seo/ComplianceSoftware";
+import PolicyAcknowledgment from "./pages/seo/PolicyAcknowledgment";
+import FillablePdfForms from "./pages/seo/FillablePdfForms";
+import DigitalPolicySignature from "./pages/seo/DigitalPolicySignature";
+import DocusignAlternative from "./pages/seo/DocusignAlternative";
+import TrackPolicyAcknowledgments from "./pages/blog/TrackPolicyAcknowledgments";
+import ClientIntakeForms from "./pages/use-cases/ClientIntakeForms";
+import ContractorAgreements from "./pages/use-cases/ContractorAgreements";
+import EmployeeAcknowledgments from "./pages/use-cases/EmployeeAcknowledgments";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +70,23 @@ const App = () => {
           <Route path="/settings" element={<Settings />} />
           <Route path="/accept-invite" element={<AcceptInvite />} />
           <Route path="/welcome" element={<Welcome />} />
+          <Route path="/recipients" element={<Recipients />} />
+          <Route path="/requirements" element={<Requirements />} />
+          <Route path="/requirements/:id" element={<RequirementDetail />} />
+          <Route path="/signatures" element={<Signatures />} />
+          <Route path="/sign" element={<Sign />} />
+          {/* SEO Landing Pages */}
+          <Route path="/compliance-software-small-business" element={<ComplianceSoftware />} />
+          <Route path="/policy-acknowledgment-software" element={<PolicyAcknowledgment />} />
+          <Route path="/fillable-pdf-compliance-forms" element={<FillablePdfForms />} />
+          <Route path="/digital-policy-signature-software" element={<DigitalPolicySignature />} />
+          <Route path="/docusign-alternative-compliance" element={<DocusignAlternative />} />
+          {/* Blog */}
+          <Route path="/blog/track-employee-policy-acknowledgments" element={<TrackPolicyAcknowledgments />} />
+          {/* Use Cases */}
+          <Route path="/client-intake-consent-forms" element={<ClientIntakeForms />} />
+          <Route path="/contractor-vendor-agreement-tracking" element={<ContractorAgreements />} />
+          <Route path="/employee-acknowledgment-tracking" element={<EmployeeAcknowledgments />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

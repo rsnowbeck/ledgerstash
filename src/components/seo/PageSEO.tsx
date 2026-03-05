@@ -6,6 +6,8 @@ interface PageSEOProps {
   keywords?: string;
   canonical?: string;
   noindex?: boolean;
+  ogImage?: string;
+  ogType?: string;
 }
 
 export function PageSEO({ 
@@ -13,7 +15,9 @@ export function PageSEO({
   description, 
   keywords,
   canonical,
-  noindex = false 
+  noindex = false,
+  ogImage = "https://ledgerstash.com/og-image.png",
+  ogType = "website",
 }: PageSEOProps) {
   const fullTitle = title.includes("LedgerStash") ? title : `${title} | LedgerStash`;
   const baseUrl = "https://ledgerstash.com";
@@ -30,12 +34,18 @@ export function PageSEO({
       {/* Open Graph */}
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content={ogType} />
       {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+      <meta property="og:image" content={ogImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="672" />
+      <meta property="og:site_name" content="LedgerStash" />
       
       {/* Twitter */}
+      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={ogImage} />
     </Helmet>
   );
 }
