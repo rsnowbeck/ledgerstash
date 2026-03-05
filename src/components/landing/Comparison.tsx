@@ -9,8 +9,8 @@ const rows = [
     ledgerSub: "$348/year",
     smart: "$210/month",
     smartSub: "$70/user/month, 3-user minimum",
-    tax: "$66/month",
-    taxSub: "$800/year contract",
+    tax: "$800/year (annual contract only)",
+    taxSub: "No monthly option — $66/month equivalent",
   },
   {
     feature: "User Minimums",
