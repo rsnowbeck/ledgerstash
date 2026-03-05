@@ -25,6 +25,7 @@ interface Organization {
   default_due_days: number | null;
   auto_reminder_enabled: boolean | null;
   auto_reminder_days: number | null;
+  session_timeout_minutes: number | null;
 }
 
 interface OrganizationSettingsFormProps {
