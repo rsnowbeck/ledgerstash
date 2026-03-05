@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
+injectIntoGlobalHook(window);
+window.$RefreshReg$ = () => {};
+window.$RefreshSig$ = () => (type) => type;</script>
+
+    <script type="module" src="/@vite/client"></script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Secure Client Vault for Accounting Firms | LedgerStash</title>
+    <meta name="description" content="Securely exchange documents with clients. Give your accounting firm a branded vault where clients upload files, complete PBC tasks, and stay organized." />
+    <meta name="keywords" content="client vault accounting, secure document exchange CPA, accounting firm client portal, tax document management, PBC list software" />
+    <meta name="author" content="LedgerStash" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/og-image.png" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://ledgerstash.com" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Secure Client Vault for Accounting Firms | LedgerStash" />
+    <meta property="og:description" content="Securely exchange documents with clients. Give your accounting firm a branded vault where clients upload files, complete PBC tasks, and stay organized." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ledgerstash.com" />
+    <meta property="og:image" content="https://ledgerstash.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="672" />
+    <meta property="og:site_name" content="LedgerStash" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@ledgerstash" />
+    <meta name="twitter:title" content="Secure Client Vault for Accounting Firms | LedgerStash" />
+    <meta name="twitter:description" content="Securely exchange documents with clients. Give your accounting firm a branded vault where clients upload files, complete PBC tasks, and stay organized." />
+    <meta name="twitter:image" content="https://ledgerstash.com/og-image.png" />
+    
+    <!-- Additional SEO -->
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#3B2F8E" />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P26N36J6ZL"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-P26N36J6ZL');
+    </script>
+  </head>
+
+  <body>
+    <div id="root"></div><script src="https://cdn.gpteng.co/lovable.js" type="module"></script>
+    <script type="module" src="/src/main.tsx?t=1772730907124"></script>
+  </body>
+</html>
