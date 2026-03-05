@@ -13,6 +13,7 @@ import {
   FolderOpen,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useOrganization } from "@/hooks/useOrganization";
 import { toast } from "sonner";
 import { useSessionTimeout } from "@/hooks/useSessionTimeout";
 import { SessionTimeoutDialog } from "@/components/common/SessionTimeoutDialog";
