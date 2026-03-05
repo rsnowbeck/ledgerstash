@@ -162,6 +162,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           {children}
         </div>
       </main>
+
+      {/* Session Timeout Warning */}
+      <SessionTimeoutDialog
+        open={showWarning}
+        remainingSeconds={remainingSeconds}
+        onExtend={extendSession}
+      />
     </div>
   );
 }
