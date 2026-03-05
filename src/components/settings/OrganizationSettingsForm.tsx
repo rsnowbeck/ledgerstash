@@ -126,6 +126,7 @@ export function OrganizationSettingsForm({ organization, onUpdate }: Organizatio
           default_due_days: parseInt(defaultDueDays) || 30,
           auto_reminder_enabled: autoReminderEnabled,
           auto_reminder_days: parseInt(autoReminderDays) || 7,
+          session_timeout_minutes: parseInt(sessionTimeout) || 30,
           updated_at: new Date().toISOString(),
         })
         .eq("id", organization.id);
