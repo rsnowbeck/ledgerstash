@@ -52,7 +52,7 @@ export function useOrganization(user: User | null) {
       if (profileData?.organization_id) {
         const { data: orgData, error: orgError } = await supabase
           .from('organizations')
-          .select('id, name, plan, trial_ends_at, recipient_limit, requirement_limit, logo_url, sender_name, sender_email, default_due_days, auto_reminder_enabled, auto_reminder_days, custom_recipient_message')
+          .select('id, name, plan, trial_ends_at, recipient_limit, requirement_limit, logo_url, sender_name, sender_email, default_due_days, auto_reminder_enabled, auto_reminder_days, custom_recipient_message, session_timeout_minutes')
           .eq('id', profileData.organization_id)
           .single();
 
