@@ -4,20 +4,11 @@ import { CheckCircle2, ArrowRight } from "lucide-react";
 
 const rows = [
   {
-    feature: "Solo CPA Pricing (Monthly)",
+    feature: "Solo CPA Pricing",
     ledger: "$29/month",
-    ledgerSub: "No minimums, no contracts",
+    ledgerSub: "$290/year (save 16%)",
     smart: "$210/month",
-    smartSub: "$70/user/month, 3-user minimum",
-    tax: "$800/year per seat",
-    taxSub: "Annual contract only — no monthly option",
-  },
-  {
-    feature: "Annual Cost (Solo CPA)",
-    ledger: "$290/year",
-    ledgerSub: "Save 16% — just $24.16/month",
-    smart: "$1,800/year",
-    smartSub: "$50/user/month, 3-user minimum",
+    smartSub: "$1,800/year — 3-user minimum",
     tax: "$800/year per seat",
     taxSub: "Annual contract only — no monthly option",
   },
