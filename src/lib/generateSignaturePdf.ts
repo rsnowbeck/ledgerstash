@@ -91,13 +91,14 @@ export async function generateSignaturePdf(data: SignatureData): Promise<void> {
   // Certificate title
   doc.setFontSize(22);
   doc.setFont("helvetica", "bold");
-  doc.text("Certificate of Acknowledgment", pageWidth / 2, headerTextY + 10, { align: "center" });
+  doc.setTextColor(255, 255, 255);
+  doc.text("Certificate of Acknowledgment", pageWidth / 2, 35, { align: "center" });
 
   // Document ID
   doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(200, 200, 200);
-  doc.text(`Document ID: ${data.signingRequestId}`, pageWidth / 2, headerTextY + 20, { align: "center" });
+  doc.text(`Document ID: ${data.signingRequestId}`, pageWidth / 2, 45, { align: "center" });
 
   // Main content area
   let yPos = 70;
