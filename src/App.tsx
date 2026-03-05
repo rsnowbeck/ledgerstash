@@ -22,6 +22,7 @@ import Security from "./pages/Security";
 import Pricing from "./pages/Pricing";
 import Settings from "./pages/Settings";
 import AcceptInvite from "./pages/AcceptInvite";
+import Welcome from "./pages/Welcome";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -54,6 +55,7 @@ const App = () => {
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/accept-invite" element={<AcceptInvite />} />
+          <Route path="/welcome" element={<Welcome />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
