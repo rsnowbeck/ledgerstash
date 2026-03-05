@@ -23,6 +23,7 @@ import { toast } from "sonner";
 
 export default function Clients() {
   usePageTitle("Clients");
+  const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
   const [clients, setClients] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
