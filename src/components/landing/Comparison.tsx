@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, ArrowRight } from "lucide-react";
+import { DownloadCTA } from "@/components/landing/DownloadCTA";
 
 const rows = [
   {
@@ -161,6 +162,9 @@ export function Comparison() {
             </div>
           ))}
         </div>
+
+        {/* Download CTA */}
+        <DownloadCTA variant="comparison" sourceSection="comparison" />
 
         {/* CTA */}
         <div className="text-center mt-12 space-y-4">

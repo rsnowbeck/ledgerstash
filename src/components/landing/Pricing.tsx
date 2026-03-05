@@ -6,6 +6,7 @@ import { STRIPE_PLANS, type PlanKey } from "@/lib/stripePlans";
 import { useSubscription } from "@/hooks/useSubscription";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import { DownloadCTA } from "@/components/landing/DownloadCTA";
 
 const planOrder: { key: PlanKey; featured: boolean }[] = [
   { key: "solo", featured: false },
@@ -177,6 +178,11 @@ export function Pricing() {
               </div>
             );
           })}
+        </div>
+
+        {/* Download CTA */}
+        <div className="max-w-2xl mx-auto">
+          <DownloadCTA variant="pricing" sourceSection="pricing" />
         </div>
 
         <div className="text-center mt-10">

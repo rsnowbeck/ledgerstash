@@ -501,6 +501,30 @@ export type Database = {
           },
         ]
       }
+      lead_captures: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          resource_name: string
+          source_section: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          resource_name: string
+          source_section: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          resource_name?: string
+          source_section?: string
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string

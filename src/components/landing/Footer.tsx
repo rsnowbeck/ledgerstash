@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Shield } from "lucide-react";
+import { DownloadCTA } from "@/components/landing/DownloadCTA";
 
 export function Footer() {
   return (
@@ -25,6 +26,7 @@ export function Footer() {
             <Link to="/security" className="text-muted-foreground hover:text-foreground transition-colors">
               Security
             </Link>
+            <DownloadCTA variant="footer" sourceSection="footer" />
           </nav>
         </div>
       </div>
