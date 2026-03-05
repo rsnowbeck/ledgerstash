@@ -428,6 +428,7 @@ export default function Settings() {
 
           {/* Security Tab */}
           <TabsContent value="security" className="space-y-6">
+            <MFASettings />
             <Card>
               <CardHeader>
                 <CardTitle>Change Password</CardTitle>

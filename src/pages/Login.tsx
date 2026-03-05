@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { PageSEO } from "@/components/seo/PageSEO";
 import { usePageTitle } from "@/hooks/usePageTitle";
+import { MFAChallenge } from "@/components/auth/MFAChallenge";
 
 export default function Login() {
   usePageTitle("Log In");
@@ -15,6 +16,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showMFA, setShowMFA] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -22,7 +24,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -36,6 +38,13 @@ export default function Login() {
         return;
       }
 
+      // Check if MFA is required
+      const { data: aalData } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+      if (aalData && aalData.nextLevel === "aal2" && aalData.currentLevel !== "aal2") {
+        setShowMFA(true);
+        return;
+      }
+
       toast.success("Welcome back!");
       navigate("/dashboard");
     } catch (error) {
@@ -44,6 +53,23 @@ export default function Login() {
       setLoading(false);
     }
   };
+
+  const handleMFACancel = async () => {
+    await supabase.auth.signOut();
+    setShowMFA(false);
+  };
+
+  if (showMFA) {
+    return (
+      <MFAChallenge
+        onVerified={() => {
+          toast.success("Welcome back!");
+          navigate("/dashboard");
+        }}
+        onCancel={handleMFACancel}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
