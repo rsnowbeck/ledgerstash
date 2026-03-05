@@ -55,26 +55,38 @@ export async function generateSignaturePdf(data: SignatureData): Promise<void> {
   doc.setFillColor(...accentColor);
   doc.rect(0, 50, pageWidth, 3, "F");
 
-  let headerTextY = 20;
-
-  // Try to add organization logo, fallback to LedgerStash shield
-  const logoUrl = data.organizationLogoUrl || `${window.location.origin}/images/ledgerstash-shield.png`;
-  const logoBase64 = await loadImageAsBase64(logoUrl);
-  if (logoBase64) {
-    try {
-      doc.addImage(logoBase64, "PNG", 15, 10, 30, 30);
-      headerTextY = 25;
-    } catch (e) {
-      console.error("Failed to add logo to PDF:", e);
+  // Try to add organization logo or default LedgerStash branding
+  if (data.organizationLogoUrl) {
+    const logoBase64 = await loadImageAsBase64(data.organizationLogoUrl);
+    if (logoBase64) {
+      try {
+        doc.addImage(logoBase64, "PNG", 15, 10, 30, 30);
+      } catch (e) {
+        console.error("Failed to add logo to PDF:", e);
+      }
     }
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    doc.text(data.organizationName || "LedgerStash", pageWidth / 2, 20, { align: "center" });
+  } else {
+    // Default LedgerStash branding: shield + wordmark side by side, centered
+    const shieldUrl = `${window.location.origin}/images/ledgerstash-shield.png`;
+    const shieldBase64 = await loadImageAsBase64(shieldUrl);
+    const logoBlockWidth = 75; // shield (15) + gap (3) + text width (~57)
+    const logoStartX = (pageWidth - logoBlockWidth) / 2;
+    if (shieldBase64) {
+      try {
+        doc.addImage(shieldBase64, "PNG", logoStartX, 12, 15, 15);
+      } catch (e) {
+        console.error("Failed to add shield to PDF:", e);
+      }
+    }
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text("LedgerStash", logoStartX + 18, 23);
   }
-
-  // Organization name or VaultLedger
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(12);
-  doc.setFont("helvetica", "normal");
-  const orgDisplayName = data.organizationName || "LedgerStash";
-  doc.text(orgDisplayName, pageWidth / 2, headerTextY - 5, { align: "center" });
   
   // Certificate title
   doc.setFontSize(22);
