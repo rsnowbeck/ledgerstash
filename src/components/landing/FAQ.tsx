@@ -62,6 +62,26 @@ const faqs = [
     answer:
       "Yes. Every plan includes a 14-day free trial with full access. No credit card required to start. You'll have your vault live in under 5 minutes.",
   },
+  {
+    question: "How is LedgerStash different from SmartVault and TaxDome?",
+    answer:
+      "LedgerStash is purpose-built for solo CPAs and boutique firms, while SmartVault and TaxDome are enterprise-grade solutions designed for larger practices.\n\nPricing: LedgerStash starts at $29/month ($348/year) with no user minimums. SmartVault charges $50–75/user/month with a 3-user minimum ($1,800–2,700/year). TaxDome costs $700–900/year per seat with a 3-year commitment.\n\nComplexity: LedgerStash sets up in minutes with no training. SmartVault requires days to weeks, and TaxDome requires 6–8 weeks of dedicated onboarding.\n\nClient Experience: LedgerStash clients access documents without creating an account or remembering passwords. SmartVault and TaxDome both require client accounts.\n\nAccounting Language: LedgerStash uses 'PBC List Management' — the terminology CPAs actually use. SmartVault and TaxDome use generic 'File Request' tools.",
+  },
+  {
+    question: "Should I switch from SmartVault or TaxDome to LedgerStash?",
+    answer:
+      "If you're currently using SmartVault or TaxDome but only using the document vault and client portal features, switching to LedgerStash could save you significant money and reduce complexity.\n\nAnnual Cost Comparison (Solo CPA): SmartVault costs $1,800–2,700/year (3-user minimum). TaxDome costs $700–900/year. LedgerStash costs just $348/year with no minimums.\n\nThat's $1,452–2,352/year in savings vs. SmartVault and $352–552/year vs. TaxDome — plus faster setup, frictionless client experience, and accounting-specific PBC list management.\n\nMigration is easy: We'll help you migrate your documents and set up your clients in minutes.",
+  },
+  {
+    question: "What if I need practice management features in the future?",
+    answer:
+      "LedgerStash is designed to do one thing exceptionally well: secure document exchange and PBC management. If you later need billing, CRM, or other practice management features, you can integrate LedgerStash with your existing tools or upgrade to a more comprehensive platform.\n\nYou're not paying for features you'll never use, and you're not locked into a bloated ecosystem. You can build your tech stack around your actual needs, and LedgerStash will be a core part of it.",
+  },
+  {
+    question: "Is LedgerStash secure enough compared to larger competitors?",
+    answer:
+      "Yes. LedgerStash meets the same compliance standards as enterprise solutions: IRS Publication 4557 compliance for tax document storage, FTC Safeguards Rule compliance for protecting client data, GLBA adherence for financial data, bank-grade encryption at rest and in transit, and full audit trails with timestamps and IP tracking for every file.\n\nYour clients' sensitive documents are as secure with LedgerStash as they would be with any enterprise solution — but at a price that makes sense for your practice size.",
+  },
 ];
 
 function useFAQSchema() {

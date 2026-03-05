@@ -26,6 +26,7 @@ export default function Landing() {
         <Features />
         <HowItWorks />
         <Pricing />
+        <Comparison />
         <UseCases />
         <FAQ />
       </main>
