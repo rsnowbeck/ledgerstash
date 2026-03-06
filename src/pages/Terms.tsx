@@ -8,8 +8,8 @@ export default function Terms() {
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title="Terms of Service | LedgerStash Usage Agreement"
-        description="Read LedgerStash's Terms of Service covering acceptable use, customer data ownership, service availability, and liability limitations."
+        title="Terms of Service | Ledger Stash Usage Agreement"
+        description="Read Ledger Stash's Terms of Service covering acceptable use, customer data ownership, service availability, and liability limitations."
         keywords="ledgerstash terms of service, client vault terms, accounting portal agreement"
         canonical="/terms"
       />
