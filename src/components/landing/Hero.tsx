@@ -67,6 +67,11 @@ export function Hero() {
             </Button>
           </div>
 
+          {/* Micro-line */}
+          <p className="text-xs text-muted-foreground mb-8 animate-slide-up" style={{ animationDelay: "0.19s" }}>
+            No credit card • Setup in minutes • Cancel anytime
+          </p>
+
           {/* Trust Row */}
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center text-sm text-muted-foreground mb-16 animate-slide-up" style={{ animationDelay: "0.22s" }}>
             {trustItems.map((item) => (
