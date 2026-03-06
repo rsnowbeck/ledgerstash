@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { Resend } from "https://esm.sh/resend@2.0.0";
+import { checkRateLimit, getClientIP, rateLimitResponse } from "../_shared/rate-limit.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -116,6 +117,12 @@ const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
+  }
+
+  // Rate limit: 5 requests per minute per IP (strictest - prevents email bombing)
+  const clientIP = getClientIP(req);
+  if (!checkRateLimit(`send-reset:${clientIP}`, 5, 60_000)) {
+    return rateLimitResponse(corsHeaders);
   }
 
   if (req.method !== "POST") {

@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { checkRateLimit, getClientIP, rateLimitResponse } from "../_shared/rate-limit.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -8,6 +9,12 @@ const corsHeaders = {
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
+  }
+
+  // Rate limit: 20 requests per minute per IP
+  const clientIP = getClientIP(req);
+  if (!checkRateLimit(`verify-signing:${clientIP}`, 20, 60_000)) {
+    return rateLimitResponse(corsHeaders);
   }
 
   try {
