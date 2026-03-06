@@ -33,7 +33,7 @@ export function Hero() {
   return (
     <section className="section-hero pt-20 lg:pt-28 pb-16 lg:pb-24">
       <div className="container">
-        <div className="mx-auto max-w-4xl text-center">
+        <div className="mx-auto max-w-5xl text-center">
           {/* Pill */}
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2 text-sm text-muted-foreground mb-8 shadow-sm animate-slide-up">
             <Lock className="h-3.5 w-3.5 text-accent" />
