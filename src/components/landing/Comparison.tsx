@@ -183,23 +183,6 @@ export function Comparison() {
           </p>
         </div>
 
-        {/* CTA */}
-        <div className="text-center mt-12 space-y-4">
-          <p className="text-lg font-semibold text-foreground">
-            <strong>The Math is Simple:</strong> LedgerStash gives you everything
-            you need at a fraction of the cost.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="hero" size="xl" asChild>
-              <Link to="/signup">
-                Start Free Trial <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button variant="outline" size="lg" asChild>
-              <a href="#faq">Learn More in FAQ</a>
-            </Button>
-          </div>
-        </div>
       </div>
     </section>
   );
