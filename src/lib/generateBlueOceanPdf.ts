@@ -47,14 +47,21 @@ export async function generateBlueOceanPdf(): Promise<void> {
   const shieldBase64 = await loadImageAsBase64(`${window.location.origin}/images/ledgerstash-shield.png`);
 
   // Helper to draw the header logo block on colored pages
-  function drawLogoHeader(doc: jsPDF, y: number, color: [number, number, number] = WHITE) {
+  function drawLogoHeader(doc: jsPDF, y: number, color: [number, number, number] = WHITE, inverted = false) {
     if (shieldBase64) {
-      try { doc.addImage(shieldBase64, "PNG", pw / 2 - 30, y, 14, 14); } catch {}
+      try {
+        if (inverted) {
+          // Draw a white rounded rect behind the shield to make it visible on dark backgrounds
+          doc.setFillColor(...WHITE);
+          doc.roundedRect(pw / 2 - 10, y, 20, 20, 3, 3, "F");
+        }
+        doc.addImage(shieldBase64, "PNG", pw / 2 - 8, y + 1, 16, 16);
+      } catch {}
     }
     doc.setTextColor(...color);
-    doc.setFontSize(16);
+    doc.setFontSize(18);
     doc.setFont("helvetica", "bold");
-    doc.text("LedgerStash", pw / 2 - 13, y + 10);
+    doc.text("LedgerStash", pw / 2, y + 30, { align: "center" });
   }
 
   // ===== PAGE 1: Title Page =====
