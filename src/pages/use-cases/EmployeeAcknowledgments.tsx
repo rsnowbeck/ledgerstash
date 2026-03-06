@@ -60,7 +60,7 @@ export default function EmployeeAcknowledgments() {
             <section className="mb-14">
               <h2 className="text-2xl font-bold text-foreground mb-4">A Structured System for Employee Acknowledgments</h2>
               <p className="text-muted-foreground mb-4">
-                LedgerStash replaces scattered tracking systems with a purpose-built workflow for internal document management.
+                Ledger Stash replaces scattered tracking systems with a purpose-built workflow for internal document management.
               </p>
               <p className="text-muted-foreground mb-4">
                 Upload a policy or handbook once. Assign it to the appropriate employees or groups. Require a signature and any additional fields. Monitor completion in real time.
