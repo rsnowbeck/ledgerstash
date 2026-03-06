@@ -119,6 +119,12 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  // Rate limit: 5 requests per minute per IP (strictest - prevents email bombing)
+  const clientIP = getClientIP(req);
+  if (!checkRateLimit(`send-reset:${clientIP}`, 5, 60_000)) {
+    return rateLimitResponse(corsHeaders);
+  }
+
   if (req.method !== "POST") {
     return new Response("Method not allowed", { status: 405, headers: corsHeaders });
   }

@@ -31,6 +31,12 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  // Rate limit: 10 requests per minute per IP
+  const clientIP = getClientIP(req);
+  if (!checkRateLimit(`verify-reset:${clientIP}`, 10, 60_000)) {
+    return rateLimitResponse(corsHeaders);
+  }
+
   const url = new URL(req.url);
   const action = url.searchParams.get("action") || "verify";
 
