@@ -44,7 +44,7 @@ export default function DocusignAlternative() {
                   <thead>
                     <tr className="border-b border-border">
                       <th className="text-left p-4 text-sm font-semibold text-foreground">Feature</th>
-                      <th className="text-center p-4 text-sm font-semibold text-accent">LedgerStash</th>
+                      <th className="text-center p-4 text-sm font-semibold text-accent">Ledger Stash</th>
                       <th className="text-center p-4 text-sm font-semibold text-muted-foreground">DocuSign</th>
                     </tr>
                   </thead>

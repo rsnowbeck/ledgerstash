@@ -72,7 +72,7 @@ export default function ComplianceSoftware() {
         <section className="py-16">
           <div className="container">
             <div className="mx-auto max-w-3xl">
-              <h2 className="text-2xl font-bold text-foreground mb-6">Why small businesses choose LedgerStash</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-6">Why small businesses choose Ledger Stash</h2>
               <ul className="space-y-4">
                 {[
                   "No enterprise contracts or complex onboarding — start collecting signatures in minutes",

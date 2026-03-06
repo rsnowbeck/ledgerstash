@@ -23,7 +23,7 @@ export default function DigitalPolicySignature() {
                 Digital Policy <span className="text-accent">Signature Software</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                LedgerStash is digital policy signature software for internal compliance use. Collect legally defensible signatures from employees, contractors, and vendors — without requiring them to create accounts, remember passwords, or download apps.
+                Ledger Stash is digital policy signature software for internal compliance use. Collect legally defensible signatures from employees, contractors, and vendors — without requiring them to create accounts, remember passwords, or download apps.
               </p>
               <Button variant="hero" size="xl" asChild>
                 <Link to="/signup" className="gap-2">
