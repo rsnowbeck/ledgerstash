@@ -83,7 +83,7 @@ export default function Terms() {
 
             <section className="space-y-4">
               <h2 className="text-xl font-semibold text-foreground">Limitation of Liability</h2>
-              <p className="text-muted-foreground">To the maximum extent permitted by law, LedgerStash will not be liable for indirect, incidental, or consequential damages resulting from use of the Service.</p>
+              <p className="text-muted-foreground">To the maximum extent permitted by law, Ledger Stash will not be liable for indirect, incidental, or consequential damages resulting from use of the Service.</p>
             </section>
 
             <section className="space-y-4">

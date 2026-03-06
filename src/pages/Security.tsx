@@ -92,7 +92,7 @@ export default function Security() {
                 <li><strong>IRS Publication 4557</strong> — Safeguarding Taxpayer Data: encrypted storage, access controls, and secure document transmission</li>
                 <li><strong>FTC Safeguards Rule</strong> — Required safeguards for customer financial information under GLBA</li>
                 <li><strong>Gramm-Leach-Bliley Act (GLBA)</strong> — Privacy and security of consumer financial data</li>
-                <li><strong>WISP Support</strong> — LedgerStash can serve as a core component of your firm's Written Information Security Plan</li>
+                <li><strong>WISP Support</strong> — Ledger Stash can serve as a core component of your firm's Written Information Security Plan</li>
               </ul>
               <p className="text-muted-foreground text-sm">Our infrastructure provider maintains SOC 2 Type II certification. While compliance ultimately depends on your firm's overall security program, LedgerStash provides the technical safeguards these regulations require.</p>
             </section>
