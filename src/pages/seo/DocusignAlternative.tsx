@@ -23,7 +23,7 @@ export default function DocusignAlternative() {
                 The <span className="text-accent">DocuSign Alternative</span> Built for Compliance
               </h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                DocuSign is built for contract negotiation. LedgerStash is built for internal compliance. If you need policy acknowledgments, onboarding forms, and audit documentation — not multi-party legal agreements — LedgerStash does the job at a fraction of the cost.
+                DocuSign is built for contract negotiation. Ledger Stash is built for internal compliance. If you need policy acknowledgments, onboarding forms, and audit documentation — not multi-party legal agreements — Ledger Stash does the job at a fraction of the cost.
               </p>
               <Button variant="hero" size="xl" asChild>
                 <Link to="/signup" className="gap-2">
