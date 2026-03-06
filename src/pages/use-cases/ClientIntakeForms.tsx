@@ -24,7 +24,7 @@ export default function ClientIntakeForms() {
                 Simplify Client Intake Forms <span className="text-accent">with Built-In Signature Proof</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Collecting intake forms and consent documents shouldn't require printing, scanning, or chasing clients. LedgerStash lets you send structured forms and track completion securely — all before appointments.
+                Collecting intake forms and consent documents shouldn't require printing, scanning, or chasing clients. Ledger Stash lets you send structured forms and track completion securely — all before appointments.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button variant="hero" size="xl" asChild>
