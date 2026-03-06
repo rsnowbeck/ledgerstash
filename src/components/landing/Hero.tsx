@@ -42,8 +42,8 @@ export function Hero() {
 
           {/* Headline */}
           <h1 className="text-[2.1rem] font-extrabold tracking-tight leading-[1.12] text-foreground sm:text-[3.2rem] lg:text-[3.8rem] mb-5 animate-slide-up" style={{ animationDelay: "0.06s" }}>
-            The Private Vault for Your{" "}
-            <br className="hidden sm:block" />
+            The Private Vault for Your
+            <br />
             <span className="text-accent">Accounting Firm — No Client Logins</span>
           </h1>
 
