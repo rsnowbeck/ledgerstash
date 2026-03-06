@@ -7,7 +7,7 @@ const rows = [
   {
     feature: "Solo CPA Pricing",
     ledger: "$29/month",
-    ledgerSub: "$290/year (save 16%)",
+    ledgerSub: "Unlimited Users — All Plans",
     smart: "$210/month",
     smartSub: "$1,800/year — 3-user minimum",
     tax: "$800/year per seat",
@@ -16,7 +16,6 @@ const rows = [
   {
     feature: "User Minimums",
     ledger: "None — Solo CPA Plan",
-    ledgerSub: "Non-Solo CPA Plan — Unlimited Users",
     smart: "3 users minimum (Business Pro)",
     smartSub: "2 users minimum (Accounting Pro/Unlimited)",
     tax: "Minimum 1 seat, but designed for teams",
