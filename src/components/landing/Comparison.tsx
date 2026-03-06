@@ -131,11 +131,17 @@ export function Comparison() {
                     {row.smartSub && (
                       <span className="block text-xs mt-0.5">{row.smartSub}</span>
                     )}
+                    {row.smartSub2 && (
+                      <span className="block text-xs mt-0.5 text-destructive">{row.smartSub2}</span>
+                    )}
                   </td>
                   <td className="px-5 py-4 text-sm text-muted-foreground">
                     {row.tax}
                     {row.taxSub && (
                       <span className="block text-xs mt-0.5">{row.taxSub}</span>
+                    )}
+                    {row.taxSub2 && (
+                      <span className="block text-xs mt-0.5 text-destructive">{row.taxSub2}</span>
                     )}
                   </td>
                 </tr>
