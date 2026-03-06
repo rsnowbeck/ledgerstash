@@ -9,7 +9,7 @@ export default function DigitalPolicySignature() {
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title="Digital Policy Signature Software | LedgerStash"
+        title="Digital Policy Signature Software | Ledger Stash"
         description="Collect digital policy signatures from employees, contractors, and vendors without accounts or passwords. Secure, audit-ready compliance tracking for internal use."
         keywords="digital policy signature, employee signature tracking, internal e-signature software, no-login e-signature, policy signature software, digital signature compliance"
         canonical="/digital-policy-signature-software"
