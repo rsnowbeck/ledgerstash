@@ -206,6 +206,21 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // Validate caller is authenticated (JWT) or internal (shared secret)
+    const authHeader = req.headers.get('Authorization');
+    const internalSecret = req.headers.get('x-internal-secret');
+    const expectedSecret = Deno.env.get('INTERNAL_FUNCTION_SECRET');
+
+    const hasValidJwt = authHeader?.startsWith('Bearer ');
+    const hasValidSecret = expectedSecret && internalSecret === expectedSecret;
+
+    if (!hasValidJwt && !hasValidSecret) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { 
       recipientName, 
       recipientEmail, 

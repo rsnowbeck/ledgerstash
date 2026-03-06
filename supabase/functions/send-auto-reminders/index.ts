@@ -16,6 +16,18 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // Validate caller via shared secret (cron job or internal call)
+    const internalSecret = req.headers.get('x-internal-secret');
+    const expectedSecret = Deno.env.get('INTERNAL_FUNCTION_SECRET');
+    const authHeader = req.headers.get('Authorization');
+
+    if (!authHeader?.startsWith('Bearer ') && (!expectedSecret || internalSecret !== expectedSecret)) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Use service role key to bypass RLS for automated tasks
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
