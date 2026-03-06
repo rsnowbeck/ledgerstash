@@ -2,6 +2,7 @@
 export const STRIPE_PLANS = {
   solo: {
     name: "Solo CPA",
+    description: "Perfect for independent practitioners managing a focused client base.",
     product_id: "prod_U5Wn9ZDZbzbZKc",
     monthly: {
       price_id: "price_1T7LjxR9aaf2f8Yg6boZi82U",
