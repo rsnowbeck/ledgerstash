@@ -175,7 +175,7 @@ export async function generateBlueOceanPdf(): Promise<void> {
   doc.setTextColor(...WHITE);
   doc.setFontSize(10);
   doc.setFont("helvetica", "bold");
-  doc.text("LedgerStash", 20 + colW * 0.5, y + 8, { align: "center" });
+  doc.text("Ledger Stash", 20 + colW * 0.5, y + 8, { align: "center" });
   doc.text("SmartVault", 20 + colW * 1.5, y + 8, { align: "center" });
   doc.text("TaxDome", 20 + colW * 2.5, y + 8, { align: "center" });
   y += 12;
