@@ -2,6 +2,7 @@
 export const STRIPE_PLANS = {
   solo: {
     name: "Solo CPA",
+    description: "Perfect for independent practitioners managing a focused client base.",
     product_id: "prod_U5Wn9ZDZbzbZKc",
     monthly: {
       price_id: "price_1T7LjxR9aaf2f8Yg6boZi82U",
@@ -25,6 +26,7 @@ export const STRIPE_PLANS = {
   },
   boutique: {
     name: "Boutique Firm",
+    description: "",
     product_id: "prod_U5WnwTxMzxXkDt",
     monthly: {
       price_id: "price_1T7Lk0R9aaf2f8Yg565bOya4",
@@ -49,6 +51,7 @@ export const STRIPE_PLANS = {
   },
   enterprise: {
     name: "Enterprise Vault",
+    description: "",
     product_id: "prod_U5aFwai0TGN2S0",
     monthly: {
       price_id: "price_1T7P5PR9aaf2f8YgdtlZfYxe",

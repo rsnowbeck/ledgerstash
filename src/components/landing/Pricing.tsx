@@ -109,7 +109,10 @@ export function Pricing() {
                 )}
 
                 <div className="mb-6">
-                  <h3 className="text-lg font-semibold text-foreground mb-2">{plan.name}</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-1">{plan.name}</h3>
+                  {plan.description && (
+                    <p className="text-sm text-muted-foreground mb-2">{plan.description}</p>
+                  )}
                   <div className="flex items-baseline gap-1">
                     <span className="text-4xl font-bold text-foreground">
                       ${billingInterval === "monthly" ? price : price.toFixed(0)}
