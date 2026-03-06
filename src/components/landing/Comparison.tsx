@@ -113,9 +113,14 @@ export function Comparison() {
                       <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" />
                       <div>
                         {row.ledger}
-                        {row.ledgerSub && (
+                         {row.ledgerSub && (
                           <span className="block text-xs font-normal text-muted-foreground mt-0.5">
                             {row.ledgerSub}
+                          </span>
+                        )}
+                        {row.ledgerSub2 && (
+                          <span className="block text-xs font-normal text-success mt-0.5">
+                            {row.ledgerSub2}
                           </span>
                         )}
                       </div>
