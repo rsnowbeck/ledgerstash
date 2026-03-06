@@ -13,8 +13,7 @@ const rows = [
     smartSub: "$1,800/year — 3-user minimum",
     smartSub2: "Price per user",
     tax: "$800/year per seat",
-    taxSub: "Annual contract only — no monthly option",
-    taxSub2: "Price per user",
+    taxSub: "Price per user",
   },
   {
     feature: "User Minimums",
