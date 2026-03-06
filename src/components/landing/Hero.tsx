@@ -49,7 +49,7 @@ export function Hero() {
 
           {/* Subheader */}
           <p className="mx-auto max-w-[44rem] text-base text-muted-foreground mb-10 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            Stop chasing tax docs over email. Give clients a secure, white-labeled vault to exchange documents, track PBC lists, and build trust—priced by active clients, not users.
+            Empowering Solo CPAs, Boutique Practices, and Controllers with secure, white-labeled document exchange and unlimited team collaboration.
           </p>
 
           {/* CTAs */}
