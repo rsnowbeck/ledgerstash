@@ -74,8 +74,8 @@ export default function ClientIntakeForms() {
         <section className="py-16">
           <div className="container">
             <div className="mx-auto max-w-3xl">
-              <h2 className="text-2xl font-bold text-foreground mb-4">How LedgerStash Helps</h2>
-              <p className="text-muted-foreground mb-6">With LedgerStash, you can:</p>
+              <h2 className="text-2xl font-bold text-foreground mb-4">How Ledger Stash Helps</h2>
+              <p className="text-muted-foreground mb-6">With Ledger Stash, you can:</p>
               <ul className="space-y-3">
                 {[
                   "Upload intake PDFs",
