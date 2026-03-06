@@ -26,7 +26,7 @@ export default function EmployeeAcknowledgments() {
               <span className="text-accent">for SMBs</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-4">
-              Managing employee policy acknowledgments shouldn't rely on spreadsheets, email reminders, or manual tracking. LedgerStash gives growing businesses a structured way to distribute internal documents, require acknowledgments, and maintain clear proof of completion — all in one system.
+              Managing employee policy acknowledgments shouldn't rely on spreadsheets, email reminders, or manual tracking. Ledger Stash gives growing businesses a structured way to distribute internal documents, require acknowledgments, and maintain clear proof of completion — all in one system.
             </p>
             <p className="text-lg text-muted-foreground mb-8">
               Whether you're rolling out a new handbook, updating security policies, or managing recurring confirmations, LedgerStash keeps everything organized and easy to verify.
