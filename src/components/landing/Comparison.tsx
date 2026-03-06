@@ -181,14 +181,21 @@ export function Comparison() {
             Download our comprehensive Solo CPA Cost Savings Guide and see exactly how much you can save by switching to LedgerStash.
           </p>
           <button
-            onClick={() => {
-              const link = document.createElement("a");
-              link.href = "/assets/LedgerStash_The_Blue_Ocean_for_Solo_CPAs.pdf";
-              link.download = "LedgerStash_The_Blue_Ocean_for_Solo_CPAs.pdf";
-              link.target = "_blank";
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
+            onClick={async () => {
+              try {
+                const res = await fetch("/assets/LedgerStash_The_Blue_Ocean_for_Solo_CPAs.pdf");
+                const blob = await res.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "LedgerStash_The_Blue_Ocean_for_Solo_CPAs.pdf";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+              } catch {
+                window.open("/assets/LedgerStash_The_Blue_Ocean_for_Solo_CPAs.pdf", "_blank");
+              }
             }}
             className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:bg-accent/90 transition-colors"
           >
