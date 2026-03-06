@@ -386,7 +386,7 @@ export async function generateBlueOceanPdf(): Promise<void> {
   doc.setTextColor(...WHITE);
   doc.setFontSize(26);
   doc.setFont("helvetica", "bold");
-  doc.text("Your Winning Hand", pw / 2, 85, { align: "center" });
+  doc.text("Your Winning Hand", pw / 2, 90, { align: "center" });
 
   // Three pillars
   const pillars = ["Simplicity", "Affordability", "Purpose-Built"];
