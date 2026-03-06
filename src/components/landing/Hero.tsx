@@ -1,60 +1,86 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Users, LinkIcon, ClipboardCheck } from "lucide-react";
+import { ArrowRight, ShieldCheck, UserX, Users } from "lucide-react";
+
+const featureCards = [
+  {
+    icon: ShieldCheck,
+    title: "Secure PBC List Management",
+    description:
+      "Track \"Provided By Client\" checklists so clients know exactly what to upload — and your team sees what's missing at a glance.",
+  },
+  {
+    icon: UserX,
+    title: "No-Login Client Vault",
+    description:
+      "Clients upload through a secure link — no accounts or passwords. Files stay organized in per-client folders with audit history.",
+  },
+  {
+    icon: Users,
+    title: "Busy Season Auto-Pilot",
+    description:
+      "Automatically follow up on missing documents with reminders, so you don't spend tax season chasing clients.",
+  },
+];
 
 export function Hero() {
   return (
     <section className="section-hero pt-20 lg:pt-28 pb-16 lg:pb-24">
       <div className="container">
         <div className="mx-auto max-w-4xl text-center">
+          {/* Pill */}
+          <div className="inline-flex items-center rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-sm font-medium text-accent mb-6 animate-slide-up">
+            Built for accounting firms &amp; CPAs — simple, secure, and priced by clients
+          </div>
+
           {/* Headline */}
-          <h1 className="text-[2.1rem] font-extrabold tracking-tight leading-[1.12] text-foreground sm:text-[3.2rem] lg:text-[3.8rem] mb-4 animate-slide-up">
-            A client vault for accounting firms —{" "}
-            <span className="text-accent font-bold">no client logins, no per-user fees.</span>
+          <h1 className="text-[2.1rem] font-extrabold tracking-tight leading-[1.12] text-foreground sm:text-[3.2rem] lg:text-[3.8rem] mb-5 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+            The Private Vault for Your{" "}
+            <br className="hidden sm:block" />
+            <span className="text-accent">Accounting Firm — No Client Logins</span>
           </h1>
 
           {/* Subheader */}
-          <p className="mx-auto max-w-[44rem] text-lg text-muted-foreground mb-6 animate-slide-up" style={{ animationDelay: "0.08s" }}>
-            Built for CPAs and accounting teams that need a simple way to collect client documents — secure upload links, no accounts, no passwords.
+          <p className="mx-auto max-w-[44rem] text-lg text-muted-foreground mb-8 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+            Clients upload through a secure link — no accounts or passwords. Track PBC lists, automate reminders, and keep every client's documents organized.
           </p>
 
-          {/* Body copy */}
-          <p className="mx-auto max-w-[42rem] text-base text-muted-foreground mb-8 animate-slide-up" style={{ animationDelay: "0.12s" }}>
-            PBC checklists, reminders, and an organized vault for every client. Pricing scales by active clients, not seats — so solo CPAs avoid 3-user minimums and teams get unlimited users.
-          </p>
-
-          {/* Bullets */}
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center mb-2 text-sm text-foreground animate-slide-up" style={{ animationDelay: "0.18s" }}>
-            <div className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-accent" />
-              <span>Unlimited team members (no seat-based pricing)</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <LinkIcon className="h-4 w-4 text-accent" />
-              <span>Secure upload links (clients upload in seconds)</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <ClipboardCheck className="h-4 w-4 text-accent" />
-              <span>PBC checklists + reminders (see what's missing)</span>
-            </div>
-          </div>
-
-          {/* Pricing pain micro-line */}
-          <p className="text-xs text-muted-foreground mb-8 animate-slide-up" style={{ animationDelay: "0.22s" }}>
-            Avoid per-seat pricing and annual lock-ins common with firm portals.
-          </p>
-
-          {/* CTA */}
-          <div className="flex flex-col items-center gap-3 animate-slide-up" style={{ animationDelay: "0.28s" }}>
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6 animate-slide-up" style={{ animationDelay: "0.16s" }}>
             <Button variant="hero" size="xl" asChild>
               <Link to="/signup" className="gap-2">
-                Start Free Trial
+                Start 14-Day Free Trial
                 <ArrowRight className="h-5 w-5" />
               </Link>
             </Button>
-            <p className="text-xs text-muted-foreground">
-              No credit card • Setup in minutes • Priced by clients
-            </p>
+            <Button variant="heroOutline" size="xl" asChild>
+              <a href="#how-it-works" className="gap-2">
+                See How It Works
+              </a>
+            </Button>
+          </div>
+
+          {/* Trust Row */}
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center text-xs text-muted-foreground mb-16 animate-slide-up" style={{ animationDelay: "0.22s" }}>
+            <span className="font-semibold text-foreground">IRS 4557 · FTC Safeguards · GLBA Ready</span>
+            <span>No client accounts required</span>
+            <span>Priced by clients, not users (unlimited team members)</span>
+          </div>
+
+          {/* Feature Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-slide-up" style={{ animationDelay: "0.28s" }}>
+            {featureCards.map((card) => (
+              <div
+                key={card.title}
+                className="group p-7 rounded-xl bg-card border border-border hover:border-accent/50 transition-all duration-300 text-left"
+              >
+                <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-accent/10 text-accent mb-4 group-hover:bg-accent group-hover:text-accent-foreground transition-colors duration-300">
+                  <card.icon className="h-5 w-5" />
+                </div>
+                <h3 className="font-semibold text-foreground mb-2">{card.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{card.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
