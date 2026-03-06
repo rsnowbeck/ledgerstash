@@ -13,7 +13,8 @@ const rows = [
     smartSub: "$1,800/year — 3-user minimum",
     smartSub2: "Price per user",
     tax: "$800/year per seat",
-    taxSub: "Annual contract only — no monthly option",
+    taxSub: "Annual contract only",
+    taxSub2: "Price per user",
   },
   {
     feature: "User Minimums",
@@ -139,6 +140,9 @@ export function Comparison() {
                     {row.taxSub && (
                       <span className="block text-xs mt-0.5">{row.taxSub}</span>
                     )}
+                    {row.taxSub2 && (
+                      <span className="block text-xs mt-0.5 text-destructive">{row.taxSub2}</span>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -169,7 +173,7 @@ export function Comparison() {
                 <div className="text-muted-foreground p-2">
                   <span className="text-xs block font-medium text-foreground/60">TaxDome</span>
                   {row.tax}
-                  
+                  {row.taxSub2 && <span className="block text-xs text-destructive">{row.taxSub2}</span>}
                 </div>
               </div>
             </div>
