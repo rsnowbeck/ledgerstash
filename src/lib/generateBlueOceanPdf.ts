@@ -77,7 +77,7 @@ export async function generateBlueOceanPdf(): Promise<void> {
   doc.setFontSize(28);
   doc.setFont("helvetica", "bold");
   const title = "The Blue Ocean\nfor Solo CPAs";
-  doc.text(title, pw / 2, 90, { align: "center", lineHeightFactor: 1.3 });
+  doc.text(title, pw / 2, 95, { align: "center", lineHeightFactor: 1.3 });
 
   doc.setFontSize(13);
   doc.setFont("helvetica", "normal");
