@@ -68,7 +68,7 @@ export function Hero() {
           </div>
 
           {/* Trust Row */}
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center text-sm text-muted-foreground mb-16 animate-slide-up" style={{ animationDelay: "0.22s" }}>
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center text-sm text-muted-foreground mb-10 animate-slide-up" style={{ animationDelay: "0.22s" }}>
             {trustItems.map((item) => (
               <div key={item} className="inline-flex items-center gap-1.5">
                 <CheckCircle2 className="h-4 w-4 text-success shrink-0" />
