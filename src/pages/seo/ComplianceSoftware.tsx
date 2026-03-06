@@ -48,7 +48,7 @@ export default function ComplianceSoftware() {
                 Compliance software helps organizations manage the distribution, acknowledgment, and tracking of policies, training materials, and regulatory documents. For small businesses, it replaces manual processes like printing documents, chasing email confirmations, and maintaining spreadsheets.
               </p>
               <p className="text-muted-foreground mb-8">
-                LedgerStash simplifies this by combining policy acknowledgments, fillable compliance forms, automated reminders, and audit-ready exports in one platform — without the cost or complexity of enterprise solutions like DocuSign or Adobe Sign.
+                Ledger Stash simplifies this by combining policy acknowledgments, fillable compliance forms, automated reminders, and audit-ready exports in one platform — without the cost or complexity of enterprise solutions like DocuSign or Adobe Sign.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
