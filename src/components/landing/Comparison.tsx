@@ -16,6 +16,7 @@ const rows = [
   {
     feature: "User Minimums",
     ledger: "None — Solo CPA Plan",
+    ledgerSub: "Non-Solo CPA Plan — Unlimited Users",
     smart: "3 users minimum (Business Pro)",
     smartSub: "2 users minimum (Accounting Pro/Unlimited)",
     tax: "Minimum 1 seat, but designed for teams",
