@@ -42,14 +42,14 @@ export function Hero() {
 
           {/* Headline */}
           <h1 className="text-[2.1rem] font-extrabold tracking-tight leading-[1.12] text-foreground sm:text-[3.2rem] lg:text-[3.8rem] mb-5 animate-slide-up" style={{ animationDelay: "0.06s" }}>
-            The Private Vault for Your
+            The Private Vault Built for
             <br />
-            <span className="text-accent">Accounting Firm</span>
+            <span className="text-accent">Accounting Firms</span>
           </h1>
 
           {/* Subheader */}
           <p className="mx-auto max-w-[44rem] text-base text-muted-foreground mb-10 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            Give clients a secure upload link — no logins. Collect sensitive documents, track PBC lists, and keep everything organized with pricing based on active clients, not seats.
+            A secure client vault where clients upload via a link — no logins. Priced by active clients, not users.
           </p>
 
           {/* CTAs */}
