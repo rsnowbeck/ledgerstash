@@ -438,5 +438,5 @@ export async function generateBlueOceanPdf(): Promise<void> {
   doc.text("No email required to download this guide. Free resource for solo CPAs.", pw / 2, ph - 20, { align: "center" });
 
   // Save
-  doc.save("LedgerStash_The_Blue_Ocean_for_Solo_CPAs.pdf");
+  doc.save("LedgerStash_Comparison.pdf");
 }
