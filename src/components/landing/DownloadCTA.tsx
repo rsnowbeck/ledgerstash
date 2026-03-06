@@ -23,14 +23,14 @@ const COPY = {
   comparison: {
     headline: "Download the Full Solo CPA Cost Savings Guide",
     description:
-      "Get a portable PDF with side-by-side pricing, feature comparisons, and the math that shows how LedgerStash saves you $2,100+ per year.",
+      "Get a portable PDF with side-by-side pricing, feature comparisons, and the math that shows how Ledger Stash saves you $2,100+ per year.",
     cta: "Download the Cost Savings Guide (PDF)",
     resourceName: "Solo CPA Cost Savings Guide",
   },
   pricing: {
     headline: "See how we save you $2,100+ per year",
     description:
-      "Compare LedgerStash to enterprise tools like TaxDome and SmartVault — and see why solo CPAs are switching.",
+      "Compare Ledger Stash to enterprise tools like TaxDome and SmartVault — and see why solo CPAs are switching.",
     cta: "Get the Free Comparison PDF",
     resourceName: "Pricing Comparison PDF",
   },

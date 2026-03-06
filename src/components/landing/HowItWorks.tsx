@@ -33,7 +33,7 @@ export function HowItWorks() {
       <div className="container">
         <div className="text-center">
           <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2] mb-4">
-            How LedgerStash Works
+            How Ledger Stash Works
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed mb-12">
             Get started in minutes. No complex setup. No training required.
