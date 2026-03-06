@@ -95,7 +95,7 @@ export default function Contact() {
   }
   return <div className="min-h-screen bg-background">
       <PageSEO
-        title="Contact Us | Get Help with LedgerStash"
+        title="Contact Us | Get Help with Ledger Stash"
         description="Have questions about our secure client vault? Contact our team for support, sales inquiries, or partnership opportunities. We typically respond within 24 hours."
         keywords="contact ledgerstash, client vault support, accounting portal help"
         canonical="/contact"
