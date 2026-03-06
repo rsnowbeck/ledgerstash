@@ -37,7 +37,7 @@ export function Hero() {
           {/* Pill */}
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2 text-sm text-muted-foreground mb-8 shadow-sm animate-slide-up">
             <Lock className="h-3.5 w-3.5 text-accent" />
-            Built for accounting firms &amp; CPAs — simple, secure, and priced by clients
+            Built for accounting firms, CPAs &amp; controllers — simple, secure, priced by clients
           </div>
 
           {/* Headline */}
