@@ -187,8 +187,8 @@ function EmailHeader({ logoUrl }: { logoUrl?: string | null }) {
       {logoUrl ? (
         <img src={logoUrl} alt="Logo" className="h-10 mx-auto mb-2" />
       ) : (
-        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary mx-auto mb-2">
-          <Shield className="h-6 w-6 text-primary-foreground" />
+        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-background border-2 border-primary mx-auto mb-2">
+          <Shield className="h-6 w-6 text-primary" />
         </div>
       )}
       <h2 className="text-xl font-semibold text-foreground">LedgerStash</h2>
