@@ -61,7 +61,7 @@ const rows = [
   },
   {
     feature: "Target Audience",
-    ledger: "Solo CPAs & Boutique Firms",
+    ledger: "Solo CPAs, Boutique Firms, Growing Practices, & Corporate Controllers",
     smart: "Small to Large Firms",
     tax: "Small to Enterprise Firms",
   },
