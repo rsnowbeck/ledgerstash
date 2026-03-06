@@ -51,7 +51,7 @@ export const STRIPE_PLANS = {
   },
   enterprise: {
     name: "Enterprise Vault",
-    description: "",
+    description: "The scalable solution for growing firms and corporate controllers.",
     product_id: "prod_U5aFwai0TGN2S0",
     monthly: {
       price_id: "price_1T7P5PR9aaf2f8YgdtlZfYxe",
