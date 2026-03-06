@@ -381,7 +381,7 @@ export async function generateBlueOceanPdf(): Promise<void> {
   doc.setFillColor(...PRIMARY);
   doc.rect(0, 0, pw, ph, "F");
 
-  drawLogoHeader(doc, 40);
+  drawLogoHeader(doc, 30, WHITE, true);
 
   doc.setTextColor(...WHITE);
   doc.setFontSize(26);
