@@ -33,7 +33,7 @@ function addPageFooter(doc: jsPDF, pageNum: number, totalPages: number) {
   doc.line(20, ph - 20, pw - 20, ph - 20);
   doc.setFontSize(8);
   doc.setTextColor(...TEXT_MUTED);
-  doc.text("LedgerStash — The Private Vault for Your Boutique Accounting Firm", 20, ph - 12);
+  doc.text("LedgerStash — The Private Vault for Your Accounting Firm", 20, ph - 12);
   doc.text(`${pageNum} / ${totalPages}`, pw - 20, ph - 12, { align: "right" });
 }
 
@@ -47,14 +47,21 @@ export async function generateBlueOceanPdf(): Promise<void> {
   const shieldBase64 = await loadImageAsBase64(`${window.location.origin}/images/ledgerstash-shield.png`);
 
   // Helper to draw the header logo block on colored pages
-  function drawLogoHeader(doc: jsPDF, y: number, color: [number, number, number] = WHITE) {
+  function drawLogoHeader(doc: jsPDF, y: number, color: [number, number, number] = WHITE, inverted = false) {
     if (shieldBase64) {
-      try { doc.addImage(shieldBase64, "PNG", pw / 2 - 30, y, 14, 14); } catch {}
+      try {
+        if (inverted) {
+          // Draw a white rounded rect behind the shield to make it visible on dark backgrounds
+          doc.setFillColor(...WHITE);
+          doc.roundedRect(pw / 2 - 10, y, 20, 20, 3, 3, "F");
+        }
+        doc.addImage(shieldBase64, "PNG", pw / 2 - 8, y + 1, 16, 16);
+      } catch {}
     }
     doc.setTextColor(...color);
-    doc.setFontSize(16);
+    doc.setFontSize(18);
     doc.setFont("helvetica", "bold");
-    doc.text("LedgerStash", pw / 2 - 13, y + 10);
+    doc.text("LedgerStash", pw / 2, y + 30, { align: "center" });
   }
 
   // ===== PAGE 1: Title Page =====
@@ -64,18 +71,18 @@ export async function generateBlueOceanPdf(): Promise<void> {
   doc.setFillColor(...ACCENT);
   doc.rect(0, ph * 0.65, pw, 4, "F");
 
-  drawLogoHeader(doc, 35);
+  drawLogoHeader(doc, 30, WHITE, true);
 
   doc.setTextColor(...WHITE);
   doc.setFontSize(28);
   doc.setFont("helvetica", "bold");
   const title = "The Blue Ocean\nfor Solo CPAs";
-  doc.text(title, pw / 2, 90, { align: "center", lineHeightFactor: 1.3 });
+  doc.text(title, pw / 2, 95, { align: "center", lineHeightFactor: 1.3 });
 
   doc.setFontSize(13);
   doc.setFont("helvetica", "normal");
   const subtitle = "Stop chasing tax docs over email. Give your clients a secure,\nwhite-labeled vault to exchange sensitive documents, track\nPBC lists, and build professional trust.";
-  doc.text(subtitle, pw / 2, 130, { align: "center", lineHeightFactor: 1.5 });
+  doc.text(subtitle, pw / 2, 135, { align: "center", lineHeightFactor: 1.5 });
 
   doc.setFillColor(...ACCENT);
   doc.roundedRect(pw / 2 - 50, ph * 0.7, 100, 14, 3, 3, "F");
@@ -87,7 +94,7 @@ export async function generateBlueOceanPdf(): Promise<void> {
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(200, 200, 220);
-  doc.text("The Private Vault for Your Boutique Accounting Firm", pw / 2, ph - 30, { align: "center" });
+  doc.text("The Private Vault for Your Accounting Firm", pw / 2, ph - 30, { align: "center" });
 
   // ===== PAGE 2: The Problem =====
   doc.addPage();
@@ -295,7 +302,7 @@ export async function generateBlueOceanPdf(): Promise<void> {
   const features5 = [
     {
       title: "Accounting-Specific Language",
-      desc: "Built by CPAs, for CPAs. No translating generic 'file request' tools into accounting terminology. Requirements, PBC lists, and compliance tracking speak your language.",
+      desc: "No translating generic 'file request' tools into accounting terminology. Requirements, PBC lists, and compliance tracking speak your language.",
     },
     {
       title: "Automated Reminders",
@@ -374,12 +381,12 @@ export async function generateBlueOceanPdf(): Promise<void> {
   doc.setFillColor(...PRIMARY);
   doc.rect(0, 0, pw, ph, "F");
 
-  drawLogoHeader(doc, 40);
+  drawLogoHeader(doc, 30, WHITE, true);
 
   doc.setTextColor(...WHITE);
   doc.setFontSize(26);
   doc.setFont("helvetica", "bold");
-  doc.text("Your Winning Hand", pw / 2, 85, { align: "center" });
+  doc.text("Your Winning Hand", pw / 2, 90, { align: "center" });
 
   // Three pillars
   const pillars = ["Simplicity", "Affordability", "Purpose-Built"];
