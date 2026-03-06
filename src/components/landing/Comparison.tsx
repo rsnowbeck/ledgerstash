@@ -82,8 +82,7 @@ export function Comparison() {
             Why Choose LedgerStash Over the Competition?
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed">
-            We know you're evaluating options. Here's why accounting firms choose LedgerStash over SmartVault, TaxDome, and other generic
-            solutions.
+            Empowering Solo CPAs, Boutique Practices, and Controllers with secure, white-labeled document exchange and unlimited team collaboration.
           </p>
         </div>
 
