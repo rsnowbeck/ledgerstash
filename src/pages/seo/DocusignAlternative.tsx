@@ -38,7 +38,7 @@ export default function DocusignAlternative() {
         <section className="py-16 bg-card">
           <div className="container">
             <div className="mx-auto max-w-3xl">
-              <h2 className="text-2xl font-bold text-foreground mb-8 text-center">LedgerStash vs DocuSign for compliance</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-8 text-center">Ledger Stash vs DocuSign for compliance</h2>
               <div className="card-elevated overflow-hidden">
                 <table className="w-full">
                   <thead>
