@@ -74,9 +74,9 @@ export default function ContractorAgreements() {
         <section className="py-16">
           <div className="container">
             <div className="mx-auto max-w-3xl">
-              <h2 className="text-2xl font-bold text-foreground mb-4">How LedgerStash Helps</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-4">How Ledger Stash Helps</h2>
               <p className="text-muted-foreground mb-6">
-                LedgerStash provides a structured workflow for managing external partners. You can:
+                Ledger Stash provides a structured workflow for managing external partners. You can:
               </p>
               <ul className="space-y-3">
                 {[
