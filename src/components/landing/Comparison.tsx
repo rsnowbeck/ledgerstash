@@ -165,21 +165,11 @@ export function Comparison() {
 
         {/* PDF Download — No Gate */}
         <div className="rounded-xl border border-border bg-muted/30 p-6 sm:p-8 text-center mt-10">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <img
-              src="/images/ledgerstash-shield.png"
-              alt="LedgerStash"
-              className="h-7 w-7"
-            />
-            <span className="text-lg font-bold text-foreground tracking-tight">
-              LedgerStash
-            </span>
-          </div>
           <h3 className="text-lg font-semibold text-foreground mb-1">
             Want to review the numbers later?
           </h3>
           <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-5">
-            Download our comprehensive Solo CPA Cost Savings Guide and see exactly how much you can save by switching to LedgerStash.
+            Download our comprehensive Cost Savings Guide and see exactly how much you can save by switching to LedgerStash.
           </p>
           <button
             onClick={() => generateBlueOceanPdf()}
@@ -189,7 +179,7 @@ export function Comparison() {
             Download PDF Guide
           </button>
           <p className="mt-3 text-xs text-muted-foreground italic">
-            No email required. Free resource for solo CPAs.
+            No email required.
           </p>
         </div>
 
