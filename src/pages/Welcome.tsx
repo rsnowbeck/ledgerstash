@@ -159,8 +159,8 @@ export default function Welcome() {
       <header className="border-b border-border bg-card">
         <div className="container flex h-14 items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-background border-2 border-primary">
-              <Shield className="h-4 w-4 text-primary" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+              <Shield className="h-4 w-4 text-primary-foreground" />
             </div>
             <span className="font-bold text-foreground">LedgerStash</span>
           </div>

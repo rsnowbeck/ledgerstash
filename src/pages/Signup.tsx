@@ -77,8 +77,8 @@ export default function Signup() {
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <Link to="/" className="inline-flex items-center gap-2 mb-6">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-background border-2 border-primary">
-                <Shield className="h-5 w-5 text-primary" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
+                <Shield className="h-5 w-5 text-primary-foreground" />
               </div>
               <span className="text-2xl font-bold text-foreground">LedgerStash</span>
             </Link>
