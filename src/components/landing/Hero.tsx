@@ -7,26 +7,26 @@ const featureCards = [
     icon: Shield,
     title: "No-Login Client Vault",
     description:
-      "Clients upload in seconds via secure magic links. No accounts to manage.",
+      "Clients upload in seconds via secure upload links. No accounts to create, no passwords to reset.",
   },
   {
     icon: Clock,
     title: "No Per-User Fees",
     description:
-      "Pricing scales by active clients, not seats. Solo CPAs avoid 3-user minimums.",
+      "Pricing scales by active clients — not seats — so your whole team is included at no extra cost.",
   },
   {
     icon: ShieldCheck,
     title: "Secure PBC Management",
     description:
-      "Track \"Provided By Client\" lists so you never chase a document again.",
+      "Track \"Provided By Client\" checklists so clients know exactly what to upload and you always see what's missing.",
   },
 ];
 
 const trustItems = [
   "IRS 4557 · FTC Safeguards · GLBA Ready",
-  "Bank-Grade Data Isolation",
-  "White-Label Ready",
+  "No client accounts required",
+  "Priced by clients, not users (unlimited team members)",
 ];
 
 export function Hero() {
