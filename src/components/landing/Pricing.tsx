@@ -45,6 +45,7 @@ export function Pricing() {
         <div className="text-center">
           <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2] mb-4">
             Pricing that scales with your practice
+            <span className="block">from solo CPAs to growing firms.</span>
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed mb-8">
             Start free for 14 days. No credit card required. Cancel anytime.
