@@ -9,7 +9,7 @@ export default function ComplianceSoftware() {
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title="Compliance Software for Small Businesses | LedgerStash"
+        title="Compliance Software for Small Businesses | Ledger Stash"
         description="Affordable compliance software for small businesses. Distribute policies, collect acknowledgments, and maintain audit-ready records without enterprise complexity. Start free."
         keywords="compliance software small business, affordable compliance software, simple compliance software, compliance management software, small business compliance tools"
         canonical="/compliance-software-small-business"
