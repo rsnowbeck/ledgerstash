@@ -8,8 +8,8 @@ export default function Security() {
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title="Security | How LedgerStash Protects Your Data"
-        description="Learn about LedgerStash's security practices including data encryption, access controls, backups, and incident response. Your documents are protected by industry-standard safeguards."
+        title="Security | How Ledger Stash Protects Your Data"
+        description="Learn about Ledger Stash's security practices including data encryption, access controls, backups, and incident response. Your documents are protected by industry-standard safeguards."
         keywords="ledgerstash security, client vault security, data protection, accounting portal encryption"
         canonical="/security"
       />
@@ -35,7 +35,7 @@ export default function Security() {
             </div>
             <h1 className="text-3xl font-bold text-foreground mb-3">Security</h1>
             <p className="text-muted-foreground max-w-lg mx-auto">
-              At LedgerStash, security is built into how we design and operate the product. This page outlines our current security practices in clear, practical terms.
+              At Ledger Stash, security is built into how we design and operate the product. This page outlines our current security practices in clear, practical terms.
             </p>
           </div>
 
@@ -87,12 +87,12 @@ export default function Security() {
 
             <section className="space-y-4">
               <h2 className="text-xl font-semibold text-foreground">Regulatory Compliance</h2>
-              <p className="text-muted-foreground">LedgerStash is designed to help accounting and tax firms meet key regulatory requirements:</p>
+              <p className="text-muted-foreground">Ledger Stash is designed to help accounting and tax firms meet key regulatory requirements:</p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
                 <li><strong>IRS Publication 4557</strong> — Safeguarding Taxpayer Data: encrypted storage, access controls, and secure document transmission</li>
                 <li><strong>FTC Safeguards Rule</strong> — Required safeguards for customer financial information under GLBA</li>
                 <li><strong>Gramm-Leach-Bliley Act (GLBA)</strong> — Privacy and security of consumer financial data</li>
-                <li><strong>WISP Support</strong> — LedgerStash can serve as a core component of your firm's Written Information Security Plan</li>
+                <li><strong>WISP Support</strong> — Ledger Stash can serve as a core component of your firm's Written Information Security Plan</li>
               </ul>
               <p className="text-muted-foreground text-sm">Our infrastructure provider maintains SOC 2 Type II certification. While compliance ultimately depends on your firm's overall security program, LedgerStash provides the technical safeguards these regulations require.</p>
             </section>

@@ -10,7 +10,7 @@ export function Footer() {
           <div className="flex items-center gap-2 text-muted-foreground">
             <Shield className="h-4 w-4" />
             <p className="text-sm font-medium">
-              © 2026 LedgerStash
+              © 2026 Ledger Stash
             </p>
           </div>
           <nav className="flex flex-wrap justify-center gap-6 text-sm">

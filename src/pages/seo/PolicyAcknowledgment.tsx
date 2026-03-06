@@ -9,7 +9,7 @@ export default function PolicyAcknowledgment() {
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title="Policy Acknowledgment Software | LedgerStash"
+        title="Policy Acknowledgment Software | Ledger Stash"
         description="Track employee and contractor policy acknowledgments with legally defensible digital signatures. Automated reminders, audit-ready exports, no signer accounts required."
         keywords="policy acknowledgment software, employee acknowledgment tracking, handbook acknowledgment tracking, policy sign-off software, digital policy acknowledgment"
         canonical="/policy-acknowledgment-software"
@@ -23,7 +23,7 @@ export default function PolicyAcknowledgment() {
                 Policy Acknowledgment <span className="text-accent">Software</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                LedgerStash is policy acknowledgment software that allows businesses to send digital policies to employees or contractors and track legally defensible acknowledgment. Eliminate manual tracking and get timestamped proof with exportable records.
+                Ledger Stash is policy acknowledgment software that allows businesses to send digital policies to employees or contractors and track legally defensible acknowledgment. Eliminate manual tracking and get timestamped proof with exportable records.
               </p>
               <Button variant="hero" size="xl" asChild>
                 <Link to="/signup" className="gap-2">
@@ -43,10 +43,10 @@ export default function PolicyAcknowledgment() {
                 Policy acknowledgment software digitizes the process of distributing policies and collecting confirmations from employees, contractors, and vendors. Instead of paper sign-off sheets or email chains, organizations send secure digital links and track completion in real time.
               </p>
               <p className="text-muted-foreground mb-8">
-                LedgerStash makes this effortless with one-click signing links, automated reminders, and audit-ready exports — all without requiring recipients to create accounts.
+                Ledger Stash makes this effortless with one-click signing links, automated reminders, and audit-ready exports — all without requiring recipients to create accounts.
               </p>
 
-              <h2 className="text-2xl font-bold text-foreground mb-6">How LedgerStash tracks acknowledgments</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-6">How Ledger Stash tracks acknowledgments</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {[
                   { icon: Send, title: "Send secure links", desc: "Generate unique, single-use signing links delivered via email. Recipients click, review, and acknowledge." },

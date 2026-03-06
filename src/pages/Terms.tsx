@@ -8,8 +8,8 @@ export default function Terms() {
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title="Terms of Service | LedgerStash Usage Agreement"
-        description="Read LedgerStash's Terms of Service covering acceptable use, customer data ownership, service availability, and liability limitations."
+        title="Terms of Service | Ledger Stash Usage Agreement"
+        description="Read Ledger Stash's Terms of Service covering acceptable use, customer data ownership, service availability, and liability limitations."
         keywords="ledgerstash terms of service, client vault terms, accounting portal agreement"
         canonical="/terms"
       />
@@ -39,7 +39,7 @@ export default function Terms() {
 
           <div className="card-elevated p-8 space-y-8">
             <p className="text-muted-foreground">
-              These Terms of Service ("Terms") govern your use of LedgerStash's website and web application (the "Service"). By using the Service, you agree to these Terms.
+              These Terms of Service ("Terms") govern your use of Ledger Stash's website and web application (the "Service"). By using the Service, you agree to these Terms.
             </p>
 
             <section className="space-y-4">
@@ -65,7 +65,7 @@ export default function Terms() {
             <section className="space-y-4">
               <h2 className="text-xl font-semibold text-foreground">Customer Data</h2>
               <p className="text-muted-foreground">You retain ownership of all data you submit to the Service ("Customer Data").</p>
-              <p className="text-muted-foreground">By using the Service, you grant LedgerStash permission to process Customer Data solely to provide and operate the Service.</p>
+              <p className="text-muted-foreground">By using the Service, you grant Ledger Stash permission to process Customer Data solely to provide and operate the Service.</p>
             </section>
 
             <section className="space-y-4">
@@ -83,7 +83,7 @@ export default function Terms() {
 
             <section className="space-y-4">
               <h2 className="text-xl font-semibold text-foreground">Limitation of Liability</h2>
-              <p className="text-muted-foreground">To the maximum extent permitted by law, LedgerStash will not be liable for indirect, incidental, or consequential damages resulting from use of the Service.</p>
+              <p className="text-muted-foreground">To the maximum extent permitted by law, Ledger Stash will not be liable for indirect, incidental, or consequential damages resulting from use of the Service.</p>
             </section>
 
             <section className="space-y-4">

@@ -79,10 +79,10 @@ export function Comparison() {
       <div className="container">
         <div className="text-center mb-12">
           <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2] mb-4">
-            Why Choose LedgerStash Over the Competition?
+            Why Choose Ledger Stash Over the Competition?
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed">
-            We know you're evaluating options. Here's why accounting firms choose LedgerStash over SmartVault, TaxDome, and other generic
+            We know you're evaluating options. Here's why accounting firms choose Ledger Stash over SmartVault, TaxDome, and other generic
             solutions.
           </p>
         </div>
@@ -93,7 +93,7 @@ export function Comparison() {
             <thead>
               <tr className="bg-primary text-primary-foreground">
                 <th className="px-5 py-4 text-left font-semibold text-sm">Feature</th>
-                <th className="px-5 py-4 text-left font-semibold text-sm">LedgerStash</th>
+                <th className="px-5 py-4 text-left font-semibold text-sm">Ledger Stash</th>
                 <th className="px-5 py-4 text-left font-semibold text-sm">SmartVault</th>
                 <th className="px-5 py-4 text-left font-semibold text-sm">TaxDome</th>
               </tr>
@@ -158,7 +158,7 @@ export function Comparison() {
                 <div className="flex items-start gap-2 text-success font-semibold bg-success/5 rounded-lg p-2">
                   <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" />
                   <div>
-                    <span className="text-xs text-muted-foreground font-normal block">LedgerStash</span>
+                    <span className="text-xs text-muted-foreground font-normal block">Ledger Stash</span>
                     {row.ledger}
                     {row.ledgerSub && <span className="block text-xs font-normal text-muted-foreground">{row.ledgerSub}</span>}
                     {row.ledgerSub2 && <span className="block text-xs font-normal text-success">{row.ledgerSub2}</span>}
@@ -185,7 +185,7 @@ export function Comparison() {
             Want to review the numbers later?
           </h3>
           <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-5">
-            Download our comprehensive Cost Savings Guide and see exactly how much you can save by switching to LedgerStash.
+            Download our comprehensive Cost Savings Guide and see exactly how much you can save by switching to Ledger Stash.
           </p>
           <button
             onClick={() => generateBlueOceanPdf()}

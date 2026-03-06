@@ -95,7 +95,7 @@ export default function Contact() {
   }
   return <div className="min-h-screen bg-background">
       <PageSEO
-        title="Contact Us | Get Help with LedgerStash"
+        title="Contact Us | Get Help with Ledger Stash"
         description="Have questions about our secure client vault? Contact our team for support, sales inquiries, or partnership opportunities. We typically respond within 24 hours."
         keywords="contact ledgerstash, client vault support, accounting portal help"
         canonical="/contact"
@@ -126,7 +126,7 @@ export default function Contact() {
               <MessageSquare className="h-7 w-7 text-primary" />
             </div>
             <h1 className="text-3xl font-bold text-foreground mb-3">Get in Touch</h1>
-            <p className="text-muted-foreground max-w-md mx-auto">Have a question about LedgerStash or need help getting started? We're here to help.</p>
+            <p className="text-muted-foreground max-w-md mx-auto">Have a question about Ledger Stash or need help getting started? We're here to help.</p>
           </div>
 
           <div className="card-elevated p-8">

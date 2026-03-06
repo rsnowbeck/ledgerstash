@@ -9,7 +9,7 @@ export default function FillablePdfForms() {
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title="Fillable PDF Compliance Forms | LedgerStash"
+        title="Fillable PDF Compliance Forms | Ledger Stash"
         description="Convert PDFs into fillable compliance forms with AI-powered field detection. Collect structured responses, signatures, and audit-ready records. No signer accounts needed."
         keywords="fillable compliance forms, compliance form software, PDF compliance forms online, fillable PDF forms, digital compliance forms, form field detection"
         canonical="/fillable-pdf-compliance-forms"
@@ -42,7 +42,7 @@ export default function FillablePdfForms() {
               <div className="space-y-8">
                 {[
                   { step: "1", icon: FileText, title: "Upload your PDF", desc: "Upload any existing PDF document — employee handbooks, onboarding forms, safety checklists, or compliance questionnaires." },
-                  { step: "2", icon: Wand2, title: "AI detects fields", desc: "LedgerStash uses AI to automatically detect fillable fields including text inputs, checkboxes, date fields, and signature areas. Review and adjust as needed." },
+                  { step: "2", icon: Wand2, title: "AI detects fields", desc: "Ledger Stash uses AI to automatically detect fillable fields including text inputs, checkboxes, date fields, and signature areas. Review and adjust as needed." },
                   { step: "3", icon: Download, title: "Collect & export", desc: "Recipients complete the form via a secure link. Structured responses are stored securely and exportable via CSV or as completed PDF snapshots." },
                 ].map((item) => (
                   <div key={item.step} className="flex gap-4">

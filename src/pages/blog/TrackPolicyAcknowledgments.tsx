@@ -212,7 +212,7 @@ export default function TrackPolicyAcknowledgments() {
                 </p>
                 <div className="card-elevated p-6 border-l-4 border-accent">
                   <p className="text-foreground font-medium">
-                    LedgerStash is compliance software designed for small and mid-sized businesses that
+                    Ledger Stash is compliance software designed for small and mid-sized businesses that
                     need to distribute policies, collect acknowledgments or fillable form data, and
                     maintain audit-ready records without enterprise complexity.
                   </p>

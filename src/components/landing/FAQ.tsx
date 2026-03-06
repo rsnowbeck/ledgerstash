@@ -10,9 +10,9 @@ import { Button } from "@/components/ui/button";
 
 const essentialFaqs = [
   {
-    question: "What is LedgerStash?",
+    question: "What is Ledger Stash?",
     answer:
-      "LedgerStash is a secure, white-labeled client vault and PBC management system built exclusively for solo CPAs and boutique firms. We deliver bank-grade security and compliance without the enterprise bloat.",
+      "Ledger Stash is a secure, white-labeled client vault and PBC management system built exclusively for solo CPAs and boutique firms. We deliver bank-grade security and compliance without the enterprise bloat.",
   },
   {
     question: "How do my clients access the vault?",
@@ -20,19 +20,19 @@ const essentialFaqs = [
       "Clients receive a branded email with a secure magic link, granting instant, password-free access to their PBC tasks and document folders. No accounts, no passwords, just frictionless document exchange.",
   },
   {
-    question: "How is LedgerStash different from SmartVault or TaxDome?",
+    question: "How is Ledger Stash different from SmartVault or TaxDome?",
     answer:
-      "LedgerStash is purpose-built for solo CPAs, offering massive cost savings. Compare our flexible $29/month to SmartVault's minimum $210/month (3-user minimum) or TaxDome's $800 annual upfront payment (no monthly option). We provide a simpler, more focused, and truly frictionless client experience, unlike bloated enterprise solutions.",
+      "Ledger Stash is purpose-built for solo CPAs, offering massive cost savings. Compare our flexible $29/month to SmartVault's minimum $210/month (3-user minimum) or TaxDome's $800 annual upfront payment (no monthly option). We provide a simpler, more focused, and truly frictionless client experience, unlike bloated enterprise solutions.",
   },
   {
-    question: "Is LedgerStash secure and compliant for tax documents?",
+    question: "Is Ledger Stash secure and compliant for tax documents?",
     answer:
-      "Absolutely. LedgerStash is fully compliant with IRS Publication 4557, FTC Safeguards Rule, and GLBA. Your clients' sensitive data is protected with bank-grade encryption and comprehensive audit trails.",
+      "Absolutely. Ledger Stash is fully compliant with IRS Publication 4557, FTC Safeguards Rule, and GLBA. Your clients' sensitive data is protected with bank-grade encryption and comprehensive audit trails.",
   },
   {
     question: "Is there a free trial?",
     answer:
-      "Yes, we offer a 14-day free trial with no credit card required. Experience the LedgerStash difference risk-free.",
+      "Yes, we offer a 14-day free trial with no credit card required. Experience the Ledger Stash difference risk-free.",
   },
 ];
 
@@ -43,19 +43,19 @@ const secondaryFaqs = [
       "Clients can securely upload any file type, including PDFs, spreadsheets, images, and more, directly from their computer or mobile device.",
   },
   {
-    question: "Can I use LedgerStash for engagement letters and agreements?",
+    question: "Can I use Ledger Stash for engagement letters and agreements?",
     answer:
-      "Yes, LedgerStash is ideal for securely storing and managing engagement letters and other client agreements. It integrates seamlessly with your existing e-signature workflows.",
+      "Yes, Ledger Stash is ideal for securely storing and managing engagement letters and other client agreements. It integrates seamlessly with your existing e-signature workflows.",
   },
   {
     question: "Can my team members access the portal too?",
     answer:
-      "Yes, LedgerStash offers plans that support multiple users, allowing your team members to securely access and manage client vaults with appropriate role-based permissions.",
+      "Yes, Ledger Stash offers plans that support multiple users, allowing your team members to securely access and manage client vaults with appropriate role-based permissions.",
   },
   {
     question: "What if I need practice management features in the future?",
     answer:
-      "LedgerStash excels at secure document exchange and PBC management. It's designed to integrate with your broader tech stack. If you expand to need more extensive practice management features, LedgerStash remains a valuable, focused component of your workflow.",
+      "Ledger Stash excels at secure document exchange and PBC management. It's designed to integrate with your broader tech stack. If you expand to need more extensive practice management features, Ledger Stash remains a valuable, focused component of your workflow.",
   },
 ];
 
@@ -105,7 +105,7 @@ export function FAQ() {
               Frequently asked questions
             </h2>
             <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed mb-12">
-              Everything you need to know about LedgerStash
+              Everything you need to know about Ledger Stash
             </p>
           </div>
 

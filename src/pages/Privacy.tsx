@@ -8,8 +8,8 @@ export default function Privacy() {
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title="Privacy Policy | How LedgerStash Handles Your Data"
-        description="Read LedgerStash's Privacy Policy to understand how we collect, use, and protect your information. We never sell your data and use industry-standard security practices."
+        title="Privacy Policy | How Ledger Stash Handles Your Data"
+        description="Read Ledger Stash's Privacy Policy to understand how we collect, use, and protect your information. We never sell your data and use industry-standard security practices."
         keywords="ledgerstash privacy policy, client vault privacy, data protection policy, accounting portal data handling"
         canonical="/privacy"
       />
@@ -39,7 +39,7 @@ export default function Privacy() {
 
           <div className="card-elevated p-8 space-y-8">
             <p className="text-muted-foreground">
-              LedgerStash ("we," "our," or "us") respects your privacy. This Privacy Policy explains how we collect, use, and protect information when you use our website and web application (the "Service").
+              Ledger Stash ("we," "our," or "us") respects your privacy. This Privacy Policy explains how we collect, use, and protect information when you use our website and web application (the "Service").
             </p>
 
             <section className="space-y-4">

@@ -9,7 +9,7 @@ export default function ComplianceSoftware() {
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title="Compliance Software for Small Businesses | LedgerStash"
+        title="Compliance Software for Small Businesses | Ledger Stash"
         description="Affordable compliance software for small businesses. Distribute policies, collect acknowledgments, and maintain audit-ready records without enterprise complexity. Start free."
         keywords="compliance software small business, affordable compliance software, simple compliance software, compliance management software, small business compliance tools"
         canonical="/compliance-software-small-business"
@@ -23,7 +23,7 @@ export default function ComplianceSoftware() {
                 Compliance Software for <span className="text-accent">Small Businesses</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                LedgerStash is compliance software designed for small and mid-sized businesses. Distribute policies, collect legally defensible acknowledgments or fillable form data, and maintain audit-ready records — without enterprise complexity or pricing.
+                Ledger Stash is compliance software designed for small and mid-sized businesses. Distribute policies, collect legally defensible acknowledgments or fillable form data, and maintain audit-ready records — without enterprise complexity or pricing.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button variant="hero" size="xl" asChild>
@@ -48,7 +48,7 @@ export default function ComplianceSoftware() {
                 Compliance software helps organizations manage the distribution, acknowledgment, and tracking of policies, training materials, and regulatory documents. For small businesses, it replaces manual processes like printing documents, chasing email confirmations, and maintaining spreadsheets.
               </p>
               <p className="text-muted-foreground mb-8">
-                LedgerStash simplifies this by combining policy acknowledgments, fillable compliance forms, automated reminders, and audit-ready exports in one platform — without the cost or complexity of enterprise solutions like DocuSign or Adobe Sign.
+                Ledger Stash simplifies this by combining policy acknowledgments, fillable compliance forms, automated reminders, and audit-ready exports in one platform — without the cost or complexity of enterprise solutions like DocuSign or Adobe Sign.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -72,7 +72,7 @@ export default function ComplianceSoftware() {
         <section className="py-16">
           <div className="container">
             <div className="mx-auto max-w-3xl">
-              <h2 className="text-2xl font-bold text-foreground mb-6">Why small businesses choose LedgerStash</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-6">Why small businesses choose Ledger Stash</h2>
               <ul className="space-y-4">
                 {[
                   "No enterprise contracts or complex onboarding — start collecting signatures in minutes",

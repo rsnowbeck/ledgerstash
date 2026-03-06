@@ -21,7 +21,7 @@ const features: Feature[] = [{
 }, {
   icon: Send,
   title: "Frictionless Client Experience",
-  description: "High-net-worth clients hate creating accounts. LedgerStash makes it effortless — simple invites, no passwords to remember, instant access."
+  description: "High-net-worth clients hate creating accounts. Ledger Stash makes it effortless — simple invites, no passwords to remember, instant access."
 }, {
   icon: BarChart3,
   title: "Real-Time Firm Dashboard",
@@ -48,7 +48,7 @@ export function Features() {
             Everything Your Firm Needs to Look Professional
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed mb-12">
-            From PBC list management and secure document exchange to white-label branding, LedgerStash replaces scattered emails with one organized, encrypted vault.
+            From PBC list management and secure document exchange to white-label branding, Ledger Stash replaces scattered emails with one organized, encrypted vault.
           </p>
         </div>
 

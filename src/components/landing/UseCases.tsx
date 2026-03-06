@@ -30,7 +30,7 @@ export function UseCases() {
             Built for Accounting Workflows
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed">
-            LedgerStash adapts to how your firm works — from busy season document 
+            Ledger Stash adapts to how your firm works — from busy season document 
             collection to year-round client management.
           </p>
         </div>
