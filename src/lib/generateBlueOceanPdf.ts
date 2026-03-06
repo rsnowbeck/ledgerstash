@@ -306,7 +306,7 @@ export async function generateBlueOceanPdf(): Promise<void> {
     },
     {
       title: "Automated Reminders",
-      desc: "Auto-pilot reminders chase your clients so you don't have to. Set frequency, customize messaging, and let LedgerStash handle the follow-ups during busy season.",
+      desc: "Auto-pilot reminders chase your clients so you don't have to. Set frequency, customize messaging, and let Ledger Stash handle the follow-ups during busy season.",
     },
     {
       title: "Audit-Ready Export",
