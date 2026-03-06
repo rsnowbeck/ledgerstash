@@ -48,7 +48,7 @@ export function Hero() {
           </h1>
 
           {/* Subheader */}
-          <p className="mx-auto max-w-[40rem] text-base text-muted-foreground mb-10 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+          <p className="mx-auto max-w-[44rem] text-base text-muted-foreground mb-10 animate-slide-up" style={{ animationDelay: "0.1s" }}>
             Give clients a secure upload link — no logins. Collect sensitive documents, track PBC lists, and keep everything organized with pricing based on active clients, not seats.
           </p>
 
