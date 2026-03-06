@@ -302,7 +302,7 @@ export async function generateBlueOceanPdf(): Promise<void> {
   const features5 = [
     {
       title: "Accounting-Specific Language",
-      desc: "Built by CPAs, for CPAs. No translating generic 'file request' tools into accounting terminology. Requirements, PBC lists, and compliance tracking speak your language.",
+      desc: "No translating generic 'file request' tools into accounting terminology. Requirements, PBC lists, and compliance tracking speak your language.",
     },
     {
       title: "Automated Reminders",
