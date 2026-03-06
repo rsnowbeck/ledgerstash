@@ -33,7 +33,7 @@ function addPageFooter(doc: jsPDF, pageNum: number, totalPages: number) {
   doc.line(20, ph - 20, pw - 20, ph - 20);
   doc.setFontSize(8);
   doc.setTextColor(...TEXT_MUTED);
-  doc.text("LedgerStash — The Private Vault for Your Boutique Accounting Firm", 20, ph - 12);
+  doc.text("LedgerStash — The Private Vault for Your Accounting Firm", 20, ph - 12);
   doc.text(`${pageNum} / ${totalPages}`, pw - 20, ph - 12, { align: "right" });
 }
 
