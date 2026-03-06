@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, ArrowRight, Download } from "lucide-react";
+import { generateBlueOceanPdf } from "@/lib/generateBlueOceanPdf";
 
 const rows = [
   {
