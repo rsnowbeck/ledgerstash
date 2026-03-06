@@ -26,6 +26,7 @@ export const STRIPE_PLANS = {
   },
   boutique: {
     name: "Boutique Firm",
+    description: "",
     product_id: "prod_U5WnwTxMzxXkDt",
     monthly: {
       price_id: "price_1T7Lk0R9aaf2f8Yg565bOya4",
