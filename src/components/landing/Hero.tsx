@@ -49,7 +49,7 @@ export function Hero() {
 
           {/* Subheader */}
           <p className="mx-auto max-w-[40rem] text-base text-muted-foreground mb-10 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            Stop chasing tax docs over email. Give your clients a secure, white-labeled LedgerStash to exchange sensitive documents with no client logins and no per-user fees.
+            Give clients a secure upload link — no logins. Collect sensitive documents, track PBC lists, and keep everything organized with pricing based on active clients, not seats.
           </p>
 
           {/* CTAs */}
