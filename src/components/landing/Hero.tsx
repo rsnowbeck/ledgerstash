@@ -4,22 +4,22 @@ import { ArrowRight, ShieldCheck, Shield, Clock, Lock, CheckCircle2 } from "luci
 
 const featureCards = [
   {
-    icon: ShieldCheck,
-    title: "Secure PBC List Management",
-    description:
-      "Track \"Provided By Client\" checklists so clients know exactly what to upload — and your team sees what's missing at a glance.",
-  },
-  {
     icon: Shield,
     title: "No-Login Client Vault",
     description:
-      "Clients upload through a secure link — no accounts or passwords. Files stay organized in per-client folders with audit history.",
+      "Clients upload in seconds via secure magic links. No accounts to manage.",
   },
   {
     icon: Clock,
-    title: "Busy Season Auto-Pilot",
+    title: "No Per-User Fees",
     description:
-      "Automatically follow up on missing documents with reminders, so you don't spend tax season chasing clients.",
+      "Pricing scales by active clients, not seats. Solo CPAs avoid 3-user minimums.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Secure PBC Management",
+    description:
+      "Track \"Provided By Client\" lists so you never chase a document again.",
   },
 ];
 
@@ -41,15 +41,15 @@ export function Hero() {
           </div>
 
           {/* Headline */}
-          <h1 className="text-[1.75rem] font-extrabold tracking-tight leading-[1.15] text-foreground sm:text-[2.5rem] lg:text-[3.25rem] mb-5 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+          <h1 className="text-[2.1rem] font-extrabold tracking-tight leading-[1.12] text-foreground sm:text-[3.2rem] lg:text-[3.8rem] mb-5 animate-slide-up" style={{ animationDelay: "0.06s" }}>
             The Private Vault for Your
             <br />
-            <span className="text-accent">Accounting Firm — No Client Logins</span>
+            <span className="text-accent">Boutique Accounting Firm</span>
           </h1>
 
           {/* Subheader */}
-          <p className="mx-auto max-w-[38rem] text-base text-muted-foreground mb-10 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            Clients upload through a secure link — no accounts or passwords. Track PBC lists, automate reminders, and keep every client's documents organized.
+          <p className="mx-auto max-w-[40rem] text-base text-muted-foreground mb-10 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+            Stop chasing tax docs over email. Give your clients a secure, white-labeled LedgerStash to exchange sensitive documents with no client logins and no per-user fees.
           </p>
 
           {/* CTAs */}
