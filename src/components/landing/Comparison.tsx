@@ -162,15 +162,18 @@ export function Comparison() {
                     <span className="text-xs text-muted-foreground font-normal block">LedgerStash</span>
                     {row.ledger}
                     {row.ledgerSub && <span className="block text-xs font-normal text-muted-foreground">{row.ledgerSub}</span>}
+                    {row.ledgerSub2 && <span className="block text-xs font-normal text-success">{row.ledgerSub2}</span>}
                   </div>
                 </div>
                 <div className="text-muted-foreground p-2">
                   <span className="text-xs block font-medium text-foreground/60">SmartVault</span>
                   {row.smart}
+                  {row.smartSub2 && <span className="block text-xs text-destructive">{row.smartSub2}</span>}
                 </div>
                 <div className="text-muted-foreground p-2">
                   <span className="text-xs block font-medium text-foreground/60">TaxDome</span>
                   {row.tax}
+                  {row.taxSub2 && <span className="block text-xs text-destructive">{row.taxSub2}</span>}
                 </div>
               </div>
             </div>
