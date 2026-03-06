@@ -67,7 +67,6 @@ export function Hero() {
             </Button>
           </div>
 
-
           {/* Trust Row */}
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center text-sm text-muted-foreground mb-16 animate-slide-up" style={{ animationDelay: "0.22s" }}>
             {trustItems.map((item) => (
