@@ -29,7 +29,7 @@ export default function EmployeeAcknowledgments() {
               Managing employee policy acknowledgments shouldn't rely on spreadsheets, email reminders, or manual tracking. Ledger Stash gives growing businesses a structured way to distribute internal documents, require acknowledgments, and maintain clear proof of completion — all in one system.
             </p>
             <p className="text-lg text-muted-foreground mb-8">
-              Whether you're rolling out a new handbook, updating security policies, or managing recurring confirmations, LedgerStash keeps everything organized and easy to verify.
+              Whether you're rolling out a new handbook, updating security policies, or managing recurring confirmations, Ledger Stash keeps everything organized and easy to verify.
             </p>
             <div className="flex flex-col items-start gap-2 mb-14">
               <Button variant="hero" size="lg" asChild>
