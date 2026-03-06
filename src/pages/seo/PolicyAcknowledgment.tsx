@@ -9,7 +9,7 @@ export default function PolicyAcknowledgment() {
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title="Policy Acknowledgment Software | LedgerStash"
+        title="Policy Acknowledgment Software | Ledger Stash"
         description="Track employee and contractor policy acknowledgments with legally defensible digital signatures. Automated reminders, audit-ready exports, no signer accounts required."
         keywords="policy acknowledgment software, employee acknowledgment tracking, handbook acknowledgment tracking, policy sign-off software, digital policy acknowledgment"
         canonical="/policy-acknowledgment-software"
