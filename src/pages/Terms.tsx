@@ -65,7 +65,7 @@ export default function Terms() {
             <section className="space-y-4">
               <h2 className="text-xl font-semibold text-foreground">Customer Data</h2>
               <p className="text-muted-foreground">You retain ownership of all data you submit to the Service ("Customer Data").</p>
-              <p className="text-muted-foreground">By using the Service, you grant LedgerStash permission to process Customer Data solely to provide and operate the Service.</p>
+              <p className="text-muted-foreground">By using the Service, you grant Ledger Stash permission to process Customer Data solely to provide and operate the Service.</p>
             </section>
 
             <section className="space-y-4">
