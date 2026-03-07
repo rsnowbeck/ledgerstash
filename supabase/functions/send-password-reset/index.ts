@@ -132,6 +132,19 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const { email, redirectUrl }: RequestBody = await req.json();
 
+    // Validate redirectUrl against allowed origins to prevent token exfiltration
+    const ALLOWED_ORIGINS = [
+      "https://ledgerstash.com",
+      "https://www.ledgerstash.com",
+      "https://getattestly.lovable.app",
+    ];
+    if (!redirectUrl || !ALLOWED_ORIGINS.some((origin) => redirectUrl.startsWith(origin))) {
+      return new Response(
+        JSON.stringify({ error: "Invalid redirect URL" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
     if (!email) {
       return new Response(
         JSON.stringify({ error: "Email is required" }),
