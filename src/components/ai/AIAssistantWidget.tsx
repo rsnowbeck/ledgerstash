@@ -115,10 +115,10 @@ export function AIAssistantWidget() {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-accent text-accent-foreground shadow-lg hover:bg-accent/90 transition-all flex items-center justify-center"
+          className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-card shadow-lg hover:shadow-xl transition-all flex items-center justify-center border border-border"
           aria-label="Open AI Assistant"
         >
-          <MessageCircle className="h-6 w-6" />
+          <img src={aiShieldIcon} alt="AI Assistant" className="h-9 w-9 object-contain" />
         </button>
       )}
 
