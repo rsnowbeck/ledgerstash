@@ -67,13 +67,14 @@ export function ClientContacts({ clientId, organizationId, clientEmail, clientNa
         .from('recipients')
         .select('*')
         .eq('organization_id', organizationId)
-        .eq('client_id', clientId)
+        .eq('client_id' as any, clientId)
         .eq('is_deleted', false)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
       setContacts(data || []);
       onCountChange?.(data?.length || 0);
+    } catch (error) {
       console.error('Error fetching contacts:', error);
       toast.error('Failed to load contacts');
     } finally {
