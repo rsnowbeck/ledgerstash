@@ -346,7 +346,11 @@ export function ClientContacts({ clientId, organizationId, clientEmail, clientNa
         onOpenChange={setDetailOpen}
         contact={selectedContact}
         organizationId={organizationId}
+        clientId={clientId}
         onUpdated={fetchContacts}
+        onSendPortalInvite={handleSendPortalInvite}
+        portalInviteLoading={inviting}
+        portalLink={portalLink}
       />
     </div>
   );
