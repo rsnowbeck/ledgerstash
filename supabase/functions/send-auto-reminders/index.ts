@@ -10,264 +10,214 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const handler = async (req: Request): Promise<Response> => {
+serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
 
   try {
-    // Validate caller: internal secret (cron/service) OR valid JWT
-    const internalSecret = req.headers.get('x-internal-secret');
-    const expectedSecret = Deno.env.get('INTERNAL_FUNCTION_SECRET');
+    // Validate caller: internal secret OR valid JWT
+    const internalSecret = req.headers.get("x-internal-secret");
+    const expectedSecret = Deno.env.get("INTERNAL_FUNCTION_SECRET");
 
     let authorized = false;
-
-    // Check internal secret first (for cron jobs / service-to-service calls)
     if (expectedSecret && internalSecret === expectedSecret) {
       authorized = true;
     }
 
-    // If no valid internal secret, validate JWT
     if (!authorized) {
-      const authHeader = req.headers.get('Authorization');
-      if (authHeader?.startsWith('Bearer ')) {
+      const authHeader = req.headers.get("Authorization");
+      if (authHeader?.startsWith("Bearer ")) {
         const supabaseAuth = createClient(
           Deno.env.get("SUPABASE_URL")!,
           Deno.env.get("SUPABASE_ANON_KEY")!,
           { global: { headers: { Authorization: authHeader } } }
         );
         const { data, error } = await supabaseAuth.auth.getUser();
-        if (!error && data?.user) {
-          authorized = true;
-        }
+        if (!error && data?.user) authorized = true;
       }
     }
 
     if (!authorized) {
-      return new Response(
-        JSON.stringify({ error: 'Unauthorized' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    // Use service role key to bypass RLS for automated tasks
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    console.log("Starting auto-reminder job...");
+    console.log("Starting auto-reminder job (tasks/docs)...");
 
-    // Fetch organizations with auto-reminders enabled
-    const { data: organizations, error: orgError } = await supabase
-      .from("organizations")
-      .select("id, name, plan, auto_reminder_days, sender_name, sender_email, logo_url")
-      .eq("auto_reminder_enabled", true)
-      .not("auto_reminder_days", "is", null);
+    // Get all firms
+    const { data: firms, error: firmsError } = await supabase
+      .from("firms")
+      .select("id, name, owner_id");
 
-    if (orgError) {
-      console.error("Error fetching organizations:", orgError);
-      throw orgError;
-    }
-
-    console.log(`Found ${organizations?.length || 0} organizations with auto-reminders enabled`);
+    if (firmsError) throw firmsError;
+    console.log(`Processing ${firms?.length || 0} firms`);
 
     let totalSent = 0;
     let totalFailed = 0;
 
-    for (const org of organizations || []) {
-      // Find pending signing requests that need reminders
-      // Get requests where the last reminder (or sent_at) was more than auto_reminder_days ago
-      const cutoffDate = new Date();
-      cutoffDate.setDate(cutoffDate.getDate() - (org.auto_reminder_days || 7));
+    for (const firm of firms || []) {
+      // Get firm's org settings for reminder config
+      const { data: members } = await supabase
+        .from("firm_members")
+        .select("profile_id")
+        .eq("firm_id", firm.id)
+        .limit(1);
 
-      const { data: pendingRequests, error: reqError } = await supabase
-        .from("signing_requests")
-        .select(`
-          id,
-          sent_at,
-          token_hash,
-          recipient_id,
-          requirement_id
-        `)
-        .eq("organization_id", org.id)
-        .eq("status", "pending")
-        .gt("expires_at", new Date().toISOString())
-        .lt("sent_at", cutoffDate.toISOString());
+      if (!members?.length) continue;
 
-      if (reqError) {
-        console.error(`Error fetching requests for org ${org.id}:`, reqError);
-        continue;
-      }
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("organization_id")
+        .eq("id", members[0].profile_id)
+        .single();
 
-      console.log(`Found ${pendingRequests?.length || 0} pending requests for org ${org.name}`);
+      if (!profile?.organization_id) continue;
 
-      for (const request of pendingRequests || []) {
-        // Get recipient and requirement data separately to avoid type issues
-        const { data: recipient } = await supabase
-          .from("recipients")
-          .select("id, full_name, email")
-          .eq("id", request.recipient_id)
-          .single();
+      const { data: org } = await supabase
+        .from("organizations")
+        .select("auto_reminder_enabled, auto_reminder_days, plan, sender_name, sender_email, logo_url, name")
+        .eq("id", profile.organization_id)
+        .single();
 
-        const { data: requirement } = await supabase
-          .from("requirements")
-          .select("title, due_date")
-          .eq("id", request.requirement_id)
-          .single();
+      if (!org?.auto_reminder_enabled) continue;
 
-        if (!recipient || !requirement) {
-          console.log(`Skipping request ${request.id} - missing recipient or requirement data`);
-          continue;
-        }
+      const reminderDays = org.auto_reminder_days || 7;
 
-        // Check if we already sent a reminder recently
-        const { data: recentReminders } = await supabase
-          .from("reminder_logs")
+      // Get all active clients for this firm
+      const { data: clients } = await supabase
+        .from("clients")
+        .select("id, email, first_name, last_name")
+        .eq("firm_id", firm.id)
+        .eq("status", "active");
+
+      if (!clients?.length) continue;
+
+      for (const client of clients) {
+        // Get pending/overdue tasks for this client
+        const { data: pendingTasks } = await supabase
+          .from("tasks")
+          .select("id, title, due_date, status, priority")
+          .eq("client_id", client.id)
+          .neq("status", "completed");
+
+        if (!pendingTasks?.length) continue;
+
+        // Check if we have an active access token for this client
+        const { data: accessToken } = await supabase
+          .from("client_access_tokens")
           .select("id")
-          .eq("signing_request_id", request.id)
-          .gte("sent_at", cutoffDate.toISOString())
+          .eq("client_id", client.id)
+          .eq("is_revoked", false)
+          .gt("expires_at", new Date().toISOString())
           .limit(1);
 
-        if (recentReminders && recentReminders.length > 0) {
-          console.log(`Skipping request ${request.id} - reminder sent recently`);
+        // Skip if client hasn't been invited yet (no portal link)
+        if (!accessToken?.length) {
+          console.log(`Skipping ${client.email} - no active portal link`);
           continue;
         }
 
-        // Generate new token and signing URL
-        const token = crypto.randomUUID();
-        const tokenHash = await hashToken(token);
-        const baseUrl = Deno.env.get("SITE_URL") || "https://ledgerstash.com";
-        const signingUrl = `${baseUrl}/sign/${token}`;
+        // Build task summary
+        const overdueTasks = pendingTasks.filter(t => t.due_date && new Date(t.due_date) < new Date());
+        const upcomingTasks = pendingTasks.filter(t => !t.due_date || new Date(t.due_date) >= new Date());
 
-        // Update the signing request with new token
-        const { error: updateError } = await supabase
-          .from("signing_requests")
-          .update({
-            token_hash: tokenHash,
-            sent_at: new Date().toISOString(),
-            expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-          })
-          .eq("id", request.id);
+        const isUrgent = overdueTasks.length > 0;
+        const subject = isUrgent
+          ? `Action needed: ${overdueTasks.length} overdue task${overdueTasks.length > 1 ? "s" : ""} from ${firm.name}`
+          : `Reminder: ${pendingTasks.length} pending task${pendingTasks.length > 1 ? "s" : ""} from ${firm.name}`;
 
-        if (updateError) {
-          console.error(`Error updating request ${request.id}:`, updateError);
-          continue;
-        }
+        // Build tasks HTML
+        const taskRows = pendingTasks.map(t => {
+          const isOverdue = t.due_date && new Date(t.due_date) < new Date();
+          const dueText = t.due_date ? new Date(t.due_date).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "No due date";
+          const color = isOverdue ? "#ef4444" : t.priority === "high" ? "#f59e0b" : "#71717a";
+          return `
+            <tr>
+              <td style="padding: 10px 16px; border-bottom: 1px solid #e4e4e7;">
+                <p style="margin: 0; font-size: 14px; font-weight: 500; color: #18181b;">${t.title}</p>
+              </td>
+              <td style="padding: 10px 16px; border-bottom: 1px solid #e4e4e7; text-align: right;">
+                <span style="font-size: 12px; color: ${color}; font-weight: 500;">${isOverdue ? "⚠️ " : ""}${dueText}</span>
+              </td>
+            </tr>
+          `;
+        }).join("");
 
-        // Calculate days until due for urgency messaging
-        let daysUntilDue: number | undefined;
-        if (requirement.due_date) {
-          const dueDate = new Date(requirement.due_date);
-          const now = new Date();
-          daysUntilDue = Math.ceil((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-        }
+        // Get portal URL - we can't reconstruct the original token, but we can tell them to check their email
+        const baseUrl = Deno.env.get("SITE_URL") || "https://getattestly.lovable.app";
 
-        // Send the reminder email
         try {
-          const isPro = org.plan === "pro";
-          const displayOrg = isPro ? org.name : "LedgerStash";
-          const displaySenderName = isPro ? (org.sender_name || org.name) : "LedgerStash";
-          const subject = `Reminder: Your documents are still needed — "${requirement.title || "Document"}"`;
-
-          // Build due date warning HTML - only for escalated (close to due) reminders
-          let dueWarningHtml = "";
-          if (daysUntilDue !== undefined && daysUntilDue <= 3) {
-            const urgencyColor = daysUntilDue <= 1 ? "#ef4444" : "#f59e0b";
-            const dueText = daysUntilDue <= 0 ? "Due today" : daysUntilDue === 1 ? "Due tomorrow" : `Due in ${daysUntilDue} days`;
-            dueWarningHtml = `
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-bottom: 16px;">
-                <tr>
-                  <td style="padding: 12px 16px; background-color: ${urgencyColor}15; border-radius: 8px; border-left: 4px solid ${urgencyColor};">
-                    <p style="margin: 0; font-size: 14px; color: ${urgencyColor}; font-weight: 500;">⏰ ${dueText}</p>
-                  </td>
-                </tr>
-              </table>
-            `;
-          }
-
-          // Build logo HTML - only for Pro users
-          let logoHtml = "";
-          if (isPro && org.logo_url) {
-            logoHtml = `<img src="${org.logo_url}" alt="${org.name} logo" style="height: 32px; max-width: 120px; object-fit: contain; margin-bottom: 8px;" />`;
-          }
-          
-          // Build intro line - include org name only for Pro users
-          const intro = (isPro && org.sender_name)
-            ? `${org.sender_name} from ${org.name} has requested the following documents:`
-            : `${displayOrg} has requested the following documents:`;
-            
-          const closing = `This request is part of your document preparation process with ${displayOrg}.`;
-          const footer = `If you have questions, please contact your accountant or your primary contact at ${displayOrg}.`;
-
-          const emailHtml = `
+          const { error: emailError } = await resend.emails.send({
+            from: "LedgerStash <noreply@ledgerstash.com>",
+            reply_to: org.sender_email || undefined,
+            to: [client.email],
+            subject,
+            html: `
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
 <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f5;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f4f4f5;">
     <tr>
       <td align="center" style="padding: 40px 20px;">
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 520px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-          <!-- Header -->
           <tr>
             <td style="padding: 32px 32px 24px; text-align: center;">
-              ${logoHtml}
               <h1 style="margin: 0; font-size: 24px; font-weight: 600; color: #18181b;">LedgerStash</h1>
               <hr style="margin-top: 20px; border: none; border-top: 1px solid #e4e4e7;" />
             </td>
           </tr>
-          
-          <!-- Content -->
           <tr>
-            <td style="padding: 32px;">
-              <p style="margin: 0 0 16px; font-size: 16px; color: #3f3f46;">
-                Hi ${recipient.full_name || "there"},
-              </p>
+            <td style="padding: 0 32px 32px;">
+              <p style="margin: 0 0 16px; font-size: 16px; color: #3f3f46;">Hi ${client.first_name},</p>
               <p style="margin: 0 0 24px; font-size: 16px; color: #3f3f46; line-height: 1.6;">
-                ${intro}
+                ${isUrgent
+                  ? `You have <strong>${overdueTasks.length} overdue</strong> task${overdueTasks.length > 1 ? "s" : ""} from <strong>${firm.name}</strong>. Please take action as soon as possible.`
+                  : `This is a friendly reminder that you have <strong>${pendingTasks.length}</strong> pending task${pendingTasks.length > 1 ? "s" : ""} from <strong>${firm.name}</strong>.`
+                }
               </p>
-              
-              <!-- Document Card -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #fafafa; border-radius: 8px; border: 1px solid #e4e4e7; margin-bottom: 8px;">
+
+              ${isUrgent ? `
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-bottom: 16px;">
                 <tr>
-                  <td style="padding: 16px;">
-                    <p style="margin: 0; font-size: 14px; color: #71717a; text-transform: uppercase; letter-spacing: 0.5px;">Document</p>
-                    <p style="margin: 4px 0 0; font-size: 16px; font-weight: 600; color: #18181b;">${requirement.title || "Document"}</p>
+                  <td style="padding: 12px 16px; background-color: #fef2f2; border-radius: 8px; border-left: 4px solid #ef4444;">
+                    <p style="margin: 0; font-size: 14px; color: #dc2626; font-weight: 500;">⏰ ${overdueTasks.length} task${overdueTasks.length > 1 ? "s are" : " is"} past due</p>
                   </td>
                 </tr>
+              </table>` : ""}
+
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #fafafa; border-radius: 8px; border: 1px solid #e4e4e7; margin-bottom: 24px;">
+                <tr>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #e4e4e7;">
+                    <p style="margin: 0; font-size: 12px; color: #71717a; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Your Tasks</p>
+                  </td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #e4e4e7; text-align: right;">
+                    <p style="margin: 0; font-size: 12px; color: #71717a; text-transform: uppercase; letter-spacing: 0.5px;">Due</p>
+                  </td>
+                </tr>
+                ${taskRows}
               </table>
 
-              ${dueWarningHtml}
-              
-              <p style="margin: 16px 0 24px; font-size: 14px; color: #52525b; line-height: 1.5;">${closing}</p>
-              
-              <!-- CTA Button -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-                <tr>
-                  <td align="center">
-                    <a href="${signingUrl}" style="display: inline-block; padding: 14px 32px; background-color: #18181b; color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 500; border-radius: 8px;">
-                      Upload Documents
-                    </a>
-                  </td>
-                </tr>
-              </table>
-              
-              <p style="margin: 24px 0 0; font-size: 14px; color: #71717a; line-height: 1.6;">
-                ${footer}
+              <p style="margin: 0 0 24px; font-size: 14px; color: #52525b; line-height: 1.5;">
+                Open your secure portal to upload documents and complete tasks. Check your original invitation email for your portal link.
+              </p>
+
+              <p style="margin: 0; font-size: 14px; color: #71717a;">
+                If you have questions, contact your accountant at ${firm.name}.
               </p>
             </td>
           </tr>
-          
-          <!-- Footer -->
           <tr>
             <td style="padding: 24px 32px; border-top: 1px solid #e4e4e7; text-align: center;">
-              <p style="margin: 0; font-size: 12px; color: #a1a1aa;">
-                If you didn't expect this email, you can safely ignore it.
-              </p>
+              <p style="margin: 0; font-size: 12px; color: #a1a1aa;">If you didn't expect this email, you can safely ignore it.</p>
               <p style="margin: 12px 0 0; font-size: 11px; color: #d4d4d8;">
                 Powered by <a href="https://ledgerstash.com" style="color: #a1a1aa; text-decoration: none;">LedgerStash</a>
               </p>
@@ -279,42 +229,14 @@ const handler = async (req: Request): Promise<Response> => {
   </table>
 </body>
 </html>
-          `;
-
-          const { error: emailError } = await resend.emails.send({
-            from: "LedgerStash <noreply@ledgerstash.com>",
-            reply_to: org.sender_email || undefined,
-            to: [recipient.email || ""],
-            subject,
-            html: emailHtml,
+            `,
           });
 
           if (emailError) throw emailError;
-
-          // Log successful reminder
-          await supabase.from("reminder_logs").insert({
-            signing_request_id: request.id,
-            organization_id: org.id,
-            sent_by: null,
-            trigger_type: "auto",
-            email_sent: true,
-          });
-
           totalSent++;
-          console.log(`Sent auto-reminder to ${recipient.email} for ${requirement.title}`);
+          console.log(`Sent reminder to ${client.email} (${pendingTasks.length} tasks)`);
         } catch (emailError: any) {
-          console.error(`Error sending email for request ${request.id}:`, emailError);
-
-          // Log failed reminder
-          await supabase.from("reminder_logs").insert({
-            signing_request_id: request.id,
-            organization_id: org.id,
-            sent_by: null,
-            trigger_type: "auto",
-            email_sent: false,
-            error_message: emailError?.message || "Email send failed",
-          });
-
+          console.error(`Failed to send to ${client.email}:`, emailError);
           totalFailed++;
         }
       }
@@ -323,34 +245,14 @@ const handler = async (req: Request): Promise<Response> => {
     console.log(`Auto-reminder job completed. Sent: ${totalSent}, Failed: ${totalFailed}`);
 
     return new Response(
-      JSON.stringify({
-        success: true,
-        sent: totalSent,
-        failed: totalFailed,
-      }),
-      {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      JSON.stringify({ success: true, sent: totalSent, failed: totalFailed }),
+      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error: any) {
-    console.error("Error in send-auto-reminders function:", error);
+    console.error("Error in send-auto-reminders:", error);
     return new Response(
       JSON.stringify({ error: error.message }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
-};
-
-async function hashToken(token: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(token);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-}
-
-serve(handler);
+});

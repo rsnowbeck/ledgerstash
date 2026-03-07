@@ -23,3 +23,9 @@ verify_jwt = false
 
 [functions.detect-form-fields]
 verify_jwt = false
+
+[functions.send-client-invite]
+verify_jwt = false
+
+[functions.client-portal]
+verify_jwt = false

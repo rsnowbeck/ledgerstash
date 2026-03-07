@@ -24,8 +24,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { DropZone } from "@/components/documents/DropZone";
 import { useAuth } from "@/hooks/useAuth";
-import { ArrowLeft, Plus, Upload, FileText, CheckSquare, Clock, FolderPlus } from "lucide-react";
+import { ArrowLeft, Plus, Upload, FileText, CheckSquare, Clock, FolderPlus, Send, Loader2, Copy } from "lucide-react";
 import { toast } from "sonner";
 
 export default function ClientDetail() {
@@ -48,6 +49,10 @@ export default function ClientDetail() {
 
   // Upload
   const [uploading, setUploading] = useState(false);
+
+  // Invite
+  const [inviting, setInviting] = useState(false);
+  const [portalLink, setPortalLink] = useState<string | null>(null);
 
   useEffect(() => {
     if (user?.id && id) loadClientData();
@@ -153,6 +158,77 @@ export default function ClientDetail() {
     }
   };
 
+  const handleDropFiles = async (files: FileList) => {
+    if (!id || !user?.id) return;
+    setUploading(true);
+    try {
+      for (const file of Array.from(files)) {
+        const storagePath = `${id}/${Date.now()}-${file.name}`;
+        const { error: uploadError } = await supabase.storage
+          .from('client-documents')
+          .upload(storagePath, file);
+        if (uploadError) throw uploadError;
+        const { error: dbError } = await supabase.from('documents').insert({
+          client_id: id,
+          uploaded_by: user.id,
+          file_name: file.name,
+          file_type: file.type || null,
+          file_size_bytes: file.size,
+          storage_path: storagePath,
+        });
+        if (dbError) throw dbError;
+      }
+      toast.success(`${files.length} file(s) uploaded`);
+      loadClientData();
+    } catch (error: any) {
+      toast.error(error.message || "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleSendInvite = async () => {
+    if (!client || !user?.id) return;
+    setInviting(true);
+    try {
+      // Get firm name
+      const { data: fm } = await supabase
+        .from('firm_members')
+        .select('firm_id')
+        .eq('profile_id', user.id)
+        .maybeSingle();
+      let firmName = "";
+      let senderName = "";
+      if (fm?.firm_id) {
+        const { data: firm } = await supabase.from('firms').select('name').eq('id', fm.firm_id).single();
+        firmName = firm?.name || "";
+      }
+      const { data: profile } = await supabase.from('profiles').select('full_name').eq('id', user.id).single();
+      senderName = profile?.full_name || "";
+
+      const res = await supabase.functions.invoke('send-client-invite', {
+        body: { clientId: client.id, firmName, senderName },
+      });
+
+      if (res.error) throw new Error(res.error.message);
+      if (!res.data?.success) throw new Error(res.data?.error || 'Failed to send invite');
+
+      setPortalLink(res.data.portalUrl);
+      toast.success(`Invite sent to ${client.email}`);
+    } catch (error: any) {
+      toast.error(error.message || "Failed to send invite");
+    } finally {
+      setInviting(false);
+    }
+  };
+
+  const copyPortalLink = () => {
+    if (portalLink) {
+      navigator.clipboard.writeText(portalLink);
+      toast.success("Portal link copied to clipboard");
+    }
+  };
+
   const handleUpdateTaskStatus = async (taskId: string, status: string) => {
     try {
       const { error } = await supabase.from('tasks').update({ status }).eq('id', taskId);
@@ -209,14 +285,29 @@ export default function ClientDetail() {
               <p className="text-muted-foreground">{client.email}</p>
             </div>
           </div>
-          <span className={`self-start text-xs px-3 py-1 rounded-full ${
-            client.status === 'active' ? 'bg-success/10 text-success' : 'bg-muted text-muted-foreground'
-          }`}>
-            {client.status}
-          </span>
+          <div className="flex items-center gap-2 self-start">
+            <span className={`text-xs px-3 py-1 rounded-full ${
+              client.status === 'active' ? 'bg-success/10 text-success' : 'bg-muted text-muted-foreground'
+            }`}>
+              {client.status}
+            </span>
+            <Button variant="hero" size="sm" onClick={handleSendInvite} disabled={inviting}>
+              {inviting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+              {inviting ? "Sending..." : "Send Invite"}
+            </Button>
+          </div>
         </div>
         {client.notes && (
           <p className="mt-3 text-sm text-muted-foreground bg-muted/50 rounded-lg p-3">{client.notes}</p>
+        )}
+        {portalLink && (
+          <div className="mt-3 flex items-center gap-2 bg-success/5 border border-success/20 rounded-lg p-3">
+            <p className="text-sm text-foreground flex-1 truncate">{portalLink}</p>
+            <Button variant="outline" size="sm" onClick={copyPortalLink}>
+              <Copy className="h-3.5 w-3.5" />
+              Copy
+            </Button>
+          </div>
         )}
       </div>
 
@@ -229,16 +320,7 @@ export default function ClientDetail() {
 
         {/* Documents Tab */}
         <TabsContent value="documents" className="space-y-4">
-          <div className="flex items-center gap-3">
-            <label className="cursor-pointer">
-              <input type="file" multiple className="hidden" onChange={handleFileUpload} disabled={uploading} />
-              <Button variant="hero" size="sm" asChild disabled={uploading}>
-                <span>
-                  <Upload className="h-4 w-4" />
-                  {uploading ? "Uploading..." : "Upload Files"}
-                </span>
-              </Button>
-            </label>
+          <div className="flex items-center gap-3 mb-4">
             <Dialog open={folderDialogOpen} onOpenChange={setFolderDialogOpen}>
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm">
@@ -275,13 +357,11 @@ export default function ClientDetail() {
             </div>
           )}
 
+          {/* Drop Zone */}
+          <DropZone onFiles={handleDropFiles} uploading={uploading} />
+
           {/* Documents List */}
-          {documents.length === 0 ? (
-            <div className="text-center py-12 border border-dashed border-border rounded-xl">
-              <FileText className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-              <p className="text-muted-foreground">No documents yet. Upload files to get started.</p>
-            </div>
-          ) : (
+          {documents.length > 0 && (
             <div className="card-elevated overflow-hidden">
               <table className="w-full">
                 <thead>

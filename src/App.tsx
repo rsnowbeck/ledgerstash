@@ -23,6 +23,7 @@ import Pricing from "./pages/Pricing";
 import Settings from "./pages/Settings";
 import AcceptInvite from "./pages/AcceptInvite";
 import Welcome from "./pages/Welcome";
+import ClientPortal from "./pages/ClientPortal";
 import NotFound from "./pages/NotFound";
 import Recipients from "./pages/Recipients";
 import Requirements from "./pages/Requirements";
@@ -70,6 +71,7 @@ const App = () => {
           <Route path="/settings" element={<Settings />} />
           <Route path="/accept-invite" element={<AcceptInvite />} />
           <Route path="/welcome" element={<Welcome />} />
+          <Route path="/portal/:token" element={<ClientPortal />} />
           <Route path="/recipients" element={<Recipients />} />
           <Route path="/requirements" element={<Requirements />} />
           <Route path="/requirements/:id" element={<RequirementDetail />} />
