@@ -44,7 +44,7 @@ interface ClientContactsProps {
   onCountChange?: (count: number) => void;
 }
 
-export function ClientContacts({ clientId, organizationId, clientEmail, clientName }: ClientContactsProps) {
+export function ClientContacts({ clientId, organizationId, clientEmail, clientName, onCountChange }: ClientContactsProps) {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
