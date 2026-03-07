@@ -51,6 +51,8 @@ export function ClientContacts({ clientId, organizationId, clientEmail, clientNa
   const [dialogOpen, setDialogOpen] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
+  const [detailOpen, setDetailOpen] = useState(false);
 
   // Form state
   const [name, setName] = useState("");
