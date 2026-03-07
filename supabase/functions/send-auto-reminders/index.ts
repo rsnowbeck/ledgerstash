@@ -16,12 +16,34 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    // Validate caller via shared secret (cron job or internal call)
+    // Validate caller: internal secret (cron/service) OR valid JWT
     const internalSecret = req.headers.get('x-internal-secret');
     const expectedSecret = Deno.env.get('INTERNAL_FUNCTION_SECRET');
-    const authHeader = req.headers.get('Authorization');
 
-    if (!authHeader?.startsWith('Bearer ') && (!expectedSecret || internalSecret !== expectedSecret)) {
+    let authorized = false;
+
+    // Check internal secret first (for cron jobs / service-to-service calls)
+    if (expectedSecret && internalSecret === expectedSecret) {
+      authorized = true;
+    }
+
+    // If no valid internal secret, validate JWT
+    if (!authorized) {
+      const authHeader = req.headers.get('Authorization');
+      if (authHeader?.startsWith('Bearer ')) {
+        const supabaseAuth = createClient(
+          Deno.env.get("SUPABASE_URL")!,
+          Deno.env.get("SUPABASE_ANON_KEY")!,
+          { global: { headers: { Authorization: authHeader } } }
+        );
+        const { data, error } = await supabaseAuth.auth.getUser();
+        if (!error && data?.user) {
+          authorized = true;
+        }
+      }
+    }
+
+    if (!authorized) {
       return new Response(
         JSON.stringify({ error: 'Unauthorized' }),
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
