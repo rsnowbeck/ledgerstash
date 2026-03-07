@@ -41,6 +41,7 @@ interface ClientContactsProps {
   organizationId: string;
   clientEmail: string;
   clientName: string;
+  onCountChange?: (count: number) => void;
 }
 
 export function ClientContacts({ clientId, organizationId, clientEmail, clientName }: ClientContactsProps) {
