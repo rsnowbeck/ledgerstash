@@ -144,9 +144,9 @@ export function ContactDetailSheet({
   const statusIcon = (status: string | null) => {
     switch (status) {
       case "completed":
-        return <CheckCircle2 className="h-4 w-4 text-green-500" />;
+        return <CheckCircle2 className="h-4 w-4 text-primary" />;
       case "pending":
-        return <Clock className="h-4 w-4 text-amber-500" />;
+        return <Clock className="h-4 w-4 text-accent" />;
       case "expired":
         return <XCircle className="h-4 w-4 text-muted-foreground" />;
       default:
