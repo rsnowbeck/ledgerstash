@@ -48,6 +48,7 @@ export default function ClientDetail() {
   // Folder dialog
   const [folderDialogOpen, setFolderDialogOpen] = useState(false);
   const [folderName, setFolderName] = useState("");
+  const [templatePickerOpen, setTemplatePickerOpen] = useState(false);
 
   // Upload
   const [uploading, setUploading] = useState(false);
