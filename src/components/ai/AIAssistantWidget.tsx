@@ -203,8 +203,8 @@ export function AIAssistantWidget() {
 
             {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
               <div className="flex gap-2">
-                <div className="h-6 w-6 rounded-full flex items-center justify-center flex-shrink-0">
-                  <img src={aiChatAvatar} alt="AI" className="h-6 w-6 object-contain rounded-full" />
+                <div className="h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0">
+                  <img src={aiChatAvatar} alt="AI" className="h-8 w-8 object-contain" />
                 </div>
                 <div className="bg-muted rounded-xl px-3 py-2">
                   <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
