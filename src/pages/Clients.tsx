@@ -19,7 +19,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { useAuth } from "@/hooks/useAuth";
 import { ClientCSVImportDialog } from "@/components/clients/ClientCSVImportDialog";
-import { usePlanLimits } from "@/hooks/usePlanLimits";
+
 import { Plus, Search, Users, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { useOrganization } from "@/hooks/useOrganization";
