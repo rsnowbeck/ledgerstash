@@ -265,7 +265,11 @@ export function ClientContacts({ clientId, organizationId, clientEmail, clientNa
       ) : (
         <div className="space-y-2">
           {filteredContacts.map((contact) => (
-            <div key={contact.id} className="flex items-center justify-between gap-3 p-3 rounded-lg border border-border bg-card hover:bg-muted/30 transition-colors">
+            <div
+              key={contact.id}
+              className="flex items-center justify-between gap-3 p-3 rounded-lg border border-border bg-card hover:bg-muted/30 transition-colors cursor-pointer"
+              onClick={() => { setSelectedContact(contact); setDetailOpen(true); }}
+            >
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-foreground truncate">{contact.full_name}</p>
                 <p className="text-xs text-muted-foreground truncate">{contact.email}</p>
@@ -279,14 +283,14 @@ export function ClientContacts({ clientId, organizationId, clientEmail, clientNa
                 )}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                    <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={(e) => e.stopPropagation()}>
                       <MoreHorizontal className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem
                       className="text-destructive"
-                      onClick={() => handleDeleteContact(contact.id, contact.full_name)}
+                      onClick={(e) => { e.stopPropagation(); handleDeleteContact(contact.id, contact.full_name); }}
                     >
                       <Trash2 className="h-4 w-4 mr-2" />
                       Remove
@@ -298,6 +302,14 @@ export function ClientContacts({ clientId, organizationId, clientEmail, clientNa
           ))}
         </div>
       )}
+
+      <ContactDetailSheet
+        open={detailOpen}
+        onOpenChange={setDetailOpen}
+        contact={selectedContact}
+        organizationId={organizationId}
+        onUpdated={fetchContacts}
+      />
     </div>
   );
 }
