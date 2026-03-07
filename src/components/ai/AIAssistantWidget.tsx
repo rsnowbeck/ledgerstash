@@ -128,7 +128,7 @@ export function AIAssistantWidget() {
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/50">
             <div className="flex items-center gap-2">
-              <img src={aiChatAvatar} alt="AI Assistant" className="h-9 w-9 object-contain rounded-full" />
+              <img src={aiChatAvatar} alt="AI Assistant" className="h-10 w-10 object-contain" />
               <span className="font-semibold text-sm text-foreground">Ledger Stash Assistant</span>
             </div>
             <div className="flex items-center gap-1">
@@ -147,7 +147,7 @@ export function AIAssistantWidget() {
           <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[280px] max-h-[380px]">
             {messages.length === 0 && (
               <div className="text-center py-8">
-                <img src={aiChatAvatar} alt="AI Assistant" className="h-12 w-12 object-contain mx-auto mb-3" />
+                <img src={aiChatAvatar} alt="AI Assistant" className="h-16 w-16 object-contain mx-auto mb-3" />
                 <p className="text-sm text-muted-foreground">
                   Hi! I'm your Ledger Stash assistant. Ask me anything about the platform.
                 </p>
@@ -174,8 +174,8 @@ export function AIAssistantWidget() {
             {messages.map((msg, i) => (
               <div key={i} className={`flex gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 {msg.role === "assistant" && (
-                  <div className="h-6 w-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <img src={aiChatAvatar} alt="AI" className="h-6 w-6 object-contain rounded-full" />
+                  <div className="h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <img src={aiChatAvatar} alt="AI" className="h-8 w-8 object-contain" />
                   </div>
                 )}
                 <div
@@ -203,8 +203,8 @@ export function AIAssistantWidget() {
 
             {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
               <div className="flex gap-2">
-                <div className="h-6 w-6 rounded-full flex items-center justify-center flex-shrink-0">
-                  <img src={aiChatAvatar} alt="AI" className="h-6 w-6 object-contain rounded-full" />
+                <div className="h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0">
+                  <img src={aiChatAvatar} alt="AI" className="h-8 w-8 object-contain" />
                 </div>
                 <div className="bg-muted rounded-xl px-3 py-2">
                   <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
