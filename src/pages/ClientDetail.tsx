@@ -50,6 +50,10 @@ export default function ClientDetail() {
   // Upload
   const [uploading, setUploading] = useState(false);
 
+  // Invite
+  const [inviting, setInviting] = useState(false);
+  const [portalLink, setPortalLink] = useState<string | null>(null);
+
   useEffect(() => {
     if (user?.id && id) loadClientData();
   }, [user?.id, id]);
