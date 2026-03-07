@@ -76,18 +76,37 @@ serve(async (req: Request) => {
 
     // ACTION: verify — return client data
     if (action === "verify") {
-      const [clientRes, tasksRes, docsRes, foldersRes, firmRes] = await Promise.all([
+      const [clientRes, tasksRes, docsRes, foldersRes] = await Promise.all([
         supabase.from("clients").select("id, first_name, last_name, email, firm_id").eq("id", clientId).single(),
         supabase.from("tasks").select("id, title, description, due_date, status, priority, created_at").eq("client_id", clientId).order("created_at", { ascending: false }),
         supabase.from("documents").select("id, file_name, file_type, file_size_bytes, created_at").eq("client_id", clientId).order("created_at", { ascending: false }),
         supabase.from("folders").select("id, name").eq("client_id", clientId).order("name"),
-        supabase.from("clients").select("firm_id").eq("id", clientId).single(),
       ]);
 
       let firmName = "";
-      if (firmRes.data?.firm_id) {
-        const { data: firm } = await supabase.from("firms").select("name").eq("id", firmRes.data.firm_id).single();
+      let firmLogoUrl = "";
+      let accentColor = "";
+      let showPoweredBy = true;
+
+      if (clientRes.data?.firm_id) {
+        const { data: firm } = await supabase.from("firms").select("name, logo_url, owner_id").eq("id", clientRes.data.firm_id).single();
         firmName = firm?.name || "";
+        firmLogoUrl = firm?.logo_url || "";
+
+        // Check the owner's organization plan to determine branding tier
+        if (firm?.owner_id) {
+          const { data: profile } = await supabase.from("profiles").select("organization_id").eq("id", firm.owner_id).single();
+          if (profile?.organization_id) {
+            const { data: org } = await supabase.from("organizations").select("plan, logo_url, accent_color").eq("id", profile.organization_id).single();
+            if (org) {
+              // Use org logo if firm doesn't have one
+              if (!firmLogoUrl && org.logo_url) firmLogoUrl = org.logo_url;
+              accentColor = (org as any).accent_color || "";
+              // Boutique+ plans hide "Powered by"
+              showPoweredBy = !["boutique", "enterprise", "pro", "team"].includes(org.plan || "trial");
+            }
+          }
+        }
       }
 
       return new Response(JSON.stringify({
@@ -97,6 +116,9 @@ serve(async (req: Request) => {
         documents: docsRes.data || [],
         folders: foldersRes.data || [],
         firmName,
+        firmLogoUrl,
+        accentColor,
+        showPoweredBy,
       }), {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
