@@ -42,6 +42,7 @@ export const STRIPE_PLANS = {
       "Up to 100 active clients",
       "Everything in Solo CPA",
       "Full white-labeling",
+      "Audit logs",
       "Busy Season auto-reminders",
       "Team member accounts",
       "In-app comments",
