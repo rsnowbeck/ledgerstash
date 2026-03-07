@@ -57,7 +57,11 @@ export function ContactDetailSheet({
   onOpenChange,
   contact,
   organizationId,
+  clientId,
   onUpdated,
+  onSendPortalInvite,
+  portalInviteLoading,
+  portalLink,
 }: ContactDetailSheetProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
