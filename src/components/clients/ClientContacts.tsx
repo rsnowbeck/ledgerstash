@@ -249,11 +249,9 @@ export function ClientContacts({ clientId, organizationId, clientEmail, clientNa
               </div>
               <div className="space-y-2">
                 <Label htmlFor="contact-dept">Department / Group</Label>
-                <Input
-                  id="contact-dept"
-                  placeholder="Accounting, HR, etc."
+                <DepartmentSelect
                   value={department}
-                  onChange={(e) => setDepartment(e.target.value)}
+                  onChange={setDepartment}
                 />
               </div>
               <div className="flex gap-3 pt-4">

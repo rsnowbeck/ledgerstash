@@ -225,11 +225,10 @@ export function ContactDetailSheet({
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="detail-dept">Department / Group</Label>
-                <Input
-                  id="detail-dept"
+                <Label>Department / Group</Label>
+                <DepartmentSelect
                   value={department}
-                  onChange={(e) => { setDepartment(e.target.value); setDirty(true); }}
+                  onChange={(v) => { setDepartment(v); setDirty(true); }}
                 />
               </div>
 
