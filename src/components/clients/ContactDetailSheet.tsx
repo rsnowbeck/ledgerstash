@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Save, Clock, CheckCircle2, XCircle, Send, FileText } from "lucide-react";
+import { Loader2, Save, Clock, CheckCircle2, XCircle, Send, FileText, ExternalLink, Copy } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
 
