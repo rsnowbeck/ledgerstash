@@ -376,15 +376,18 @@ export default function ClientPortal() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border mt-16 py-6 text-center">
-        <p className="text-xs text-muted-foreground">
-          Powered by{" "}
-          <a href="https://ledgerstash.com?ref=portal" className="hover:text-foreground transition-colors">
-            LedgerStash
-          </a>
-          {" "}— Secure Client Vault for Accountants
-        </p>
-      </footer>
+      {showPoweredBy && (
+        <footer className="border-t border-border mt-16 py-6 text-center">
+          <p className="text-xs text-muted-foreground">
+            Powered by{" "}
+            <a href="https://ledgerstash.com?ref=portal" className="hover:text-foreground transition-colors">
+              LedgerStash
+            </a>
+            {" "}— Secure Client Vault for Accountants
+          </p>
+        </footer>
+      )}
+      {!showPoweredBy && <div className="mt-16" />}
     </div>
   );
 }
