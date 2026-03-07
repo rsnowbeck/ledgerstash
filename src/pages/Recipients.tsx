@@ -237,9 +237,9 @@ export default function Recipients() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Recipients</h1>
+          <h1 className="text-2xl font-bold text-foreground">Contacts</h1>
           <p className="text-muted-foreground">
-            Manage the people who need to acknowledge your requirements.
+            Manage the people who need to receive document requests from your clients.
             {planLimits.recipientLimit !== -1 && (
               <span className="ml-2 text-xs">
                 ({recipients.length}/{planLimits.recipientLimit} used)
@@ -268,14 +268,14 @@ export default function Recipients() {
             <DialogTrigger asChild>
               <Button variant="hero" disabled={!planLimits.canAddRecipient}>
                 <Plus className="h-4 w-4" />
-                Add Recipient
+                Add Contact
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
-                <DialogTitle>Add Recipient</DialogTitle>
+                <DialogTitle>Add Contact</DialogTitle>
                 <DialogDescription>
-                  Add a new person who will receive acknowledgment requests.
+                  Add a person who will receive document requests from your clients.
                 </DialogDescription>
               </DialogHeader>
               <form onSubmit={handleAddRecipient} className="space-y-4 mt-4">
@@ -343,7 +343,7 @@ export default function Recipients() {
                         Adding...
                       </>
                     ) : (
-                      "Add Recipient"
+                      "Add Contact"
                     )}
                   </Button>
                 </div>
@@ -357,7 +357,7 @@ export default function Recipients() {
       <div className="relative mb-6">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Search recipients..."
+          placeholder="Search contacts..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="pl-10"
@@ -375,18 +375,18 @@ export default function Recipients() {
             <UserPlus className="h-8 w-8" />
           </div>
           <h2 className="text-xl font-semibold text-foreground mb-2">
-            {searchQuery ? "No recipients found" : "No recipients yet"}
+            {searchQuery ? "No contacts found" : "No contacts yet"}
           </h2>
           <p className="text-muted-foreground max-w-md mx-auto mb-6">
             {searchQuery 
               ? "Try adjusting your search terms."
-              : "Add your first recipient to start sending acknowledgment requests. You can add employees, contractors, or vendors."
+              : "Add your first contact to start sending document requests. You can add employees, contractors, or vendors."
             }
           </p>
           {!searchQuery && planLimits.canAddRecipient && (
             <Button variant="hero" onClick={() => setDialogOpen(true)}>
               <Plus className="h-4 w-4" />
-              Add Your First Recipient
+              Add Your First Contact
             </Button>
           )}
         </div>

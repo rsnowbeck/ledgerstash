@@ -104,40 +104,73 @@ export type Database = {
       }
       clients: {
         Row: {
+          address_line1: string | null
+          address_line2: string | null
+          city: string | null
+          client_type: string
+          company_name: string | null
           created_at: string
+          ein: string | null
           email: string
+          entity_type: string | null
           firm_id: string
           first_name: string
+          fiscal_year_end: string | null
           id: string
           last_name: string
           notes: string | null
+          phone: string | null
           profile_id: string | null
+          state: string | null
           status: string
           updated_at: string
+          zip: string | null
         }
         Insert: {
+          address_line1?: string | null
+          address_line2?: string | null
+          city?: string | null
+          client_type?: string
+          company_name?: string | null
           created_at?: string
+          ein?: string | null
           email: string
+          entity_type?: string | null
           firm_id: string
           first_name: string
+          fiscal_year_end?: string | null
           id?: string
           last_name: string
           notes?: string | null
+          phone?: string | null
           profile_id?: string | null
+          state?: string | null
           status?: string
           updated_at?: string
+          zip?: string | null
         }
         Update: {
+          address_line1?: string | null
+          address_line2?: string | null
+          city?: string | null
+          client_type?: string
+          company_name?: string | null
           created_at?: string
+          ein?: string | null
           email?: string
+          entity_type?: string | null
           firm_id?: string
           first_name?: string
+          fiscal_year_end?: string | null
           id?: string
           last_name?: string
           notes?: string | null
+          phone?: string | null
           profile_id?: string | null
+          state?: string | null
           status?: string
           updated_at?: string
+          zip?: string | null
         }
         Relationships: [
           {

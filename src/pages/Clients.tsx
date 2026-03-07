@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -15,14 +16,74 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { useAuth } from "@/hooks/useAuth";
 import { ClientCSVImportDialog } from "@/components/clients/ClientCSVImportDialog";
 
-import { Plus, Search, Users, Upload } from "lucide-react";
+import { Plus, Search, Users, Upload, Building2, User } from "lucide-react";
 import { toast } from "sonner";
 import { useOrganization } from "@/hooks/useOrganization";
+
+const ENTITY_TYPES = [
+  "Sole Proprietorship",
+  "Single-Member LLC",
+  "Multi-Member LLC",
+  "S-Corporation",
+  "C-Corporation",
+  "Partnership",
+  "Non-Profit",
+  "Trust / Estate",
+  "Other",
+];
+
+const FISCAL_YEAR_ENDS = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
+interface ClientForm {
+  client_type: "individual" | "business";
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  notes: string;
+  company_name: string;
+  ein: string;
+  entity_type: string;
+  address_line1: string;
+  address_line2: string;
+  city: string;
+  state: string;
+  zip: string;
+  fiscal_year_end: string;
+}
+
+const emptyForm: ClientForm = {
+  client_type: "individual",
+  first_name: "",
+  last_name: "",
+  email: "",
+  phone: "",
+  notes: "",
+  company_name: "",
+  ein: "",
+  entity_type: "",
+  address_line1: "",
+  address_line2: "",
+  city: "",
+  state: "",
+  zip: "",
+  fiscal_year_end: "",
+};
 
 export default function Clients() {
   usePageTitle("Clients");
@@ -36,7 +97,7 @@ export default function Clients() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [csvImportOpen, setCsvImportOpen] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [form, setForm] = useState({ first_name: "", last_name: "", email: "", notes: "" });
+  const [form, setForm] = useState<ClientForm>({ ...emptyForm });
 
   const clientLimit = organization?.recipient_limit ?? 10;
 
@@ -71,25 +132,47 @@ export default function Clients() {
   };
 
   const handleAddClient = async () => {
-    if (!firmId || !form.email || !form.first_name || !form.last_name) {
-      toast.error("Please fill in all required fields");
+    if (!firmId) {
+      toast.error("Firm not found");
       return;
     }
+
+    if (form.client_type === "individual" && (!form.first_name || !form.last_name || !form.email)) {
+      toast.error("Please fill in name and email");
+      return;
+    }
+
+    if (form.client_type === "business" && (!form.company_name || !form.email || !form.first_name || !form.last_name)) {
+      toast.error("Please fill in company name, primary contact, and email");
+      return;
+    }
+
     setSaving(true);
     try {
       const { error } = await supabase
         .from('clients')
         .insert({
           firm_id: firmId,
+          client_type: form.client_type,
           first_name: form.first_name,
           last_name: form.last_name,
           email: form.email,
+          phone: form.phone || null,
           notes: form.notes || null,
+          company_name: form.client_type === "business" ? form.company_name : null,
+          ein: form.client_type === "business" ? (form.ein || null) : null,
+          entity_type: form.client_type === "business" ? (form.entity_type || null) : null,
+          address_line1: form.address_line1 || null,
+          address_line2: form.address_line2 || null,
+          city: form.city || null,
+          state: form.state || null,
+          zip: form.zip || null,
+          fiscal_year_end: form.fiscal_year_end || null,
         });
 
       if (error) throw error;
       toast.success("Client added successfully");
-      setForm({ first_name: "", last_name: "", email: "", notes: "" });
+      setForm({ ...emptyForm });
       setDialogOpen(false);
       loadClients();
     } catch (error: any) {
@@ -99,8 +182,22 @@ export default function Clients() {
     }
   };
 
+  const getDisplayName = (client: any) => {
+    if (client.client_type === "business" && client.company_name) {
+      return client.company_name;
+    }
+    return `${client.first_name} ${client.last_name}`;
+  };
+
+  const getInitials = (client: any) => {
+    if (client.client_type === "business" && client.company_name) {
+      return client.company_name.slice(0, 2).toUpperCase();
+    }
+    return `${client.first_name?.[0] || ""}${client.last_name?.[0] || ""}`;
+  };
+
   const filtered = clients.filter(c =>
-    `${c.first_name} ${c.last_name} ${c.email}`.toLowerCase().includes(search.toLowerCase())
+    `${c.first_name} ${c.last_name} ${c.email} ${c.company_name || ""}`.toLowerCase().includes(search.toLowerCase())
   );
 
   if (authLoading) {
@@ -117,52 +214,166 @@ export default function Clients() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Clients</h1>
-          <p className="text-muted-foreground">Manage your firm's clients</p>
+          <p className="text-muted-foreground">Manage your firm's clients — individuals and businesses</p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={() => setCsvImportOpen(true)}>
             <Upload className="h-4 w-4" />
             Import CSV
           </Button>
-          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) setForm({ ...emptyForm }); }}>
             <DialogTrigger asChild>
               <Button variant="hero" size="sm">
                 <Plus className="h-4 w-4" />
                 Add Client
               </Button>
             </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add New Client</DialogTitle>
-              <DialogDescription>Add a client to your firm. You can assign tasks and exchange documents with them.</DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
-              <div className="grid grid-cols-2 gap-4">
+            <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Add New Client</DialogTitle>
+                <DialogDescription>Add an individual or business client to your firm.</DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4 py-4">
+                {/* Client Type Toggle */}
                 <div className="space-y-2">
-                  <Label htmlFor="first_name">First Name *</Label>
-                  <Input id="first_name" value={form.first_name} onChange={e => setForm(f => ({ ...f, first_name: e.target.value }))} />
+                  <Label>Client Type *</Label>
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      variant={form.client_type === "individual" ? "default" : "outline"}
+                      size="sm"
+                      className="flex-1 gap-2"
+                      onClick={() => setForm(f => ({ ...f, client_type: "individual" }))}
+                    >
+                      <User className="h-4 w-4" />
+                      Individual
+                    </Button>
+                    <Button
+                      type="button"
+                      variant={form.client_type === "business" ? "default" : "outline"}
+                      size="sm"
+                      className="flex-1 gap-2"
+                      onClick={() => setForm(f => ({ ...f, client_type: "business" }))}
+                    >
+                      <Building2 className="h-4 w-4" />
+                      Business
+                    </Button>
+                  </div>
                 </div>
+
+                {/* Business fields */}
+                {form.client_type === "business" && (
+                  <>
+                    <div className="space-y-2">
+                      <Label htmlFor="company_name">Company Name *</Label>
+                      <Input id="company_name" value={form.company_name} onChange={e => setForm(f => ({ ...f, company_name: e.target.value }))} placeholder="Acme Corp" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="ein">EIN</Label>
+                        <Input id="ein" value={form.ein} onChange={e => setForm(f => ({ ...f, ein: e.target.value }))} placeholder="XX-XXXXXXX" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="entity_type">Entity Type</Label>
+                        <Select value={form.entity_type} onValueChange={v => setForm(f => ({ ...f, entity_type: v }))}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {ENTITY_TYPES.map(t => (
+                              <SelectItem key={t} value={t}>{t}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="fiscal_year_end">Fiscal Year End</Label>
+                      <Select value={form.fiscal_year_end} onValueChange={v => setForm(f => ({ ...f, fiscal_year_end: v }))}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select month" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {FISCAL_YEAR_ENDS.map(m => (
+                            <SelectItem key={m} value={m}>{m}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </>
+                )}
+
+                {/* Primary Contact */}
+                <div className="pt-2">
+                  <p className="text-sm font-medium text-muted-foreground mb-3">
+                    {form.client_type === "business" ? "Primary Contact" : "Contact Information"}
+                  </p>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="first_name">First Name *</Label>
+                        <Input id="first_name" value={form.first_name} onChange={e => setForm(f => ({ ...f, first_name: e.target.value }))} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="last_name">Last Name *</Label>
+                        <Input id="last_name" value={form.last_name} onChange={e => setForm(f => ({ ...f, last_name: e.target.value }))} />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email *</Label>
+                        <Input id="email" type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="phone">Phone</Label>
+                        <Input id="phone" type="tel" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} placeholder="(555) 555-5555" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Address */}
+                <div className="pt-2">
+                  <p className="text-sm font-medium text-muted-foreground mb-3">Address</p>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="address_line1">Street Address</Label>
+                      <Input id="address_line1" value={form.address_line1} onChange={e => setForm(f => ({ ...f, address_line1: e.target.value }))} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="address_line2">Suite / Apt</Label>
+                      <Input id="address_line2" value={form.address_line2} onChange={e => setForm(f => ({ ...f, address_line2: e.target.value }))} />
+                    </div>
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="city">City</Label>
+                        <Input id="city" value={form.city} onChange={e => setForm(f => ({ ...f, city: e.target.value }))} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="state">State</Label>
+                        <Input id="state" value={form.state} onChange={e => setForm(f => ({ ...f, state: e.target.value }))} placeholder="CA" maxLength={2} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="zip">ZIP</Label>
+                        <Input id="zip" value={form.zip} onChange={e => setForm(f => ({ ...f, zip: e.target.value }))} placeholder="90210" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Notes */}
                 <div className="space-y-2">
-                  <Label htmlFor="last_name">Last Name *</Label>
-                  <Input id="last_name" value={form.last_name} onChange={e => setForm(f => ({ ...f, last_name: e.target.value }))} />
+                  <Label htmlFor="notes">Notes</Label>
+                  <Textarea id="notes" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} placeholder="Optional notes about this client" />
                 </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email *</Label>
-                <Input id="email" type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="notes">Notes</Label>
-                <Textarea id="notes" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} placeholder="Optional notes about this client" />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
-              <Button variant="hero" onClick={handleAddClient} disabled={saving}>
-                {saving ? "Adding..." : "Add Client"}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
+                <Button variant="hero" onClick={handleAddClient} disabled={saving}>
+                  {saving ? "Adding..." : "Add Client"}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
           </Dialog>
         </div>
       </div>
@@ -219,6 +430,7 @@ export default function Clients() {
               <thead>
                 <tr className="border-b border-border">
                   <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Name</th>
+                  <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Type</th>
                   <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Email</th>
                   <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Status</th>
                   <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Notes</th>
@@ -234,12 +446,28 @@ export default function Clients() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                          <span className="text-xs font-semibold text-primary">{client.first_name?.[0]}{client.last_name?.[0]}</span>
+                          {client.client_type === "business" ? (
+                            <Building2 className="h-4 w-4 text-primary" />
+                          ) : (
+                            <span className="text-xs font-semibold text-primary">{getInitials(client)}</span>
+                          )}
                         </div>
-                        <span className="font-medium text-foreground">
-                          {client.first_name} {client.last_name}
-                        </span>
+                        <div>
+                          <span className="font-medium text-foreground block">
+                            {getDisplayName(client)}
+                          </span>
+                          {client.client_type === "business" && (
+                            <span className="text-xs text-muted-foreground">
+                              {client.first_name} {client.last_name}
+                            </span>
+                          )}
+                        </div>
                       </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <Badge variant={client.client_type === "business" ? "default" : "secondary"} className="text-xs">
+                        {client.client_type === "business" ? "Business" : "Individual"}
+                      </Badge>
                     </td>
                     <td className="px-4 py-3 text-sm text-muted-foreground">{client.email}</td>
                     <td className="px-4 py-3">
