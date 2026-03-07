@@ -158,6 +158,77 @@ export default function ClientDetail() {
     }
   };
 
+  const handleDropFiles = async (files: FileList) => {
+    if (!id || !user?.id) return;
+    setUploading(true);
+    try {
+      for (const file of Array.from(files)) {
+        const storagePath = `${id}/${Date.now()}-${file.name}`;
+        const { error: uploadError } = await supabase.storage
+          .from('client-documents')
+          .upload(storagePath, file);
+        if (uploadError) throw uploadError;
+        const { error: dbError } = await supabase.from('documents').insert({
+          client_id: id,
+          uploaded_by: user.id,
+          file_name: file.name,
+          file_type: file.type || null,
+          file_size_bytes: file.size,
+          storage_path: storagePath,
+        });
+        if (dbError) throw dbError;
+      }
+      toast.success(`${files.length} file(s) uploaded`);
+      loadClientData();
+    } catch (error: any) {
+      toast.error(error.message || "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleSendInvite = async () => {
+    if (!client || !user?.id) return;
+    setInviting(true);
+    try {
+      // Get firm name
+      const { data: fm } = await supabase
+        .from('firm_members')
+        .select('firm_id')
+        .eq('profile_id', user.id)
+        .maybeSingle();
+      let firmName = "";
+      let senderName = "";
+      if (fm?.firm_id) {
+        const { data: firm } = await supabase.from('firms').select('name').eq('id', fm.firm_id).single();
+        firmName = firm?.name || "";
+      }
+      const { data: profile } = await supabase.from('profiles').select('full_name').eq('id', user.id).single();
+      senderName = profile?.full_name || "";
+
+      const res = await supabase.functions.invoke('send-client-invite', {
+        body: { clientId: client.id, firmName, senderName },
+      });
+
+      if (res.error) throw new Error(res.error.message);
+      if (!res.data?.success) throw new Error(res.data?.error || 'Failed to send invite');
+
+      setPortalLink(res.data.portalUrl);
+      toast.success(`Invite sent to ${client.email}`);
+    } catch (error: any) {
+      toast.error(error.message || "Failed to send invite");
+    } finally {
+      setInviting(false);
+    }
+  };
+
+  const copyPortalLink = () => {
+    if (portalLink) {
+      navigator.clipboard.writeText(portalLink);
+      toast.success("Portal link copied to clipboard");
+    }
+  };
+
   const handleUpdateTaskStatus = async (taskId: string, status: string) => {
     try {
       const { error } = await supabase.from('tasks').update({ status }).eq('id', taskId);
