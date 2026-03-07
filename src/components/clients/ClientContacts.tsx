@@ -73,7 +73,7 @@ export function ClientContacts({ clientId, organizationId, clientEmail, clientNa
 
       if (error) throw error;
       setContacts(data || []);
-    } catch (error) {
+      onCountChange?.(data?.length || 0);
       console.error('Error fetching contacts:', error);
       toast.error('Failed to load contacts');
     } finally {
