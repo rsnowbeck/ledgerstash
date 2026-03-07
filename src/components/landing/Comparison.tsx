@@ -37,7 +37,8 @@ const rows = [
   },
   {
     feature: "White-Label Branding",
-    ledger: "Full White-Labeling (All Plans)",
+    ledger: "Logo + Name (All Plans)",
+    ledgerSub: "Full white-labeling on Boutique+",
     smart: "Custom Branded Client Portal (All Plans)",
     tax: "Client Portal Branding Only",
   },
