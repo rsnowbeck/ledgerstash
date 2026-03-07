@@ -141,7 +141,7 @@ export function AIAssistantWidget() {
                 <X className="h-4 w-4" />
               </Button>
             </div>
-            </Button>
+          </div>
           </div>
 
           {/* Messages */}
