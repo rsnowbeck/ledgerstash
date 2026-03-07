@@ -167,8 +167,8 @@ export function AIAssistantWidget() {
             {messages.map((msg, i) => (
               <div key={i} className={`flex gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 {msg.role === "assistant" && (
-                  <div className="h-6 w-6 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-1">
-                    <Bot className="h-3.5 w-3.5 text-accent" />
+                  <div className="h-6 w-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <img src={aiChatAvatar} alt="AI" className="h-6 w-6 object-contain rounded-full" />
                   </div>
                 )}
                 <div
