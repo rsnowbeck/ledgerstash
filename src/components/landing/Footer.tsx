@@ -25,7 +25,7 @@ export function Footer() {
             <Link to="/security" className="text-muted-foreground hover:text-foreground transition-colors">
               Security
             </Link>
-            <DownloadCTA variant="footer" sourceSection="footer" />
+            
           </nav>
         </div>
       </div>
