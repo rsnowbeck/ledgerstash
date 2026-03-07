@@ -115,10 +115,10 @@ export function AIAssistantWidget() {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-card shadow-lg hover:shadow-xl transition-all flex items-center justify-center border border-border"
+          className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-primary shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 hover:scale-105 transition-all flex items-center justify-center"
           aria-label="Open AI Assistant"
         >
-          <img src={aiShieldIcon} alt="AI Assistant" className="h-9 w-9 object-contain" />
+          <img src={aiShieldIcon} alt="AI Assistant" className="h-10 w-10 object-contain" />
         </button>
       )}
 
@@ -128,7 +128,7 @@ export function AIAssistantWidget() {
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/50">
             <div className="flex items-center gap-2">
-              <img src={aiChatAvatar} alt="AI Assistant" className="h-7 w-7 object-contain rounded-full" />
+              <img src={aiChatAvatar} alt="AI Assistant" className="h-9 w-9 object-contain rounded-full" />
               <span className="font-semibold text-sm text-foreground">Ledger Stash Assistant</span>
             </div>
             <Button variant="ghost" size="sm" onClick={() => setOpen(false)} className="h-7 w-7 p-0">
