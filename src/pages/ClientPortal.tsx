@@ -70,6 +70,9 @@ export default function ClientPortal() {
       setTasks(data.tasks);
       setDocuments(data.documents);
       setFirmName(data.firmName);
+      setFirmLogoUrl(data.firmLogoUrl || "");
+      setAccentColor(data.accentColor || "");
+      setShowPoweredBy(data.showPoweredBy !== false);
     } catch (err: any) {
       setError(err.message || "Unable to load portal");
     } finally {
