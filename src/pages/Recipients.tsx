@@ -273,9 +273,9 @@ export default function Recipients() {
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
-                <DialogTitle>Add Recipient</DialogTitle>
+                <DialogTitle>Add Contact</DialogTitle>
                 <DialogDescription>
-                  Add a new person who will receive acknowledgment requests.
+                  Add a person who will receive document requests from your clients.
                 </DialogDescription>
               </DialogHeader>
               <form onSubmit={handleAddRecipient} className="space-y-4 mt-4">
