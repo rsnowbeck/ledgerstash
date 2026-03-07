@@ -131,8 +131,16 @@ export function AIAssistantWidget() {
               <img src={aiChatAvatar} alt="AI Assistant" className="h-9 w-9 object-contain rounded-full" />
               <span className="font-semibold text-sm text-foreground">Ledger Stash Assistant</span>
             </div>
-            <Button variant="ghost" size="sm" onClick={() => setOpen(false)} className="h-7 w-7 p-0">
-              <X className="h-4 w-4" />
+            <div className="flex items-center gap-1">
+              {messages.length > 0 && (
+                <Button variant="ghost" size="sm" onClick={() => setMessages([])} className="h-7 w-7 p-0" title="New Chat">
+                  <RotateCcw className="h-3.5 w-3.5" />
+                </Button>
+              )}
+              <Button variant="ghost" size="sm" onClick={() => setOpen(false)} className="h-7 w-7 p-0">
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
             </Button>
           </div>
 
