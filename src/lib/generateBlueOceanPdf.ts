@@ -539,17 +539,24 @@ export async function generateBlueOceanPdf(): Promise<void> {
   doc.setFontSize(11);
   doc.setFont("helvetica", "normal");
   const closingLines = [
-    "✓  $29/month — No user minimums, unlimited users included",
-    "✓  Set up in minutes, not weeks",
-    "✓  Frictionless client experience — no logins required",
-    "✓  Accounting-specific PBC management",
-    "✓  IRS 4557, FTC Safeguards & GLBA compliant",
-    "✓  Full white-labeling on every plan",
-    "✓  Auto-pilot reminders during busy season",
+    "$29/month — No user minimums",
+    "Unlimited users included on every plan",
+    "Set up in minutes, not weeks",
+    "Frictionless client experience — no logins",
+    "Accounting-specific PBC management",
+    "IRS 4557, FTC Safeguards & GLBA compliant",
+    "Full white-labeling on every plan",
+    "Auto-pilot reminders during busy season",
   ];
+  const maxTextW = pw - 60;
   for (const line of closingLines) {
-    doc.text(line, pw / 2, y, { align: "center" });
-    y += 12;
+    const bulletX = 40;
+    doc.setTextColor(...SUCCESS);
+    doc.text("\u2713", bulletX, y);
+    doc.setTextColor(200, 200, 220);
+    const wrapped = doc.splitTextToSize(line, maxTextW);
+    doc.text(wrapped, bulletX + 10, y);
+    y += wrapped.length * 7 + 5;
   }
 
   // CTA button with clickable link
