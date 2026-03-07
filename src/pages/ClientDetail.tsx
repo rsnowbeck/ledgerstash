@@ -590,7 +590,7 @@ export default function ClientDetail() {
           <PBCTemplatePicker
             open={templatePickerOpen}
             onOpenChange={setTemplatePickerOpen}
-            onSelect={async (templateTasks) => {
+            onSelect={async (templateTasks, sendInvite) => {
               if (!id || !user?.id) return;
               try {
                 const inserts = templateTasks.map((t) => ({
@@ -604,6 +604,11 @@ export default function ClientDetail() {
                 if (error) throw error;
                 toast.success(`${templateTasks.length} tasks created from template`);
                 loadClientData();
+
+                if (sendInvite) {
+                  // Automatically send the portal invite
+                  handleSendInvite();
+                }
               } catch (error: any) {
                 toast.error(error.message || "Failed to create tasks from template");
               }

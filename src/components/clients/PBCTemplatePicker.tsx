@@ -8,13 +8,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { CheckCircle2, ListChecks } from "lucide-react";
+import { CheckCircle2, ListChecks, Send, Save } from "lucide-react";
 import { PBC_TEMPLATES, type PBCTemplate } from "@/lib/pbcTemplates";
 
 interface PBCTemplatePickerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSelect: (tasks: PBCTemplate["tasks"]) => void;
+  onSelect: (tasks: PBCTemplate["tasks"], sendInvite: boolean) => void;
 }
 
 export function PBCTemplatePicker({ open, onOpenChange, onSelect }: PBCTemplatePickerProps) {
@@ -22,9 +22,9 @@ export function PBCTemplatePicker({ open, onOpenChange, onSelect }: PBCTemplateP
 
   const categories = [...new Set(PBC_TEMPLATES.map((t) => t.category))];
 
-  const handleApply = () => {
+  const handleApply = (sendInvite: boolean) => {
     if (selectedTemplate) {
-      onSelect(selectedTemplate.tasks);
+      onSelect(selectedTemplate.tasks, sendInvite);
       setSelectedTemplate(null);
       onOpenChange(false);
     }
@@ -44,7 +44,7 @@ export function PBCTemplatePicker({ open, onOpenChange, onSelect }: PBCTemplateP
             PBC Task Templates
           </DialogTitle>
           <DialogDescription>
-            Choose a template to quickly create common accounting tasks for this client.
+            Choose a template to create document requests for this client. You can send the portal invite immediately or save tasks and send later.
           </DialogDescription>
         </DialogHeader>
 
@@ -109,12 +109,22 @@ export function PBCTemplatePicker({ open, onOpenChange, onSelect }: PBCTemplateP
             Cancel
           </Button>
           <Button
-            variant="hero"
+            variant="outline"
             className="flex-1"
-            onClick={handleApply}
+            onClick={() => handleApply(false)}
             disabled={!selectedTemplate}
           >
-            Apply Template ({selectedTemplate?.tasks.length || 0} tasks)
+            <Save className="h-4 w-4" />
+            Save Only
+          </Button>
+          <Button
+            variant="hero"
+            className="flex-1"
+            onClick={() => handleApply(true)}
+            disabled={!selectedTemplate}
+          >
+            <Send className="h-4 w-4" />
+            Apply & Send Invite
           </Button>
         </div>
       </DialogContent>
