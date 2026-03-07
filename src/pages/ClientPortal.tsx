@@ -46,6 +46,9 @@ export default function ClientPortal() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [firmName, setFirmName] = useState("");
+  const [firmLogoUrl, setFirmLogoUrl] = useState("");
+  const [accentColor, setAccentColor] = useState("");
+  const [showPoweredBy, setShowPoweredBy] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
