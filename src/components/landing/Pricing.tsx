@@ -136,8 +136,10 @@ export function Pricing() {
                   {"comingSoonFeatures" in plan && (plan as any).comingSoonFeatures?.map((feature: string) => (
                     <li key={feature} className="flex items-center gap-3 text-sm">
                       <Clock className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                      <span className="text-muted-foreground">{feature}
-                        <span className="ml-1.5 inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                      <span className="text-muted-foreground">
+                        {feature}
+                        <br />
+                        <span className="mt-0.5 inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                           Coming Soon
                         </span>
                       </span>
