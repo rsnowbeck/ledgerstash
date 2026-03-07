@@ -128,7 +128,7 @@ export function AIAssistantWidget() {
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/50">
             <div className="flex items-center gap-2">
-              <img src={aiChatAvatar} alt="AI Assistant" className="h-9 w-9 object-contain rounded-full" />
+              <img src={aiChatAvatar} alt="AI Assistant" className="h-10 w-10 object-contain" />
               <span className="font-semibold text-sm text-foreground">Ledger Stash Assistant</span>
             </div>
             <div className="flex items-center gap-1">
