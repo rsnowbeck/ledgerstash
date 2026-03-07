@@ -241,6 +241,42 @@ export function ContactDetailSheet({
               )}
             </div>
 
+            {/* Actions */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                <h4 className="text-sm font-medium text-foreground">Actions</h4>
+              </div>
+              <Button
+                variant="hero"
+                className="w-full"
+                onClick={onSendPortalInvite}
+                disabled={portalInviteLoading}
+              >
+                {portalInviteLoading ? (
+                  <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Sending...</>
+                ) : (
+                  <><ExternalLink className="h-4 w-4 mr-2" /> Send Portal Invite</>
+                )}
+              </Button>
+              {portalLink && (
+                <div className="flex items-center gap-2 p-2 rounded-md border border-border bg-muted/30">
+                  <p className="text-xs text-muted-foreground truncate flex-1">{portalLink}</p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 w-7 p-0 shrink-0"
+                    onClick={() => {
+                      navigator.clipboard.writeText(portalLink);
+                      toast.success("Portal link copied");
+                    }}
+                  >
+                    <Copy className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+              )}
+            </div>
+
             {/* Sent History */}
             <div className="space-y-3">
               <div className="flex items-center gap-2">
