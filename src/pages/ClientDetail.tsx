@@ -455,7 +455,30 @@ export default function ClientDetail() {
               </DialogFooter>
             </DialogContent>
           </Dialog>
+          </div>
 
+          <PBCTemplatePicker
+            open={templatePickerOpen}
+            onOpenChange={setTemplatePickerOpen}
+            onSelect={async (templateTasks) => {
+              if (!id || !user?.id) return;
+              try {
+                const inserts = templateTasks.map((t) => ({
+                  client_id: id,
+                  assigned_by: user.id,
+                  title: t.title,
+                  description: t.description,
+                  priority: t.priority,
+                }));
+                const { error } = await supabase.from("tasks").insert(inserts);
+                if (error) throw error;
+                toast.success(`${templateTasks.length} tasks created from template`);
+                loadClientData();
+              } catch (error: any) {
+                toast.error(error.message || "Failed to create tasks from template");
+              }
+            }}
+          />
           {tasks.length === 0 ? (
             <div className="text-center py-12 border border-dashed border-border rounded-xl">
               <CheckSquare className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
