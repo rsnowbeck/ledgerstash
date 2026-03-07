@@ -11,6 +11,9 @@ import {
   Settings,
   MessageSquare,
   FolderOpen,
+  UserCheck,
+  FileSignature,
+  ClipboardList,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useOrganization } from "@/hooks/useOrganization";
