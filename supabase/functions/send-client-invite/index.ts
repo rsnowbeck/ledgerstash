@@ -123,7 +123,7 @@ serve(async (req: Request) => {
 
     // Send invite email
     const { error: emailError } = await resend.emails.send({
-      from: "LedgerStash <noreply@ledgerstash.com>",
+      from: "LedgerStash <onboarding@resend.dev>",
       to: [client.email],
       subject: `${displayFirm} has set up a secure document portal for you`,
       html: `
