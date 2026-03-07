@@ -375,12 +375,12 @@ export default function Recipients() {
             <UserPlus className="h-8 w-8" />
           </div>
           <h2 className="text-xl font-semibold text-foreground mb-2">
-            {searchQuery ? "No recipients found" : "No recipients yet"}
+            {searchQuery ? "No contacts found" : "No contacts yet"}
           </h2>
           <p className="text-muted-foreground max-w-md mx-auto mb-6">
             {searchQuery 
               ? "Try adjusting your search terms."
-              : "Add your first recipient to start sending acknowledgment requests. You can add employees, contractors, or vendors."
+              : "Add your first contact to start sending document requests. You can add employees, contractors, or vendors."
             }
           </p>
           {!searchQuery && planLimits.canAddRecipient && (
