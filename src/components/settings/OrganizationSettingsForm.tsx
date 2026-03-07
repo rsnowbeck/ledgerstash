@@ -48,7 +48,10 @@ export function OrganizationSettingsForm({ organization, onUpdate }: Organizatio
   const [autoReminderDays, setAutoReminderDays] = useState(organization.auto_reminder_days?.toString() || "7");
   const [sessionTimeout, setSessionTimeout] = useState((organization.session_timeout_minutes ?? 30).toString());
 
-  const isPro = organization.plan === "pro";
+  const plan = organization.plan || "trial";
+  const isBoutiqueOrAbove = ["boutique", "enterprise", "pro", "team"].includes(plan);
+  const canUploadLogo = true; // All plans get logo
+  const canCustomizeColors = isBoutiqueOrAbove; // Boutique+ only
 
   const handleLogoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
