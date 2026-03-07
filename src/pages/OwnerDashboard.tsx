@@ -10,9 +10,9 @@ interface Metrics {
   activeTrials: number;
   expiredTrials: number;
   paidUsers: number;
-  totalSigningRequests: number;
-  completedSignatures: number;
-  pendingSignatures: number;
+  totalDocumentRequests: number;
+  documentsSubmitted: number;
+  documentsPending: number;
   recentOrgs: { id: string; name: string; plan: string | null; created_at: string; trial_ends_at: string | null }[];
 }
 
