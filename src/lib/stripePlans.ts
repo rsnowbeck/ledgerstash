@@ -41,7 +41,7 @@ export const STRIPE_PLANS = {
     features: [
       "Up to 100 active clients",
       "Everything in Solo CPA",
-      "Full white-labeling",
+      "Full white-labeling (no Ledger Stash branding)",
       "Busy Season auto-reminders",
       "Team member accounts",
       "In-app comments",
