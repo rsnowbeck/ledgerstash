@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Plus, Loader2, MoreHorizontal, Trash2, UserPlus, Search } from "lucide-react";
 import { toast } from "sonner";
+import { ContactDetailSheet } from "./ContactDetailSheet";
 
 interface Contact {
   id: string;
