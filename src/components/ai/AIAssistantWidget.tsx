@@ -1,7 +1,9 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, X, Send, Loader2, Bot, User } from "lucide-react";
+import { X, Send, Loader2, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import aiShieldIcon from "@/assets/ai-shield-icon.png";
+import aiChatAvatar from "@/assets/ai-chat-avatar.png";
 
 interface Message {
   role: "user" | "assistant";
@@ -113,10 +115,10 @@ export function AIAssistantWidget() {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-accent text-accent-foreground shadow-lg hover:bg-accent/90 transition-all flex items-center justify-center"
+          className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-card shadow-lg hover:shadow-xl transition-all flex items-center justify-center border border-border"
           aria-label="Open AI Assistant"
         >
-          <MessageCircle className="h-6 w-6" />
+          <img src={aiShieldIcon} alt="AI Assistant" className="h-9 w-9 object-contain" />
         </button>
       )}
 
@@ -126,7 +128,7 @@ export function AIAssistantWidget() {
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/50">
             <div className="flex items-center gap-2">
-              <Bot className="h-5 w-5 text-accent" />
+              <img src={aiChatAvatar} alt="AI Assistant" className="h-7 w-7 object-contain rounded-full" />
               <span className="font-semibold text-sm text-foreground">Ledger Stash Assistant</span>
             </div>
             <Button variant="ghost" size="sm" onClick={() => setOpen(false)} className="h-7 w-7 p-0">
@@ -138,7 +140,7 @@ export function AIAssistantWidget() {
           <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[280px] max-h-[380px]">
             {messages.length === 0 && (
               <div className="text-center py-8">
-                <Bot className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+                <img src={aiChatAvatar} alt="AI Assistant" className="h-12 w-12 object-contain mx-auto mb-3" />
                 <p className="text-sm text-muted-foreground">
                   Hi! I'm your Ledger Stash assistant. Ask me anything about the platform.
                 </p>
@@ -165,8 +167,8 @@ export function AIAssistantWidget() {
             {messages.map((msg, i) => (
               <div key={i} className={`flex gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 {msg.role === "assistant" && (
-                  <div className="h-6 w-6 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-1">
-                    <Bot className="h-3.5 w-3.5 text-accent" />
+                  <div className="h-6 w-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <img src={aiChatAvatar} alt="AI" className="h-6 w-6 object-contain rounded-full" />
                   </div>
                 )}
                 <div
@@ -194,8 +196,8 @@ export function AIAssistantWidget() {
 
             {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
               <div className="flex gap-2">
-                <div className="h-6 w-6 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
-                  <Bot className="h-3.5 w-3.5 text-accent" />
+                <div className="h-6 w-6 rounded-full flex items-center justify-center flex-shrink-0">
+                  <img src={aiChatAvatar} alt="AI" className="h-6 w-6 object-contain rounded-full" />
                 </div>
                 <div className="bg-muted rounded-xl px-3 py-2">
                   <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
