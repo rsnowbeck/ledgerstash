@@ -93,12 +93,12 @@ export function ClientContacts({ clientId, organizationId, clientEmail, clientNa
         .from('recipients')
         .insert({
           organization_id: organizationId,
-          client_id: clientId,
           full_name: name,
           email: email,
           recipient_type: contactType,
           department: department || null,
-        });
+          client_id: clientId,
+        } as any);
 
       if (error) throw error;
 
