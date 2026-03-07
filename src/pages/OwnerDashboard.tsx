@@ -41,9 +41,9 @@ export default function OwnerDashboard() {
         activeTrials: orgs.filter((o) => o.plan === "trial" && o.trial_ends_at && new Date(o.trial_ends_at) > now).length,
         expiredTrials: orgs.filter((o) => o.plan === "trial" && o.trial_ends_at && new Date(o.trial_ends_at) <= now).length,
         paidUsers: orgs.filter((o) => o.plan && o.plan !== "trial").length,
-        totalSigningRequests: sigReqs.length,
-        completedSignatures: sigReqs.filter((s) => s.status === "completed").length,
-        pendingSignatures: sigReqs.filter((s) => s.status === "pending").length,
+        totalDocumentRequests: sigReqs.length,
+        documentsSubmitted: sigReqs.filter((s) => s.status === "completed").length,
+        documentsPending: sigReqs.filter((s) => s.status === "pending").length,
         recentOrgs: orgs
           .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
           .slice(0, 10),
