@@ -280,7 +280,7 @@ export function TeamManagement({ organizationId, organizationName }: TeamManagem
             Team Members
           </CardTitle>
           <CardDescription>
-            Manage who has access to {organizationName}
+            Manage who has access to your organization
           </CardDescription>
         </CardHeader>
         <CardContent>
