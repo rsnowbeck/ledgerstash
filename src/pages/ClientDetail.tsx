@@ -232,6 +232,55 @@ export default function ClientDetail() {
     }
   };
 
+  const handleDownloadDoc = async (doc: any) => {
+    try {
+      const { data, error } = await supabase.storage
+        .from('client-documents')
+        .download(doc.storage_path);
+      if (error) throw error;
+      const url = URL.createObjectURL(data);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = doc.file_name;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (error: any) {
+      toast.error("Failed to download file");
+    }
+  };
+
+  const handleDeleteDoc = async (doc: any) => {
+    if (!confirm(`Delete "${doc.file_name}"? This cannot be undone.`)) return;
+    try {
+      await supabase.storage.from('client-documents').remove([doc.storage_path]);
+      const { error } = await supabase.from('documents').delete().eq('id', doc.id);
+      if (error) throw error;
+      toast.success("Document deleted");
+      loadClientData();
+    } catch (error: any) {
+      toast.error("Failed to delete document");
+    }
+  };
+
+  const handlePreviewDoc = async (doc: any) => {
+    try {
+      const { data, error } = await supabase.storage
+        .from('client-documents')
+        .createSignedUrl(doc.storage_path, 300);
+      if (error) throw error;
+      window.open(data.signedUrl, '_blank');
+    } catch (error: any) {
+      toast.error("Failed to preview file");
+    }
+  };
+
+  const formatFileSize = (bytes: number | null) => {
+    if (!bytes) return '—';
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
+
   const handleUpdateTaskStatus = async (taskId: string, status: string) => {
     try {
       const { error } = await supabase.from('tasks').update({ status }).eq('id', taskId);
