@@ -173,6 +173,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         remainingSeconds={remainingSeconds}
         onExtend={extendSession}
       />
+
+      {/* AI Assistant */}
+      <AIAssistantWidget />
     </div>
   );
 }
