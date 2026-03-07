@@ -25,8 +25,10 @@ import {
 } from "@/components/ui/select";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { DropZone } from "@/components/documents/DropZone";
+import { AuditExportButton } from "@/components/clients/AuditExportButton";
+import { PBCTemplatePicker } from "@/components/clients/PBCTemplatePicker";
 import { useAuth } from "@/hooks/useAuth";
-import { ArrowLeft, Plus, Upload, FileText, CheckSquare, Clock, FolderPlus, Send, Loader2, Copy } from "lucide-react";
+import { ArrowLeft, Plus, Upload, FileText, CheckSquare, Clock, FolderPlus, Send, Loader2, Copy, ListChecks } from "lucide-react";
 import { toast } from "sonner";
 
 export default function ClientDetail() {
