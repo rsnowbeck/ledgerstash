@@ -18,7 +18,9 @@ import {
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { useAuth } from "@/hooks/useAuth";
-import { Plus, Search, Users } from "lucide-react";
+import { ClientCSVImportDialog } from "@/components/clients/ClientCSVImportDialog";
+import { usePlanLimits } from "@/hooks/usePlanLimits";
+import { Plus, Search, Users, Upload } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Clients() {
