@@ -1,7 +1,9 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, X, Send, Loader2, Bot, User } from "lucide-react";
+import { X, Send, Loader2, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import aiShieldIcon from "@/assets/ai-shield-icon.png";
+import aiChatAvatar from "@/assets/ai-chat-avatar.png";
 
 interface Message {
   role: "user" | "assistant";
