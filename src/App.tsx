@@ -23,6 +23,7 @@ import Pricing from "./pages/Pricing";
 import Settings from "./pages/Settings";
 import AcceptInvite from "./pages/AcceptInvite";
 import Welcome from "./pages/Welcome";
+import ClientPortal from "./pages/ClientPortal";
 import NotFound from "./pages/NotFound";
 import Recipients from "./pages/Recipients";
 import Requirements from "./pages/Requirements";
