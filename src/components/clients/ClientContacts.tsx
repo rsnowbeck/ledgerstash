@@ -47,6 +47,7 @@ interface ClientContactsProps {
 }
 
 export function ClientContacts({ clientId, organizationId, clientEmail, clientName, onCountChange }: ClientContactsProps) {
+  const { user } = useAuth();
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -54,6 +55,42 @@ export function ClientContacts({ clientId, organizationId, clientEmail, clientNa
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
+  const [inviting, setInviting] = useState(false);
+  const [portalLink, setPortalLink] = useState<string | null>(null);
+
+  const handleSendPortalInvite = async () => {
+    if (!user?.id) return;
+    setInviting(true);
+    try {
+      const { data: fm } = await supabase
+        .from('firm_members')
+        .select('firm_id')
+        .eq('profile_id', user.id)
+        .maybeSingle();
+      let firmName = "";
+      let senderName = "";
+      if (fm?.firm_id) {
+        const { data: firm } = await supabase.from('firms').select('name').eq('id', fm.firm_id).single();
+        firmName = firm?.name || "";
+      }
+      const { data: profile } = await supabase.from('profiles').select('full_name').eq('id', user.id).single();
+      senderName = profile?.full_name || "";
+
+      const res = await supabase.functions.invoke('send-client-invite', {
+        body: { clientId, firmName, senderName },
+      });
+
+      if (res.error) throw new Error(res.error.message);
+      if (!res.data?.success) throw new Error(res.data?.error || 'Failed to send invite');
+
+      setPortalLink(res.data.portalUrl);
+      toast.success(`Portal invite sent to ${clientEmail}`);
+    } catch (error: any) {
+      toast.error(error.message || "Failed to send invite");
+    } finally {
+      setInviting(false);
+    }
+  };
 
   // Form state
   const [name, setName] = useState("");
