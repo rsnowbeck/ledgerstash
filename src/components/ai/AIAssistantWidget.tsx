@@ -142,7 +142,6 @@ export function AIAssistantWidget() {
               </Button>
             </div>
           </div>
-          </div>
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[280px] max-h-[380px]">
