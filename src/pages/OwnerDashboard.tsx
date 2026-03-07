@@ -10,9 +10,9 @@ interface Metrics {
   activeTrials: number;
   expiredTrials: number;
   paidUsers: number;
-  totalSigningRequests: number;
-  completedSignatures: number;
-  pendingSignatures: number;
+  totalDocumentRequests: number;
+  documentsSubmitted: number;
+  documentsPending: number;
   recentOrgs: { id: string; name: string; plan: string | null; created_at: string; trial_ends_at: string | null }[];
 }
 
@@ -41,9 +41,9 @@ export default function OwnerDashboard() {
         activeTrials: orgs.filter((o) => o.plan === "trial" && o.trial_ends_at && new Date(o.trial_ends_at) > now).length,
         expiredTrials: orgs.filter((o) => o.plan === "trial" && o.trial_ends_at && new Date(o.trial_ends_at) <= now).length,
         paidUsers: orgs.filter((o) => o.plan && o.plan !== "trial").length,
-        totalSigningRequests: sigReqs.length,
-        completedSignatures: sigReqs.filter((s) => s.status === "completed").length,
-        pendingSignatures: sigReqs.filter((s) => s.status === "pending").length,
+        totalDocumentRequests: sigReqs.length,
+        documentsSubmitted: sigReqs.filter((s) => s.status === "completed").length,
+        documentsPending: sigReqs.filter((s) => s.status === "pending").length,
         recentOrgs: orgs
           .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
           .slice(0, 10),
@@ -72,8 +72,8 @@ export default function OwnerDashboard() {
     { label: "Active Trials", value: metrics.activeTrials, icon: Clock, color: "text-warning" },
     { label: "Expired Trials", value: metrics.expiredTrials, icon: Clock, color: "text-destructive" },
     { label: "Paid Users", value: metrics.paidUsers, icon: CreditCard, color: "text-success" },
-    { label: "Total Document Requests", value: metrics.totalSigningRequests, icon: FileSignature, color: "text-accent" },
-    { label: "Documents Submitted", value: metrics.completedSignatures, icon: TrendingUp, color: "text-success" },
+    { label: "Total Document Requests", value: metrics.totalDocumentRequests, icon: FileSignature, color: "text-accent" },
+    { label: "Documents Submitted", value: metrics.documentsSubmitted, icon: TrendingUp, color: "text-success" },
   ];
 
   return (

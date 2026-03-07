@@ -28,7 +28,7 @@ import { DropZone } from "@/components/documents/DropZone";
 import { AuditExportButton } from "@/components/clients/AuditExportButton";
 import { PBCTemplatePicker } from "@/components/clients/PBCTemplatePicker";
 import { useAuth } from "@/hooks/useAuth";
-import { ArrowLeft, Plus, Upload, FileText, CheckSquare, Clock, FolderPlus, Send, Loader2, Copy, ListChecks } from "lucide-react";
+import { ArrowLeft, Plus, Upload, FileText, CheckSquare, Clock, FolderPlus, Send, Loader2, Copy, ListChecks, Download, Trash2, Eye } from "lucide-react";
 import { toast } from "sonner";
 
 export default function ClientDetail() {
@@ -232,6 +232,55 @@ export default function ClientDetail() {
     }
   };
 
+  const handleDownloadDoc = async (doc: any) => {
+    try {
+      const { data, error } = await supabase.storage
+        .from('client-documents')
+        .download(doc.storage_path);
+      if (error) throw error;
+      const url = URL.createObjectURL(data);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = doc.file_name;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (error: any) {
+      toast.error("Failed to download file");
+    }
+  };
+
+  const handleDeleteDoc = async (doc: any) => {
+    if (!confirm(`Delete "${doc.file_name}"? This cannot be undone.`)) return;
+    try {
+      await supabase.storage.from('client-documents').remove([doc.storage_path]);
+      const { error } = await supabase.from('documents').delete().eq('id', doc.id);
+      if (error) throw error;
+      toast.success("Document deleted");
+      loadClientData();
+    } catch (error: any) {
+      toast.error("Failed to delete document");
+    }
+  };
+
+  const handlePreviewDoc = async (doc: any) => {
+    try {
+      const { data, error } = await supabase.storage
+        .from('client-documents')
+        .createSignedUrl(doc.storage_path, 300);
+      if (error) throw error;
+      window.open(data.signedUrl, '_blank');
+    } catch (error: any) {
+      toast.error("Failed to preview file");
+    }
+  };
+
+  const formatFileSize = (bytes: number | null) => {
+    if (!bytes) return '—';
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
+
   const handleUpdateTaskStatus = async (taskId: string, status: string) => {
     try {
       const { error } = await supabase.from('tasks').update({ status }).eq('id', taskId);
@@ -373,28 +422,42 @@ export default function ClientDetail() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-border">
-                    <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">File Name</th>
-                    <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Type</th>
-                    <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Size</th>
-                    <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Uploaded</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {documents.map(doc => (
-                    <tr key={doc.id} className="border-b border-border last:border-0 hover:bg-muted/30">
-                      <td className="px-4 py-3 flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-accent flex-shrink-0" />
-                        <span className="text-sm font-medium text-foreground">{doc.file_name}</span>
-                      </td>
-                      <td className="px-4 py-3 text-sm text-muted-foreground">{doc.file_type || '—'}</td>
-                      <td className="px-4 py-3 text-sm text-muted-foreground">
-                        {doc.file_size_bytes ? `${(doc.file_size_bytes / 1024).toFixed(1)} KB` : '—'}
-                      </td>
-                      <td className="px-4 py-3 text-sm text-muted-foreground">
-                        {new Date(doc.created_at).toLocaleDateString()}
-                      </td>
-                    </tr>
-                  ))}
+                     <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">File Name</th>
+                     <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Type</th>
+                     <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Size</th>
+                     <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Uploaded</th>
+                     <th className="text-right px-4 py-3 text-sm font-medium text-muted-foreground">Actions</th>
+                   </tr>
+                 </thead>
+                 <tbody>
+                   {documents.map(doc => (
+                     <tr key={doc.id} className="border-b border-border last:border-0 hover:bg-muted/30">
+                       <td className="px-4 py-3 flex items-center gap-2">
+                         <FileText className="h-4 w-4 text-accent flex-shrink-0" />
+                         <span className="text-sm font-medium text-foreground">{doc.file_name}</span>
+                       </td>
+                       <td className="px-4 py-3 text-sm text-muted-foreground">{doc.file_type || '—'}</td>
+                       <td className="px-4 py-3 text-sm text-muted-foreground">
+                         {formatFileSize(doc.file_size_bytes)}
+                       </td>
+                       <td className="px-4 py-3 text-sm text-muted-foreground">
+                         {new Date(doc.created_at).toLocaleDateString()}
+                       </td>
+                       <td className="px-4 py-3 text-right">
+                         <div className="flex items-center justify-end gap-1">
+                           <Button variant="ghost" size="sm" onClick={() => handlePreviewDoc(doc)} title="Preview">
+                             <Eye className="h-3.5 w-3.5" />
+                           </Button>
+                           <Button variant="ghost" size="sm" onClick={() => handleDownloadDoc(doc)} title="Download">
+                             <Download className="h-3.5 w-3.5" />
+                           </Button>
+                           <Button variant="ghost" size="sm" onClick={() => handleDeleteDoc(doc)} title="Delete" className="text-destructive hover:text-destructive">
+                             <Trash2 className="h-3.5 w-3.5" />
+                           </Button>
+                         </div>
+                       </td>
+                     </tr>
+                   ))}
                 </tbody>
               </table>
             </div>

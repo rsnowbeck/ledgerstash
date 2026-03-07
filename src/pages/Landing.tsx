@@ -4,6 +4,7 @@ import { Features } from "@/components/landing/Features";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Pricing } from "@/components/landing/Pricing";
 import { Comparison } from "@/components/landing/Comparison";
+import { SocialProof } from "@/components/landing/SocialProof";
 import { UseCases } from "@/components/landing/UseCases";
 import { FAQ } from "@/components/landing/FAQ";
 import { Footer } from "@/components/landing/Footer";
@@ -26,6 +27,7 @@ export default function Landing() {
         <Features />
         <HowItWorks />
         <Pricing />
+        <SocialProof />
         <Comparison />
         <UseCases />
         <FAQ />

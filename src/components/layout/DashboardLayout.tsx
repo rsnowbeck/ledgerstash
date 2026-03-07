@@ -17,6 +17,7 @@ import { useOrganization } from "@/hooks/useOrganization";
 import { toast } from "sonner";
 import { useSessionTimeout } from "@/hooks/useSessionTimeout";
 import { SessionTimeoutDialog } from "@/components/common/SessionTimeoutDialog";
+import { AIAssistantWidget } from "@/components/ai/AIAssistantWidget";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -172,6 +173,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         remainingSeconds={remainingSeconds}
         onExtend={extendSession}
       />
+
+      {/* AI Assistant */}
+      <AIAssistantWidget />
     </div>
   );
 }
