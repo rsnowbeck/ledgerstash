@@ -63,17 +63,20 @@ export function ClientContacts({ clientId, organizationId, clientEmail, clientNa
 
   const fetchContacts = async () => {
     try {
-      const { data, error } = await supabase
+      const query = supabase
         .from('recipients')
         .select('*')
         .eq('organization_id', organizationId)
-        .eq('client_id', clientId)
         .eq('is_deleted', false)
         .order('created_at', { ascending: false });
+      
+      // client_id column exists in DB but not yet in generated types
+      const { data, error } = await (query as any).eq('client_id', clientId);
 
       if (error) throw error;
       setContacts(data || []);
       onCountChange?.(data?.length || 0);
+    } catch (error) {
       console.error('Error fetching contacts:', error);
       toast.error('Failed to load contacts');
     } finally {
@@ -90,12 +93,12 @@ export function ClientContacts({ clientId, organizationId, clientEmail, clientNa
         .from('recipients')
         .insert({
           organization_id: organizationId,
-          client_id: clientId,
           full_name: name,
           email: email,
           recipient_type: contactType,
           department: department || null,
-        });
+          client_id: clientId,
+        } as any);
 
       if (error) throw error;
 
