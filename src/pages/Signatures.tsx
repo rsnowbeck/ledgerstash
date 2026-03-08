@@ -439,7 +439,7 @@ export default function Signatures() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filteredRequests.map((request) => (
+                    {paginatedRequests.map((request) => (
                       <TableRow key={request.id}>
                         <TableCell>
                           <div>
