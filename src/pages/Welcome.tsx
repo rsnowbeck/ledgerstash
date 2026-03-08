@@ -69,7 +69,7 @@ const wizardSteps: WizardStep[] = [
     description:
       "PBC (Provided By Client) lists define exactly which documents you need from each client. Use our pre-built templates for common tax scenarios or create your own from scratch.",
     instructions: [
-      'Navigate to the Documents page and click "New Requirement"',
+      'Navigate to Document Requests and click "New Document Request"',
       "Choose from templates like Individual Tax Return, Business Tax, or Partnership",
       "Customize the list — add or remove document types as needed",
       "Attach reference PDFs or fillable forms for clients to complete",
