@@ -89,7 +89,7 @@ export function Comparison() {
         </div>
 
         {/* Desktop table */}
-        <div className="hidden md:block overflow-x-auto">
+        <div className="hidden md:block overflow-x-auto max-w-5xl mx-auto">
           <table className="w-full border-collapse bg-card rounded-xl shadow-md overflow-hidden">
             <thead>
               <tr className="bg-primary text-primary-foreground">
