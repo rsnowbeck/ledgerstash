@@ -64,8 +64,8 @@ export default function Documents() {
   return (
     <DashboardLayout>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-foreground">Documents</h1>
-        <p className="text-muted-foreground">All documents across your clients</p>
+        <h1 className="text-2xl font-bold text-foreground">Document Vault</h1>
+        <p className="text-muted-foreground">Securely stored documents across all your clients, organized and audit-ready.</p>
       </div>
 
       {loading ? (
