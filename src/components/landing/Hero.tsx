@@ -42,9 +42,9 @@ export function Hero() {
 
           {/* Headline */}
           <h1 className="text-[2.1rem] font-extrabold tracking-tight leading-[1.12] text-foreground sm:text-[3.2rem] lg:text-[3.8rem] mb-5 animate-slide-up" style={{ animationDelay: "0.06s" }}>
-            Collect Every Client Document
+            The Private Vault Built for
             <br />
-            <span className="text-accent">Before the Deadline</span>
+            <span className="text-accent">Accounting Firms</span>
           </h1>
 
           {/* Subheader */}
