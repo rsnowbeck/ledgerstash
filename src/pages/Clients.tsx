@@ -98,6 +98,8 @@ export default function Clients() {
   const [csvImportOpen, setCsvImportOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState<ClientForm>({ ...emptyForm });
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 25;
 
   const clientLimit = organization?.recipient_limit ?? 10;
 
