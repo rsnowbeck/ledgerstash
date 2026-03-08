@@ -14,7 +14,7 @@ const testimonials = [
     initials: "DR",
   },
   {
-    quote: "We evaluated SmartVault and TaxDome but the per-user pricing was a dealbreaker. LedgerStash gives us everything we need at a fraction of the cost.",
+    quote: "We evaluated SmartVault and TaxDome but the per-user pricing was a dealbreaker. Ledger Stash gives us everything we need at a fraction of the cost.",
     name: "Jennifer L.",
     title: "Managing Partner, Growing Practice",
     initials: "JL",

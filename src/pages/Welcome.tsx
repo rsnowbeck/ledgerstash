@@ -35,10 +35,10 @@ interface WizardStep {
 const wizardSteps: WizardStep[] = [
   {
     id: "welcome",
-    title: "Welcome to LedgerStash!",
+    title: "Welcome to Ledger Stash!",
     subtitle: "Your secure client document vault",
     description:
-      "LedgerStash helps accounting firms collect, organize, and track client documents — like W-2s, 1099s, and bank statements — all in one secure place. Let's walk you through how it works.",
+      "Ledger Stash helps accounting firms collect, organize, and track client documents — like W-2s, 1099s, and bank statements — all in one secure place. Let's walk you through how it works.",
     instructions: [
       "This quick tour takes about 2 minutes",
       "You'll learn the 4 key steps to collecting documents",

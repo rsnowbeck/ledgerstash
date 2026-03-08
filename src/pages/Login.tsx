@@ -74,9 +74,9 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <PageSEO
-        title="Sign In | Access Your LedgerStash Vault"
-        description="Sign in to your LedgerStash account to manage client documents, track tasks, and securely exchange files with your clients."
-        keywords="ledgerstash login, client vault login, accounting portal sign in"
+        title="Sign In | Access Your Ledger Stash Vault"
+        description="Sign in to your Ledger Stash account to manage client documents, track PBC lists, and securely exchange files with your clients."
+        keywords="ledger stash login, client vault login, accounting portal sign in"
         canonical="/login"
         noindex
       />

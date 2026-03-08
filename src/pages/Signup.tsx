@@ -45,7 +45,7 @@ export default function Signup() {
         return;
       }
 
-      toast.success("Account created! Welcome to LedgerStash.");
+      toast.success("Account created! Welcome to Ledger Stash.");
       navigate("/welcome");
     } catch (error) {
       toast.error("An unexpected error occurred");
