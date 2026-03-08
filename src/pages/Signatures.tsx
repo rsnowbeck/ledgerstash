@@ -518,18 +518,40 @@ export default function Signatures() {
         )}
       </div>
 
-      {/* Stats Footer */}
+      {/* Pagination & Stats Footer */}
       {!loading && filteredRequests.length > 0 && (
-        <div className="mt-4 flex gap-6 text-sm text-muted-foreground">
-          <span>
-            Total: {filteredRequests.length}
-          </span>
-          <span>
-            Completed: {filteredRequests.filter((r) => r.status === "completed").length}
-          </span>
-          <span>
-            Pending: {filteredRequests.filter((r) => r.status === "pending" && !(r.expires_at && new Date(r.expires_at) < new Date())).length}
-          </span>
+        <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex gap-6 text-sm text-muted-foreground">
+            <span>Total: {filteredRequests.length}</span>
+            <span>Completed: {filteredRequests.filter((r) => r.status === "completed").length}</span>
+            <span>Pending: {filteredRequests.filter((r) => r.status === "pending" && !(r.expires_at && new Date(r.expires_at) < new Date())).length}</span>
+          </div>
+          {(() => {
+            const totalPages = Math.ceil(filteredRequests.length / ITEMS_PER_PAGE);
+            return totalPages > 1 ? (
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </Button>
+                <span className="text-sm text-muted-foreground">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </Button>
+              </div>
+            ) : null;
+          })()}
         </div>
       )}
 
