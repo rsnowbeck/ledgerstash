@@ -81,7 +81,7 @@ export function Comparison() {
       <div className="container">
         <div className="text-center mb-12">
           <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2] mb-4">
-            See How Ledger Stash Stacks Up
+            Why Choose Ledger Stash Over the Competition?
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed">
             We built Ledger Stash because SmartVault and TaxDome weren't designed for solo CPAs. Here's the side-by-side.
