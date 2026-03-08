@@ -4,27 +4,50 @@ const steps = [
   {
     number: "01",
     title: "Add Your Clients",
-    description: "Import your client list or add them one by one. Each client gets their own secure, organized vault.",
-    details: ["Add clients manually or bulk import via CSV", "Each client gets private folders", "No client limits on Enterprise plan"]
+    description:
+      "Import your client list via CSV or add them one by one. Each client gets their own private, organized vault in under a minute.",
+    details: [
+      "Bulk CSV import or manual entry",
+      "Each client gets a separate secure vault",
+      "Individual or business client types",
+    ],
   },
   {
     number: "02",
-    title: "Create PBC Task Lists",
-    description: "Define exactly what documents each client needs to provide — W-2s, K-1s, receipts, engagement letters.",
-    details: ["Use accounting-specific task templates", "Set due dates and priorities", "Attach reference documents", "Clients see clear action items"]
+    title: "Build Your PBC Checklist",
+    description:
+      "Tell each client exactly what documents to provide — W-2s, K-1s, bank statements, receipts. Set due dates, mark priorities, attach reference files.",
+    details: [
+      "Pre-built templates for common engagements",
+      "Custom due dates and priority levels",
+      "Attach sample documents for clarity",
+      "Clients see a clear, numbered task list",
+    ],
   },
   {
     number: "03",
-    title: "Invite & Exchange",
-    description: "Send branded invitations. Clients upload documents directly to their vault — no email attachments.",
-    details: ["White-labeled client portal", "Drag-and-drop file uploads", "Automatic email notifications", "Frictionless client experience"]
+    title: "Send a Secure Link",
+    description:
+      "Clients receive a branded email with a one-click magic link. They land on your white-labeled portal, see their tasks, and start uploading. No account needed.",
+    details: [
+      "Your firm's logo and brand colors",
+      "Drag-and-drop file uploads",
+      "Works on desktop and mobile",
+      "No passwords, no app downloads",
+    ],
   },
   {
     number: "04",
-    title: "Track & Close",
-    description: "Monitor completion across your entire book. Auto-remind stragglers. Export audit-ready packages.",
-    details: ["Real-time firm dashboard", "Busy Season auto-reminders", "Download organized document packages", "Full audit trail with timestamps"]
-  }
+    title: "Track, Remind & Close",
+    description:
+      "Watch your dashboard light up as documents roll in. Automated reminders handle the stragglers. When you're ready, export an audit-ready package.",
+    details: [
+      "Real-time completion tracking",
+      "Configurable auto-reminders",
+      "One-click audit-ready export",
+      "Full trail: timestamps, IP, browser",
+    ],
+  },
 ];
 
 export function HowItWorks() {
@@ -33,10 +56,10 @@ export function HowItWorks() {
       <div className="container">
         <div className="text-center">
           <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2] mb-4">
-            How Ledger Stash Works
+            Up and Running in 5 Minutes
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed mb-12">
-            Get started in minutes. No complex setup. No training required.
+            No onboarding calls. No training videos. No IT department required.
           </p>
         </div>
 
@@ -61,7 +84,10 @@ export function HowItWorks() {
                 </p>
                 <ul className="space-y-2">
                   {step.details.map((detail) => (
-                    <li key={detail} className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <li
+                      key={detail}
+                      className="flex items-center gap-2 text-sm text-muted-foreground"
+                    >
                       <CheckCircle2 className="h-4 w-4 text-accent flex-shrink-0" />
                       <span>{detail}</span>
                     </li>

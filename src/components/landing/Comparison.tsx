@@ -8,76 +8,70 @@ const rows = [
     feature: "Solo CPA Pricing",
     ledger: "$29/month",
     ledgerSub: "$290/year (save 16%)",
-    ledgerSub2: "All Plans Unlimited Users",
+    ledgerSub2: "Unlimited team members included",
     smart: "$210/month",
     smartSub: "$1,800/year — 3-user minimum",
-    smartSub2: "Price per user",
+    smartSub2: "Per-user pricing",
     tax: "$800/year per seat",
-    taxSub: "Annual contract only",
-    taxSub2: "Price per user",
+    taxSub: "Annual contract required",
+    taxSub2: "Per-user pricing",
   },
   {
     feature: "User Minimums",
-    ledger: "None — Solo CPA Plan",
+    ledger: "None — start as a solo",
     smart: "3 users minimum (Business Pro)",
-    smartSub: "2 users minimum (Accounting Pro/Unlimited)",
-    tax: "Minimum 1 seat, but designed for teams",
+    smartSub: "2 users minimum (Accounting Pro)",
+    tax: "1 seat minimum, team-oriented",
   },
   {
     feature: "Client Login Required?",
-    ledger: "No — Frictionless Access",
-    smart: "Yes — Clients must create account",
-    tax: "Yes — Account & mobile app required",
+    ledger: "No — one-click magic link",
+    smart: "Yes — clients must create an account",
+    tax: "Yes — account + mobile app required",
   },
   {
-    feature: "PBC List Management",
-    ledger: "Accounting-Specific Terminology",
-    smart: 'Generic "File Request" Tool',
-    tax: 'Generic "File Request" Tool',
+    feature: "PBC List Terminology",
+    ledger: "Built for accountants (W-2s, K-1s, PBC)",
+    smart: 'Generic "file requests"',
+    tax: 'Generic "file requests"',
   },
   {
     feature: "White-Label Branding",
-    ledger: "Logo + Name (All Plans)",
-    ledgerSub: "Full white-labeling on Boutique+",
-    smart: "Custom Branded Client Portal (All Plans)",
-    tax: "Client Portal Branding Only",
+    ledger: "Logo + name on all plans",
+    ledgerSub: "Full white-label on Boutique+",
+    smart: "Custom portal (all plans)",
+    tax: "Portal branding only",
   },
   {
-    feature: "Setup Time",
-    ledger: "Minutes — No Training",
-    smart: "Days to Weeks — Requires Training",
-    tax: "6–8 Weeks — Dedicated Onboarding Required",
+    feature: "Time to First Client Invite",
+    ledger: "Under 5 minutes",
+    smart: "Days to weeks (training required)",
+    tax: "6–8 weeks (dedicated onboarding)",
   },
   {
-    feature: "Busy Season Automation",
-    ledger: "Auto-Pilot Reminders",
-    smart: "Manual Document Requests (SmartRequestAI available)",
-    tax: "Automated Requests (Requires Complex Setup)",
+    feature: "Automated Reminders",
+    ledger: "Set-and-forget auto-pilot",
+    smart: "Manual requests (SmartRequestAI available)",
+    tax: "Automated but complex setup",
   },
   {
-    feature: "Compliance Focus",
+    feature: "Compliance",
     ledger: "IRS 4557 · FTC Safeguards · GLBA",
-    smart: "SOC 2 Type 2 · IRS 4557 · FTC Safeguards · GLBA",
-    tax: "General Security & Compliance",
+    smart: "SOC 2 · IRS 4557 · FTC · GLBA",
+    tax: "General security & compliance",
   },
   {
-    feature: "Audit Trail & Legal Proof",
-    ledger: "ESIGN/UETA Compliant",
+    feature: "Audit Trail",
+    ledger: "ESIGN/UETA compliant",
     ledgerSub: "IP, timestamp, browser + PDF certificate",
-    smart: "Basic Audit Trail",
-    tax: "Built-in eSignature Logs",
+    smart: "Basic audit trail",
+    tax: "Built-in eSignature logs",
   },
   {
-    feature: "Target Audience",
-    ledger: "Solo CPAs, Boutique Firms, Growing Practices, & Corporate Controllers",
-    smart: "Small to Large Firms",
-    tax: "Small to Enterprise Firms",
-  },
-  {
-    feature: "Core Focus",
-    ledger: "Secure Vault + PBC Management",
-    smart: "Document Management + Workflow + eSignatures",
-    tax: "End-to-End Practice Management",
+    feature: "Best For",
+    ledger: "Solo CPAs, boutique firms, controllers",
+    smart: "Small to large firms",
+    tax: "Small to enterprise firms",
   },
 ];
 
@@ -87,11 +81,10 @@ export function Comparison() {
       <div className="container">
         <div className="text-center mb-12">
           <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2] mb-4">
-            Why Choose Ledger Stash Over the Competition?
+            See How Ledger Stash Stacks Up
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed">
-            We know you're evaluating options. Here's why accounting firms choose Ledger Stash over SmartVault, TaxDome, and other generic
-            solutions.
+            We built Ledger Stash because SmartVault and TaxDome weren't designed for solo CPAs. Here's the side-by-side.
           </p>
         </div>
 
@@ -120,7 +113,7 @@ export function Comparison() {
                       <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" />
                       <div>
                         {row.ledger}
-                         {row.ledgerSub && (
+                        {row.ledgerSub && (
                           <span className="block text-xs font-normal text-muted-foreground mt-0.5">
                             {row.ledgerSub}
                           </span>
@@ -139,7 +132,9 @@ export function Comparison() {
                       <span className="block text-xs mt-0.5">{row.smartSub}</span>
                     )}
                     {row.smartSub2 && (
-                      <span className="block text-xs mt-0.5 text-destructive">{row.smartSub2}</span>
+                      <span className="block text-xs mt-0.5 text-destructive">
+                        {row.smartSub2}
+                      </span>
                     )}
                   </td>
                   <td className="px-5 py-4 text-sm text-muted-foreground">
@@ -148,7 +143,9 @@ export function Comparison() {
                       <span className="block text-xs mt-0.5">{row.taxSub}</span>
                     )}
                     {row.taxSub2 && (
-                      <span className="block text-xs mt-0.5 text-destructive">{row.taxSub2}</span>
+                      <span className="block text-xs mt-0.5 text-destructive">
+                        {row.taxSub2}
+                      </span>
                     )}
                   </td>
                 </tr>
@@ -166,34 +163,48 @@ export function Comparison() {
                 <div className="flex items-start gap-2 text-success font-semibold bg-success/5 rounded-lg p-2">
                   <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" />
                   <div>
-                    <span className="text-xs text-muted-foreground font-normal block">Ledger Stash</span>
+                    <span className="text-xs text-muted-foreground font-normal block">
+                      Ledger Stash
+                    </span>
                     {row.ledger}
-                    {row.ledgerSub && <span className="block text-xs font-normal text-muted-foreground">{row.ledgerSub}</span>}
-                    {row.ledgerSub2 && <span className="block text-xs font-normal text-success">{row.ledgerSub2}</span>}
+                    {row.ledgerSub && (
+                      <span className="block text-xs font-normal text-muted-foreground">
+                        {row.ledgerSub}
+                      </span>
+                    )}
+                    {row.ledgerSub2 && (
+                      <span className="block text-xs font-normal text-success">
+                        {row.ledgerSub2}
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div className="text-muted-foreground p-2">
                   <span className="text-xs block font-medium text-foreground/60">SmartVault</span>
                   {row.smart}
-                  {row.smartSub2 && <span className="block text-xs text-destructive">{row.smartSub2}</span>}
+                  {row.smartSub2 && (
+                    <span className="block text-xs text-destructive">{row.smartSub2}</span>
+                  )}
                 </div>
                 <div className="text-muted-foreground p-2">
                   <span className="text-xs block font-medium text-foreground/60">TaxDome</span>
                   {row.tax}
-                  {row.taxSub2 && <span className="block text-xs text-destructive">{row.taxSub2}</span>}
+                  {row.taxSub2 && (
+                    <span className="block text-xs text-destructive">{row.taxSub2}</span>
+                  )}
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* PDF Download — No Gate */}
+        {/* PDF Download */}
         <div className="rounded-xl border border-border bg-card p-6 sm:p-8 text-center mt-10 shadow-sm">
           <h3 className="text-lg font-semibold text-foreground mb-1">
-            Want to review the numbers later?
+            Want the full breakdown?
           </h3>
           <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-5">
-            Download our comprehensive Cost Savings Guide and see exactly how much you can save by switching to Ledger Stash.
+            Download our cost comparison guide and see exactly how much your firm saves by switching to Ledger Stash.
           </p>
           <button
             onClick={() => generateBlueOceanPdf()}
@@ -206,7 +217,6 @@ export function Comparison() {
             No email required. Instant download.
           </p>
         </div>
-
       </div>
     </section>
   );

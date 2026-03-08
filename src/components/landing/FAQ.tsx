@@ -10,29 +10,29 @@ import { Button } from "@/components/ui/button";
 
 const essentialFaqs = [
   {
-    question: "What is Ledger Stash?",
+    question: "What exactly is Ledger Stash?",
     answer:
-      "Ledger Stash is a secure, white-labeled client vault and PBC management system built exclusively for solo CPAs and boutique firms. We deliver bank-grade security and compliance without the enterprise bloat.",
+      "Ledger Stash is a secure client vault where your clients upload tax documents, complete PBC checklists, and sign engagement letters — without creating an account. Think of it as the organized, encrypted version of emailing files back and forth.",
   },
   {
-    question: "How do my clients access the vault?",
+    question: "Do my clients need to create an account?",
     answer:
-      "Clients receive a branded email with a secure magic link, granting instant, password-free access to their PBC tasks and document folders. No accounts, no passwords, just frictionless document exchange.",
+      "No. Clients receive a branded email with a secure magic link. One click, and they're inside their vault — seeing exactly what documents to upload and what's already done. No passwords, no app downloads, no friction.",
   },
   {
-    question: "How is Ledger Stash different from SmartVault or TaxDome?",
+    question: "How is this different from SmartVault or TaxDome?",
     answer:
-      "Ledger Stash is purpose-built for solo CPAs, offering massive cost savings. Compare our flexible $29/month to SmartVault's minimum $210/month (3-user minimum) or TaxDome's $800 annual upfront payment (no monthly option). We provide a simpler, more focused, and truly frictionless client experience, unlike bloated enterprise solutions.",
+      'SmartVault starts at $210/month (3-user minimum). TaxDome charges $800/year per seat. Ledger Stash starts at $29/month with unlimited team members — no per-user fees, ever. We also skip the 6-week onboarding: you\'re collecting documents in under 5 minutes.',
   },
   {
-    question: "Is Ledger Stash secure and compliant for tax documents?",
+    question: "Is it secure enough for tax documents?",
     answer:
-      "Absolutely. Ledger Stash is fully compliant with IRS Publication 4557, FTC Safeguards Rule, and GLBA. Your clients' sensitive data is protected with bank-grade encryption and comprehensive audit trails.",
+      "Yes. AES-256 encryption at rest, TLS 1.3 in transit, and full audit trails with IP addresses and timestamps. Compliant with IRS Publication 4557, FTC Safeguards Rule, and GLBA — the same standards your E&O carrier expects.",
   },
   {
     question: "Is there a free trial?",
     answer:
-      "Yes, we offer a 14-day free trial with no credit card required. Experience the Ledger Stash difference risk-free.",
+      "Yes — 14 days, full access, no credit card required. Set up your vault, invite a test client, and see the workflow in action before you commit.",
   },
 ];
 
@@ -40,27 +40,27 @@ const secondaryFaqs = [
   {
     question: "Are document acknowledgments legally binding?",
     answer:
-      "Yes. Every acknowledgment in Ledger Stash captures IP address, timestamp, browser fingerprint, and the signer's typed name — fully compliant with the ESIGN Act and UETA. You can download a PDF certificate for each acknowledgment as legally defensible proof of completion.",
+      "Yes. Every acknowledgment captures IP address, timestamp, browser fingerprint, and the signer's typed name — fully compliant with the ESIGN Act and UETA. You can download a PDF certificate for each one as legally defensible proof.",
   },
   {
-    question: "What types of files can clients upload?",
+    question: "What file types can clients upload?",
     answer:
-      "Clients can securely upload any file type, including PDFs, spreadsheets, images, and more, directly from their computer or mobile device.",
+      "Any file type — PDFs, Excel spreadsheets, images, scanned documents, and more. Clients drag and drop from their computer or phone.",
   },
   {
-    question: "Can I use Ledger Stash for engagement letters and agreements?",
+    question: "Can I send engagement letters through Ledger Stash?",
     answer:
-      "Yes, Ledger Stash is ideal for securely storing and managing engagement letters and other client agreements. It integrates seamlessly with your existing e-signature workflows.",
+      "Yes. Upload your engagement letter, send it to specific clients, and track exactly who has signed and when. Unsigned clients get automated follow-ups on your schedule.",
   },
   {
-    question: "Can my team members access the portal too?",
+    question: "Can my team members access the portal?",
     answer:
-      "Yes, Ledger Stash offers plans that support multiple users, allowing your team members to securely access and manage client vaults with appropriate role-based permissions.",
+      "Yes — every plan includes unlimited team members. Add staff, interns, and partners with role-based permissions. You'll never pay a per-seat fee.",
   },
   {
-    question: "What if I need practice management features in the future?",
+    question: "What if I outgrow the Solo plan?",
     answer:
-      "Ledger Stash excels at secure document exchange and PBC management. It's designed to integrate with your broader tech stack. If you expand to need more extensive practice management features, Ledger Stash remains a valuable, focused component of your workflow.",
+      "Upgrade anytime. The Boutique plan ($79/mo) supports up to 100 clients and adds full white-labeling plus auto-reminders. Enterprise ($199/mo) removes all client limits. Your data carries over seamlessly.",
   },
 ];
 
@@ -68,7 +68,7 @@ const allFaqs = [...essentialFaqs, ...secondaryFaqs];
 
 function useFAQSchema() {
   useEffect(() => {
-    const existingScript = document.querySelector('script[data-faq-schema]');
+    const existingScript = document.querySelector("script[data-faq-schema]");
     if (existingScript) return;
 
     const schema = {
@@ -91,7 +91,7 @@ function useFAQSchema() {
     document.head.appendChild(script);
 
     return () => {
-      const el = document.querySelector('script[data-faq-schema]');
+      const el = document.querySelector("script[data-faq-schema]");
       if (el) el.remove();
     };
   }, []);
@@ -107,10 +107,11 @@ export function FAQ() {
         <div className="mx-auto max-w-3xl">
           <div className="text-center">
             <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2] mb-4">
-              Frequently asked questions
+              Common Questions
             </h2>
             <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed mb-12">
-              Everything you need to know about Ledger Stash
+              Quick answers about pricing, security, and how Ledger Stash
+              works day-to-day.
             </p>
           </div>
 

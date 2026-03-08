@@ -3,21 +3,21 @@ import { FileText, Receipt, Briefcase } from "lucide-react";
 const useCases = [
   {
     icon: Receipt,
-    title: "Tax Document Collection",
+    title: "Busy Season Document Collection",
     description:
-      "Collect W-2s, 1099s, K-1s, receipts, and supporting documents from clients in organized folders. No more chasing email attachments during busy season.",
+      "Create per-client PBC checklists for W-2s, 1099s, K-1s, and receipts. Clients upload to organized folders via a secure link — no email chains, no missing files, no excuses.",
   },
   {
     icon: FileText,
-    title: "Engagement Letters & Agreements",
+    title: "Engagement Letters & Fee Agreements",
     description:
-      "Send engagement letters, fee agreements, and authorization forms. Track who has signed and automate follow-ups for the rest.",
+      "Send engagement letters through the vault with ESIGN-compliant tracking. See who signed, who hasn't, and auto-remind the rest — with a PDF audit trail for every signature.",
   },
   {
     icon: Briefcase,
-    title: "Client Onboarding",
+    title: "Year-Round Client Onboarding",
     description:
-      "Streamline new client setup with PBC task lists, document requests, and a branded portal experience that builds trust from day one.",
+      "New client? Send them a branded portal link with a checklist of everything you need — EIN letters, prior returns, bank access. They complete it at their pace. You track it in real time.",
   },
 ];
 
@@ -27,11 +27,11 @@ export function UseCases() {
       <div className="container">
         <div className="text-center mb-12">
           <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2] mb-4">
-            Built for Accounting Workflows
+            Built for the Way Accountants Actually Work
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed">
-            Ledger Stash adapts to how your firm works — from busy season document 
-            collection to year-round client management.
+            Whether it's January or July, Ledger Stash keeps your document
+            collection organized, automated, and audit-ready.
           </p>
         </div>
 

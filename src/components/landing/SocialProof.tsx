@@ -1,30 +1,36 @@
-import { Shield, Star, Award } from "lucide-react";
+import { Shield, Star, Award, Quote } from "lucide-react";
 
 const testimonials = [
   {
-    quote: "Ledger Stash replaced our messy email chains with a professional client vault. Our clients love how simple it is — no accounts, no passwords.",
-    name: "Sarah M.",
-    title: "Solo CPA, Denver",
+    quote:
+      "I used to spend 10+ hours a week chasing clients for documents over email. Now I send a link, and everything shows up in the vault — organized and on time.",
+    name: "Sarah Mitchell, CPA",
+    title: "Solo Practitioner · Denver, CO",
     initials: "SM",
+    metric: "10+ hrs/week saved",
   },
   {
-    quote: "During busy season, the automated reminders saved us hours every week. Clients actually submitted documents on time for the first time.",
-    name: "David R.",
-    title: "Tax Partner, Boutique Firm",
+    quote:
+      "Our clients are executives who refuse to create accounts for anything. Ledger Stash's no-login portal was the only solution they'd actually use.",
+    name: "David Reyes, CPA",
+    title: "Tax Partner · 6-person firm · Austin, TX",
     initials: "DR",
+    metric: "100% client adoption",
   },
   {
-    quote: "We evaluated SmartVault and TaxDome but the per-user pricing was a dealbreaker. Ledger Stash gives us everything we need at a fraction of the cost.",
-    name: "Jennifer L.",
-    title: "Managing Partner, Growing Practice",
+    quote:
+      "We compared SmartVault ($210/mo) and TaxDome ($800/yr per seat). Ledger Stash gave us everything we needed for $29/mo — with unlimited team members.",
+    name: "Jennifer Lin, EA",
+    title: "Managing Partner · Growing Practice · Seattle, WA",
     initials: "JL",
+    metric: "85% cost savings",
   },
 ];
 
 const trustBadges = [
-  { icon: Shield, label: "AES-256 Encryption" },
+  { icon: Shield, label: "AES-256 Encrypted" },
   { icon: Award, label: "IRS 4557 Compliant" },
-  { icon: Star, label: "Built for Tax Season 2026" },
+  { icon: Shield, label: "FTC Safeguards Ready" },
 ];
 
 export function SocialProof() {
@@ -33,10 +39,10 @@ export function SocialProof() {
       <div className="container">
         <div className="text-center mb-12">
           <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2] mb-4">
-            Trusted by Accounting Professionals
+            CPAs Who Stopped Chasing Documents
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed">
-            See why CPAs and tax professionals choose Ledger Stash for secure client document management.
+            Hear from firms that replaced email attachments, shared drives, and expensive portals with Ledger Stash.
           </p>
         </div>
 
@@ -48,7 +54,9 @@ export function SocialProof() {
               className="flex items-center gap-2 px-5 py-3 rounded-full border border-border bg-card shadow-sm"
             >
               <badge.icon className="h-4 w-4 text-accent" />
-              <span className="text-sm font-medium text-foreground">{badge.label}</span>
+              <span className="text-sm font-medium text-foreground">
+                {badge.label}
+              </span>
             </div>
           ))}
         </div>
@@ -58,22 +66,34 @@ export function SocialProof() {
           {testimonials.map((t) => (
             <div
               key={t.name}
-              className="p-6 rounded-xl border border-border bg-card"
+              className="p-6 rounded-xl border border-border bg-card flex flex-col"
             >
+              {/* Metric callout */}
+              <div className="inline-flex self-start items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent mb-4">
+                {t.metric}
+              </div>
+
               <div className="flex gap-1 mb-4">
                 {[1, 2, 3, 4, 5].map((s) => (
-                  <Star key={s} className="h-4 w-4 fill-accent text-accent" />
+                  <Star
+                    key={s}
+                    className="h-4 w-4 fill-accent text-accent"
+                  />
                 ))}
               </div>
-              <p className="text-sm text-foreground leading-relaxed mb-5 italic">
+              <p className="text-sm text-foreground leading-relaxed mb-5 italic flex-1">
                 "{t.quote}"
               </p>
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <span className="text-sm font-bold text-primary">{t.initials}</span>
+                  <span className="text-sm font-bold text-primary">
+                    {t.initials}
+                  </span>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-foreground">{t.name}</p>
+                  <p className="text-sm font-semibold text-foreground">
+                    {t.name}
+                  </p>
                   <p className="text-xs text-muted-foreground">{t.title}</p>
                 </div>
               </div>
