@@ -368,10 +368,13 @@ export default function Signatures() {
             </p>
           </div>
         ) : (
+          (() => {
+            const paginatedRequests = filteredRequests.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+            return (
           <>
             {/* Mobile card view */}
             <div className="block md:hidden divide-y divide-border">
-              {filteredRequests.map((request) => (
+              {paginatedRequests.map((request) => (
                 <div key={request.id} className="p-4">
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <div className="min-w-0 flex-1">
