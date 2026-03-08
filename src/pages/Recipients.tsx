@@ -239,7 +239,7 @@ export default function Recipients() {
         <div>
           <h1 className="text-2xl font-bold text-foreground">Contacts</h1>
           <p className="text-muted-foreground">
-            Manage the people who need to receive document requests from your clients.
+            Manage the people associated with your clients who receive document requests and PBC lists.
             {planLimits.recipientLimit !== -1 && (
               <span className="ml-2 text-xs">
                 ({recipients.length}/{planLimits.recipientLimit} used)
