@@ -469,9 +469,9 @@ export default function Requirements() {
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent className="sm:max-w-lg">
             <DialogHeader>
-              <DialogTitle>Create Requirement</DialogTitle>
+              <DialogTitle>Create Document Request</DialogTitle>
               <DialogDescription>
-                Define a new policy, NDA, or training that needs acknowledgment.
+                Define a new PBC list item, engagement letter, or document request for your clients.
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleCreateRequirement} className="space-y-4 mt-4">
