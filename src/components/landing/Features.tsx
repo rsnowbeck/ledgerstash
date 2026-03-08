@@ -1,4 +1,4 @@
-import { Users, FileText, Send, BarChart3, Download, Shield, Clock, Bell, Scale } from "lucide-react";
+import { Users, FileText, Send, BarChart3, Download, Shield, Clock, Bell } from "lucide-react";
 
 interface Feature {
   icon: any;
