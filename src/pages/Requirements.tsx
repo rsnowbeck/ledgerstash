@@ -883,7 +883,7 @@ export default function Requirements() {
           logoUrl={organization.logo_url}
           customMessage={organization.custom_recipient_message}
           requirementDueDate={selectedRequirement.due_date}
-          isPro={organization.plan === "pro"}
+          isPro={organization.plan === "boutique" || organization.plan === "enterprise"}
         />
       )}
     </DashboardLayout>

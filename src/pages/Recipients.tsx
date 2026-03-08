@@ -380,7 +380,7 @@ export default function Recipients() {
           <p className="text-muted-foreground max-w-md mx-auto mb-6">
             {searchQuery 
               ? "Try adjusting your search terms."
-              : "Add your first contact to start sending document requests. You can add employees, contractors, or vendors."
+              : "Add your first contact to start sending PBC lists and document requests."
             }
           </p>
           {!searchQuery && planLimits.canAddRecipient && (
