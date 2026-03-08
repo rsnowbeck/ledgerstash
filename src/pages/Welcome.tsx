@@ -35,10 +35,10 @@ interface WizardStep {
 const wizardSteps: WizardStep[] = [
   {
     id: "welcome",
-    title: "Welcome to LedgerStash!",
+    title: "Welcome to Ledger Stash!",
     subtitle: "Your secure client document vault",
     description:
-      "LedgerStash helps accounting firms collect, organize, and track client documents — like W-2s, 1099s, and bank statements — all in one secure place. Let's walk you through how it works.",
+      "Ledger Stash helps accounting firms collect, organize, and track client documents — like W-2s, 1099s, and bank statements — all in one secure place. Let's walk you through how it works.",
     instructions: [
       "This quick tour takes about 2 minutes",
       "You'll learn the 4 key steps to collecting documents",
@@ -69,7 +69,7 @@ const wizardSteps: WizardStep[] = [
     description:
       "PBC (Provided By Client) lists define exactly which documents you need from each client. Use our pre-built templates for common tax scenarios or create your own from scratch.",
     instructions: [
-      'Navigate to the Documents page and click "New Requirement"',
+      'Navigate to Document Requests and click "New Document Request"',
       "Choose from templates like Individual Tax Return, Business Tax, or Partnership",
       "Customize the list — add or remove document types as needed",
       "Attach reference PDFs or fillable forms for clients to complete",
@@ -84,7 +84,7 @@ const wizardSteps: WizardStep[] = [
     description:
       "Once your PBC list is ready, send it to one or more clients with a single click. They'll receive a branded email with a secure link — no account needed on their end.",
     instructions: [
-      'Click "Send for Collection" on any published requirement',
+      'Click "Send to Clients" on any published document request',
       "Select which clients should receive the request",
       "Clients get an email with a one-click secure upload link",
       "Each link is unique, encrypted, and expires automatically",

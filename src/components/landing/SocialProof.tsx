@@ -2,7 +2,7 @@ import { Shield, Star, Award } from "lucide-react";
 
 const testimonials = [
   {
-    quote: "LedgerStash replaced our messy email chains with a professional client vault. Our clients love how simple it is — no accounts, no passwords.",
+    quote: "Ledger Stash replaced our messy email chains with a professional client vault. Our clients love how simple it is — no accounts, no passwords.",
     name: "Sarah M.",
     title: "Solo CPA, Denver",
     initials: "SM",
@@ -14,7 +14,7 @@ const testimonials = [
     initials: "DR",
   },
   {
-    quote: "We evaluated SmartVault and TaxDome but the per-user pricing was a dealbreaker. LedgerStash gives us everything we need at a fraction of the cost.",
+    quote: "We evaluated SmartVault and TaxDome but the per-user pricing was a dealbreaker. Ledger Stash gives us everything we need at a fraction of the cost.",
     name: "Jennifer L.",
     title: "Managing Partner, Growing Practice",
     initials: "JL",

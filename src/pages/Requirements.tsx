@@ -451,10 +451,10 @@ export default function Requirements() {
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">Requirements</h1>
+         <div>
+          <h1 className="text-2xl font-bold text-foreground">Document Requests</h1>
           <p className="text-muted-foreground">
-            Create and manage compliance items that need acknowledgment.
+            Create and manage PBC lists, engagement letters, and document requests for your clients.
             {planLimits.requirementLimit !== -1 && (
               <span className="ml-2 text-xs">
                 ({requirements.length}/{planLimits.requirementLimit} used)
@@ -464,14 +464,14 @@ export default function Requirements() {
         </div>
         <Button variant="hero" onClick={handleNewRequirementClick} disabled={!planLimits.canAddRequirement}>
           <Plus className="h-4 w-4" />
-          New Requirement
+          New Document Request
         </Button>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent className="sm:max-w-lg">
             <DialogHeader>
-              <DialogTitle>Create Requirement</DialogTitle>
+              <DialogTitle>Create Document Request</DialogTitle>
               <DialogDescription>
-                Define a new policy, NDA, or training that needs acknowledgment.
+                Define a new PBC list item, engagement letter, or document request for your clients.
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleCreateRequirement} className="space-y-4 mt-4">
@@ -479,7 +479,7 @@ export default function Requirements() {
                 <Label htmlFor="title">Title *</Label>
                 <Input
                   id="title"
-                  placeholder="e.g., Employee Handbook 2024"
+                  placeholder="e.g., 2025 Individual Tax Return PBC List"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
@@ -489,7 +489,7 @@ export default function Requirements() {
                 <Label htmlFor="description">Description</Label>
                 <Textarea
                   id="description"
-                  placeholder="Briefly describe what this requirement is about..."
+                  placeholder="Describe the documents needed from the client..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={3}
@@ -726,12 +726,12 @@ export default function Requirements() {
           <p className="text-muted-foreground max-w-md mx-auto mb-6">
             {searchQuery || statusFilter !== "all"
               ? "Try adjusting your search or filter."
-              : "Create your first compliance requirement—like a policy acknowledgment, NDA, or training confirmation—and start collecting signatures."}
+              : "Create your first document request — like a PBC list, engagement letter, or tax organizer — and start collecting from clients."}
           </p>
           {!searchQuery && statusFilter === "all" && (
             <Button variant="hero" onClick={handleNewRequirementClick}>
               <Plus className="h-4 w-4" />
-              Create Your First Requirement
+              Create Your First Document Request
             </Button>
           )}
         </div>
@@ -787,7 +787,7 @@ export default function Requirements() {
                       onClick={() => handleSendForSignature(requirement)}
                     >
                       <Send className="h-4 w-4" />
-                      Send for Signature
+                      Send to Clients
                     </Button>
                   )}
                   <DropdownMenu>
@@ -883,7 +883,7 @@ export default function Requirements() {
           logoUrl={organization.logo_url}
           customMessage={organization.custom_recipient_message}
           requirementDueDate={selectedRequirement.due_date}
-          isPro={organization.plan === "pro"}
+          isPro={organization.plan === "boutique" || organization.plan === "enterprise"}
         />
       )}
     </DashboardLayout>

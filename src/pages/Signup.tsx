@@ -45,7 +45,7 @@ export default function Signup() {
         return;
       }
 
-      toast.success("Account created! Welcome to LedgerStash.");
+      toast.success("Account created! Welcome to Ledger Stash.");
       navigate("/welcome");
     } catch (error) {
       toast.error("An unexpected error occurred");
@@ -57,9 +57,9 @@ export default function Signup() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <PageSEO
-        title="Start Free Trial | LedgerStash Client Vault"
+        title="Start Free Trial | Ledger Stash Client Vault"
         description="Sign up for a 14-day free trial. Create a secure client vault for your accounting firm in minutes. No credit card required."
-        keywords="ledgerstash free trial, client vault signup, accounting firm portal, CPA client vault"
+        keywords="ledger stash free trial, client vault signup, accounting firm portal, CPA client vault"
         canonical="/signup"
       />
       {/* Header */}

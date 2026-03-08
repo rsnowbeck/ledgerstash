@@ -239,7 +239,7 @@ export default function Recipients() {
         <div>
           <h1 className="text-2xl font-bold text-foreground">Contacts</h1>
           <p className="text-muted-foreground">
-            Manage the people who need to receive document requests from your clients.
+            Manage the people associated with your clients who receive document requests and PBC lists.
             {planLimits.recipientLimit !== -1 && (
               <span className="ml-2 text-xs">
                 ({recipients.length}/{planLimits.recipientLimit} used)
@@ -275,7 +275,7 @@ export default function Recipients() {
               <DialogHeader>
                 <DialogTitle>Add Contact</DialogTitle>
                 <DialogDescription>
-                  Add a person who will receive document requests from your clients.
+                  Add a client contact who will receive document requests and PBC list invitations.
                 </DialogDescription>
               </DialogHeader>
               <form onSubmit={handleAddRecipient} className="space-y-4 mt-4">
@@ -380,7 +380,7 @@ export default function Recipients() {
           <p className="text-muted-foreground max-w-md mx-auto mb-6">
             {searchQuery 
               ? "Try adjusting your search terms."
-              : "Add your first contact to start sending document requests. You can add employees, contractors, or vendors."
+              : "Add your first contact to start sending PBC lists and document requests."
             }
           </p>
           {!searchQuery && planLimits.canAddRecipient && (

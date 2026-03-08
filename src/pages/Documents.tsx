@@ -64,8 +64,8 @@ export default function Documents() {
   return (
     <DashboardLayout>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-foreground">Documents</h1>
-        <p className="text-muted-foreground">All documents across your clients</p>
+        <h1 className="text-2xl font-bold text-foreground">Document Vault</h1>
+        <p className="text-muted-foreground">Securely stored documents across all your clients, organized and audit-ready.</p>
       </div>
 
       {loading ? (
@@ -77,8 +77,8 @@ export default function Documents() {
           <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-accent/10 text-accent mb-6">
             <FolderOpen className="h-8 w-8" />
           </div>
-          <h2 className="text-xl font-semibold text-foreground mb-2">No documents yet</h2>
-          <p className="text-muted-foreground">Documents will appear here when you or your clients upload files.</p>
+          <h2 className="text-xl font-semibold text-foreground mb-2">Your vault is empty</h2>
+          <p className="text-muted-foreground">Documents will appear here as you and your clients upload files through PBC lists and the client portal.</p>
         </div>
       ) : (
         <div className="card-elevated overflow-hidden">
