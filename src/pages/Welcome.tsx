@@ -19,14 +19,12 @@ import {
   UserPlus,
   ScrollText,
   Crown,
+  FolderOpen,
+  Upload,
   CheckCircle2,
+  Lock,
+  Mail,
 } from "lucide-react";
-
-import stepWelcome from "@/assets/onboarding/step-welcome.png";
-import stepClients from "@/assets/onboarding/step-clients.png";
-import stepPbc from "@/assets/onboarding/step-pbc.png";
-import stepSend from "@/assets/onboarding/step-send.png";
-import stepTrack from "@/assets/onboarding/step-track.png";
 
 interface WizardStep {
   id: string;
@@ -34,14 +32,14 @@ interface WizardStep {
   subtitle: string;
   description: string;
   instructions: string[];
-  image: string;
   icon: React.ComponentType<{ className?: string }>;
+  /** Decorative icons shown in the illustration panel */
+  decorativeIcons: React.ComponentType<{ className?: string }>[];
   /** Which tiers should see this step. Omit = all tiers */
   tiers?: ("trial" | "solo" | "boutique" | "enterprise")[];
 }
 
 const allSteps: WizardStep[] = [
-  // ── Core steps (all tiers) ──────────────────────────────
   {
     id: "welcome",
     title: "Welcome to Ledger Stash!",
@@ -53,8 +51,8 @@ const allSteps: WizardStep[] = [
       "You'll learn the key steps to collecting documents",
       "You can revisit this tour anytime from Settings",
     ],
-    image: stepWelcome,
     icon: Shield,
+    decorativeIcons: [Shield, Lock, FolderOpen],
   },
   {
     id: "clients",
@@ -68,8 +66,8 @@ const allSteps: WizardStep[] = [
       "Or bulk import clients from a CSV file",
       "Clients are organized by your firm — your whole team can see them",
     ],
-    image: stepClients,
     icon: Users,
+    decorativeIcons: [Users, UserPlus, FolderOpen],
   },
   {
     id: "pbc",
@@ -83,8 +81,8 @@ const allSteps: WizardStep[] = [
       "Customize the list — add or remove document types as needed",
       "Attach reference PDFs or fillable forms for clients to complete",
     ],
-    image: stepPbc,
     icon: FileText,
+    decorativeIcons: [FileText, CheckCircle2, ScrollText],
   },
   {
     id: "send",
@@ -98,8 +96,8 @@ const allSteps: WizardStep[] = [
       "Clients get an email with a one-click secure upload link",
       "Each link is unique, encrypted, and expires automatically",
     ],
-    image: stepSend,
     icon: Send,
+    decorativeIcons: [Send, Mail, Lock],
   },
   {
     id: "track",
@@ -113,11 +111,9 @@ const allSteps: WizardStep[] = [
       "Download submitted documents or export status reports as CSV",
       "Set up auto-reminders to chase overdue submissions for you",
     ],
-    image: stepTrack,
     icon: BarChart3,
+    decorativeIcons: [BarChart3, Bell, CheckCircle2],
   },
-
-  // ── Boutique-specific step ──────────────────────────────
   {
     id: "white-label",
     title: "Your Brand, Front & Center",
@@ -130,8 +126,8 @@ const allSteps: WizardStep[] = [
       "The client portal removes all Ledger Stash branding",
       "Auto-reminders use your firm's name and sender email",
     ],
-    image: stepWelcome,
     icon: Paintbrush,
+    decorativeIcons: [Paintbrush, Shield, Crown],
     tiers: ["boutique", "enterprise"],
   },
   {
@@ -146,8 +142,8 @@ const allSteps: WizardStep[] = [
       "Reminders stop automatically when the client completes the request",
       "Track all sent reminders in the Reminder Log",
     ],
-    image: stepTrack,
     icon: Bell,
+    decorativeIcons: [Bell, Mail, CheckCircle2],
     tiers: ["boutique", "enterprise"],
   },
   {
@@ -162,12 +158,10 @@ const allSteps: WizardStep[] = [
       "Team members can manage clients, documents, and requests",
       "All plans include unlimited team members",
     ],
-    image: stepClients,
     icon: UserPlus,
+    decorativeIcons: [UserPlus, Users, Shield],
     tiers: ["boutique", "enterprise"],
   },
-
-  // ── Enterprise-specific step ────────────────────────────
   {
     id: "enterprise-features",
     title: "Enterprise-Grade Control",
@@ -180,8 +174,8 @@ const allSteps: WizardStep[] = [
       "Dedicated support with priority response times",
       "Multi-firm management and API access coming soon",
     ],
-    image: stepWelcome,
     icon: ScrollText,
+    decorativeIcons: [ScrollText, Lock, Crown],
     tiers: ["enterprise"],
   },
 ];
@@ -192,7 +186,7 @@ function getStepsForTier(plan: string | null | undefined): WizardStep[] {
     : "trial";
 
   return allSteps.filter((step) => {
-    if (!step.tiers) return true; // core steps shown to everyone
+    if (!step.tiers) return true;
     return step.tiers.includes(tier);
   });
 }
@@ -219,19 +213,12 @@ export default function Welcome() {
   };
 
   const next = () => {
-    if (isLast) {
-      completeTour();
-    } else {
-      setCurrentStep((s) => s + 1);
-    }
+    if (isLast) completeTour();
+    else setCurrentStep((s) => s + 1);
   };
 
   const prev = () => {
     if (!isFirst) setCurrentStep((s) => s - 1);
-  };
-
-  const skip = () => {
-    completeTour();
   };
 
   if (authLoading) {
@@ -244,7 +231,6 @@ export default function Welcome() {
 
   if (!step) return null;
 
-  // Determine plan badge
   const planLabel =
     organization?.plan === "enterprise" ? "Enterprise Vault" :
     organization?.plan === "boutique" ? "Boutique Firm" :
@@ -267,7 +253,7 @@ export default function Welcome() {
               <Crown className="h-3 w-3" />
               {planLabel}
             </span>
-            <Button variant="ghost" size="sm" onClick={skip} className="text-muted-foreground">
+            <Button variant="ghost" size="sm" onClick={completeTour} className="text-muted-foreground">
               Skip tour
             </Button>
           </div>
@@ -313,7 +299,6 @@ export default function Welcome() {
 
               <p className="text-muted-foreground leading-relaxed">{step.description}</p>
 
-              {/* Instructions list */}
               <ul className="space-y-3">
                 {step.instructions.map((instruction, i) => (
                   <li key={i} className="flex items-start gap-3">
@@ -325,7 +310,6 @@ export default function Welcome() {
                 ))}
               </ul>
 
-              {/* Navigation */}
               <div className="flex items-center gap-3 pt-4">
                 {!isFirst && (
                   <Button variant="outline" onClick={prev}>
@@ -349,14 +333,34 @@ export default function Welcome() {
               </div>
             </div>
 
-            {/* Right: Illustration */}
+            {/* Right: Icon-based illustration */}
             <div className="order-1 md:order-2">
-              <div className="rounded-xl border border-border bg-muted/30 overflow-hidden shadow-lg">
-                <img
-                  src={step.image}
-                  alt={step.title}
-                  className="w-full h-auto object-cover"
-                />
+              <div className="rounded-xl border border-border bg-muted/30 overflow-hidden shadow-lg aspect-[4/3] flex items-center justify-center relative">
+                {/* Large center icon */}
+                <div className="h-24 w-24 rounded-2xl bg-primary/10 flex items-center justify-center">
+                  <Icon className="h-12 w-12 text-primary" />
+                </div>
+                {/* Decorative floating icons */}
+                {step.decorativeIcons.map((DecIcon, i) => {
+                  const positions = [
+                    "top-6 left-8",
+                    "top-8 right-10",
+                    "bottom-8 left-12",
+                  ];
+                  return (
+                    <div
+                      key={i}
+                      className={`absolute ${positions[i] || ""} h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center`}
+                    >
+                      <DecIcon className="h-5 w-5 text-accent/60" />
+                    </div>
+                  );
+                })}
+                {/* Subtle grid pattern */}
+                <div className="absolute inset-0 opacity-[0.03]" style={{
+                  backgroundImage: "radial-gradient(circle, hsl(var(--foreground)) 1px, transparent 1px)",
+                  backgroundSize: "20px 20px",
+                }} />
               </div>
             </div>
           </div>

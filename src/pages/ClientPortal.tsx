@@ -3,9 +3,13 @@ import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Loader2, FileText, CheckSquare, Upload, Clock, Shield, AlertCircle, CheckCircle2, Circle, ChevronDown, Paperclip } from "lucide-react";
+import {
+  Loader2, FileText, CheckSquare, Upload, Clock, Shield,
+  AlertCircle, CheckCircle2, Circle, Paperclip, ChevronDown,
+  ChevronUp, File,
+} from "lucide-react";
 import { toast } from "sonner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AIAssistantWidget } from "@/components/ai/AIAssistantWidget";
 
 interface ClientData {
   id: string;
@@ -46,6 +50,7 @@ export default function ClientPortal() {
   const [uploading, setUploading] = useState(false);
   const [uploadingTaskId, setUploadingTaskId] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [expandedSection, setExpandedSection] = useState<"docs" | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const taskFileInputRef = useRef<HTMLInputElement>(null);
   const [activeTaskUpload, setActiveTaskUpload] = useState<string | null>(null);
@@ -59,11 +64,9 @@ export default function ClientPortal() {
       const res = await supabase.functions.invoke("client-portal", {
         body: { action: "verify", token },
       });
-
       if (res.error) throw new Error(res.error.message);
       const data = res.data;
       if (!data?.success) throw new Error(data?.error || "Invalid link");
-
       setClient(data.client);
       setTasks(data.tasks);
       setDocuments(data.documents);
@@ -93,11 +96,8 @@ export default function ClientPortal() {
 
   const uploadFiles = async (files: FileList | File[], taskId?: string) => {
     if (!files.length) return;
-    if (taskId) {
-      setUploadingTaskId(taskId);
-    } else {
-      setUploading(true);
-    }
+    if (taskId) setUploadingTaskId(taskId);
+    else setUploading(true);
 
     try {
       for (const file of Array.from(files)) {
@@ -105,7 +105,6 @@ export default function ClientPortal() {
           body: { action: "get-upload-url", token, fileName: file.name, fileType: file.type },
         });
         if (urlRes.error || !urlRes.data?.success) throw new Error("Failed to get upload URL");
-
         const { uploadUrl, storagePath } = urlRes.data;
 
         const uploadRes = await fetch(uploadUrl, {
@@ -116,14 +115,7 @@ export default function ClientPortal() {
         if (!uploadRes.ok) throw new Error("Upload failed");
 
         const confirmRes = await supabase.functions.invoke("client-portal", {
-          body: {
-            action: "confirm-upload",
-            token,
-            fileName: file.name,
-            fileType: file.type,
-            fileSize: file.size,
-            storagePath,
-          },
+          body: { action: "confirm-upload", token, fileName: file.name, fileType: file.type, fileSize: file.size, storagePath },
         });
         if (confirmRes.error) throw new Error("Failed to record upload");
 
@@ -137,11 +129,7 @@ export default function ClientPortal() {
       }
 
       toast.success(`${files.length} file(s) uploaded successfully`);
-
-      // If uploaded against a task, mark it as completed
-      if (taskId) {
-        await handleUpdateTask(taskId, "completed");
-      }
+      if (taskId) await handleUpdateTask(taskId, "completed");
     } catch (err: any) {
       toast.error(err.message || "Upload failed");
     } finally {
@@ -157,9 +145,7 @@ export default function ClientPortal() {
   };
 
   const handleTaskFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && activeTaskUpload) {
-      uploadFiles(e.target.files, activeTaskUpload);
-    }
+    if (e.target.files && activeTaskUpload) uploadFiles(e.target.files, activeTaskUpload);
     e.target.value = "";
   };
 
@@ -168,27 +154,17 @@ export default function ClientPortal() {
     setTimeout(() => taskFileInputRef.current?.click(), 0);
   };
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  }, []);
-
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  }, []);
-
+  const handleDragOver = useCallback((e: React.DragEvent) => { e.preventDefault(); setIsDragging(true); }, []);
+  const handleDragLeave = useCallback((e: React.DragEvent) => { e.preventDefault(); setIsDragging(false); }, []);
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
     if (e.dataTransfer.files.length) uploadFiles(e.dataTransfer.files);
   }, [token]);
 
-  const pendingTasks = tasks.filter(t => t.status !== "completed");
   const completedTasks = tasks.filter(t => t.status === "completed");
   const totalTasks = tasks.length;
   const completionPercent = totalTasks > 0 ? Math.round((completedTasks.length / totalTasks) * 100) : 0;
-
   const accentStyle = accentColor ? { "--portal-accent": accentColor } as React.CSSProperties : undefined;
 
   if (loading) {
@@ -220,18 +196,16 @@ export default function ClientPortal() {
 
   return (
     <div className="min-h-screen bg-background" style={accentStyle}>
-      {/* Hidden file inputs */}
       <input ref={taskFileInputRef} type="file" multiple className="hidden" onChange={handleTaskFileChange} />
+      <input ref={fileInputRef} type="file" multiple className="hidden" onChange={handleFileChange} />
 
       {/* Header */}
-      <header className="border-b border-border bg-card">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <header className="border-b border-border bg-card sticky top-0 z-40">
+        <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            {firmLogoUrl && (
-              <img src={firmLogoUrl} alt={firmName} className="h-8 w-8 object-contain rounded" />
-            )}
+            {firmLogoUrl && <img src={firmLogoUrl} alt={firmName} className="h-8 w-8 object-contain rounded" />}
             <div>
-              <h1 className="text-lg font-bold text-foreground">{firmName || "LedgerStash"}</h1>
+              <h1 className="text-lg font-bold text-foreground">{firmName || "Ledger Stash"}</h1>
               {firmName && <p className="text-xs text-muted-foreground">Secure Client Portal</p>}
             </div>
           </div>
@@ -242,219 +216,238 @@ export default function ClientPortal() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 py-8">
-        {/* Welcome + Progress */}
-        <div className="mb-8">
+      <main className="max-w-3xl mx-auto px-4 py-8 space-y-8">
+        {/* Welcome */}
+        <div>
           <h2 className="text-2xl font-bold text-foreground">Welcome, {client.first_name}</h2>
           <p className="text-muted-foreground mt-1">
-            Complete the tasks below to submit your documents to {firmName || "your accountant"}.
+            Complete each step below to submit your documents to {firmName || "your accountant"}.
           </p>
         </div>
 
-        {/* Progress Overview */}
+        {/* Overall Progress */}
         {totalTasks > 0 && (
-          <div className="mb-8 p-5 rounded-xl border border-border bg-card">
+          <div className="p-5 rounded-xl border border-border bg-card">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <h3 className="text-sm font-medium text-foreground">Your Progress</h3>
+                <h3 className="text-sm font-semibold text-foreground">Overall Progress</h3>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  {completedTasks.length} of {totalTasks} tasks completed
+                  {completedTasks.length} of {totalTasks} steps completed
                 </p>
               </div>
-              <span className="text-2xl font-bold text-foreground">{completionPercent}%</span>
+              <span className={`text-2xl font-bold ${completionPercent === 100 ? "text-emerald-600" : "text-foreground"}`}>
+                {completionPercent}%
+              </span>
             </div>
             <Progress value={completionPercent} className="h-2.5" />
             {completionPercent === 100 && (
-              <p className="text-sm text-success mt-3 flex items-center gap-1.5">
+              <p className="text-sm text-emerald-600 mt-3 flex items-center gap-1.5 font-medium">
                 <CheckCircle2 className="h-4 w-4" />
-                All tasks completed — thank you!
+                All steps completed — thank you!
               </p>
             )}
           </div>
         )}
 
-        <Tabs defaultValue="tasks" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="tasks">
-              Checklist ({pendingTasks.length} remaining)
-            </TabsTrigger>
-            <TabsTrigger value="documents">Documents ({documents.length})</TabsTrigger>
-          </TabsList>
+        {/* Step-by-step task list */}
+        {totalTasks > 0 && (
+          <div className="space-y-1">
+            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+              Your Checklist
+            </h3>
 
-          {/* Tasks / Checklist Tab */}
-          <TabsContent value="tasks" className="space-y-4">
-            {pendingTasks.length === 0 && completedTasks.length === 0 ? (
-              <div className="text-center py-12 border border-dashed border-border rounded-xl">
-                <CheckSquare className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-                <p className="text-muted-foreground">No tasks assigned yet. Check back soon!</p>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {/* Outstanding tasks */}
-                {pendingTasks.length > 0 && (
-                  <div className="space-y-3">
-                    <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                      Outstanding ({pendingTasks.length})
-                    </h3>
-                    {pendingTasks.map(task => (
-                      <div key={task.id} className="rounded-xl border border-border bg-card overflow-hidden">
-                        <div className="p-4">
-                          <div className="flex items-start gap-3">
-                            {/* Checkbox circle */}
-                            <button
-                              onClick={() => handleUpdateTask(task.id, "completed")}
-                              className="mt-0.5 h-5 w-5 rounded-full border-2 border-muted-foreground/40 hover:border-accent flex items-center justify-center flex-shrink-0 transition-colors"
-                              title="Mark as complete"
-                            >
-                              <Circle className="h-3 w-3 text-transparent" />
-                            </button>
+            {/* Vertical step flow */}
+            <div className="relative">
+              {/* Vertical line connector */}
+              <div className="absolute left-[19px] top-6 bottom-6 w-0.5 bg-border" />
 
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2 mb-0.5">
-                                <h4 className="font-medium text-foreground">{task.title}</h4>
-                                {task.priority === "high" && (
-                                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-destructive/10 text-destructive font-medium uppercase">
-                                    Required
-                                  </span>
-                                )}
-                              </div>
-                              {task.description && (
-                                <p className="text-sm text-muted-foreground mt-0.5">{task.description}</p>
-                              )}
-                              {task.due_date && (
-                                <span className="inline-flex items-center gap-1 text-xs text-muted-foreground mt-2">
-                                  <Clock className="h-3 w-3" />
-                                  Due {new Date(task.due_date).toLocaleDateString()}
+              <div className="space-y-0">
+                {tasks.map((task, index) => {
+                  const isCompleted = task.status === "completed";
+                  const isUploading = uploadingTaskId === task.id;
+
+                  return (
+                    <div key={task.id} className="relative flex gap-4 pb-6 last:pb-0">
+                      {/* Step indicator */}
+                      <div className="relative z-10 flex-shrink-0">
+                        {isCompleted ? (
+                          <div className="h-10 w-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+                            <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                          </div>
+                        ) : (
+                          <div className="h-10 w-10 rounded-full border-2 border-border bg-card flex items-center justify-center">
+                            <span className="text-sm font-bold text-muted-foreground">{index + 1}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Step content */}
+                      <div className={`flex-1 rounded-xl border bg-card p-4 transition-all ${
+                        isCompleted
+                          ? "border-emerald-200 dark:border-emerald-900/40 bg-emerald-50/50 dark:bg-emerald-950/10"
+                          : "border-border hover:border-accent/40"
+                      }`}>
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1">
+                              <h4 className={`font-medium ${isCompleted ? "text-muted-foreground line-through" : "text-foreground"}`}>
+                                {task.title}
+                              </h4>
+                              {task.priority === "high" && !isCompleted && (
+                                <span className="text-[10px] px-1.5 py-0.5 rounded bg-destructive/10 text-destructive font-semibold uppercase">
+                                  Required
                                 </span>
                               )}
                             </div>
-
-                            {/* Upload button per task */}
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => triggerTaskUpload(task.id)}
-                              disabled={uploadingTaskId === task.id}
-                              className="flex-shrink-0"
-                            >
-                              {uploadingTaskId === task.id ? (
-                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                              ) : (
-                                <Paperclip className="h-3.5 w-3.5" />
-                              )}
-                              <span className="hidden sm:inline ml-1">
-                                {uploadingTaskId === task.id ? "Uploading..." : "Upload"}
+                            {task.description && (
+                              <p className="text-sm text-muted-foreground">{task.description}</p>
+                            )}
+                            {task.due_date && !isCompleted && (
+                              <span className="inline-flex items-center gap-1 text-xs text-muted-foreground mt-2">
+                                <Clock className="h-3 w-3" />
+                                Due {new Date(task.due_date).toLocaleDateString()}
                               </span>
-                            </Button>
+                            )}
+                          </div>
+
+                          {/* Action buttons */}
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            {isCompleted ? (
+                              <button
+                                onClick={() => handleUpdateTask(task.id, "pending")}
+                                className="text-xs text-muted-foreground hover:text-foreground transition-colors underline"
+                              >
+                                Undo
+                              </button>
+                            ) : (
+                              <>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => triggerTaskUpload(task.id)}
+                                  disabled={isUploading}
+                                >
+                                  {isUploading ? (
+                                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                                  ) : (
+                                    <Upload className="h-3.5 w-3.5" />
+                                  )}
+                                  <span className="ml-1.5">{isUploading ? "Uploading…" : "Upload"}</span>
+                                </Button>
+                                <button
+                                  onClick={() => handleUpdateTask(task.id, "completed")}
+                                  className="h-8 w-8 rounded-full border-2 border-muted-foreground/30 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 flex items-center justify-center transition-all"
+                                  title="Mark as complete"
+                                >
+                                  <Circle className="h-4 w-4 text-transparent" />
+                                </button>
+                              </>
+                            )}
                           </div>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Completed tasks */}
-                {completedTasks.length > 0 && (
-                  <div className="space-y-2">
-                    <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                      Completed ({completedTasks.length})
-                    </h3>
-                    {completedTasks.map(task => (
-                      <div key={task.id} className="p-4 rounded-xl border border-border bg-muted/20 flex items-center gap-3">
-                        <CheckCircle2 className="h-5 w-5 text-success flex-shrink-0" />
-                        <span className="text-sm text-muted-foreground line-through">{task.title}</span>
-                        <button
-                          onClick={() => handleUpdateTask(task.id, "pending")}
-                          className="ml-auto text-xs text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                          Undo
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                    </div>
+                  );
+                })}
               </div>
-            )}
-          </TabsContent>
-
-          {/* Documents Tab */}
-          <TabsContent value="documents" className="space-y-4">
-            {/* Drag and drop zone */}
-            <div
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all ${
-                isDragging
-                  ? "border-accent bg-accent/5 scale-[1.01]"
-                  : "border-border hover:border-accent/40"
-              }`}
-            >
-              <Upload className={`h-10 w-10 mx-auto mb-3 ${isDragging ? "text-accent" : "text-muted-foreground"}`} />
-              <p className="text-foreground font-medium mb-1">
-                {uploading ? "Uploading..." : isDragging ? "Drop files here" : "Drag & drop files here"}
-              </p>
-              <p className="text-sm text-muted-foreground mb-4">or click to browse</p>
-              <label className="cursor-pointer">
-                <input ref={fileInputRef} type="file" multiple className="hidden" onChange={handleFileChange} disabled={uploading} />
-                <Button variant="outline" size="sm" asChild disabled={uploading}>
-                  <span>
-                    {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
-                    {uploading ? "Uploading..." : "Choose Files"}
-                  </span>
-                </Button>
-              </label>
             </div>
+          </div>
+        )}
 
-            {/* Documents List */}
-            {documents.length > 0 && (
-              <div className="card-elevated overflow-hidden">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-border">
-                      <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">File</th>
-                      <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground hidden sm:table-cell">Type</th>
-                      <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground hidden sm:table-cell">Size</th>
-                      <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">Uploaded</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {documents.map(doc => (
-                      <tr key={doc.id} className="border-b border-border last:border-0">
-                        <td className="px-4 py-3 flex items-center gap-2">
-                          <FileText className="h-4 w-4 text-accent flex-shrink-0" />
-                          <span className="text-sm font-medium text-foreground truncate max-w-[200px]">{doc.file_name}</span>
-                        </td>
-                        <td className="px-4 py-3 text-sm text-muted-foreground hidden sm:table-cell">{doc.file_type || "—"}</td>
-                        <td className="px-4 py-3 text-sm text-muted-foreground hidden sm:table-cell">
-                          {doc.file_size_bytes ? `${(doc.file_size_bytes / 1024).toFixed(1)} KB` : "—"}
-                        </td>
-                        <td className="px-4 py-3 text-sm text-muted-foreground">
-                          {new Date(doc.created_at).toLocaleDateString()}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+        {totalTasks === 0 && (
+          <div className="text-center py-12 border border-dashed border-border rounded-xl">
+            <CheckSquare className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+            <p className="text-muted-foreground">No tasks assigned yet. Check back soon!</p>
+          </div>
+        )}
+
+        {/* Documents Section */}
+        <div className="rounded-xl border border-border bg-card overflow-hidden">
+          <button
+            onClick={() => setExpandedSection(expandedSection === "docs" ? null : "docs")}
+            className="w-full flex items-center justify-between px-5 py-4 hover:bg-muted/30 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                <FileText className="h-4 w-4 text-primary" />
               </div>
+              <div className="text-left">
+                <h3 className="text-sm font-semibold text-foreground">Uploaded Documents</h3>
+                <p className="text-xs text-muted-foreground">{documents.length} file{documents.length !== 1 ? "s" : ""} uploaded</p>
+              </div>
+            </div>
+            {expandedSection === "docs" ? (
+              <ChevronUp className="h-4 w-4 text-muted-foreground" />
+            ) : (
+              <ChevronDown className="h-4 w-4 text-muted-foreground" />
             )}
-          </TabsContent>
-        </Tabs>
+          </button>
+
+          {expandedSection === "docs" && (
+            <div className="border-t border-border">
+              {/* Drop zone */}
+              <div
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                className={`m-4 border-2 border-dashed rounded-xl p-6 text-center transition-all ${
+                  isDragging ? "border-accent bg-accent/5 scale-[1.01]" : "border-border hover:border-accent/40"
+                }`}
+              >
+                <Upload className={`h-8 w-8 mx-auto mb-2 ${isDragging ? "text-accent" : "text-muted-foreground"}`} />
+                <p className="text-sm text-foreground font-medium mb-1">
+                  {uploading ? "Uploading..." : isDragging ? "Drop files here" : "Drag & drop files or click to browse"}
+                </p>
+                <label className="cursor-pointer">
+                  <input ref={fileInputRef} type="file" multiple className="hidden" onChange={handleFileChange} disabled={uploading} />
+                  <Button variant="outline" size="sm" asChild disabled={uploading} className="mt-2">
+                    <span>
+                      {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                      {uploading ? "Uploading..." : "Choose Files"}
+                    </span>
+                  </Button>
+                </label>
+              </div>
+
+              {/* Files list */}
+              {documents.length > 0 && (
+                <div className="px-4 pb-4 space-y-2">
+                  {documents.map(doc => (
+                    <div key={doc.id} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border border-border">
+                      <File className="h-4 w-4 text-accent flex-shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-foreground truncate">{doc.file_name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {doc.file_size_bytes ? `${(doc.file_size_bytes / 1024).toFixed(1)} KB · ` : ""}
+                          {new Date(doc.created_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500 flex-shrink-0" />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </main>
 
       {/* Footer */}
       {showPoweredBy && (
-        <footer className="border-t border-border mt-16 py-6 text-center">
+        <footer className="border-t border-border mt-8 py-6 text-center">
           <p className="text-xs text-muted-foreground">
             Powered by{" "}
             <a href="https://ledgerstash.com?ref=portal" className="hover:text-foreground transition-colors">
-              LedgerStash
+              Ledger Stash
             </a>
             {" "}— Secure Client Vault for Accountants
           </p>
         </footer>
       )}
-      {!showPoweredBy && <div className="mt-16" />}
+      {!showPoweredBy && <div className="mt-8" />}
+
+      {/* AI Assistant */}
+      <AIAssistantWidget />
     </div>
   );
 }
