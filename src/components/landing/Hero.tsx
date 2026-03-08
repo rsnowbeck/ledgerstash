@@ -5,28 +5,28 @@ import { ArrowRight, ShieldCheck, Shield, Clock, Lock, CheckCircle2 } from "luci
 const featureCards = [
   {
     icon: Shield,
-    title: "No-Login Client Vault",
+    title: "Clients Upload in Seconds",
     description:
-      "Clients upload in seconds via secure upload links. No accounts to create, no passwords to reset.",
+      "Send a secure link. Clients upload W-2s, K-1s, and receipts without creating an account or remembering a password.",
   },
   {
     icon: Clock,
-    title: "No Per-User Fees",
+    title: "Your Whole Team — One Price",
     description:
-      "Pricing scales by active clients — not seats — so your whole team is included at no extra cost.",
+      "Add every staff member, every intern, every partner. Zero per-user fees. You only pay based on active clients.",
   },
   {
     icon: ShieldCheck,
-    title: "Secure PBC Management",
+    title: "Stop Chasing Documents",
     description:
-      "Track \"Provided By Client\" checklists so clients know exactly what to upload and you always see what's missing.",
+      "PBC checklists tell clients exactly what's missing. Automated reminders follow up so you don't have to.",
   },
 ];
 
 const trustItems = [
   "IRS 4557 · FTC Safeguards · GLBA Ready",
-  "No client accounts required",
-  "Priced by clients, not users (unlimited team members)",
+  "No client accounts or passwords",
+  "Unlimited team members on every plan",
 ];
 
 export function Hero() {
@@ -37,26 +37,26 @@ export function Hero() {
           {/* Pill */}
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2 text-sm text-muted-foreground mb-8 shadow-sm animate-slide-up">
             <Lock className="h-3.5 w-3.5 text-accent" />
-            Built for accounting firms, CPAs &amp; controllers — simple, secure, priced by clients
+            Replaces email attachments, shared drives &amp; clunky portals
           </div>
 
           {/* Headline */}
           <h1 className="text-[2.1rem] font-extrabold tracking-tight leading-[1.12] text-foreground sm:text-[3.2rem] lg:text-[3.8rem] mb-5 animate-slide-up" style={{ animationDelay: "0.06s" }}>
-            The Private Vault Built for
+            Collect Every Client Document
             <br />
-            <span className="text-accent">Accounting Firms</span>
+            <span className="text-accent">Before the Deadline</span>
           </h1>
 
           {/* Subheader */}
           <p className="mx-auto max-w-[44rem] text-base text-muted-foreground mb-10 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            Empowering Solo CPAs, Boutique Practices, and Controllers with secure, white-labeled document exchange and unlimited team collaboration.
+            Ledger Stash gives solo CPAs & boutique firms a secure, branded vault where clients upload tax documents, complete PBC checklists, and sign engagement letters — without creating an account.
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8 animate-slide-up" style={{ animationDelay: "0.16s" }}>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4 animate-slide-up" style={{ animationDelay: "0.16s" }}>
             <Button variant="hero" size="xl" asChild>
               <Link to="/signup" className="gap-2">
-                Start 14-Day Free Trial
+                Start Free — No Card Required
                 <ArrowRight className="h-5 w-5" />
               </Link>
             </Button>
@@ -66,6 +66,10 @@ export function Hero() {
               </a>
             </Button>
           </div>
+
+          <p className="text-xs text-muted-foreground mb-12 animate-slide-up" style={{ animationDelay: "0.18s" }}>
+            Setup takes under 5 minutes. Plans start at $29/mo.
+          </p>
 
           {/* Trust Row */}
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center text-sm text-muted-foreground mb-16 animate-slide-up" style={{ animationDelay: "0.22s" }}>
