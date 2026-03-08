@@ -327,7 +327,7 @@ export default function Signatures() {
           <Input
             placeholder="Search by recipient or requirement..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
             className="pl-9"
           />
         </div>

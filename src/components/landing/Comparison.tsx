@@ -188,7 +188,7 @@ export function Comparison() {
         </div>
 
         {/* PDF Download — No Gate */}
-        <div className="rounded-xl border border-border bg-muted/30 p-6 sm:p-8 text-center mt-10">
+        <div className="rounded-xl border border-border bg-card p-6 sm:p-8 text-center mt-10 shadow-sm">
           <h3 className="text-lg font-semibold text-foreground mb-1">
             Want to review the numbers later?
           </h3>
@@ -200,10 +200,10 @@ export function Comparison() {
             className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:bg-accent/90 transition-colors"
           >
             <Download className="h-5 w-5" />
-            Download PDF Guide
+            Download Free PDF Guide
           </button>
           <p className="mt-3 text-xs text-muted-foreground italic">
-            No email required.
+            No email required. Instant download.
           </p>
         </div>
 
