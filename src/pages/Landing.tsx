@@ -26,8 +26,8 @@ export default function Landing() {
         <Hero />
         <Features />
         <HowItWorks />
-        <Pricing />
         <SocialProof />
+        <Pricing />
         <Comparison />
         <UseCases />
         <FAQ />

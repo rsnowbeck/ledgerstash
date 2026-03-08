@@ -185,8 +185,8 @@ export default function Dashboard() {
   const statCards = [
     { label: "Active Clients", value: stats.totalClients.toString(), icon: Users, clickAction: '/clients' },
     { label: "Documents", value: stats.totalDocuments.toString(), icon: FolderOpen, clickAction: '/documents' },
-    { label: "Pending PBC", value: stats.pendingTasks.toString(), icon: Clock, clickAction: '/clients' },
-    { label: "Completed", value: stats.completedTasks.toString(), icon: CheckCircle, clickAction: '/clients' },
+    { label: "Pending PBC", value: stats.pendingTasks.toString(), icon: Clock, clickAction: '/requirements' },
+    { label: "Completed", value: stats.completedTasks.toString(), icon: CheckCircle, clickAction: '/requirements' },
   ];
 
   const pendingTasks = recentTasks.filter(t => t.status !== 'completed');

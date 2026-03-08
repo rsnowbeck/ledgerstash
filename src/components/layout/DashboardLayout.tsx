@@ -125,7 +125,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <aside className="fixed inset-y-0 left-0 w-64 bg-sidebar border-r border-sidebar-border pt-16" onClick={(e) => e.stopPropagation()}>
             <nav className="flex-1 p-4 space-y-1">
               {navItems.map((item) => {
-                const isActive = location.pathname === item.href;
+                const isActive = location.pathname === item.href || location.pathname.startsWith(item.href + '/');
                 return (
                   <Link
                     key={item.label}

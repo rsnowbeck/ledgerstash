@@ -243,36 +243,38 @@ export default function Settings() {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="profile" className="gap-2">
-              <User className="h-4 w-4" />
-              Profile
-            </TabsTrigger>
-            <TabsTrigger value="notifications" className="gap-2">
-              <Bell className="h-4 w-4" />
-              Notifications
-            </TabsTrigger>
-            <TabsTrigger value="security" className="gap-2">
-              <Shield className="h-4 w-4" />
-              Security
-            </TabsTrigger>
-            <TabsTrigger value="billing" className="gap-2">
-              <CreditCard className="h-4 w-4" />
-              Billing
-            </TabsTrigger>
-            <TabsTrigger value="organization" className="gap-2">
-              <Building2 className="h-4 w-4" />
-              Organization
-            </TabsTrigger>
-            <TabsTrigger value="team" className="gap-2">
-              <Users className="h-4 w-4" />
-              Team
-            </TabsTrigger>
-            <TabsTrigger value="emails" className="gap-2">
-              <Mail className="h-4 w-4" />
-              Emails
-            </TabsTrigger>
-          </TabsList>
+          <div className="overflow-x-auto -mx-6 px-6 lg:mx-0 lg:px-0">
+            <TabsList className="inline-flex w-auto min-w-max">
+              <TabsTrigger value="profile" className="gap-2">
+                <User className="h-4 w-4" />
+                Profile
+              </TabsTrigger>
+              <TabsTrigger value="notifications" className="gap-2">
+                <Bell className="h-4 w-4" />
+                Notifications
+              </TabsTrigger>
+              <TabsTrigger value="security" className="gap-2">
+                <Shield className="h-4 w-4" />
+                Security
+              </TabsTrigger>
+              <TabsTrigger value="billing" className="gap-2">
+                <CreditCard className="h-4 w-4" />
+                Billing
+              </TabsTrigger>
+              <TabsTrigger value="organization" className="gap-2">
+                <Building2 className="h-4 w-4" />
+                Organization
+              </TabsTrigger>
+              <TabsTrigger value="team" className="gap-2">
+                <Users className="h-4 w-4" />
+                Team
+              </TabsTrigger>
+              <TabsTrigger value="emails" className="gap-2">
+                <Mail className="h-4 w-4" />
+                Emails
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           {/* Profile Tab */}
           <TabsContent value="profile" className="space-y-6">
