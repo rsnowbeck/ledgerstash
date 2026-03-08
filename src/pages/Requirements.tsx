@@ -726,7 +726,7 @@ export default function Requirements() {
           <p className="text-muted-foreground max-w-md mx-auto mb-6">
             {searchQuery || statusFilter !== "all"
               ? "Try adjusting your search or filter."
-              : "Create your first compliance requirement—like a policy acknowledgment, NDA, or training confirmation—and start collecting signatures."}
+              : "Create your first document request — like a PBC list, engagement letter, or tax organizer — and start collecting from clients."}
           </p>
           {!searchQuery && statusFilter === "all" && (
             <Button variant="hero" onClick={handleNewRequirementClick}>
