@@ -1,4 +1,4 @@
-import { Users, FileText, Send, BarChart3, Download, Shield, Clock, Bell, Scale } from "lucide-react";
+import { Users, FileText, Send, BarChart3, Download, Shield, Clock, Bell } from "lucide-react";
 
 interface Feature {
   icon: any;
@@ -32,12 +32,8 @@ const features: Feature[] = [{
   description: "Your logo, your colors, your brand. Clients see your firm's identity — not ours. Build trust with a professional, branded experience."
 }, {
   icon: Download,
-  title: "Audit-Ready Export",
-  description: "Download organized document packages with timestamps, IP tracking, and full activity history for any client or engagement."
-}, {
-  icon: Scale,
-  title: "ESIGN & UETA Compliant Audit Trail",
-  description: "Every document acknowledgment captures IP address, timestamp, browser fingerprint, and signed name — with downloadable PDF certificates for legally defensible proof."
+  title: "Audit-Ready Export & Compliance",
+  description: "Download organized document packages with timestamps, IP tracking, and full audit trails. Every acknowledgment is ESIGN & UETA compliant with downloadable PDF certificates."
 }, {
   icon: FileText,
   title: "Engagement Letter Tracking",
