@@ -489,7 +489,7 @@ export default function Requirements() {
                 <Label htmlFor="description">Description</Label>
                 <Textarea
                   id="description"
-                  placeholder="Briefly describe what this requirement is about..."
+                  placeholder="Describe the documents needed from the client..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={3}
