@@ -14,6 +14,12 @@ import {
   ChevronRight,
   ChevronLeft,
   Rocket,
+  Paintbrush,
+  Bell,
+  UserPlus,
+  ScrollText,
+  Crown,
+  CheckCircle2,
 } from "lucide-react";
 
 import stepWelcome from "@/assets/onboarding/step-welcome.png";
@@ -30,9 +36,12 @@ interface WizardStep {
   instructions: string[];
   image: string;
   icon: React.ComponentType<{ className?: string }>;
+  /** Which tiers should see this step. Omit = all tiers */
+  tiers?: ("trial" | "solo" | "boutique" | "enterprise")[];
 }
 
-const wizardSteps: WizardStep[] = [
+const allSteps: WizardStep[] = [
+  // ── Core steps (all tiers) ──────────────────────────────
   {
     id: "welcome",
     title: "Welcome to Ledger Stash!",
@@ -41,8 +50,8 @@ const wizardSteps: WizardStep[] = [
       "Ledger Stash helps accounting firms collect, organize, and track client documents — like W-2s, 1099s, and bank statements — all in one secure place. Let's walk you through how it works.",
     instructions: [
       "This quick tour takes about 2 minutes",
-      "You'll learn the 4 key steps to collecting documents",
-      "You can revisit this tour anytime from Settings → Security",
+      "You'll learn the key steps to collecting documents",
+      "You can revisit this tour anytime from Settings",
     ],
     image: stepWelcome,
     icon: Shield,
@@ -107,7 +116,86 @@ const wizardSteps: WizardStep[] = [
     image: stepTrack,
     icon: BarChart3,
   },
+
+  // ── Boutique-specific step ──────────────────────────────
+  {
+    id: "white-label",
+    title: "Your Brand, Front & Center",
+    subtitle: "Boutique Firm feature",
+    description:
+      "Your clients see your firm's logo, colors, and name — never ours. Build trust with a fully branded client portal that looks like your own custom software.",
+    instructions: [
+      "Go to Settings → Organization to upload your logo",
+      "Choose a custom accent color to match your brand",
+      "The client portal removes all Ledger Stash branding",
+      "Auto-reminders use your firm's name and sender email",
+    ],
+    image: stepWelcome,
+    icon: Paintbrush,
+    tiers: ["boutique", "enterprise"],
+  },
+  {
+    id: "auto-reminders",
+    title: "Busy Season Auto-Pilot",
+    subtitle: "Boutique Firm feature",
+    description:
+      "Stop manually chasing documents. Set up automatic reminders that go out on a schedule until clients upload what you need. Set it and forget it.",
+    instructions: [
+      "Go to Settings → Auto-Reminders to enable",
+      "Set the reminder interval (every 3, 5, or 7 days)",
+      "Reminders stop automatically when the client completes the request",
+      "Track all sent reminders in the Reminder Log",
+    ],
+    image: stepTrack,
+    icon: Bell,
+    tiers: ["boutique", "enterprise"],
+  },
+  {
+    id: "team",
+    title: "Invite Your Team",
+    subtitle: "Boutique Firm feature",
+    description:
+      "Add your associates, staff accountants, or admin team. Everyone on your team gets full access to your client vault — no extra per-user fees.",
+    instructions: [
+      "Go to Settings → Team Management",
+      "Invite team members by email",
+      "Team members can manage clients, documents, and requests",
+      "All plans include unlimited team members",
+    ],
+    image: stepClients,
+    icon: UserPlus,
+    tiers: ["boutique", "enterprise"],
+  },
+
+  // ── Enterprise-specific step ────────────────────────────
+  {
+    id: "enterprise-features",
+    title: "Enterprise-Grade Control",
+    subtitle: "Enterprise Vault feature",
+    description:
+      "Your Enterprise Vault includes advanced audit logging, unlimited clients, and dedicated support. Scale confidently as your firm grows.",
+    instructions: [
+      "Advanced audit logs capture every action across your firm",
+      "Unlimited clients — no caps as you grow",
+      "Dedicated support with priority response times",
+      "Multi-firm management and API access coming soon",
+    ],
+    image: stepWelcome,
+    icon: ScrollText,
+    tiers: ["enterprise"],
+  },
 ];
+
+function getStepsForTier(plan: string | null | undefined): WizardStep[] {
+  const tier = (plan === "solo" || plan === "boutique" || plan === "enterprise")
+    ? plan
+    : "trial";
+
+  return allSteps.filter((step) => {
+    if (!step.tiers) return true; // core steps shown to everyone
+    return step.tiers.includes(tier);
+  });
+}
 
 export default function Welcome() {
   usePageTitle("Welcome");
@@ -116,11 +204,12 @@ export default function Welcome() {
   const { organization } = useOrganization(user);
   const [currentStep, setCurrentStep] = useState(0);
 
-  const step = wizardSteps[currentStep];
-  const Icon = step.icon;
-  const progress = ((currentStep + 1) / wizardSteps.length) * 100;
+  const steps = getStepsForTier(organization?.plan);
+  const step = steps[currentStep];
+  const Icon = step?.icon ?? Shield;
+  const progress = ((currentStep + 1) / steps.length) * 100;
   const isFirst = currentStep === 0;
-  const isLast = currentStep === wizardSteps.length - 1;
+  const isLast = currentStep === steps.length - 1;
 
   const completeTour = () => {
     if (organization?.id) {
@@ -153,6 +242,15 @@ export default function Welcome() {
     );
   }
 
+  if (!step) return null;
+
+  // Determine plan badge
+  const planLabel =
+    organization?.plan === "enterprise" ? "Enterprise Vault" :
+    organization?.plan === "boutique" ? "Boutique Firm" :
+    organization?.plan === "solo" ? "Solo CPA" :
+    "14-Day Free Trial";
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Top bar */}
@@ -162,11 +260,17 @@ export default function Welcome() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
               <Shield className="h-4 w-4 text-primary-foreground" />
             </div>
-            <span className="font-bold text-foreground">LedgerStash</span>
+            <span className="font-bold text-foreground">Ledger Stash</span>
           </div>
-          <Button variant="ghost" size="sm" onClick={skip} className="text-muted-foreground">
-            Skip tour
-          </Button>
+          <div className="flex items-center gap-3">
+            <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
+              <Crown className="h-3 w-3" />
+              {planLabel}
+            </span>
+            <Button variant="ghost" size="sm" onClick={skip} className="text-muted-foreground">
+              Skip tour
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -174,7 +278,7 @@ export default function Welcome() {
       <div className="container max-w-4xl pt-6 px-4">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-medium text-muted-foreground">
-            {currentStep + 1} of {wizardSteps.length}
+            {currentStep + 1} of {steps.length}
           </span>
           <span className="text-xs text-muted-foreground">{Math.round(progress)}%</span>
         </div>
@@ -191,7 +295,16 @@ export default function Welcome() {
                 <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                   <Icon className="h-5 w-5 text-primary" />
                 </div>
-                <p className="text-sm font-medium text-primary">{step.subtitle}</p>
+                <div>
+                  <p className="text-sm font-medium text-primary">{step.subtitle}</p>
+                  {step.tiers && (
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-accent">
+                      {step.tiers.includes("enterprise") && !step.tiers.includes("boutique")
+                        ? "Enterprise exclusive"
+                        : "Included in your plan"}
+                    </span>
+                  )}
+                </div>
               </div>
 
               <h1 className="text-3xl font-bold text-foreground leading-tight">
@@ -250,7 +363,7 @@ export default function Welcome() {
 
           {/* Step dots */}
           <div className="flex items-center justify-center gap-2 mt-10">
-            {wizardSteps.map((_, i) => (
+            {steps.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrentStep(i)}

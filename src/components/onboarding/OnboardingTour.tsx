@@ -28,7 +28,7 @@ interface TourStep {
 const tourSteps: TourStep[] = [
   {
     id: "welcome",
-    title: "Welcome to LedgerStash! 👋",
+    title: "Welcome to Ledger Stash! 👋",
     description: "Let's take a quick tour to help you get started. You'll learn how to create PBC lists and collect documents from your clients.",
     icon: Sparkles,
   },
