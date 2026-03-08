@@ -787,7 +787,7 @@ export default function Requirements() {
                       onClick={() => handleSendForSignature(requirement)}
                     >
                       <Send className="h-4 w-4" />
-                      Send for Signature
+                      Send to Clients
                     </Button>
                   )}
                   <DropdownMenu>
