@@ -534,7 +534,7 @@ export default function Requirements() {
           New Document Request
         </Button>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="sm:max-w-lg">
+          <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Create Document Request</DialogTitle>
               <DialogDescription>
