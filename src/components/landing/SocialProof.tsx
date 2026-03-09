@@ -1,29 +1,20 @@
-import { Shield, Star, Award, Quote } from "lucide-react";
+import { Clock, Zap, DollarSign, Shield, Award } from "lucide-react";
 
-const testimonials = [
+const cards = [
   {
-    quote:
-      "I used to spend 10+ hours a week chasing clients for documents over email. Now I send a link, and everything shows up in the vault — organized and on time.",
-    name: "Sarah Mitchell, CPA",
-    title: "Solo Practitioner · Denver, CO",
-    initials: "SM",
-    metric: "10+ hrs/week saved",
+    icon: Clock,
+    metric: "10+ Hours Recovered",
+    copy: "The average boutique firm spends 25% of their week chasing documents via email. We automated the nudge so you can focus on the advisory.",
   },
   {
-    quote:
-      "Our clients are executives who refuse to create accounts for anything. Ledger Stash's no-login portal was the only solution they'd actually use.",
-    name: "David Reyes, CPA",
-    title: "Tax Partner · 6-person firm · Austin, TX",
-    initials: "DR",
-    metric: "100% client adoption",
+    icon: Zap,
+    metric: "100% Barrier-Free",
+    copy: "Clients don't want another app or a 'secure' password they'll forget. Magic Links remove the friction that causes late filings.",
   },
   {
-    quote:
-      "We compared SmartVault ($210/mo) and TaxDome ($800/yr per seat). Ledger Stash gave us everything we needed for $29/mo — with unlimited team members.",
-    name: "Jennifer Lin, EA",
-    title: "Managing Partner · Growing Practice · Seattle, WA",
-    initials: "JL",
-    metric: "85% cost savings",
+    icon: DollarSign,
+    metric: "85% Software Savings",
+    copy: "Why pay for 12 months of a software seat for a 3-month intern? LedgerStash is the only vault that scales with your clients, not your payroll.",
   },
 ];
 
@@ -39,10 +30,10 @@ export function SocialProof() {
       <div className="container">
         <div className="text-center mb-12">
           <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2] mb-4">
-            CPAs Who Stopped Chasing Documents
+            The Cost of Doing Business as Usual
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed">
-            Hear from firms that replaced email attachments, shared drives, and expensive portals with Ledger Stash.
+            Your clients aren't difficult — your workflow is. Here's what changes when you stop duct-taping it together.
           </p>
         </div>
 
@@ -61,42 +52,22 @@ export function SocialProof() {
           ))}
         </div>
 
-        {/* Testimonials */}
+        {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {testimonials.map((t) => (
+          {cards.map((card) => (
             <div
-              key={t.name}
+              key={card.metric}
               className="p-6 rounded-xl border border-border bg-card flex flex-col"
             >
-              {/* Metric callout */}
-              <div className="inline-flex self-start items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent mb-4">
-                {t.metric}
+              <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                <card.icon className="h-5 w-5 text-accent" />
               </div>
-
-              <div className="flex gap-1 mb-4">
-                {[1, 2, 3, 4, 5].map((s) => (
-                  <Star
-                    key={s}
-                    className="h-4 w-4 fill-accent text-accent"
-                  />
-                ))}
-              </div>
-              <p className="text-sm text-foreground leading-relaxed mb-5 italic flex-1">
-                "{t.quote}"
+              <h3 className="text-lg font-bold text-foreground mb-2">
+                {card.metric}
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+                {card.copy}
               </p>
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <span className="text-sm font-bold text-primary">
-                    {t.initials}
-                  </span>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">
-                    {t.name}
-                  </p>
-                  <p className="text-xs text-muted-foreground">{t.title}</p>
-                </div>
-              </div>
             </div>
           ))}
         </div>
