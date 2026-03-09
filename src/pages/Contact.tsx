@@ -129,7 +129,7 @@ export default function Contact() {
             <p className="text-muted-foreground max-w-md mx-auto">Have a question about Ledger Stash or need help getting started? We're here to help.</p>
           </div>
 
-          <div className="card-elevated p-8">
+          <div id="form" className="card-elevated p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
