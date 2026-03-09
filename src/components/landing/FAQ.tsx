@@ -148,7 +148,7 @@ export function FAQ() {
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
             Have a technical question?{" "}
-            <a href="/contact" className="text-accent hover:underline">Chat with us</a>{" "}
+            <a href="/contact#form" className="text-accent hover:underline">Message Us</a>{" "}
             or read our{" "}
             <a href="/security" className="text-accent hover:underline">Security Whitepaper</a>.
           </p>
