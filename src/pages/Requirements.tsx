@@ -534,7 +534,7 @@ export default function Requirements() {
           New Document Request
         </Button>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="sm:max-w-lg">
+          <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Create Document Request</DialogTitle>
               <DialogDescription>
@@ -562,6 +562,7 @@ export default function Requirements() {
                   rows={3}
                 />
               </div>
+              {!vaultAttachment && (
               <div className="space-y-2">
                 <Label>Client</Label>
                 <Select value={selectedClientId} onValueChange={setSelectedClientId}>
@@ -578,6 +579,7 @@ export default function Requirements() {
                 </Select>
                 <p className="text-xs text-muted-foreground">Uploaded files will be saved to this client's Document Vault</p>
               </div>
+              )}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="frequency">Frequency</Label>
