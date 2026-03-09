@@ -624,6 +624,17 @@ export default function Requirements() {
         </Dialog>
       </div>
 
+      {/* Vault Picker */}
+      <VaultPicker
+        open={vaultPickerOpen}
+        onOpenChange={setVaultPickerOpen}
+        onSelect={(doc) => {
+          setVaultAttachment(doc);
+          setAttachmentFile(null);
+          if (fileInputRef.current) fileInputRef.current.value = "";
+        }}
+      />
+
       {/* PDF Fillable Form Prompt */}
       <Dialog open={pdfPromptOpen} onOpenChange={setPdfPromptOpen}>
         <DialogContent className="sm:max-w-md">
