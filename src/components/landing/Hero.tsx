@@ -52,7 +52,7 @@ export function Hero() {
           <p className="mx-auto max-w-[44rem] text-base text-muted-foreground mb-10 animate-slide-up" style={{ animationDelay: "0.1s" }}>
             The only document portal for boutique firms with{" "}
             <strong className="text-foreground font-semibold">Unlimited User Seats</strong>.
-            Stop paying $1,000/year per user and paying for months you don't use.
+            Stop paying $1,000/year per user for staff you only need three months out of the year.
           </p>
 
           {/* CTAs */}
