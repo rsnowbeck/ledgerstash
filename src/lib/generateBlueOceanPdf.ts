@@ -75,7 +75,7 @@ export async function generateBlueOceanPdf(): Promise<void> {
   doc.setTextColor(...WHITE);
   doc.setFontSize(28);
   doc.setFont("helvetica", "bold");
-  const title = "The Blue Ocean\nfor Solo CPAs";
+  const title = "The Success Tax Report:\nWhy Boutique Firms Are Overpaying\nfor Enterprise Bloat";
   doc.text(title, pw / 2, 95, { align: "center", lineHeightFactor: 1.3 });
 
   doc.setFontSize(13);
@@ -114,7 +114,7 @@ export async function generateBlueOceanPdf(): Promise<void> {
   doc.setTextColor(...TEXT_DARK);
   doc.setFontSize(11);
   doc.setFont("helvetica", "normal");
-  const introText = "SmartVault and TaxDome are designed for firms with 10+ employees. Solo CPAs and boutique firms get stuck paying for bloated features they'll never use.";
+  const introText = "SmartVault and TaxDome are designed for firms with 10+ employees. Solo practitioners and boutique firms get stuck paying for bloated features they'll never use.";
   const introLines = doc.splitTextToSize(introText, pw - 50);
   doc.text(introLines, 25, y);
   y += introLines.length * 7 + 15;
@@ -189,71 +189,64 @@ export async function generateBlueOceanPdf(): Promise<void> {
   // Comparison rows — identical to website Comparison.tsx
   const compRows = [
     {
-      feature: "Solo CPA Pricing",
+      feature: "Solo Firm Pricing",
       ls: "$29/month",
-      lsSub: "$290/year (save 16%)",
-      lsSub2: "All Plans Unlimited Users",
+      lsSub: "Unlimited team members included",
+      lsSub2: "",
       sv: "$210/month",
       svSub: "$1,800/year — 3-user minimum",
-      svSub2: "Price per user",
+      svSub2: "",
       td: "$800/year per seat",
       tdSub: "Annual contract only",
-      tdSub2: "Price per user",
+      tdSub2: "",
     },
     {
       feature: "User Minimums",
-      ls: "None — Solo CPA Plan",
-      sv: "3 users minimum (Business Pro)",
-      svSub: "2 users minimum (Accounting Pro/Unlimited)",
-      td: "Minimum 1 seat, but designed for teams",
+      ls: "None — start as a solo",
+      sv: "3-user minimum",
+      td: "1-seat minimum",
+    },
+    {
+      feature: "Maximum Staff Seats",
+      ls: "Unlimited (Included)",
+      sv: "Per-user pricing",
+      td: "Per-user pricing",
     },
     {
       feature: "Client Login Required?",
-      ls: "No — Frictionless Access",
-      sv: "Yes — Clients must create account",
-      td: "Yes — Account & mobile app required",
+      ls: "No — one-click magic link",
+      sv: "Yes",
+      td: "Yes",
     },
     {
-      feature: "PBC List Management",
-      ls: "Accounting-Specific Terminology",
-      sv: 'Generic "File Request" Tool',
-      td: 'Generic "File Request" Tool',
+      feature: "PBC List Terminology",
+      ls: "Built for accountants (W-2s, K-1s, PBC)",
+      sv: 'Generic "file requests"',
+      td: 'Generic "file requests"',
     },
     {
       feature: "White-Label Branding",
-      ls: "Full White-Labeling (All Plans)",
-      sv: "Custom Branded Client Portal (All Plans)",
-      td: "Client Portal Branding Only",
+      ls: "Logo + name on all plans",
+      sv: "Custom portal",
+      td: "Portal branding only",
     },
     {
-      feature: "Setup Time",
-      ls: "Minutes — No Training",
-      sv: "Days to Weeks — Requires Training",
-      td: "6–8 Weeks — Dedicated Onboarding Required",
+      feature: "Time to First Client",
+      ls: "Under 5 minutes",
+      sv: "Days to weeks",
+      td: "6–8 weeks",
     },
     {
-      feature: "Busy Season Automation",
-      ls: "Auto-Pilot Reminders",
-      sv: "Manual Document Requests (SmartRequestAI available)",
-      td: "Automated Requests (Requires Complex Setup)",
-    },
-    {
-      feature: "Compliance Focus",
+      feature: "Compliance",
       ls: "IRS 4557 · FTC Safeguards · GLBA",
-      sv: "SOC 2 Type 2 · IRS 4557 · FTC Safeguards · GLBA",
-      td: "General Security & Compliance",
+      sv: "SOC 2 · IRS 4557",
+      td: "General Security",
     },
     {
-      feature: "Target Audience",
-      ls: "Solo CPAs, Boutique Firms, Growing Practices, & Corporate Controllers",
-      sv: "Small to Large Firms",
-      td: "Small to Enterprise Firms",
-    },
-    {
-      feature: "Core Focus",
-      ls: "Secure Vault + PBC Management",
-      sv: "Document Management + Workflow + eSignatures",
-      td: "End-to-End Practice Management",
+      feature: "Audit Trail",
+      ls: "ESIGN/UETA (IP, Timestamp, Browser)",
+      sv: "Basic audit trail",
+      td: "Built-in eSign logs",
     },
   ];
 
@@ -490,7 +483,7 @@ export async function generateBlueOceanPdf(): Promise<void> {
     { title: "FTC Safeguards Rule", desc: "Meets Federal Trade Commission requirements for financial data protection." },
     { title: "GLBA Compliance", desc: "Gramm-Leach-Bliley Act compliant for safeguarding consumer financial information." },
     { title: "Bank-Grade Encryption", desc: "AES-256 encryption at rest, TLS 1.3 in transit. Your clients' data is protected at every step." },
-    { title: "Tokenized Signing Links", desc: "Every signing request uses a unique, time-limited token — no shared passwords, no reusable links." },
+    { title: "Audit-Ready Tracking", desc: "Every signature includes IP address, user agent, and timestamp — providing a forensic-grade audit trail for all tax professionals." },
   ];
 
   for (const f of secFeatures) {
@@ -581,7 +574,7 @@ export async function generateBlueOceanPdf(): Promise<void> {
 
   doc.setFontSize(8);
   doc.setTextColor(150, 150, 170);
-  doc.text("No email required to download this guide. Free resource for solo CPAs.", pw / 2, ph - 25, { align: "center" });
+  doc.text("No email required to download this guide. Free resource for solo firms and practitioners.", pw / 2, ph - 25, { align: "center" });
 
   // Save
   doc.save("LedgerStash_Comparison.pdf");

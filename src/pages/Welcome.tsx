@@ -234,7 +234,7 @@ export default function Welcome() {
   const planLabel =
     organization?.plan === "enterprise" ? "Enterprise Vault" :
     organization?.plan === "boutique" ? "Boutique Firm" :
-    organization?.plan === "solo" ? "Solo CPA" :
+    organization?.plan === "solo" ? "Solo Firm" :
     "14-Day Free Trial";
 
   return (

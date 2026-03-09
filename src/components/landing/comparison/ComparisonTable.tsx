@@ -2,7 +2,7 @@ import { CheckCircle2 } from "lucide-react";
 
 const rows = [
   {
-    feature: "Solo CPA Pricing",
+    feature: "Solo Firm Pricing",
     ledger: "$29/month",
     ledgerSub: "Unlimited team members included",
     smart: "$210/month",
@@ -13,15 +13,20 @@ const rows = [
   {
     feature: "User Minimums",
     ledger: "None — start as a solo",
-    smart: "3 users minimum (Business Pro)",
-    smartSub: "2 users minimum (Accounting Pro)",
-    tax: "1 seat minimum, team-oriented",
+    smart: "3-user minimum",
+    tax: "1-seat minimum",
+  },
+  {
+    feature: "Maximum Staff Seats",
+    ledger: "Unlimited (Included)",
+    smart: "Per-user pricing",
+    tax: "Per-user pricing",
   },
   {
     feature: "Client Login Required?",
     ledger: "No — one-click magic link",
-    smart: "Yes — clients must create an account",
-    tax: "Yes — account + mobile app required",
+    smart: "Yes",
+    tax: "Yes",
   },
   {
     feature: "PBC List Terminology",
@@ -32,40 +37,40 @@ const rows = [
   {
     feature: "White-Label Branding",
     ledger: "Logo + name on all plans",
-    smart: "Custom portal (all plans)",
+    smart: "Custom portal",
     tax: "Portal branding only",
   },
   {
-    feature: "Time to First Client Invite",
+    feature: "Time to First Client",
     ledger: "Under 5 minutes",
-    smart: "Days to weeks (training required)",
-    tax: "6–8 weeks (dedicated onboarding)",
-  },
-  {
-    feature: "Automated Reminders",
-    ledger: "Set-and-forget auto-pilot",
-    smart: "Manual requests (SmartRequestAI available)",
-    tax: "Automated but complex setup",
+    smart: "Days to weeks",
+    tax: "6–8 weeks",
   },
   {
     feature: "Compliance",
     ledger: "IRS 4557 · FTC Safeguards · GLBA",
-    smart: "SOC 2 · IRS 4557 · FTC · GLBA",
-    tax: "General security & compliance",
+    smart: "SOC 2 · IRS 4557",
+    tax: "General Security",
   },
   {
     feature: "Audit Trail",
-    ledger: "ESIGN/UETA compliant",
-    ledgerSub: "IP, timestamp, browser + PDF certificate",
+    ledger: "ESIGN/UETA (IP, Timestamp, Browser)",
     smart: "Basic audit trail",
-    tax: "Built-in eSignature logs",
+    tax: "Built-in eSign logs",
   },
 ];
 
-const greenValues = ["$29/month", "None — start as a solo", "No — one-click magic link", "Under 5 minutes"];
-const isGreenValue = (val: string) => greenValues.includes(val) || val.includes("Unlimited");
+const greenValues = [
+  "$29/month",
+  "None — start as a solo",
+  "No — one-click magic link",
+  "Under 5 minutes",
+  "Unlimited (Included)",
+];
+const isGreenValue = (val: string) =>
+  greenValues.includes(val) || val.includes("Unlimited");
 
-const redKeywords = ["$210", "$800", "$1,800"];
+const redKeywords = ["$210", "$800", "$1,800", "Per-user pricing"];
 const isRedValue = (val: string) => redKeywords.some((k) => val.includes(k));
 
 export function ComparisonTable() {

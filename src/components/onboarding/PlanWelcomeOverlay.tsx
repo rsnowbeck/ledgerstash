@@ -28,11 +28,11 @@ const planConfig: Record<string, {
   accentLabel: string;
 }> = {
   solo: {
-    title: "Welcome to Solo CPA!",
+    title: "Welcome to Solo Firm!",
     subtitle: "Your personal client vault is ready",
     description:
       "You now have a secure, branded vault for up to 25 active clients. Here's what's included in your plan:",
-    accentLabel: "Solo CPA",
+    accentLabel: "Solo Firm",
     features: [
       { icon: FolderOpen, label: "Secure document vault with per-client folders" },
       { icon: FileText, label: "PBC task lists with accounting-specific templates" },
@@ -47,7 +47,7 @@ const planConfig: Record<string, {
       "You've unlocked powerful team and automation features for up to 100 active clients. Here's everything in your plan:",
     accentLabel: "Boutique Firm",
     features: [
-      { icon: FolderOpen, label: "Everything in Solo CPA, plus..." },
+      { icon: FolderOpen, label: "Everything in Solo Firm, plus..." },
       { icon: Paintbrush, label: "Full white-labeling — no Ledger Stash branding" },
       { icon: Bell, label: "Busy Season auto-reminders on autopilot" },
       { icon: UserPlus, label: "Unlimited team member accounts" },

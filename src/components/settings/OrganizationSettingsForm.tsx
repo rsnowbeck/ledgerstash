@@ -151,7 +151,7 @@ export function OrganizationSettingsForm({ organization, onUpdate }: Organizatio
 
   const planDisplayNames: Record<string, string> = {
     trial: "Trial",
-    solo: "Solo CPA",
+    solo: "Solo Firm",
     boutique: "Boutique Firm",
     enterprise: "Enterprise Vault",
     // Legacy fallbacks

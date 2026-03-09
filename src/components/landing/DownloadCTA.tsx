@@ -21,25 +21,25 @@ interface DownloadCTAProps {
 
 const COPY = {
   comparison: {
-    headline: "Download the Full Solo CPA Cost Savings Guide",
+    headline: "Download the Full Solo Firm Cost Savings Guide",
     description:
       "Get a portable PDF with side-by-side pricing, feature comparisons, and the math that shows how Ledger Stash saves you $2,100+ per year.",
     cta: "Download the Cost Savings Guide (PDF)",
-    resourceName: "Solo CPA Cost Savings Guide",
+    resourceName: "Solo Firm Cost Savings Guide",
   },
   pricing: {
     headline: "See how we save you $2,100+ per year",
     description:
-      "Compare Ledger Stash to enterprise tools like TaxDome and SmartVault — and see why solo CPAs are switching.",
+      "Compare Ledger Stash to enterprise tools like TaxDome and SmartVault — and see why solo firms are switching.",
     cta: "Get the Free Comparison PDF",
     resourceName: "Pricing Comparison PDF",
   },
   footer: {
-    headline: "Free Resource: The 2026 Solo CPA Tech Stack Guide",
+    headline: "Free Resource: The 2026 Solo Firm Tech Stack Guide",
     description:
-      "Everything a solo CPA needs to evaluate secure client portals, PBC tools, and compliance software — in one guide.",
+      "Everything a solo firm needs to evaluate secure client portals, PBC tools, and compliance software — in one guide.",
     cta: "Download Free Guide",
-    resourceName: "2026 Solo CPA Tech Stack Guide",
+    resourceName: "2026 Solo Firm Tech Stack Guide",
   },
 } as const;
 
