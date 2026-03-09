@@ -122,6 +122,7 @@ export default function Requirements() {
     setFrequency("one-time");
     setDueDate("");
     setAttachmentFile(null);
+    setVaultAttachment(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
     setTemplatePickerOpen(false);
     setDialogOpen(true);
