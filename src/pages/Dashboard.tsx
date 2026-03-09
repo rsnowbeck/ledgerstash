@@ -529,11 +529,16 @@ export default function Dashboard() {
                         <th className="px-5 py-3">Document</th>
                         <th className="px-5 py-3">Client</th>
                         <th className="px-5 py-3">Date</th>
+                        <th className="px-5 py-3 w-10"></th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border/50">
                       {recentDocs.map((doc: any) => (
-                        <tr key={doc.id} className="group hover:bg-muted/30 transition-colors">
+                        <tr
+                          key={doc.id}
+                          className="group hover:bg-muted/30 transition-colors cursor-pointer"
+                          onClick={() => handleDownloadDoc(doc)}
+                        >
                           <td className="px-5 py-3">
                             <div className="flex items-center gap-3">
                               <div className={`p-2 rounded-lg ${
@@ -556,6 +561,28 @@ export default function Dashboard() {
                           </td>
                           <td className="px-5 py-3 text-sm text-muted-foreground">
                             {new Date(doc.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          </td>
+                          <td className="px-5 py-3" onClick={(e) => e.stopPropagation()}>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={() => handleDownloadDoc(doc)}>
+                                  <Download className="h-4 w-4 mr-2" />
+                                  Download
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => handleDeleteDoc(doc)}
+                                  className="text-destructive focus:text-destructive"
+                                >
+                                  <Trash2 className="h-4 w-4 mr-2" />
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </td>
                         </tr>
                       ))}
