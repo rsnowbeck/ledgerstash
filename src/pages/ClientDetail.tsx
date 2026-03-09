@@ -665,60 +665,96 @@ export default function ClientDetail() {
             </div>
           ) : (
             <div className="space-y-3">
+              {/* Bulk actions bar */}
+              <div className="flex items-center gap-3 p-3 rounded-lg border border-border bg-muted/30">
+                <Checkbox
+                  checked={selectedTaskIds.size === tasks.length && tasks.length > 0}
+                  onCheckedChange={toggleAllTasks}
+                  aria-label="Select all tasks"
+                />
+                <span className="text-sm text-muted-foreground">
+                  {selectedTaskIds.size > 0
+                    ? `${selectedTaskIds.size} of ${tasks.length} selected`
+                    : `${tasks.length} tasks`}
+                </span>
+                {selectedTaskIds.size > 0 && (
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={handleBulkDeleteTasks}
+                    disabled={bulkDeleting}
+                    className="ml-auto"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    {bulkDeleting ? "Deleting..." : `Delete (${selectedTaskIds.size})`}
+                  </Button>
+                )}
+              </div>
+
               {tasks.map(task => (
-                <div key={task.id} className="p-4 rounded-lg border border-border bg-card flex items-start justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-medium text-foreground">{task.title}</h3>
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${
-                        task.priority === 'high' ? 'bg-destructive/10 text-destructive' :
-                        task.priority === 'medium' ? 'bg-warning/10 text-warning' :
-                        'bg-muted text-muted-foreground'
-                      }`}>
-                        {task.priority}
-                      </span>
-                    </div>
-                    {task.description && <p className="text-sm text-muted-foreground mb-2">{task.description}</p>}
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                      {task.due_date && (
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          Due {new Date(task.due_date).toLocaleDateString()}
+                <div key={task.id} className={`p-4 rounded-lg border bg-card flex items-start gap-3 ${
+                  selectedTaskIds.has(task.id) ? 'border-primary/40 bg-primary/5' : 'border-border'
+                }`}>
+                  <Checkbox
+                    checked={selectedTaskIds.has(task.id)}
+                    onCheckedChange={() => toggleTaskSelection(task.id)}
+                    className="mt-1"
+                    aria-label={`Select ${task.title}`}
+                  />
+                  <div className="flex-1 min-w-0 flex items-start justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="font-medium text-foreground">{task.title}</h3>
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${
+                          task.priority === 'high' ? 'bg-destructive/10 text-destructive' :
+                          task.priority === 'medium' ? 'bg-warning/10 text-warning' :
+                          'bg-muted text-muted-foreground'
+                        }`}>
+                          {task.priority}
                         </span>
-                      )}
+                      </div>
+                      {task.description && <p className="text-sm text-muted-foreground mb-2">{task.description}</p>}
+                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                        {task.due_date && (
+                          <span className="flex items-center gap-1">
+                            <Clock className="h-3 w-3" />
+                            Due {new Date(task.due_date).toLocaleDateString()}
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Select value={task.status} onValueChange={v => handleUpdateTaskStatus(task.id, v)}>
-                      <SelectTrigger className="w-[130px]">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="pending">Pending</SelectItem>
-                        <SelectItem value="in_progress">In Progress</SelectItem>
-                        <SelectItem value="completed">Completed</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => handleEditTask(task)}>
-                          <Pencil className="h-4 w-4 mr-2" />
-                          Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          className="text-destructive"
-                          onClick={() => handleDeleteTask(task.id, task.title)}
-                        >
-                          <Trash2 className="h-4 w-4 mr-2" />
-                          Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <div className="flex items-center gap-2">
+                      <Select value={task.status} onValueChange={v => handleUpdateTaskStatus(task.id, v)}>
+                        <SelectTrigger className="w-[130px]">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="pending">Pending</SelectItem>
+                          <SelectItem value="in_progress">In Progress</SelectItem>
+                          <SelectItem value="completed">Completed</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => handleEditTask(task)}>
+                            <Pencil className="h-4 w-4 mr-2" />
+                            Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="text-destructive"
+                            onClick={() => handleDeleteTask(task.id, task.title)}
+                          >
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                   </div>
                 </div>
               ))}
