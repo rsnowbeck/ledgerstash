@@ -96,6 +96,8 @@ export default function Requirements() {
   const [description, setDescription] = useState("");
   const [frequency, setFrequency] = useState("one-time");
   const [dueDate, setDueDate] = useState("");
+  const [selectedClientId, setSelectedClientId] = useState("");
+  const [clientsList, setClientsList] = useState<{ id: string; first_name: string; last_name: string }[]>([]);
   
   // Attachment state
   const [attachmentFile, setAttachmentFile] = useState<File | null>(null);
@@ -122,6 +124,7 @@ export default function Requirements() {
     setDescription("");
     setFrequency("one-time");
     setDueDate("");
+    setSelectedClientId("");
     setAttachmentFile(null);
     setVaultAttachment(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
@@ -143,6 +146,26 @@ export default function Requirements() {
       fetchRecipientCount();
     }
   }, [organization?.id]);
+
+  useEffect(() => {
+    if (user?.id) fetchClients();
+  }, [user?.id]);
+
+  const fetchClients = async () => {
+    if (!user?.id) return;
+    const { data: fm } = await supabase
+      .from('firm_members')
+      .select('firm_id')
+      .eq('profile_id', user.id)
+      .maybeSingle();
+    if (!fm) return;
+    const { data } = await supabase
+      .from('clients')
+      .select('id, first_name, last_name')
+      .eq('firm_id', fm.firm_id)
+      .order('last_name');
+    setClientsList(data || []);
+  };
 
   const fetchRecipientCount = async () => {
     if (!organization?.id) return;
@@ -259,15 +282,22 @@ export default function Requirements() {
           })
           .eq('id', newReq.id);
       }
-      // If there's a file to upload, upload it now
+      // If there's a file to upload, upload it and also save to vault
       else if (attachmentFile && newReq) {
         setUploading(true);
-        const fileExt = attachmentFile.name.split(".").pop();
-        const fileName = `${organization.id}/${newReq.id}/${Date.now()}.${fileExt}`;
+        
+        // Upload to client-documents bucket (vault) if client selected
+        const vaultPath = selectedClientId
+          ? `${selectedClientId}/${Date.now()}-${attachmentFile.name}`
+          : null;
+        
+        // Also upload to requirement-attachments for the requirement
+        const reqFileExt = attachmentFile.name.split(".").pop();
+        const reqFileName = `${organization.id}/${newReq.id}/${Date.now()}.${reqFileExt}`;
 
         const { error: uploadError } = await supabase.storage
           .from("requirement-attachments")
-          .upload(fileName, attachmentFile, { upsert: true });
+          .upload(reqFileName, attachmentFile, { upsert: true });
 
         if (uploadError) {
           console.error("Upload error:", uploadError);
@@ -275,7 +305,7 @@ export default function Requirements() {
         } else {
           const { data: urlData } = supabase.storage
             .from("requirement-attachments")
-            .getPublicUrl(fileName);
+            .getPublicUrl(reqFileName);
 
           await supabase
             .from('requirements')
@@ -285,6 +315,25 @@ export default function Requirements() {
             })
             .eq('id', newReq.id);
         }
+
+        // Save to Document Vault if client selected
+        if (vaultPath && selectedClientId && user?.id) {
+          const { error: vaultUploadError } = await supabase.storage
+            .from("client-documents")
+            .upload(vaultPath, attachmentFile);
+
+          if (!vaultUploadError) {
+            await supabase.from('documents').insert({
+              client_id: selectedClientId,
+              uploaded_by: user.id,
+              file_name: attachmentFile.name,
+              file_type: attachmentFile.type,
+              file_size_bytes: attachmentFile.size,
+              storage_path: vaultPath,
+            });
+          }
+        }
+
         setUploading(false);
       }
 
@@ -304,6 +353,7 @@ export default function Requirements() {
       setDescription("");
       setFrequency("one-time");
       setDueDate("");
+      setSelectedClientId("");
       setAttachmentFile(null);
       setVaultAttachment(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -511,6 +561,22 @@ export default function Requirements() {
                   onChange={(e) => setDescription(e.target.value)}
                   rows={3}
                 />
+              </div>
+              <div className="space-y-2">
+                <Label>Client</Label>
+                <Select value={selectedClientId} onValueChange={setSelectedClientId}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a client (optional)" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {clientsList.map(c => (
+                      <SelectItem key={c.id} value={c.id}>
+                        {c.first_name} {c.last_name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground">Uploaded files will be saved to this client's Document Vault</p>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
