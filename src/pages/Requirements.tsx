@@ -37,6 +37,7 @@ import {
   Paperclip,
   Wand2,
   FileText as FileTextIcon,
+  FolderOpen,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -53,6 +54,7 @@ import { PlanLimitBanner } from "@/components/common/PlanLimitBanner";
 import { SendForSignatureDialog } from "@/components/requirements/SendForSignatureDialog";
 import { TemplatePickerDialog } from "@/components/requirements/TemplatePickerDialog";
 import { RequirementTemplate } from "@/components/requirements/RequirementTemplates";
+import { VaultPicker } from "@/components/documents/VaultPicker";
 
 interface Requirement {
   id: string;
@@ -99,6 +101,8 @@ export default function Requirements() {
   const [attachmentFile, setAttachmentFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [vaultPickerOpen, setVaultPickerOpen] = useState(false);
+  const [vaultAttachment, setVaultAttachment] = useState<{ name: string; url: string; storagePath: string } | null>(null);
 
   const handleSendForSignature = (requirement: Requirement) => {
     setSelectedRequirement(requirement);
@@ -119,6 +123,7 @@ export default function Requirements() {
     setFrequency("one-time");
     setDueDate("");
     setAttachmentFile(null);
+    setVaultAttachment(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
     setTemplatePickerOpen(false);
     setDialogOpen(true);
@@ -206,6 +211,7 @@ export default function Requirements() {
 
   const handleRemoveFile = () => {
     setAttachmentFile(null);
+    setVaultAttachment(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -243,8 +249,18 @@ export default function Requirements() {
 
       if (createError) throw createError;
 
+      // If vault attachment selected, use its URL directly
+      if (vaultAttachment && newReq) {
+        await supabase
+          .from('requirements')
+          .update({
+            attachment_url: vaultAttachment.url,
+            attachment_name: vaultAttachment.name,
+          })
+          .eq('id', newReq.id);
+      }
       // If there's a file to upload, upload it now
-      if (attachmentFile && newReq) {
+      else if (attachmentFile && newReq) {
         setUploading(true);
         const fileExt = attachmentFile.name.split(".").pop();
         const fileName = `${organization.id}/${newReq.id}/${Date.now()}.${fileExt}`;
@@ -257,7 +273,6 @@ export default function Requirements() {
           console.error("Upload error:", uploadError);
           toast.error("Requirement created but file upload failed");
         } else {
-          // Get public URL and update the requirement
           const { data: urlData } = supabase.storage
             .from("requirement-attachments")
             .getPublicUrl(fileName);
@@ -277,7 +292,8 @@ export default function Requirements() {
       setDialogOpen(false);
       
       // If a PDF was uploaded, show the fillable form prompt
-      const isPdf = attachmentFile?.name?.toLowerCase().endsWith(".pdf");
+      const attachName = attachmentFile?.name || vaultAttachment?.name || "";
+      const isPdf = attachName.toLowerCase().endsWith(".pdf");
       if (isPdf && newReq) {
         setCreatedRequirementId(newReq.id);
         setCreatedRequirementTitle(title);
@@ -289,6 +305,7 @@ export default function Requirements() {
       setFrequency("one-time");
       setDueDate("");
       setAttachmentFile(null);
+      setVaultAttachment(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
       fetchRequirements();
     } catch (error: any) {
@@ -520,17 +537,17 @@ export default function Requirements() {
               </div>
               <div className="space-y-2">
                 <Label>Attachment</Label>
-                {attachmentFile ? (
+                {attachmentFile || vaultAttachment ? (
                   <div className="flex items-center gap-3 p-3 rounded-lg border border-border bg-muted/30">
                     <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
                       <Paperclip className="h-5 w-5 text-accent" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-foreground truncate">
-                        {attachmentFile.name}
+                        {attachmentFile?.name || vaultAttachment?.name}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {(attachmentFile.size / 1024 / 1024).toFixed(2)} MB
+                        {vaultAttachment ? "From Document Vault" : `${((attachmentFile?.size || 0) / 1024 / 1024).toFixed(2)} MB`}
                       </p>
                     </div>
                     <Button
@@ -544,17 +561,29 @@ export default function Requirements() {
                     </Button>
                   </div>
                 ) : (
-                  <div
-                    className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-accent/50 transition-colors cursor-pointer"
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
-                    <p className="text-sm text-muted-foreground">
-                      Click to upload or drag and drop
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      PDF, Word, or images up to 10MB
-                    </p>
+                  <div className="space-y-2">
+                    <div
+                      className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-accent/50 transition-colors cursor-pointer"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+                      <p className="text-sm text-muted-foreground">
+                        Click to upload or drag and drop
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        PDF, Word, or images up to 10MB
+                      </p>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="w-full"
+                      onClick={() => setVaultPickerOpen(true)}
+                    >
+                      <FolderOpen className="h-4 w-4 mr-2" />
+                      Choose from Document Vault
+                    </Button>
                   </div>
                 )}
                 <input
@@ -594,6 +623,17 @@ export default function Requirements() {
           </DialogContent>
         </Dialog>
       </div>
+
+      {/* Vault Picker */}
+      <VaultPicker
+        open={vaultPickerOpen}
+        onOpenChange={setVaultPickerOpen}
+        onSelect={(doc) => {
+          setVaultAttachment(doc);
+          setAttachmentFile(null);
+          if (fileInputRef.current) fileInputRef.current.value = "";
+        }}
+      />
 
       {/* PDF Fillable Form Prompt */}
       <Dialog open={pdfPromptOpen} onOpenChange={setPdfPromptOpen}>
