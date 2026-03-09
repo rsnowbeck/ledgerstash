@@ -468,9 +468,11 @@ export default function Recipients() {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => window.location.href = `/requirements`}
+                            >
                               <Mail className="h-4 w-4 mr-2" />
-                              Send Request
+                              Send Document Request
                             </DropdownMenuItem>
                             <DropdownMenuItem 
                               className="text-destructive"
