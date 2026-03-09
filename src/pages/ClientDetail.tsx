@@ -352,7 +352,41 @@ export default function ClientDetail() {
     }
   };
 
-  if (authLoading || loading) {
+  const handleBulkDeleteTasks = async () => {
+    if (selectedTaskIds.size === 0) return;
+    if (!confirm(`Delete ${selectedTaskIds.size} selected task(s)? This cannot be undone.`)) return;
+    setBulkDeleting(true);
+    try {
+      const { error } = await supabase.from('tasks').delete().in('id', Array.from(selectedTaskIds));
+      if (error) throw error;
+      toast.success(`${selectedTaskIds.size} task(s) deleted`);
+      setSelectedTaskIds(new Set());
+      loadClientData();
+    } catch (error: any) {
+      toast.error(error.message || "Failed to delete tasks");
+    } finally {
+      setBulkDeleting(false);
+    }
+  };
+
+  const toggleTaskSelection = (taskId: string) => {
+    setSelectedTaskIds(prev => {
+      const next = new Set(prev);
+      if (next.has(taskId)) next.delete(taskId);
+      else next.add(taskId);
+      return next;
+    });
+  };
+
+  const toggleAllTasks = () => {
+    if (selectedTaskIds.size === tasks.length) {
+      setSelectedTaskIds(new Set());
+    } else {
+      setSelectedTaskIds(new Set(tasks.map(t => t.id)));
+    }
+  };
+
+
     return (
       <DashboardLayout>
         <div className="space-y-6">
