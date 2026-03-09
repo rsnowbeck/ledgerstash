@@ -31,6 +31,12 @@ import { BulkReminderDialog } from "@/components/signatures/BulkReminderDialog";
 import { toast } from "sonner";
 import { generateSignaturePdf } from "@/lib/generateSignaturePdf";
 import { exportSignaturesToCSV } from "@/lib/csvExport";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface SigningRequest {
   id: string;
