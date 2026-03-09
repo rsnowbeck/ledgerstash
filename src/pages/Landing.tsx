@@ -24,11 +24,11 @@ export default function Landing() {
       <Header />
       <main>
         <Hero />
+        <Comparison />
         <Features />
         <HowItWorks />
         <SocialProof />
         <Pricing />
-        <Comparison />
         <UseCases />
         <FAQ />
       </main>
