@@ -24,13 +24,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Search, FileSignature, Clock, CheckCircle2, XCircle, Send, Download, FileText, Bell, AlertTriangle, Loader2 } from "lucide-react";
+import { Search, FileSignature, Clock, CheckCircle2, XCircle, Send, Download, FileText, Bell, AlertTriangle, Loader2, Trash2, MoreHorizontal } from "lucide-react";
 import { format, isPast } from "date-fns";
 import { useResendSigningLink } from "@/hooks/useResendSigningLink";
 import { BulkReminderDialog } from "@/components/signatures/BulkReminderDialog";
 import { toast } from "sonner";
 import { generateSignaturePdf } from "@/lib/generateSignaturePdf";
 import { exportSignaturesToCSV } from "@/lib/csvExport";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface SigningRequest {
   id: string;
@@ -250,6 +256,25 @@ export default function Signatures() {
     toast.success(`Exported ${completedRequests.length} completed signature(s)`);
   };
 
+  const handleDeleteRequest = async (request: SigningRequest) => {
+    const name = request.recipient?.full_name || "this contact";
+    if (!confirm(`Remove tracking for ${name}? This cannot be undone.`)) return;
+    
+    try {
+      const { error } = await supabase
+        .from("signing_requests")
+        .delete()
+        .eq("id", request.id);
+      
+      if (error) throw error;
+      setSigningRequests(prev => prev.filter(r => r.id !== request.id));
+      toast.success(`Removed tracking for ${name}`);
+    } catch (error) {
+      console.error("Error deleting signing request:", error);
+      toast.error("Failed to remove. Please try again.");
+    }
+  };
+
   const pendingCount = signingRequests.filter(
     (r) => r.status === "pending" && !(r.expires_at && new Date(r.expires_at) < new Date())
   ).length;
@@ -417,6 +442,14 @@ export default function Signatures() {
                           <Send className="h-4 w-4" />
                         </Button>
                       )}
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => handleDeleteRequest(request)}
+                        className="h-7 px-2 text-destructive hover:text-destructive"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -479,36 +512,37 @@ export default function Signatures() {
                           )}
                         </TableCell>
                         <TableCell>
-                          <div className="flex gap-1">
-                            {request.status === "completed" && (
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                onClick={() => handleDownloadPdf(request)}
-                                className="h-8 px-2"
-                                title="Download PDF certificate"
-                              >
-                                <FileText className="h-4 w-4" />
-                                <span className="sr-only">Download PDF</span>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+                                <MoreHorizontal className="h-4 w-4" />
                               </Button>
-                            )}
-                            {isRequestPendingOrExpired(request) && (
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                onClick={() => handleResendClick(request)}
-                                disabled={resending === request.id}
-                                className="hover:bg-primary hover:text-primary-foreground"
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              {isRequestPendingOrExpired(request) && (
+                                <DropdownMenuItem
+                                  onClick={() => handleResendClick(request)}
+                                  disabled={resending === request.id}
+                                >
+                                  <Send className="h-4 w-4 mr-2" />
+                                  {resending === request.id ? "Sending..." : "Resend"}
+                                </DropdownMenuItem>
+                              )}
+                              {request.status === "completed" && (
+                                <DropdownMenuItem onClick={() => handleDownloadPdf(request)}>
+                                  <FileText className="h-4 w-4 mr-2" />
+                                  Download PDF
+                                </DropdownMenuItem>
+                              )}
+                              <DropdownMenuItem
+                                onClick={() => handleDeleteRequest(request)}
+                                className="text-destructive focus:text-destructive"
                               >
-                                {resending === request.id ? (
-                                  <Loader2 className="h-4 w-4 animate-spin" />
-                                ) : (
-                                  <Send className="h-4 w-4" />
-                                )}
-                                {resending === request.id ? "Sending..." : "Resend"}
-                              </Button>
-                            )}
-                          </div>
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Remove
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </TableCell>
                       </TableRow>
                     ))}
