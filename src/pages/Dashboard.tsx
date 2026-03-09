@@ -18,7 +18,18 @@ import {
   Upload,
   AlertCircle,
   Send,
+  Download,
+  Trash2,
+  MoreHorizontal,
+  ShieldCheck,
 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { useOrganization } from "@/hooks/useOrganization";
@@ -191,6 +202,42 @@ export default function Dashboard() {
       setClientsWithTasks(clientTaskMap);
     } catch (error) {
       console.error('Error fetching stats:', error);
+    }
+  };
+
+  const handleDownloadDoc = async (doc: any) => {
+    try {
+      const { data, error } = await supabase.storage
+        .from('client-documents')
+        .createSignedUrl(doc.storage_path, 60);
+      if (error) throw error;
+      window.open(data.signedUrl, '_blank');
+    } catch (error) {
+      console.error('Download error:', error);
+      toast.error('Failed to download document');
+    }
+  };
+
+  const handleDeleteDoc = async (doc: any) => {
+    if (!confirm(`Delete "${doc.file_name}"? This cannot be undone.`)) return;
+    try {
+      const { error: storageError } = await supabase.storage
+        .from('client-documents')
+        .remove([doc.storage_path]);
+      if (storageError) throw storageError;
+
+      const { error: dbError } = await supabase
+        .from('documents')
+        .delete()
+        .eq('id', doc.id);
+      if (dbError) throw dbError;
+
+      setRecentDocs(prev => prev.filter(d => d.id !== doc.id));
+      setStats(prev => ({ ...prev, totalDocuments: Math.max(0, prev.totalDocuments - 1) }));
+      toast.success('Document deleted');
+    } catch (error) {
+      console.error('Delete error:', error);
+      toast.error('Failed to delete document');
     }
   };
 
@@ -438,20 +485,14 @@ export default function Dashboard() {
               </div>
             )}
 
-            {/* Security Badge */}
-            <div className="rounded-2xl p-6 text-primary-foreground shadow-lg relative overflow-hidden bg-primary">
-              <Lock className="absolute -right-4 -bottom-4 w-24 h-24 text-primary-foreground/10 rotate-12" />
-              <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="bg-primary-foreground/20 p-1.5 rounded-lg">
-                    <Lock className="w-4 h-4 text-primary-foreground" />
-                  </div>
-                  <span className="text-xs font-bold uppercase tracking-widest text-primary-foreground/70">AES-256 Encrypted</span>
-                </div>
-                <h3 className="text-lg font-bold mb-2">Your Private Vault</h3>
-                <p className="text-sm text-primary-foreground/80 leading-relaxed">
-                  All documents are encrypted at rest and in transit. Only you and your clients can access these files.
-                </p>
+            {/* Security Trust Badge */}
+            <div className="rounded-2xl p-5 border border-border bg-card flex items-center gap-4">
+              <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                <ShieldCheck className="h-5 w-5 text-accent" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-foreground">AES-256 Encrypted</p>
+                <p className="text-xs text-muted-foreground">All documents are encrypted at rest and in transit.</p>
               </div>
             </div>
           </div>
@@ -488,11 +529,16 @@ export default function Dashboard() {
                         <th className="px-5 py-3">Document</th>
                         <th className="px-5 py-3">Client</th>
                         <th className="px-5 py-3">Date</th>
+                        <th className="px-5 py-3 w-10"></th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border/50">
                       {recentDocs.map((doc: any) => (
-                        <tr key={doc.id} className="group hover:bg-muted/30 transition-colors">
+                        <tr
+                          key={doc.id}
+                          className="group hover:bg-muted/30 transition-colors cursor-pointer"
+                          onClick={() => handleDownloadDoc(doc)}
+                        >
                           <td className="px-5 py-3">
                             <div className="flex items-center gap-3">
                               <div className={`p-2 rounded-lg ${
@@ -515,6 +561,28 @@ export default function Dashboard() {
                           </td>
                           <td className="px-5 py-3 text-sm text-muted-foreground">
                             {new Date(doc.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          </td>
+                          <td className="px-5 py-3" onClick={(e) => e.stopPropagation()}>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={() => handleDownloadDoc(doc)}>
+                                  <Download className="h-4 w-4 mr-2" />
+                                  Download
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => handleDeleteDoc(doc)}
+                                  className="text-destructive focus:text-destructive"
+                                >
+                                  <Trash2 className="h-4 w-4 mr-2" />
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </td>
                         </tr>
                       ))}

@@ -36,7 +36,7 @@ const baseNavItems = [
 ];
 
 const ownerNavItems = [
-  { label: "Owner Dashboard", icon: BarChart3, href: "/owner" },
+  { label: "Account", icon: BarChart3, href: "/owner" },
   { label: "Inquiries", icon: MessageSquare, href: "/owner/inquiries" },
 ];
 
