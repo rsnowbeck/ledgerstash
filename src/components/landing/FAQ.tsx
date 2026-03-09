@@ -10,6 +10,11 @@ import { Button } from "@/components/ui/button";
 
 const essentialFaqs = [
   {
+    question: "Why do you price by active clients instead of per user?",
+    answer:
+      'Most accounting software penalizes you for growing your team by charging "per seat." At Ledger Stash, we believe your internal collaboration should be frictionless. By pricing based on the number of clients you serve, we allow you to add as many staff members, partners, or contractors as you need at no extra cost. We only grow when your business grows.',
+  },
+  {
     question: "What exactly is Ledger Stash?",
     answer:
       "Ledger Stash is a secure client vault where your clients upload tax documents, complete PBC checklists, and sign engagement letters — without creating an account. Think of it as the organized, encrypted version of emailing files back and forth.",
