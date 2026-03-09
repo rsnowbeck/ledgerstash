@@ -359,12 +359,12 @@ export default function Signatures() {
               <FileSignature className="h-8 w-8 text-muted-foreground" />
             </div>
             <h3 className="text-lg font-semibold text-foreground mb-2">
-              No signing requests
+              No document requests yet
             </h3>
             <p className="text-muted-foreground max-w-sm mx-auto">
               {searchQuery || statusFilter !== "all"
                 ? "No requests match your filters"
-                : "Send requirements to recipients to create signing requests"}
+                : "Send a document request to a contact to get started"}
             </p>
           </div>
         ) : (
