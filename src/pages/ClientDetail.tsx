@@ -75,17 +75,21 @@ export default function ClientDetail() {
   const loadClientData = async () => {
     if (!id) return;
     try {
-      const [clientRes, docsRes, tasksRes, foldersRes] = await Promise.all([
+      const [clientRes, docsRes, tasksRes, foldersRes, contactsRes] = await Promise.all([
         supabase.from('clients').select('*').eq('id', id).single(),
         supabase.from('documents').select('*').eq('client_id', id).order('created_at', { ascending: false }),
         supabase.from('tasks').select('*').eq('client_id', id).order('created_at', { ascending: false }),
         supabase.from('folders').select('*').eq('client_id', id).order('name'),
+        organization?.id
+          ? supabase.from('recipients').select('id', { count: 'exact', head: true }).eq('client_id', id).eq('organization_id', organization.id).eq('is_deleted', false)
+          : Promise.resolve({ count: 0 }),
       ]);
 
       setClient(clientRes.data);
       setDocuments(docsRes.data || []);
       setTasks(tasksRes.data || []);
       setFolders(foldersRes.data || []);
+      setContactCount(contactsRes.count || 0);
     } catch (error) {
       console.error('Error loading client:', error);
     } finally {
