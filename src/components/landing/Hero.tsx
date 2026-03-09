@@ -5,9 +5,9 @@ import { ArrowRight, ShieldCheck, Shield, Clock, Lock, CheckCircle2 } from "luci
 const featureCards = [
   {
     icon: Shield,
-    title: "Clients Upload in Seconds",
+    title: "Kill the "Password Reset" Loop",
     description:
-      "Send a secure link. Clients upload W-2s, K-1s, and receipts without creating an account or remembering a password.",
+      "Stop acting as your clients' IT support. LedgerStash uses secure Magic Links so clients can upload W-2s and receipts with one click. No accounts to create, no passwords to forget, and no more excuses for late documents.",
   },
   {
     icon: Clock,
