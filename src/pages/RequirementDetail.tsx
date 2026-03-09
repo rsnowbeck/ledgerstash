@@ -563,14 +563,14 @@ export default function RequirementDetail() {
       </div>
 
       {/* Tabbed Content */}
-      {/* Only show tabs if there are multiple sections */}
-      {(formTemplate || showFormBuilder) ? (
       <Tabs value={activeTab} onValueChange={setActiveTab}>
+        {(formTemplate || showFormBuilder) && (
         <TabsList className="mb-4">
           <TabsTrigger value="recipients">Recipients</TabsTrigger>
           {(formTemplate || showFormBuilder) && <TabsTrigger value="form">Form Builder</TabsTrigger>}
           {formTemplate?.status === "published" && <TabsTrigger value="submissions">Submissions</TabsTrigger>}
         </TabsList>
+        )}
 
         <TabsContent value="recipients">
           <div className="card-elevated overflow-hidden">
@@ -680,17 +680,16 @@ export default function RequirementDetail() {
               requirementId={requirement.id}
               organizationId={organization.id}
               pdfUrl={requirement.attachment_url}
-              pdfName={requirement.attachment_name}
-              templateId={formTemplate?.id}
-              onPublish={() => fetchFormTemplate()}
+              existingTemplate={formTemplate}
+              onSave={() => fetchRequirementDetails()}
+              autoDetect={searchParams.get("form") === "detect"}
             />
           </TabsContent>
         )}
 
-        {formTemplate?.status === "published" && (
+        {formTemplate?.status === "published" && organization && (
           <TabsContent value="submissions">
-            <div className="card-elevated p-6">
-              <h2 className="text-lg font-semibold text-foreground mb-4">Submissions</h2>
+            <div className="card-elevated overflow-hidden p-6">
               <SubmissionsTable
                 templateId={formTemplate.id}
                 fields={
@@ -703,99 +702,6 @@ export default function RequirementDetail() {
           </TabsContent>
         )}
       </Tabs>
-      ) : (
-        /* No tabs needed - just show recipients directly */
-        <div>
-          <div className="card-elevated overflow-hidden">
-            <div className="p-6 border-b border-border flex items-center justify-between">
-              <div>
-                <h2 className="text-lg font-semibold text-foreground">Recipients</h2>
-                <p className="text-sm text-muted-foreground">
-                  {totalCount} recipient{totalCount !== 1 ? "s" : ""} assigned to this requirement
-                </p>
-              </div>
-              {(requirement.status === "published" || requirement.status === "completed") && (
-                <Button variant="outline" size="sm" onClick={() => setSendDialogOpen(true)}>
-                  <UserPlus className="h-4 w-4 mr-2" />
-                  Add Recipients
-                </Button>
-              )}
-            </div>
-
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Recipient</TableHead>
-                  <TableHead>Department</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Sent</TableHead>
-                  <TableHead>Signed</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {signingRequests.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                      {requirement.status === "published" 
-                        ? "No recipients assigned yet. Click 'Add Recipients' above to send signing requests."
-                        : "This requirement is still a draft. Publish it first to add recipients and send signing requests."}
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  signingRequests.map((request) => {
-                    const statusConfig = getStatusBadge(request.status);
-                    return (
-                      <TableRow key={request.id} className="group">
-                        <TableCell>
-                          <div>
-                            <p className="font-medium text-foreground">{request.recipient.full_name}</p>
-                            <p className="text-sm text-muted-foreground">{request.recipient.email}</p>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-muted-foreground">
-                          {request.recipient.department || "—"}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className={statusConfig.className}>
-                            <statusConfig.icon className="h-3 w-3 mr-1" />
-                            {statusConfig.label}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <SentHistoryCell signingRequestId={request.id} sentAt={request.sent_at} />
-                        </TableCell>
-                        <TableCell className="text-muted-foreground">
-                          {request.completed_at ? format(new Date(request.completed_at), "MMM d, yyyy") : "—"}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {request.status === "pending" && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleResend(request.id)}
-                              disabled={resending === request.id}
-                            >
-                              {resending === request.id ? (
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                              ) : (
-                                <>
-                                  <Send className="h-4 w-4 mr-1" />
-                                  Resend
-                                </>
-                              )}
-                            </Button>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
-      )}
       {/* Send for Signature Dialog */}
       {organization && (
         <SendForSignatureDialog
