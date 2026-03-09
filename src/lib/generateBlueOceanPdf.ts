@@ -483,7 +483,7 @@ export async function generateBlueOceanPdf(): Promise<void> {
     { title: "FTC Safeguards Rule", desc: "Meets Federal Trade Commission requirements for financial data protection." },
     { title: "GLBA Compliance", desc: "Gramm-Leach-Bliley Act compliant for safeguarding consumer financial information." },
     { title: "Bank-Grade Encryption", desc: "AES-256 encryption at rest, TLS 1.3 in transit. Your clients' data is protected at every step." },
-    { title: "Tokenized Signing Links", desc: "Every signing request uses a unique, time-limited token — no shared passwords, no reusable links." },
+    { title: "Audit-Ready Tracking", desc: "Every signature includes IP address, user agent, and timestamp — providing a forensic-grade audit trail for all tax professionals." },
   ];
 
   for (const f of secFeatures) {
