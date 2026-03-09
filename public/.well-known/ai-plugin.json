@@ -7,10 +7,6 @@
   "auth": {
     "type": "none"
   },
-  "api": {
-    "type": "openapi",
-    "url": "https://ledgerstash.com/openapi.json"
-  },
   "logo_url": "https://ledgerstash.com/og-image.png",
   "contact_email": "hello@ledgerstash.com",
   "legal_info_url": "https://ledgerstash.com/terms"
