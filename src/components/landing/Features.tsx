@@ -74,31 +74,36 @@ export function Features() {
   return (
     <section id="features" className="pt-24 pb-24 bg-card">
       <div className="container">
-        {/* Row 1: The Collection Workflow */}
-        <div className="text-center mb-12">
-          <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2] mb-4">
-            The Collection Workflow
+        {/* Super-Header */}
+        <div className="text-center mb-6">
+          <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2]">
+            Replace Chaos With a Real System
           </h2>
-          <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed">
-            Everything you need to collect, organize, and safeguard client documents — without the enterprise price tag.
-          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8 mb-20">
+        {/* Section Sub-headline */}
+        <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed text-center mb-16">
+          Everything a boutique firm needs to collect, organize, and safeguard client documents — without the enterprise price tag or a 6-week setup headache.
+        </p>
+
+        {/* Row 1 Category Header */}
+        <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em] text-center mb-8">
+          The Collection Workflow
+        </h3>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8 mb-16">
           {collectionFeatures.map((feature) => (
             <FeatureCard key={feature.title} feature={feature} />
           ))}
         </div>
 
-        {/* Row 2: The Firm Management */}
-        <div className="text-center mb-12">
-          <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2] mb-4">
-            The Firm Management
-          </h2>
-          <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed">
-            Run your practice like a modern firm — branded, compliant, and in complete control.
-          </p>
-        </div>
+        {/* Divider */}
+        <div className="border-t border-border mx-auto max-w-xs mb-16" />
+
+        {/* Row 2 Category Header */}
+        <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em] text-center mb-8">
+          The Firm Management
+        </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
           {firmFeatures.map((feature) => (
