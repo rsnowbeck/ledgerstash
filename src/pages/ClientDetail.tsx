@@ -70,7 +70,7 @@ export default function ClientDetail() {
 
   useEffect(() => {
     if (user?.id && id) loadClientData();
-  }, [user?.id, id]);
+  }, [user?.id, id, organization?.id]);
 
   const loadClientData = async () => {
     if (!id) return;
