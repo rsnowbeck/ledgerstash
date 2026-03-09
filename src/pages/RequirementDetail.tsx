@@ -680,9 +680,9 @@ export default function RequirementDetail() {
               requirementId={requirement.id}
               organizationId={organization.id}
               pdfUrl={requirement.attachment_url}
-              existingTemplate={formTemplate}
-              onSave={() => fetchRequirementDetails()}
-              autoDetect={searchParams.get("form") === "detect"}
+              pdfName={requirement.attachment_name}
+              templateId={formTemplate?.id}
+              onPublish={() => fetchRequirementDetails()}
             />
           </TabsContent>
         )}
