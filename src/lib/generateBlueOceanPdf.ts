@@ -75,7 +75,7 @@ export async function generateBlueOceanPdf(): Promise<void> {
   doc.setTextColor(...WHITE);
   doc.setFontSize(28);
   doc.setFont("helvetica", "bold");
-  const title = "The Blue Ocean\nfor Solo CPAs";
+  const title = "The Success Tax Report:\nWhy Boutique Firms Are Overpaying\nfor Enterprise Bloat";
   doc.text(title, pw / 2, 95, { align: "center", lineHeightFactor: 1.3 });
 
   doc.setFontSize(13);
