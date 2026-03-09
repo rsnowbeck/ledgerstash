@@ -562,18 +562,6 @@ export default function Requirements() {
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    <div
-                      className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-accent/50 transition-colors cursor-pointer"
-                      onClick={() => fileInputRef.current?.click()}
-                    >
-                      <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
-                      <p className="text-sm text-muted-foreground">
-                        Click to upload or drag and drop
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        PDF, Word, or images up to 10MB
-                      </p>
-                    </div>
                     <Button
                       type="button"
                       variant="outline"
@@ -584,6 +572,18 @@ export default function Requirements() {
                       <FolderOpen className="h-4 w-4 mr-2" />
                       Choose from Document Vault
                     </Button>
+                    <div
+                      className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-accent/50 transition-colors cursor-pointer"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+                      <p className="text-sm text-muted-foreground">
+                        Or upload from device
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        PDF, Word, or images up to 10MB
+                      </p>
+                    </div>
                   </div>
                 )}
                 <input
