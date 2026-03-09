@@ -282,15 +282,22 @@ export default function Requirements() {
           })
           .eq('id', newReq.id);
       }
-      // If there's a file to upload, upload it now
+      // If there's a file to upload, upload it and also save to vault
       else if (attachmentFile && newReq) {
         setUploading(true);
-        const fileExt = attachmentFile.name.split(".").pop();
-        const fileName = `${organization.id}/${newReq.id}/${Date.now()}.${fileExt}`;
+        
+        // Upload to client-documents bucket (vault) if client selected
+        const vaultPath = selectedClientId
+          ? `${selectedClientId}/${Date.now()}-${attachmentFile.name}`
+          : null;
+        
+        // Also upload to requirement-attachments for the requirement
+        const reqFileExt = attachmentFile.name.split(".").pop();
+        const reqFileName = `${organization.id}/${newReq.id}/${Date.now()}.${reqFileExt}`;
 
         const { error: uploadError } = await supabase.storage
           .from("requirement-attachments")
-          .upload(fileName, attachmentFile, { upsert: true });
+          .upload(reqFileName, attachmentFile, { upsert: true });
 
         if (uploadError) {
           console.error("Upload error:", uploadError);
@@ -298,7 +305,7 @@ export default function Requirements() {
         } else {
           const { data: urlData } = supabase.storage
             .from("requirement-attachments")
-            .getPublicUrl(fileName);
+            .getPublicUrl(reqFileName);
 
           await supabase
             .from('requirements')
@@ -308,6 +315,25 @@ export default function Requirements() {
             })
             .eq('id', newReq.id);
         }
+
+        // Save to Document Vault if client selected
+        if (vaultPath && selectedClientId && user?.id) {
+          const { error: vaultUploadError } = await supabase.storage
+            .from("client-documents")
+            .upload(vaultPath, attachmentFile);
+
+          if (!vaultUploadError) {
+            await supabase.from('documents').insert({
+              client_id: selectedClientId,
+              uploaded_by: user.id,
+              file_name: attachmentFile.name,
+              file_type: attachmentFile.type,
+              file_size_bytes: attachmentFile.size,
+              storage_path: vaultPath,
+            });
+          }
+        }
+
         setUploading(false);
       }
 
