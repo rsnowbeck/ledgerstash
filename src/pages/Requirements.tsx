@@ -53,6 +53,7 @@ import { PlanLimitBanner } from "@/components/common/PlanLimitBanner";
 import { SendForSignatureDialog } from "@/components/requirements/SendForSignatureDialog";
 import { TemplatePickerDialog } from "@/components/requirements/TemplatePickerDialog";
 import { RequirementTemplate } from "@/components/requirements/RequirementTemplates";
+import { VaultPicker } from "@/components/documents/VaultPicker";
 
 interface Requirement {
   id: string;
