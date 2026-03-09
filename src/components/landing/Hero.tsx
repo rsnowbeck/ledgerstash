@@ -35,28 +35,31 @@ export function Hero() {
       <div className="container">
         <div className="mx-auto max-w-5xl text-center">
           {/* Pill */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2 text-sm text-muted-foreground mb-8 shadow-sm animate-slide-up">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2 text-sm text-muted-foreground mb-8 shadow-sm animate-slide-up uppercase tracking-wider font-medium">
             <Lock className="h-3.5 w-3.5 text-accent" />
-            Replaces email attachments, shared drives &amp; clunky portals
+            Secure Client Vault &amp; PBC Tracker
           </div>
 
           {/* Headline */}
           <h1 className="text-[2.1rem] font-extrabold tracking-tight leading-[1.12] text-foreground sm:text-[3.2rem] lg:text-[3.8rem] mb-5 animate-slide-up" style={{ animationDelay: "0.06s" }}>
-            The Private Vault Built for
+            Stop Paying a{" "}
+            <span className="text-accent">"Success Tax"</span>
             <br />
-            <span className="text-accent">Accounting Firms</span>
+            on Your Staff.
           </h1>
 
           {/* Subheader */}
           <p className="mx-auto max-w-[44rem] text-base text-muted-foreground mb-10 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            Ledger Stash gives solo CPAs & boutique firms a secure, branded vault where clients upload tax documents, complete PBC checklists, and sign engagement letters — without creating an account.
+            The only document portal for boutique firms with{" "}
+            <strong className="text-foreground font-semibold">Unlimited User Seats</strong>.
+            Stop paying $1,000/year per user just to collect files from your clients.
           </p>
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4 animate-slide-up" style={{ animationDelay: "0.16s" }}>
             <Button variant="hero" size="xl" asChild>
               <Link to="/signup" className="gap-2">
-                Start Free — No Card Required
+                Start Your 14-Day Free Trial
                 <ArrowRight className="h-5 w-5" />
               </Link>
             </Button>
@@ -68,7 +71,7 @@ export function Hero() {
           </div>
 
           <p className="text-xs text-muted-foreground mb-12 animate-slide-up" style={{ animationDelay: "0.18s" }}>
-            Setup takes under 5 minutes. Plans start at $29/mo.
+            No Credit Card Required | IRS Pub 4557 Compliant
           </p>
 
           {/* Trust Row */}
