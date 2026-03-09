@@ -485,16 +485,6 @@ export default function Dashboard() {
               </div>
             )}
 
-            {/* Security Trust Badge */}
-            <div className="rounded-2xl p-5 border border-border bg-card flex items-center gap-4">
-              <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                <ShieldCheck className="h-5 w-5 text-accent" />
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-foreground">AES-256 Encrypted</p>
-                <p className="text-xs text-muted-foreground">All documents are encrypted at rest and in transit.</p>
-              </div>
-            </div>
           </div>
 
           {/* Right Column: Document Vault + Recent Clients */}

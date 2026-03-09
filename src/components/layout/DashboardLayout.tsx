@@ -88,7 +88,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           })}
         </nav>
 
-        <div className="p-4 border-t border-sidebar-border space-y-1">
+        <div className="p-4 border-t border-sidebar-border space-y-2">
+          <div className="flex items-center gap-2 px-3 py-1.5 text-xs text-sidebar-foreground/50">
+            <ShieldCheck className="h-3.5 w-3.5" />
+            <span>AES-256 Encrypted</span>
+          </div>
           <Link
             to="/contact"
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-colors w-full"
