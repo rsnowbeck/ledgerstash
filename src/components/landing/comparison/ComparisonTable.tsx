@@ -58,6 +58,12 @@ const rows = [
     smart: "Basic audit trail",
     tax: "Built-in eSign logs",
   },
+  {
+    feature: "Best For",
+    ledger: "Solo firms, boutique practices, EAs, and Controllers",
+    smart: "Small to large firms",
+    tax: "Small to enterprise firms",
+  },
 ];
 
 const greenValues = [
