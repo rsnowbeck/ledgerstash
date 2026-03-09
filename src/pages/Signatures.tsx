@@ -24,7 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Search, FileSignature, Clock, CheckCircle2, XCircle, Send, Download, FileText, Bell, AlertTriangle, Loader2 } from "lucide-react";
+import { Search, FileSignature, Clock, CheckCircle2, XCircle, Send, Download, FileText, Bell, AlertTriangle, Loader2, Trash2, MoreHorizontal } from "lucide-react";
 import { format, isPast } from "date-fns";
 import { useResendSigningLink } from "@/hooks/useResendSigningLink";
 import { BulkReminderDialog } from "@/components/signatures/BulkReminderDialog";
