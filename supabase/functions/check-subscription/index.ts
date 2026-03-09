@@ -45,14 +45,21 @@ serve(async (req) => {
     if (!authHeader) throw new Error("No authorization header provided");
 
     const token = authHeader.replace("Bearer ", "");
-    const { data: userData, error: userError } = await supabaseClient.auth.getUser(token);
-    if (userError) throw new Error(`Authentication error: ${userError.message}`);
-    const user = userData.user;
-    if (!user?.email) throw new Error("User not authenticated or email not available");
-    logStep("User authenticated", { userId: user.id, email: user.email });
+
+    // Use getClaims for reliable JWT validation with signing-keys
+    const { data: claimsData, error: claimsError } = await supabaseClient.auth.getClaims(token);
+    if (claimsError || !claimsData?.claims) {
+      throw new Error(`Authentication error: ${claimsError?.message || "Invalid token"}`);
+    }
+
+    const userId = claimsData.claims.sub as string;
+    const userEmail = claimsData.claims.email as string;
+
+    if (!userEmail) throw new Error("User email not available in token");
+    logStep("User authenticated", { userId, email: userEmail });
 
     const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
-    const customers = await stripe.customers.list({ email: user.email, limit: 1 });
+    const customers = await stripe.customers.list({ email: userEmail, limit: 1 });
 
     if (customers.data.length === 0) {
       logStep("No Stripe customer found");
@@ -89,11 +96,10 @@ serve(async (req) => {
       const { data: profile } = await supabaseClient
         .from("profiles")
         .select("organization_id")
-        .eq("id", user.id)
+        .eq("id", userId)
         .single();
 
       if (profile?.organization_id) {
-        // Update plan to actual tier and set appropriate client limits
         const planLimits: Record<string, { recipient_limit: number | null; requirement_limit: number | null }> = {
           solo: { recipient_limit: 25, requirement_limit: null },
           boutique: { recipient_limit: 100, requirement_limit: null },
