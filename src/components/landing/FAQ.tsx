@@ -107,11 +107,10 @@ export function FAQ() {
         <div className="mx-auto max-w-3xl">
           <div className="text-center">
             <h2 className="text-[2.25rem] sm:text-[2.5rem] font-bold text-foreground leading-[1.2] mb-4">
-              Common Questions
+              Everything You Need to Know
             </h2>
             <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed mb-12">
-              Quick answers about pricing, security, and how Ledger Stash
-              works day-to-day.
+              Quick, transparent answers about security, the "Success Tax," and how Magic Links protect your firm's margins.
             </p>
           </div>
 
