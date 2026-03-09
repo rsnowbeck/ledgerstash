@@ -256,6 +256,25 @@ export default function Signatures() {
     toast.success(`Exported ${completedRequests.length} completed signature(s)`);
   };
 
+  const handleDeleteRequest = async (request: SigningRequest) => {
+    const name = request.recipient?.full_name || "this contact";
+    if (!confirm(`Remove tracking for ${name}? This cannot be undone.`)) return;
+    
+    try {
+      const { error } = await supabase
+        .from("signing_requests")
+        .delete()
+        .eq("id", request.id);
+      
+      if (error) throw error;
+      setSigningRequests(prev => prev.filter(r => r.id !== request.id));
+      toast.success(`Removed tracking for ${name}`);
+    } catch (error) {
+      console.error("Error deleting signing request:", error);
+      toast.error("Failed to remove. Please try again.");
+    }
+  };
+
   const pendingCount = signingRequests.filter(
     (r) => r.status === "pending" && !(r.expires_at && new Date(r.expires_at) < new Date())
   ).length;
