@@ -209,6 +209,7 @@ export default function Requirements() {
 
   const handleRemoveFile = () => {
     setAttachmentFile(null);
+    setVaultAttachment(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
