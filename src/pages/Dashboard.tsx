@@ -288,7 +288,7 @@ export default function Dashboard() {
             <Users className="h-8 w-8" />
           </div>
           <h2 className="text-xl font-semibold text-foreground mb-2">
-            Get started with Ledger Stash
+            Get started with LedgerStash
           </h2>
           <p className="text-muted-foreground max-w-md mx-auto mb-6">
             Add your first client to start exchanging documents and managing PBC task lists securely.
