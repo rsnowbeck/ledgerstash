@@ -73,7 +73,7 @@ export function PBCTemplatePicker({ open, onOpenChange, onSelect }: PBCTemplateP
           </DialogDescription>
         </DialogHeader>
 
-        <ScrollArea className="flex-1 min-h-0">
+        <ScrollArea className="flex-1 min-h-0 max-h-[40vh]">
           <div className="space-y-4 pr-2">
             {categories.map((category) => (
               <div key={category}>
