@@ -96,6 +96,8 @@ export default function Requirements() {
   const [description, setDescription] = useState("");
   const [frequency, setFrequency] = useState("one-time");
   const [dueDate, setDueDate] = useState("");
+  const [selectedClientId, setSelectedClientId] = useState("");
+  const [clientsList, setClientsList] = useState<{ id: string; first_name: string; last_name: string }[]>([]);
   
   // Attachment state
   const [attachmentFile, setAttachmentFile] = useState<File | null>(null);
