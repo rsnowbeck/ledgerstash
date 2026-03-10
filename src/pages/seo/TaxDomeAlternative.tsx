@@ -140,7 +140,7 @@ export default function TaxDomeAlternative() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-28 lg:pt-36 pb-16 lg:pb-24">
+        <section className="pt-36 lg:pt-44 pb-16 lg:pb-24">
           <div className="container">
             <div className="mx-auto max-w-5xl text-center">
               <h1 className="text-[2.1rem] font-extrabold tracking-tight leading-[1.12] text-foreground sm:text-[3.2rem] lg:text-[3.8rem] mb-5">
