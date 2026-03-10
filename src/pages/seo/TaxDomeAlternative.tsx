@@ -99,13 +99,13 @@ export default function TaxDomeAlternative() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-28 lg:pt-40 pb-16 lg:pb-24">
+        <section className="pt-20 lg:pt-28 pb-16 lg:pb-24">
           <div className="container">
-            <div className="mx-auto max-w-3xl text-center">
-              <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl pb-6 leading-[1.3] sm:leading-[1.25]">
+            <div className="mx-auto max-w-5xl text-center">
+              <h1 className="text-[2.1rem] font-extrabold tracking-tight leading-[1.12] text-foreground sm:text-[3.2rem] lg:text-[3.8rem] mb-5">
                 The <span className="text-accent">TaxDome Alternative</span> for Firms That Don't Need a CRM.
               </h1>
-              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto" style={{ lineHeight: 1.6 }}>
+              <p className="mx-auto max-w-[44rem] text-base text-muted-foreground mb-10">
                 Stop paying $800/year per seat for a complex practice management system you don't use. LedgerStash is the streamlined vault built for speed, security, and zero "Success Tax" on your staff.
               </p>
               <Button variant="hero" size="xl" asChild>
@@ -114,7 +114,7 @@ export default function TaxDomeAlternative() {
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               </Button>
-              <p className="mt-4 text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground mb-12 mt-4">
                 No credit card required. 14-day free trial.
               </p>
             </div>
