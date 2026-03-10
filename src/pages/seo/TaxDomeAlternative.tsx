@@ -3,7 +3,8 @@ import { Footer } from "@/components/landing/Footer";
 import { PageSEO } from "@/components/seo/PageSEO";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, CheckCircle2, Clock, Users, Shield } from "lucide-react";
+import { ArrowRight, CheckCircle2, Clock, Users, Shield, Download } from "lucide-react";
+import { generateMigrationGuidePdf } from "@/lib/generateMigrationGuidePdf";
 
 const whySwitchCards = [
   {
