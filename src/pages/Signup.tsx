@@ -91,11 +91,11 @@ export default function Signup() {
           <div className="card-elevated p-8">
             <form onSubmit={handleSignup} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="company">Firm Name</Label>
+                <Label htmlFor="company">Your Firm Name</Label>
                 <Input
                   id="company"
                   type="text"
-                  placeholder="Smith & Associates CPA"
+                  placeholder="Enter your firm name..."
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
                   required
