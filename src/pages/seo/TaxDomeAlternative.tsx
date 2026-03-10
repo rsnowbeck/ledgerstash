@@ -5,6 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, CheckCircle2, Clock, Users, Shield, Download } from "lucide-react";
 import { generateMigrationGuidePdf } from "@/lib/generateMigrationGuidePdf";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const whySwitchCards = [
   {
@@ -87,14 +93,49 @@ const comparisonRows = [
   },
 ];
 
+const faqItems = [
+  {
+    question: "How long does it take to switch from TaxDome to LedgerStash?",
+    answer:
+      'Most firms switch in under 30 minutes. Unlike TaxDome, which requires weeks of "Academy" training, LedgerStash is a dedicated vault. You can upload your client folders in bulk and send your first Magic Link request immediately.',
+  },
+  {
+    question: "Does LedgerStash include unlimited staff seats?",
+    answer:
+      "Yes. While TaxDome charges $800/year per user, LedgerStash offers unlimited staff seats for a flat monthly fee. This allows you to add seasonal staff, admins, and partners without increasing your software overhead.",
+  },
+  {
+    question: "Can clients use LedgerStash without creating an account?",
+    answer:
+      "Yes. LedgerStash uses secure, passwordless Magic Links. Your clients can upload documents in one click from any device without needing to remember another login or reset a password.",
+  },
+];
+
 export default function TaxDomeAlternative() {
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title="TaxDome Alternative for Solo & Boutique Firms | Ledger Stash"
-        description="Looking for a TaxDome alternative without per-seat pricing or weeks of training? Ledger Stash gives solo CPAs a branded vault with unlimited team seats for $29/month."
-        keywords="TaxDome alternative, TaxDome competitor, TaxDome vs LedgerStash, solo CPA client portal, accounting firm document management, practice management alternative"
+        title="TaxDome Alternative: The Simple, No-Success-Tax Vault for Firms"
+        description="Tired of paying $800/seat for a complex CRM? LedgerStash is the streamlined TaxDome alternative for boutique firms. Unlimited seats, 5-minute setup."
+        keywords="TaxDome alternative, TaxDome alternatives, TaxDome competitor, TaxDome vs LedgerStash, TaxDome pricing per user, simple client portal for tax pros, TaxDome alternative for solo firms, solo CPA client portal, accounting firm document management, practice management alternative"
         canonical="/taxdome-alternative"
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <Header />
       <main>
@@ -246,6 +287,29 @@ export default function TaxDomeAlternative() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="py-16">
+          <div className="container">
+            <div className="mx-auto max-w-3xl">
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-10">
+                Frequently Asked Questions
+              </h2>
+              <Accordion type="single" collapsible className="w-full">
+                {faqItems.map((item, i) => (
+                  <AccordionItem key={i} value={`faq-${i}`}>
+                    <AccordionTrigger className="text-left text-foreground font-medium">
+                      {item.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground leading-relaxed">
+                      {item.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
             </div>
           </div>
         </section>
