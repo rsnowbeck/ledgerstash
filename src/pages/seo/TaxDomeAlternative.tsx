@@ -347,7 +347,7 @@ export default function TaxDomeAlternative() {
               Ready to stop paying the Success Tax?
             </h2>
             <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
-              Unlimited team seats. No user minimums. Built for boutique firms.
+              Ditch the complexity. Get the secure, simple vault your clients will actually use.
             </p>
             <Button variant="hero" size="xl" asChild>
               <Link to="/signup" className="gap-2">

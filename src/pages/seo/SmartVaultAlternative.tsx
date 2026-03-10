@@ -353,7 +353,7 @@ export default function SmartVaultAlternative() {
               Ready to eliminate the Success Tax?
             </h2>
             <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
-              Unlimited team seats. No user minimums. Built for solo firms and boutique practices.
+              Stop paying for seats you don't use. Switch to the vault built for boutique firms.
             </p>
             <Button variant="hero" size="xl" asChild>
               <Link to="/signup" className="gap-2">
