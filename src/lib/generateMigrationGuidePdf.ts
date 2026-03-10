@@ -106,42 +106,46 @@ export async function generateMigrationGuidePdf(competitor: "SmartVault" | "TaxD
   ];
 
   for (const step of steps) {
+    // Calculate card height based on body text
+    doc.setFontSize(9);
+    const bodyLines = doc.splitTextToSize(step.body, pw - 80);
+    const cardH = Math.max(30, 18 + bodyLines.length * 4.5);
+
     // Step number circle
     doc.setFillColor(...ACCENT);
-    doc.circle(32, y + 8, 8, "F");
+    doc.circle(32, y + cardH / 2, 8, "F");
     doc.setTextColor(...WHITE);
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
-    doc.text(step.num, 32, y + 12, { align: "center" });
+    doc.text(step.num, 32, y + cardH / 2 + 4, { align: "center" });
 
     // Step content card background
     doc.setFillColor(70, 67, 150);
-    doc.roundedRect(45, y - 2, pw - 65, 30, 3, 3, "F");
+    doc.roundedRect(45, y, pw - 65, cardH, 3, 3, "F");
 
     // Title
     doc.setTextColor(...WHITE);
     doc.setFontSize(13);
     doc.setFont("helvetica", "bold");
-    doc.text(step.title, 52, y + 7);
+    doc.text(step.title, 52, y + 9);
 
     // Time badge
     doc.setFontSize(8);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(180, 255, 180);
-    doc.text(step.time, pw - 25, y + 7, { align: "right" });
+    doc.text(step.time, pw - 25, y + 9, { align: "right" });
 
     // Body
     doc.setTextColor(210, 210, 230);
     doc.setFontSize(9);
     doc.setFont("helvetica", "normal");
-    const bodyLines = doc.splitTextToSize(step.body, pw - 80);
-    doc.text(bodyLines, 52, y + 15);
+    doc.text(bodyLines, 52, y + 17);
 
-    y += 38;
+    y += cardH + 8;
   }
 
   // ===== BOTTOM CTA =====
-  y = ph * 0.68;
+  y += 10;
   doc.setFillColor(...SUCCESS);
   doc.roundedRect(pw / 2 - 55, y, 110, 16, 3, 3, "F");
   doc.setTextColor(...WHITE);
@@ -150,14 +154,16 @@ export async function generateMigrationGuidePdf(competitor: "SmartVault" | "TaxD
   doc.text("Start Your 14-Day Free Trial", pw / 2, y + 11, { align: "center" });
   doc.link(pw / 2 - 55, y, 110, 16, { url: TRIAL_URL });
 
+  y += 22;
   doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(200, 200, 220);
-  doc.text("No credit card required. No user minimums.", pw / 2, y + 26, {
+  doc.text("No credit card required. No user minimums.", pw / 2, y, {
     align: "center",
   });
 
   // Savings callout
+  y += 10;
   const savingsText =
     competitor === "SmartVault"
       ? "Save $2,172+ per year vs. SmartVault"
@@ -165,7 +171,7 @@ export async function generateMigrationGuidePdf(competitor: "SmartVault" | "TaxD
   doc.setFontSize(10);
   doc.setTextColor(...WHITE);
   doc.setFont("helvetica", "bold");
-  doc.text(savingsText, pw / 2, y + 40, { align: "center" });
+  doc.text(savingsText, pw / 2, y, { align: "center" });
 
   // Footer
   doc.setFontSize(8);
