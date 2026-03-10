@@ -3,7 +3,8 @@ import { Footer } from "@/components/landing/Footer";
 import { PageSEO } from "@/components/seo/PageSEO";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, CheckCircle2, Clock, Users, Shield } from "lucide-react";
+import { ArrowRight, CheckCircle2, Clock, Users, Shield, Download } from "lucide-react";
+import { generateMigrationGuidePdf } from "@/lib/generateMigrationGuidePdf";
 
 const whySwitchCards = [
   {
@@ -239,6 +240,32 @@ export default function TaxDomeAlternative() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Migration Guide Download */}
+        <section className="py-12 bg-muted/40">
+          <div className="container">
+            <div className="mx-auto max-w-2xl text-center">
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent mb-4">
+                <Download className="h-5 w-5" />
+              </div>
+              <h3 className="text-xl font-bold text-foreground mb-2">
+                Worried about the move?
+              </h3>
+              <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
+                Download our <strong>60-Second Migration Guide</strong> to see how we handle the heavy lifting for you.
+              </p>
+              <Button
+                variant="outline"
+                size="lg"
+                className="gap-2"
+                onClick={() => generateMigrationGuidePdf("TaxDome")}
+              >
+                <Download className="h-4 w-4" />
+                Download Migration Guide (PDF)
+              </Button>
             </div>
           </div>
         </section>
