@@ -37,6 +37,7 @@ import FillablePdfForms from "./pages/seo/FillablePdfForms";
 import DigitalPolicySignature from "./pages/seo/DigitalPolicySignature";
 import DocusignAlternative from "./pages/seo/DocusignAlternative";
 import SmartVaultAlternative from "./pages/seo/SmartVaultAlternative";
+import TaxDomeAlternative from "./pages/seo/TaxDomeAlternative";
 import TrackPolicyAcknowledgments from "./pages/blog/TrackPolicyAcknowledgments";
 import ClientIntakeForms from "./pages/use-cases/ClientIntakeForms";
 import ContractorAgreements from "./pages/use-cases/ContractorAgreements";
