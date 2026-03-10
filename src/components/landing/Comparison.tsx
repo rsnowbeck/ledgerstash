@@ -30,14 +30,14 @@ export function Comparison() {
             Want the full audit?
           </h3>
           <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-5">
-            Download our cost comparison guide and see the line-by-line breakdown of how you reclaim your margins.
+            Download our Switching Guide to see the line-by-line cost breakdown and the 60-second plan to reclaim your margins.
           </p>
           <button
             onClick={() => generateBlueOceanPdf()}
             className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:bg-accent/90 transition-colors"
           >
             <Download className="h-5 w-5" />
-            Download Free PDF Guide
+            Download Free Switching Guide (PDF)
           </button>
           <p className="mt-3 text-xs text-muted-foreground italic">
             No email required. Instant download.
