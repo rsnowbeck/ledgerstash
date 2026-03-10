@@ -3,26 +3,26 @@ import { Footer } from "@/components/landing/Footer";
 import { PageSEO } from "@/components/seo/PageSEO";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, CheckCircle2, UserX, Bell, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, Clock, Users, Shield } from "lucide-react";
 
 const whySwitchCards = [
   {
-    icon: UserX,
-    title: 'No "Solo Penalty"',
+    icon: Clock,
+    title: "Set Up in 5 Minutes",
     description:
-      "SmartVault forces you into a 3-user minimum. LedgerStash lets you start as a solo firm at $29/mo and grow at your own pace.",
+      'TaxDome requires weeks of "Academy" training just to get started. LedgerStash is a dedicated vault. If you can send an email, you can send your first PBC request today.',
   },
   {
-    icon: Bell,
-    title: "Automated PBC Chasing",
+    icon: Users,
+    title: "Unlimited Staff Seats",
     description:
-      "Don't just store files; get them. Our automated nudges follow up with clients until the task is done. You get the files; we do the chasing.",
+      "TaxDome penalizes you for hiring seasonal help or an admin. We don't. Add your entire team—from interns to partners—for $0 extra and keep your margins as you grow.",
   },
   {
-    icon: Sparkles,
-    title: "Modern Client Experience",
+    icon: Shield,
+    title: "Passwordless for Clients",
     description:
-      "SmartVault feels like a 90s folder tree. LedgerStash feels like a premium, modern portal that makes your boutique firm look like a tech leader.",
+      "Stop acting as your clients' IT support. Our secure Magic Links let clients upload documents in one click—no accounts to create, no passwords to reset.",
   },
 ];
 
@@ -30,70 +30,64 @@ const comparisonRows = [
   {
     feature: "Solo Firm Pricing",
     ledger: "$29/month (Unlimited team)",
-    smart: "$210/month ($2,520/yr)",
+    competitor: "$800/year per seat",
     ledgerGreen: true,
-    smartRed: true,
+    competitorRed: true,
   },
   {
-    feature: "User Minimums",
-    ledger: "None — start as a solo",
-    smart: "3-user minimum required",
+    feature: "Implementation Time",
+    ledger: "Under 5 minutes",
+    competitor: "6–8 weeks (Training required)",
     ledgerGreen: true,
   },
   {
     feature: "Maximum Staff Seats",
     ledger: "Unlimited (Included)",
-    smart: "Per-user pricing",
+    competitor: "Per-user pricing",
     ledgerGreen: true,
-    smartRed: true,
+    competitorRed: true,
   },
   {
     feature: "Client Login Required?",
     ledger: "No — one-click magic link",
-    smart: "Yes — forced portal login",
+    competitor: "Yes — forced account creation",
     ledgerGreen: true,
   },
   {
     feature: "PBC List Terminology",
     ledger: "Built for accountants",
-    smart: 'Generic "file requests"',
+    competitor: 'Generic "file requests"',
   },
   {
     feature: "White-Label Branding",
     ledger: "Logo + name on all plans",
-    smart: "Custom portal",
-  },
-  {
-    feature: "Time to First Client",
-    ledger: "Under 5 minutes",
-    smart: "Days to weeks",
-    ledgerGreen: true,
-  },
-  {
-    feature: "Compliance",
-    ledger: "IRS 4557 · FTC · GLBA",
-    smart: "SOC 2 · IRS 4557",
+    competitor: "Portal branding only",
   },
   {
     feature: "Audit Trail",
     ledger: "ESIGN/UETA Compliant",
-    smart: "Basic audit trail",
+    competitor: "Built-in eSign logs",
+  },
+  {
+    feature: "Compliance",
+    ledger: "IRS 4557 · FTC · GLBA",
+    competitor: "General Security",
   },
   {
     feature: "Best For",
     ledger: "Solo firms, EAs, & Boutique practices",
-    smart: "Large firms with IT staff",
+    competitor: "Enterprise-level firms",
   },
 ];
 
-export default function SmartVaultAlternative() {
+export default function TaxDomeAlternative() {
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title="SmartVault Alternative for Solo Accounting Firms | Ledger Stash"
-        description="Looking for a SmartVault alternative without 3-user minimums? Ledger Stash gives solo CPAs and boutique firms a branded client vault with unlimited team seats for $29/month."
-        keywords="SmartVault alternative, SmartVault competitor, SmartVault vs LedgerStash, document portal CPA, solo CPA client portal, accounting firm document management"
-        canonical="/smartvault-alternative"
+        title="TaxDome Alternative for Solo & Boutique Firms | Ledger Stash"
+        description="Looking for a TaxDome alternative without per-seat pricing or weeks of training? Ledger Stash gives solo CPAs a branded vault with unlimited team seats for $29/month."
+        keywords="TaxDome alternative, TaxDome competitor, TaxDome vs LedgerStash, solo CPA client portal, accounting firm document management, practice management alternative"
+        canonical="/taxdome-alternative"
       />
       <Header />
       <main>
@@ -102,14 +96,14 @@ export default function SmartVaultAlternative() {
           <div className="container">
             <div className="mx-auto max-w-3xl text-center">
               <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl pb-6">
-                The <span className="text-accent">SmartVault Alternative</span> with Zero User Minimums.
+                The <span className="text-accent">TaxDome Alternative</span> for Firms That Don't Need a CRM.
               </h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto" style={{ lineHeight: 1.6 }}>
-                Why pay $2,520/year for 3 seats when you only need one? Get a professional, branded vault with unlimited staff seats for a fraction of the cost.
+                Stop paying $800/year per seat for a complex practice management system you don't use. LedgerStash is the streamlined vault built for speed, security, and zero "Success Tax" on your staff.
               </p>
               <Button variant="hero" size="xl" asChild>
                 <Link to="/signup" className="gap-2">
-                  Stop Paying for Seats You Don't Need
+                  Eliminate the Success Tax
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               </Button>
@@ -120,7 +114,7 @@ export default function SmartVaultAlternative() {
           </div>
         </section>
 
-        {/* Why Switch — 3 Column Cards */}
+        {/* Why Firms Are Switching — 3 Column Cards */}
         <section className="py-16 bg-muted/40">
           <div className="container">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-12">
@@ -147,7 +141,7 @@ export default function SmartVaultAlternative() {
         <section className="py-16">
           <div className="container">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground text-center mb-12">
-              LedgerStash vs SmartVault
+              LedgerStash vs TaxDome
             </h2>
 
             {/* Desktop table */}
@@ -157,7 +151,7 @@ export default function SmartVaultAlternative() {
                   <tr className="bg-primary text-primary-foreground">
                     <th className="px-5 py-4 text-left font-semibold text-sm">Feature</th>
                     <th className="px-5 py-4 text-left font-semibold text-sm">Ledger Stash</th>
-                    <th className="px-5 py-4 text-left font-semibold text-sm">SmartVault</th>
+                    <th className="px-5 py-4 text-left font-semibold text-sm">TaxDome</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -190,11 +184,11 @@ export default function SmartVaultAlternative() {
                       <td className="px-5 py-4 text-sm text-muted-foreground">
                         <span
                           style={{
-                            color: row.smartRed ? "#D93025" : undefined,
-                            fontWeight: row.smartRed ? 600 : undefined,
+                            color: row.competitorRed ? "#D93025" : undefined,
+                            fontWeight: row.competitorRed ? 600 : undefined,
                           }}
                         >
-                          {row.smart}
+                          {row.competitor}
                         </span>
                       </td>
                     </tr>
@@ -232,14 +226,14 @@ export default function SmartVaultAlternative() {
                     </div>
                     <div className="text-muted-foreground p-2">
                       <span className="text-xs block font-medium text-foreground/60">
-                        SmartVault
+                        TaxDome
                       </span>
                       <span
                         style={{
-                          color: row.smartRed ? "#D93025" : undefined,
+                          color: row.competitorRed ? "#D93025" : undefined,
                         }}
                       >
-                        {row.smart}
+                        {row.competitor}
                       </span>
                     </div>
                   </div>
@@ -249,18 +243,18 @@ export default function SmartVaultAlternative() {
           </div>
         </section>
 
-        {/* Final CTA */}
+        {/* Bottom CTA */}
         <section className="py-16 bg-card">
           <div className="container text-center">
             <h2 className="text-2xl font-bold text-foreground mb-4">
-              Ready to eliminate the Success Tax?
+              Ready to stop paying the Success Tax?
             </h2>
             <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
-              Unlimited team seats. No user minimums. Built for solo firms and boutique practices.
+              Unlimited team seats. No user minimums. Built for boutique firms.
             </p>
             <Button variant="hero" size="xl" asChild>
               <Link to="/signup" className="gap-2">
-                Eliminate the Success Tax
+                Start Your Free Trial
                 <ArrowRight className="h-5 w-5" />
               </Link>
             </Button>

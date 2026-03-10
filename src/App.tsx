@@ -37,6 +37,7 @@ import FillablePdfForms from "./pages/seo/FillablePdfForms";
 import DigitalPolicySignature from "./pages/seo/DigitalPolicySignature";
 import DocusignAlternative from "./pages/seo/DocusignAlternative";
 import SmartVaultAlternative from "./pages/seo/SmartVaultAlternative";
+import TaxDomeAlternative from "./pages/seo/TaxDomeAlternative";
 import TrackPolicyAcknowledgments from "./pages/blog/TrackPolicyAcknowledgments";
 import ClientIntakeForms from "./pages/use-cases/ClientIntakeForms";
 import ContractorAgreements from "./pages/use-cases/ContractorAgreements";
@@ -86,6 +87,7 @@ const App = () => {
           <Route path="/digital-policy-signature-software" element={<DigitalPolicySignature />} />
           <Route path="/docusign-alternative-compliance" element={<DocusignAlternative />} />
           <Route path="/smartvault-alternative" element={<SmartVaultAlternative />} />
+          <Route path="/taxdome-alternative" element={<TaxDomeAlternative />} />
           {/* Blog */}
           <Route path="/blog/track-employee-policy-acknowledgments" element={<TrackPolicyAcknowledgments />} />
           {/* Use Cases */}
