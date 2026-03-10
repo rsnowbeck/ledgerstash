@@ -28,6 +28,9 @@ export function Footer() {
             <Link to="/smartvault-alternative" className="text-muted-foreground hover:text-foreground transition-colors">
               SmartVault Alternative
             </Link>
+            <Link to="/taxdome-alternative" className="text-muted-foreground hover:text-foreground transition-colors">
+              TaxDome Alternative
+            </Link>
           </nav>
         </div>
       </div>

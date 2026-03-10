@@ -101,10 +101,10 @@ export default function SmartVaultAlternative() {
         <section className="pt-28 lg:pt-40 pb-16 lg:pb-24">
           <div className="container">
             <div className="mx-auto max-w-3xl text-center">
-              <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl mb-6">
+              <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl pb-6">
                 The <span className="text-accent">SmartVault Alternative</span> with Zero User Minimums.
               </h1>
-              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto" style={{ lineHeight: 1.6 }}>
                 Why pay $2,520/year for 3 seats when you only need one? Get a professional, branded vault with unlimited staff seats for a fraction of the cost.
               </p>
               <Button variant="hero" size="xl" asChild>
