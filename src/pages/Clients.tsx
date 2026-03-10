@@ -272,7 +272,7 @@ export default function Clients() {
                   <>
                     <div className="space-y-2">
                       <Label htmlFor="company_name">Company Name *</Label>
-                      <Input id="company_name" value={form.company_name} onChange={e => setForm(f => ({ ...f, company_name: e.target.value }))} placeholder="Acme Corp" />
+                      <Input id="company_name" value={form.company_name} onChange={e => setForm(f => ({ ...f, company_name: e.target.value }))} placeholder="Enter company name..." />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">

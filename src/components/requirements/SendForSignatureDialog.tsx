@@ -409,7 +409,7 @@ export function SendForSignatureDialog({
               <Input
                 id="inline-email"
                 type="email"
-                placeholder="jane@company.com"
+                placeholder="name@email.com"
                 value={newEmail}
                 onChange={(e) => setNewEmail(e.target.value)}
                 required

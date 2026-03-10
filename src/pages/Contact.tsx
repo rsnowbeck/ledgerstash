@@ -140,7 +140,7 @@ export default function Contact() {
 
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" name="email" type="email" placeholder="you@company.com" value={formData.email} onChange={handleChange} className={errors.email ? "border-destructive" : ""} />
+                  <Input id="email" name="email" type="email" placeholder="you@yourfirm.com" value={formData.email} onChange={handleChange} className={errors.email ? "border-destructive" : ""} />
                   {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
                 </div>
               </div>

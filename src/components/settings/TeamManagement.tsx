@@ -382,7 +382,7 @@ export function TeamManagement({ organizationId, organizationName }: TeamManagem
                 type="email"
                 value={inviteEmail}
                 onChange={(e) => setInviteEmail(e.target.value)}
-                placeholder="colleague@company.com"
+                placeholder="colleague@yourfirm.com"
               />
             </div>
             <div className="w-40 space-y-2">

@@ -294,7 +294,7 @@ export default function Recipients() {
                   <Input
                     id="recipientEmail"
                     type="email"
-                    placeholder="jane@company.com"
+                    placeholder="name@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required

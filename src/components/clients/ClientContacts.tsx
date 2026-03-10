@@ -224,7 +224,7 @@ export function ClientContacts({ clientId, organizationId, clientEmail, clientNa
                 <Input
                   id="contact-email"
                   type="email"
-                  placeholder="jane@company.com"
+                  placeholder="name@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
