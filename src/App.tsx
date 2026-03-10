@@ -85,6 +85,7 @@ const App = () => {
           <Route path="/fillable-pdf-compliance-forms" element={<FillablePdfForms />} />
           <Route path="/digital-policy-signature-software" element={<DigitalPolicySignature />} />
           <Route path="/docusign-alternative-compliance" element={<DocusignAlternative />} />
+          <Route path="/smartvault-alternative" element={<SmartVaultAlternative />} />
           {/* Blog */}
           <Route path="/blog/track-employee-policy-acknowledgments" element={<TrackPolicyAcknowledgments />} />
           {/* Use Cases */}

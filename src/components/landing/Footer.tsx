@@ -25,7 +25,9 @@ export function Footer() {
             <Link to="/security" className="text-muted-foreground hover:text-foreground transition-colors">
               Security
             </Link>
-            
+            <Link to="/smartvault-alternative" className="text-muted-foreground hover:text-foreground transition-colors">
+              SmartVault Alternative
+            </Link>
           </nav>
         </div>
       </div>
