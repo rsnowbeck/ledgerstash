@@ -102,7 +102,7 @@ export default function TaxDomeAlternative() {
         <section className="pt-28 lg:pt-40 pb-16 lg:pb-24">
           <div className="container">
             <div className="mx-auto max-w-3xl text-center">
-              <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl pb-6">
+              <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl pb-6 leading-[1.3] sm:leading-[1.25]">
                 The <span className="text-accent">TaxDome Alternative</span> for Firms That Don't Need a CRM.
               </h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto" style={{ lineHeight: 1.6 }}>
