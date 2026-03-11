@@ -69,12 +69,12 @@ export function Pricing() {
           </p>
 
           {/* Billing Toggle */}
-          <div className="inline-flex items-center gap-3 rounded-full border border-border bg-muted/50 p-1 mb-12">
+          <div className="inline-flex items-center gap-1 rounded-full border border-border bg-muted/50 p-1 mb-12">
             <button
               onClick={() => setBillingInterval("monthly")}
-              className={`rounded-full px-5 py-2 text-sm font-medium transition-all ${
+              className={`rounded-full px-6 py-2.5 text-sm font-semibold transition-all ${
                 billingInterval === "monthly"
-                  ? "bg-background text-foreground shadow-sm"
+                  ? "bg-primary text-primary-foreground shadow-md"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -82,14 +82,18 @@ export function Pricing() {
             </button>
             <button
               onClick={() => setBillingInterval("annual")}
-              className={`rounded-full px-5 py-2 text-sm font-medium transition-all ${
+              className={`rounded-full px-6 py-2.5 text-sm font-semibold transition-all flex items-center gap-2 ${
                 billingInterval === "annual"
-                  ? "bg-background text-foreground shadow-sm"
+                  ? "bg-primary text-primary-foreground shadow-md"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
               Annual
-              <span className="ml-2 inline-flex items-center rounded-full bg-accent/20 px-2 py-0.5 text-xs font-semibold text-accent">
+              <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold ${
+                billingInterval === "annual"
+                  ? "bg-accent text-accent-foreground"
+                  : "bg-accent/20 text-accent"
+              }`}>
                 Save 16%
               </span>
             </button>
