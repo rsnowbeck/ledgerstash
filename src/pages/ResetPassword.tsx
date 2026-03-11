@@ -155,6 +155,7 @@ export default function ResetPassword() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <PageSEO title="Reset Password | LedgerStash" description="Set a new password for your LedgerStash account." noindex={true} />
       {/* Header */}
       <header className="border-b border-border">
         <div className="container flex h-16 items-center">
