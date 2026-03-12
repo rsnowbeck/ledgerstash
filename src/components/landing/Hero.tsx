@@ -17,7 +17,7 @@ const featureCards = [
   },
   {
     icon: ShieldCheck,
-    title: "Busy Season Auto-Pilot",
+    title: "Automated Document Chasing",
     description:
       "Stop playing \"Document Police.\" Our PBC checklists tell clients exactly what's missing, and our automated nudges follow up until the task is done. You get the files; we do the chasing.",
   },
