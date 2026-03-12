@@ -45,14 +45,14 @@ export function Hero() {
             Stop the{" "}
             <span className="text-accent">"Success Tax"</span>
             <br />
-            on Digital Asset Teams.
+            on Accounting Teams.
           </h1>
 
           {/* Subheader */}
           <p className="mx-auto max-w-[48rem] text-base text-muted-foreground mb-10 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            The only document vault for boutique firms with{" "}
-            <strong className="text-foreground font-semibold">Unlimited User Seats</strong>.
-            Stop paying a &lsquo;collaboration tax&rsquo; — scale by client volume, not staff count.
+            The secure document vault built for firms with{" "}
+            <strong className="text-foreground font-semibold">unlimited user seats</strong>.
+            Scale by client volume, not staff count—finally a tool that doesn&apos;t punish you for growing.
           </p>
 
           {/* CTAs */}
