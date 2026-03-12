@@ -89,7 +89,7 @@ export function Hero() {
             {featureCards.map((card) => (
               <div
                 key={card.title}
-                className="group p-8 rounded-2xl bg-card border border-border shadow-sm hover:shadow-md hover:border-accent/30 transition-all duration-300 text-center"
+                className="group p-8 rounded-2xl bg-card border border-border shadow-sm hover:shadow-md hover:border-accent/30 transition-all duration-300 text-left"
               >
                 <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent mb-5">
                   <card.icon className="h-5 w-5" />
