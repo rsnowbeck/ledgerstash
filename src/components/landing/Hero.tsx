@@ -5,19 +5,19 @@ import { ArrowRight, ShieldCheck, Shield, Clock, Lock, CheckCircle2 } from "luci
 const featureCards = [
   {
     icon: Shield,
-    title: "Kill the \"Password Reset\" Loop",
+    title: "Frictionless Client Onboarding",
     description:
       "Stop acting as your clients' IT support. LedgerStash uses secure Magic Links so clients can upload W-2s and receipts with one click. No accounts to create, no passwords to forget, and no more excuses for late documents.",
   },
   {
     icon: Clock,
-    title: "Scale Without Permission",
+    title: "Grow Your Team, Not Your Bill",
     description:
       "Hire 5 seasonal interns or a new admin without your software bill skyrocketing. We don't charge \"per-seat\" fees. Add your entire team for $0 extra and keep your margins as you grow.",
   },
   {
     icon: ShieldCheck,
-    title: "Busy Season Auto-Pilot",
+    title: "Automated Document Chasing",
     description:
       "Stop playing \"Document Police.\" Our PBC checklists tell clients exactly what's missing, and our automated nudges follow up until the task is done. You get the files; we do the chasing.",
   },
