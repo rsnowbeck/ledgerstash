@@ -42,10 +42,10 @@ export function Hero() {
 
           {/* Headline */}
           <h1 className="text-[2.1rem] font-extrabold tracking-tight leading-[1.12] text-foreground sm:text-[3.2rem] lg:text-[3.8rem] mb-5 animate-slide-up" style={{ animationDelay: "0.06s" }}>
-            Stop Paying a{" "}
+            Stop the{" "}
             <span className="text-accent">"Success Tax"</span>
             <br />
-            on Your Staff.
+            on Digital Asset Teams.
           </h1>
 
           {/* Subheader */}
