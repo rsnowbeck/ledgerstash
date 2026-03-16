@@ -90,7 +90,6 @@ function FAQSchema() {
 }
 
 export function FAQ() {
-  useFAQSchema();
   const [showMore, setShowMore] = useState(false);
 
   return (
