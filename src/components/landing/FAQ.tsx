@@ -68,35 +68,25 @@ const secondaryFaqs = [
 
 const allFaqs = [...essentialFaqs, ...secondaryFaqs];
 
-function useFAQSchema() {
-  useEffect(() => {
-    const existingScript = document.querySelector("script[data-faq-schema]");
-    if (existingScript) return;
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: allFaqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
+    },
+  })),
+};
 
-    const schema = {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: allFaqs.map((faq) => ({
-        "@type": "Question",
-        name: faq.question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: faq.answer,
-        },
-      })),
-    };
-
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.setAttribute("data-faq-schema", "true");
-    script.textContent = JSON.stringify(schema);
-    document.head.appendChild(script);
-
-    return () => {
-      const el = document.querySelector("script[data-faq-schema]");
-      if (el) el.remove();
-    };
-  }, []);
+function FAQSchema() {
+  return (
+    <Helmet>
+      <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+    </Helmet>
+  );
 }
 
 export function FAQ() {
