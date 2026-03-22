@@ -65,6 +65,41 @@ export default function ClientPortal() {
     if (token) verifyAndLoad();
   }, [token]);
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const loadMessages = useCallback(async () => {
+    if (!token) return;
+    try {
+      const res = await supabase.functions.invoke("client-portal", {
+        body: { action: "get-messages", token },
+      });
+      if (res.data?.messages) setMessages(res.data.messages);
+    } catch (err) {
+      console.error("Failed to load messages:", err);
+    }
+  }, [token]);
+
+  const handleSendMessage = useCallback(async () => {
+    const trimmed = newMessage.trim();
+    if (!trimmed || sendingMessage || !token) return;
+    setSendingMessage(true);
+    try {
+      const res = await supabase.functions.invoke("client-portal", {
+        body: { action: "send-message", token, content: trimmed },
+      });
+      if (res.data?.message) {
+        setMessages((prev) => [...prev, res.data.message]);
+        setNewMessage("");
+      }
+    } catch (err) {
+      toast.error("Failed to send message");
+    } finally {
+      setSendingMessage(false);
+    }
+  }, [newMessage, sendingMessage, token]);
+
   const verifyAndLoad = async () => {
     try {
       const res = await supabase.functions.invoke("client-portal", {
