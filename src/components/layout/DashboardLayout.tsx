@@ -191,7 +191,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       />
 
       {/* AI Assistant */}
-      <AIAssistantWidget />
+      <AIAssistantWidget mode="cpa" />
     </div>
   );
 }

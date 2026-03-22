@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { ClientContacts } from "@/components/clients/ClientContacts";
 import { ClientMessages } from "@/components/clients/ClientMessages";
+import { AIConversationReview } from "@/components/ai/AIConversationReview";
 import { useOrganization } from "@/hooks/useOrganization";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -769,10 +770,18 @@ export default function ClientDetail() {
 
         {/* Messages Tab */}
         <TabsContent value="messages">
-          <ClientMessages
-            clientId={client.id}
-            clientName={client.company_name || `${client.first_name} ${client.last_name}`}
-          />
+          <div className="space-y-6">
+            <ClientMessages
+              clientId={client.id}
+              clientName={client.company_name || `${client.first_name} ${client.last_name}`}
+            />
+            {organization?.id && (
+              <AIConversationReview
+                clientId={client.id}
+                organizationId={organization.id}
+              />
+            )}
+          </div>
         </TabsContent>
 
         {/* Contacts Tab - Business clients only */}

@@ -575,7 +575,7 @@ export default function ClientPortal() {
       {!showPoweredBy && <div className="mt-8" />}
 
       {/* AI Assistant */}
-      <AIAssistantWidget />
+      <AIAssistantWidget mode="client" clientToken={token} />
     </div>
   );
 }

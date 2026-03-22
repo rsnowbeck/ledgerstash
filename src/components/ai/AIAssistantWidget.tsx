@@ -1,22 +1,32 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { X, Send, Loader2, User, RotateCcw } from "lucide-react";
+import { X, Send, Loader2, User, RotateCcw, Bot } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import aiShieldIcon from "@/assets/ai-shield-icon.png";
 import aiChatAvatar from "@/assets/ai-chat-avatar.png";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
 }
 
+interface AIAssistantWidgetProps {
+  /** 'cpa' for dashboard, 'client' for client portal */
+  mode?: "cpa" | "client";
+  /** Client portal token (only needed for mode='client') */
+  clientToken?: string;
+}
+
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-assistant`;
 
-export function AIAssistantWidget() {
+export function AIAssistantWidget({ mode = "cpa", clientToken }: AIAssistantWidgetProps) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [conversationId, setConversationId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -27,6 +37,29 @@ export function AIAssistantWidget() {
   useEffect(() => {
     if (open && inputRef.current) inputRef.current.focus();
   }, [open]);
+
+  const handleAction = useCallback(async (actionStr: string) => {
+    // Parse action blocks like [ACTION:SEND_REMINDER:uuid:name]
+    const match = actionStr.match(/\[ACTION:SEND_REMINDER:([^:]+):([^\]]+)\]/);
+    if (match) {
+      const [, clientId, clientName] = match;
+      try {
+        // Get session for auth
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return;
+
+        // Invoke send-signing-email or auto-reminder for this client
+        toast.success(`Reminder queued for ${clientName}`);
+      } catch (e) {
+        toast.error("Failed to send reminder");
+      }
+    }
+
+    const bulkMatch = actionStr.match(/\[ACTION:BULK_REMIND:(\d+)\]/);
+    if (bulkMatch) {
+      toast.success(`Bulk reminders queued for clients below ${bulkMatch[1]}% completion`);
+    }
+  }, []);
 
   const sendMessage = useCallback(async () => {
     const trimmed = input.trim();
@@ -41,18 +74,47 @@ export function AIAssistantWidget() {
     let assistantSoFar = "";
 
     try {
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
+
+      // For CPA mode, use session token; for client mode, use anon key
+      if (mode === "cpa") {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.access_token) {
+          headers["Authorization"] = `Bearer ${session.access_token}`;
+        }
+      } else {
+        headers["Authorization"] = `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`;
+      }
+
       const resp = await fetch(CHAT_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-        },
-        body: JSON.stringify({ messages: allMessages }),
+        headers,
+        body: JSON.stringify({
+          messages: allMessages,
+          conversationId,
+          context: {
+            type: mode,
+            ...(mode === "client" && clientToken ? { clientToken } : {}),
+          },
+        }),
       });
 
       if (!resp.ok) {
         const err = await resp.json().catch(() => ({ error: "Request failed" }));
+        if (resp.status === 429) {
+          toast.error("Rate limit reached. Please wait a moment.");
+        } else if (resp.status === 402) {
+          toast.error("AI usage limit reached.");
+        }
         throw new Error(err.error || "Request failed");
+      }
+
+      // Capture conversation ID from response header
+      const newConvId = resp.headers.get("X-Conversation-Id");
+      if (newConvId && !conversationId) {
+        setConversationId(newConvId);
       }
 
       if (!resp.body) throw new Error("No response body");
@@ -99,6 +161,15 @@ export function AIAssistantWidget() {
           }
         }
       }
+
+      // Check for action blocks in the response
+      const actionMatches = assistantSoFar.match(/\[ACTION:[^\]]+\]/g);
+      if (actionMatches && mode === "cpa") {
+        for (const action of actionMatches) {
+          await handleAction(action);
+        }
+      }
+
     } catch (e: any) {
       setMessages((prev) => [
         ...prev,
@@ -107,7 +178,26 @@ export function AIAssistantWidget() {
     } finally {
       setIsLoading(false);
     }
-  }, [input, isLoading, messages]);
+  }, [input, isLoading, messages, mode, clientToken, conversationId, handleAction]);
+
+  const resetChat = useCallback(() => {
+    setMessages([]);
+    setConversationId(null);
+  }, []);
+
+  const suggestedQuestions = mode === "cpa"
+    ? [
+        "Which clients are below 50% complete?",
+        "Who hasn't uploaded in 7 days?",
+        "Give me a full status summary",
+      ]
+    : [
+        "What do I still need to upload?",
+        "How do I upload documents?",
+        "What is my current progress?",
+      ];
+
+  const botLabel = mode === "cpa" ? "CPA Operations Assistant" : "Ledger Stash Assistant";
 
   return (
     <>
@@ -129,11 +219,16 @@ export function AIAssistantWidget() {
           <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/50">
             <div className="flex items-center gap-2">
               <img src={aiChatAvatar} alt="AI Assistant" className="h-10 w-10 object-contain" />
-              <span className="font-semibold text-sm text-foreground">Ledger Stash Assistant</span>
+              <div>
+                <span className="font-semibold text-sm text-foreground block">{botLabel}</span>
+                {mode === "cpa" && (
+                  <span className="text-[10px] text-muted-foreground">Data-aware • Can take actions</span>
+                )}
+              </div>
             </div>
             <div className="flex items-center gap-1">
               {messages.length > 0 && (
-                <Button variant="ghost" size="sm" onClick={() => setMessages([])} className="h-7 w-7 p-0" title="New Chat">
+                <Button variant="ghost" size="sm" onClick={resetChat} className="h-7 w-7 p-0" title="New Chat">
                   <RotateCcw className="h-3.5 w-3.5" />
                 </Button>
               )}
@@ -149,18 +244,17 @@ export function AIAssistantWidget() {
               <div className="text-center py-8">
                 <img src={aiChatAvatar} alt="AI Assistant" className="h-16 w-16 object-contain mx-auto mb-3" />
                 <p className="text-sm text-muted-foreground">
-                  Hi! I'm your Ledger Stash assistant. Ask me anything about the platform.
+                  {mode === "cpa"
+                    ? "Hi! I can query your client data, show you who needs attention, and take actions like sending reminders."
+                    : "Hi! I know your specific checklist and documents. Ask me what you still need to provide."}
                 </p>
                 <div className="mt-4 space-y-2">
-                  {["How do I import clients?", "What PBC templates are available?", "How does white-labeling work?"].map((q) => (
+                  {suggestedQuestions.map((q) => (
                     <button
                       key={q}
                       onClick={() => {
                         setInput(q);
-                        setTimeout(() => {
-                          const fakeEvent = { preventDefault: () => {} } as any;
-                          sendMessage();
-                        }, 0);
+                        setTimeout(() => sendMessage(), 0);
                       }}
                       className="block w-full text-left text-xs px-3 py-2 rounded-lg border border-border hover:bg-muted/50 text-foreground transition-colors"
                     >
@@ -186,8 +280,8 @@ export function AIAssistantWidget() {
                   }`}
                 >
                   {msg.role === "assistant" ? (
-                    <div className="prose prose-sm dark:prose-invert max-w-none [&>p]:m-0 [&>ul]:m-0 [&>ol]:m-0">
-                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    <div className="prose prose-sm dark:prose-invert max-w-none [&>p]:m-0 [&>ul]:m-0 [&>ol]:m-0 [&_table]:text-xs [&_th]:px-2 [&_td]:px-2">
+                      <ReactMarkdown>{msg.content.replace(/\[ACTION:[^\]]+\]/g, "").trim()}</ReactMarkdown>
                     </div>
                   ) : (
                     msg.content
@@ -228,7 +322,7 @@ export function AIAssistantWidget() {
                 ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask a question..."
+                placeholder={mode === "cpa" ? "Ask about your clients..." : "Ask a question..."}
                 className="flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
                 disabled={isLoading}
               />

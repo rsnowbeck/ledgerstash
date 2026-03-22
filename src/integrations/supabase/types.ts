@@ -14,6 +14,92 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_conversations: {
+        Row: {
+          client_id: string | null
+          ended_at: string | null
+          id: string
+          message_count: number
+          organization_id: string
+          started_at: string
+          summary: string | null
+          user_id: string | null
+          user_type: string
+        }
+        Insert: {
+          client_id?: string | null
+          ended_at?: string | null
+          id?: string
+          message_count?: number
+          organization_id: string
+          started_at?: string
+          summary?: string | null
+          user_id?: string | null
+          user_type?: string
+        }
+        Update: {
+          client_id?: string | null
+          ended_at?: string | null
+          id?: string
+          message_count?: number
+          organization_id?: string
+          started_at?: string
+          summary?: string | null
+          user_id?: string | null
+          user_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_conversations_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_conversations_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          role: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          role: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_logs: {
         Row: {
           action: string
