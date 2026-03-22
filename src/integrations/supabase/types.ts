@@ -655,6 +655,8 @@ export type Database = {
           stripe_subscription_id: string | null
           trial_ends_at: string | null
           updated_at: string
+          upload_notification_mode: string
+          upload_notifications_enabled: boolean
         }
         Insert: {
           accent_color?: string | null
@@ -676,6 +678,8 @@ export type Database = {
           stripe_subscription_id?: string | null
           trial_ends_at?: string | null
           updated_at?: string
+          upload_notification_mode?: string
+          upload_notifications_enabled?: boolean
         }
         Update: {
           accent_color?: string | null
@@ -697,6 +701,8 @@ export type Database = {
           stripe_subscription_id?: string | null
           trial_ends_at?: string | null
           updated_at?: string
+          upload_notification_mode?: string
+          upload_notifications_enabled?: boolean
         }
         Relationships: []
       }
