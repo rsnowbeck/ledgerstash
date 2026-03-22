@@ -90,7 +90,7 @@ export function Header() {
               <a href="#features" className="nav-link text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>Features</a>
               <a href="#pricing" className="nav-link text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>Pricing</a>
               <a href="#how-it-works" className="nav-link text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>How It Works</a>
-              <a href="#comparison" className="nav-link text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>Compare</a>
+              <Link to="/compare" className="nav-link text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>Compare</Link>
               <Link to="/contact" className="nav-link text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
             </nav>
             <div className="flex flex-col gap-2 pt-4 border-t border-border">

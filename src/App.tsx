@@ -95,6 +95,7 @@ const App = () => {
             <Route path="/docusign-alternative-compliance" element={<DocusignAlternative />} />
             <Route path="/smartvault-alternative" element={<SmartVaultAlternative />} />
             <Route path="/taxdome-alternative" element={<TaxDomeAlternative />} />
+            <Route path="/compare" element={<Compare />} />
             {/* Blog */}
             <Route path="/blog/track-employee-policy-acknowledgments" element={<TrackPolicyAcknowledgments />} />
             {/* Use Cases */}
