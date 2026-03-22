@@ -55,6 +55,11 @@ export default function ClientPortal() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const taskFileInputRef = useRef<HTMLInputElement>(null);
   const [activeTaskUpload, setActiveTaskUpload] = useState<string | null>(null);
+  const [messages, setMessages] = useState<{ id: string; sender_type: string; content: string; created_at: string }[]>([]);
+  const [newMessage, setNewMessage] = useState("");
+  const [sendingMessage, setSendingMessage] = useState(false);
+  const [showMessages, setShowMessages] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (token) verifyAndLoad();
