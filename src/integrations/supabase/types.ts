@@ -596,6 +596,44 @@ export type Database = {
         }
         Relationships: []
       }
+      messages: {
+        Row: {
+          client_id: string
+          content: string
+          created_at: string
+          id: string
+          is_read: boolean
+          sender_id: string | null
+          sender_type: string
+        }
+        Insert: {
+          client_id: string
+          content: string
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          sender_id?: string | null
+          sender_type: string
+        }
+        Update: {
+          client_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          sender_id?: string | null
+          sender_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           created_at: string
