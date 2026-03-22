@@ -475,6 +475,10 @@ export default function ClientDetail() {
         <TabsList>
           <TabsTrigger value="documents">Documents ({documents.length})</TabsTrigger>
           <TabsTrigger value="tasks">Tasks ({tasks.length})</TabsTrigger>
+          <TabsTrigger value="messages">
+            <MessageSquare className="h-4 w-4 mr-1" />
+            Messages
+          </TabsTrigger>
           {client.client_type === 'business' && (
             <TabsTrigger value="contacts">Contacts ({contactCount})</TabsTrigger>
           )}
