@@ -766,6 +766,15 @@ export default function ClientDetail() {
             </div>
           )}
         </TabsContent>
+
+        {/* Messages Tab */}
+        <TabsContent value="messages">
+          <ClientMessages
+            clientId={client.id}
+            clientName={client.company_name || `${client.first_name} ${client.last_name}`}
+          />
+        </TabsContent>
+
         {/* Contacts Tab - Business clients only */}
         {client.client_type === 'business' && organization?.id && (
           <TabsContent value="contacts">
