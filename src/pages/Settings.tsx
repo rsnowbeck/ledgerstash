@@ -608,6 +608,12 @@ export default function Settings() {
                   autoReminderDays={organization.auto_reminder_days ?? 7}
                   onUpdate={refetchOrg}
                 />
+                <UploadNotificationSettings
+                  organizationId={organization.id}
+                  uploadNotificationsEnabled={(organization as any).upload_notifications_enabled ?? true}
+                  uploadNotificationMode={(organization as any).upload_notification_mode ?? "instant"}
+                  onUpdate={refetchOrg}
+                />
                 <Card>
                   <CardHeader>
                     <CardTitle>Reminder History</CardTitle>
