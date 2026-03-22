@@ -6,8 +6,9 @@ import { Progress } from "@/components/ui/progress";
 import {
   Loader2, FileText, CheckSquare, Upload, Clock, Shield,
   AlertCircle, CheckCircle2, Circle, Paperclip, ChevronDown,
-  ChevronUp, File,
+  ChevronUp, File, MessageSquare, Send, User,
 } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { AIAssistantWidget } from "@/components/ai/AIAssistantWidget";
 
