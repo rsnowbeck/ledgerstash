@@ -770,10 +770,18 @@ export default function ClientDetail() {
 
         {/* Messages Tab */}
         <TabsContent value="messages">
-          <ClientMessages
-            clientId={client.id}
-            clientName={client.company_name || `${client.first_name} ${client.last_name}`}
-          />
+          <div className="space-y-6">
+            <ClientMessages
+              clientId={client.id}
+              clientName={client.company_name || `${client.first_name} ${client.last_name}`}
+            />
+            {organization?.id && (
+              <AIConversationReview
+                clientId={client.id}
+                organizationId={organization.id}
+              />
+            )}
+          </div>
         </TabsContent>
 
         {/* Contacts Tab - Business clients only */}
