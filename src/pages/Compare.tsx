@@ -235,7 +235,7 @@ export default function Compare() {
             </div>
 
             <p className="text-xs text-muted-foreground text-center mt-6 max-w-3xl mx-auto">
-              Competitor pricing and features based on publicly available information as of 2026. Liscio pricing reflects Tax Solo plan. SmartVault pricing reflects 3-user minimum. Prices may vary.
+              Competitor pricing and features based on publicly available information as of 2026. SmartVault Accounting Pro: $55/user/month, 2-user minimum, annual billing. TaxDome billed annually upfront. Liscio usage fees apply beyond base limits.
             </p>
           </div>
         </section>
