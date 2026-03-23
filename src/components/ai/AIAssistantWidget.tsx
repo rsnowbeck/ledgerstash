@@ -2,8 +2,8 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { X, Send, Loader2, User, RotateCcw, Bot } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import aiShieldIcon from "@/assets/ai-shield-icon.png";
-import aiChatAvatar from "@/assets/ai-chat-avatar.png";
+import sageShieldIcon from "@/assets/sage-shield-icon.png";
+import scoutShieldIcon from "@/assets/scout-shield-icon.png";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -197,7 +197,9 @@ export function AIAssistantWidget({ mode = "cpa", clientToken }: AIAssistantWidg
         "What is my current progress?",
       ];
 
-  const botLabel = mode === "cpa" ? "CPA Operations Assistant" : "Ledger Stash Assistant";
+  const agentName = mode === "cpa" ? "Sage" : "Scout";
+  const agentIcon = mode === "cpa" ? sageShieldIcon : scoutShieldIcon;
+  const botLabel = mode === "cpa" ? "Sage — CPA Operations" : "Scout — Client Assistant";
 
   return (
     <>
@@ -208,7 +210,7 @@ export function AIAssistantWidget({ mode = "cpa", clientToken }: AIAssistantWidg
           className="fixed bottom-6 right-6 z-50 h-12 w-12 rounded-full hover:scale-105 transition-all flex items-center justify-center overflow-hidden shadow-lg"
           aria-label="Open AI Assistant"
         >
-          <img src={aiShieldIcon} alt="AI Assistant" className="h-12 w-12 rounded-full object-cover" />
+          <img src={agentIcon} alt={agentName} className="h-12 w-12 rounded-full object-cover" />
         </button>
       )}
 
@@ -218,7 +220,7 @@ export function AIAssistantWidget({ mode = "cpa", clientToken }: AIAssistantWidg
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/50">
             <div className="flex items-center gap-2">
-              <img src={aiChatAvatar} alt="AI Assistant" className="h-10 w-10 object-contain" />
+              <img src={agentIcon} alt={agentName} className="h-10 w-10 object-contain" />
               <div>
                 <span className="font-semibold text-sm text-foreground block">{botLabel}</span>
                 {mode === "cpa" && (
@@ -242,11 +244,11 @@ export function AIAssistantWidget({ mode = "cpa", clientToken }: AIAssistantWidg
           <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[280px] max-h-[380px]">
             {messages.length === 0 && (
               <div className="text-center py-8">
-                <img src={aiChatAvatar} alt="AI Assistant" className="h-16 w-16 object-contain mx-auto mb-3" />
+                <img src={agentIcon} alt={agentName} className="h-16 w-16 object-contain mx-auto mb-3" />
                 <p className="text-sm text-muted-foreground">
                   {mode === "cpa"
-                    ? "Hi! I can query your client data, show you who needs attention, and take actions like sending reminders."
-                    : "Hi! I know your specific checklist and documents. Ask me what you still need to provide."}
+                    ? "Hi, I'm Sage! I can query your client data, show you who needs attention, and take actions like sending reminders."
+                    : "Hi, I'm Scout! I know your specific checklist and documents. Ask me what you still need to provide."}
                 </p>
                 <div className="mt-4 space-y-2">
                   {suggestedQuestions.map((q) => (
@@ -269,7 +271,7 @@ export function AIAssistantWidget({ mode = "cpa", clientToken }: AIAssistantWidg
               <div key={i} className={`flex gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 {msg.role === "assistant" && (
                   <div className="h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <img src={aiChatAvatar} alt="AI" className="h-8 w-8 object-contain" />
+                    <img src={agentIcon} alt={agentName} className="h-8 w-8 object-contain" />
                   </div>
                 )}
                 <div
@@ -298,7 +300,7 @@ export function AIAssistantWidget({ mode = "cpa", clientToken }: AIAssistantWidg
             {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
               <div className="flex gap-2">
                 <div className="h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0">
-                  <img src={aiChatAvatar} alt="AI" className="h-8 w-8 object-contain" />
+                  <img src={agentIcon} alt={agentName} className="h-8 w-8 object-contain" />
                 </div>
                 <div className="bg-muted rounded-xl px-3 py-2">
                   <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
