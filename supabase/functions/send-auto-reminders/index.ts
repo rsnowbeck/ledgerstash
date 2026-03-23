@@ -100,6 +100,9 @@ serve(async (req: Request) => {
       if (!clients?.length) continue;
 
       for (const client of clients) {
+        // Use per-client override if set, otherwise org default
+        const reminderDays = client.reminder_cadence_days || orgReminderDays;
+
         // Get pending/overdue tasks for this client
         const { data: pendingTasks } = await supabase
           .from("tasks")
