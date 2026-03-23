@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { useSessionTimeout } from "@/hooks/useSessionTimeout";
 import { SessionTimeoutDialog } from "@/components/common/SessionTimeoutDialog";
 import { AIAssistantWidget } from "@/components/ai/AIAssistantWidget";
+import { GlobalSearchDialog } from "@/components/search/GlobalSearchDialog";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -70,6 +71,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </Link>
 
         <nav className="flex-1 p-4 space-y-1">
+          <div className="mb-2">
+            <GlobalSearchDialog />
+          </div>
           {navItems.map((item) => {
             const isActive = location.pathname === item.href || location.pathname.startsWith(item.href + '/');
             return (

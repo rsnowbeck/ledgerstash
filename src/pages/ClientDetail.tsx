@@ -32,7 +32,8 @@ import { DropZone } from "@/components/documents/DropZone";
 import { AuditExportButton } from "@/components/clients/AuditExportButton";
 import { PBCTemplatePicker } from "@/components/clients/PBCTemplatePicker";
 import { useAuth } from "@/hooks/useAuth";
-import { ArrowLeft, Plus, Upload, FileText, CheckSquare, Clock, FolderPlus, Send, Loader2, Copy, ListChecks, Download, Trash2, Eye, MoreHorizontal, Pencil, X, MessageSquare, Settings, Bell } from "lucide-react";
+import { EngagementHistoryDialog } from "@/components/clients/EngagementHistoryDialog";
+import { ArrowLeft, Plus, Upload, FileText, CheckSquare, Clock, FolderPlus, Send, Loader2, Copy, ListChecks, Download, Trash2, Eye, MoreHorizontal, Pencil, X, MessageSquare, Settings, Bell, Archive } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
@@ -77,6 +78,7 @@ export default function ClientDetail() {
   // Invite
   const [inviting, setInviting] = useState(false);
   const [portalLink, setPortalLink] = useState<string | null>(null);
+  const [engagementDialogOpen, setEngagementDialogOpen] = useState(false);
 
   useEffect(() => {
     if (user?.id && id) loadClientData();
@@ -452,6 +454,10 @@ export default function ClientDetail() {
             </div>
           </div>
           <div className="flex items-center gap-2 self-start">
+            <Button variant="outline" size="sm" onClick={() => setEngagementDialogOpen(true)} className="gap-1">
+              <Archive className="h-4 w-4" />
+              Engagements
+            </Button>
             <AuditExportButton
               clientId={client.id}
               clientName={`${client.first_name} ${client.last_name}`}
@@ -879,6 +885,35 @@ export default function ClientDetail() {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Engagement History Dialog */}
+      {client && organization && user && (
+        <EngagementHistoryDialog
+          open={engagementDialogOpen}
+          onOpenChange={setEngagementDialogOpen}
+          clientId={client.id}
+          organizationId={organization.id}
+          userId={user.id}
+          tasks={tasks}
+          documents={documents}
+          onPrefill={async (taskTitles) => {
+            if (!user || !client) return;
+            const inserts = taskTitles.map((title) => ({
+              client_id: client.id,
+              assigned_by: user.id,
+              title,
+              status: "pending",
+              priority: "medium",
+            }));
+            const { error } = await supabase.from("tasks").insert(inserts);
+            if (error) {
+              toast.error("Failed to create tasks from previous engagement");
+            } else {
+              loadClientData();
+            }
+          }}
+        />
+      )}
     </DashboardLayout>
   );
 }

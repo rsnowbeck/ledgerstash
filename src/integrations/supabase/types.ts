@@ -432,6 +432,67 @@ export type Database = {
           },
         ]
       }
+      engagement_history: {
+        Row: {
+          client_id: string
+          closed_at: string
+          created_by: string | null
+          document_names: Json
+          id: string
+          metadata: Json | null
+          organization_id: string
+          task_titles: Json
+          tax_year: string
+          template_name: string | null
+        }
+        Insert: {
+          client_id: string
+          closed_at?: string
+          created_by?: string | null
+          document_names?: Json
+          id?: string
+          metadata?: Json | null
+          organization_id: string
+          task_titles?: Json
+          tax_year: string
+          template_name?: string | null
+        }
+        Update: {
+          client_id?: string
+          closed_at?: string
+          created_by?: string | null
+          document_names?: Json
+          id?: string
+          metadata?: Json | null
+          organization_id?: string
+          task_titles?: Json
+          tax_year?: string
+          template_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "engagement_history_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "engagement_history_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "org_signing_public"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "engagement_history_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       firm_members: {
         Row: {
           created_at: string
