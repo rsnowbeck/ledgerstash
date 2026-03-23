@@ -77,7 +77,7 @@ export default function ComplianceSoftware() {
                 {[
                   "No enterprise contracts or complex onboarding — start collecting signatures in minutes",
                   "Recipients sign without creating accounts or remembering passwords",
-                  "Affordable pricing starting at $29/month with a 14-day free trial",
+                  "Affordable pricing starting at $49/month with a 14-day free trial",
                   "Works for employees, contractors, and vendors — even if they're not in your HR system",
                   "Export audit-ready records as PDF proof or structured CSV data",
                   "Purpose-built for compliance, not contract negotiation",

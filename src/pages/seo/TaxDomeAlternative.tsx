@@ -36,7 +36,7 @@ const whySwitchCards = [
 const comparisonRows = [
   {
     feature: "Solo Firm Pricing",
-    ledger: "$29/month (Unlimited team)",
+    ledger: "$49/month (Unlimited team)",
     competitor: "$800/year per seat",
     ledgerGreen: true,
     competitorRed: true,

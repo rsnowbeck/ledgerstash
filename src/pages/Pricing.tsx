@@ -8,7 +8,7 @@ export default function Pricing() {
     <div className="min-h-screen bg-background flex flex-col">
       <PageSEO
         title="Pricing | Secure Client Vault Plans | Ledger Stash"
-        description="Simple, transparent pricing for your secure client vault. Solo Firm $29/mo, Boutique Firm $79/mo, Enterprise Vault $199/mo. 14-day free trial included."
+        description="Simple, transparent pricing for your secure client vault. Solo Practitioner $49/mo, Boutique Firm $149/mo, Enterprise Vault $199/mo. 14-day free trial included."
         keywords="client vault pricing, accounting portal cost, CPA software pricing, secure document exchange plans"
         canonical="/pricing"
       />

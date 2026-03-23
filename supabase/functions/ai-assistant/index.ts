@@ -276,7 +276,7 @@ IMPORTANT RULES:
 - If you don't know something, say so honestly.
 
 Key platform facts:
-- Plans: Solo Firm ($29/mo, 25 clients), Boutique Firm ($79/mo, 100 clients), Enterprise Vault ($199/mo, unlimited)
+- Plans: Solo Practitioner ($49/mo, 25 clients), Boutique Firm ($149/mo, 100 clients), Enterprise Vault ($199/mo, unlimited)
 - 14-day free trial on all plans
 - Clients access via secure email links — no accounts needed
 - AES-256 encryption at rest, TLS 1.2+ in transit
