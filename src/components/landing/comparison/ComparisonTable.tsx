@@ -1,4 +1,4 @@
-import { CheckCircle2, AlertTriangle } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface CompRow {
@@ -16,100 +16,80 @@ interface CompRow {
 const rows: CompRow[] = [
   {
     feature: "Solo Firm Pricing",
-    ledger: "$49/month flat",
-    ledgerSub: "Unlimited team members included",
-    smart: "$110/month min",
-    smartSub: "Accounting Pro, 2-user minimum",
-    tax: "~$800/seat — paid upfront annually",
-    taxSub: "Full year billed upfront — no refunds, no cancellation",
-    liscio: "$49/user + overages",
-    liscioSub: "Demo required for monthly pricing",
+    ledger: "✅ $49/month flat — unlimited team members included",
+    smart: "❌ $110/month minimum — Accounting Pro, 2-user minimum",
+    tax: "❌ ~$800/seat — full year billed upfront",
+    liscio: "❌ $49/user/month + usage overages",
   },
   {
     feature: "Staff Seat Minimums",
-    ledger: "None",
-    smart: "2–3 user minimum",
-    tax: "Per seat",
-    liscio: "Per user",
+    ledger: "✅ None — start as a solo",
+    smart: "❌ 2–3 user minimum",
+    tax: "❌ Per seat — annual lock-in",
+    liscio: "❌ Per user",
   },
   {
     feature: "Seasonal Staff Cost",
-    ledger: "Always included",
-    smart: "+$55/staff seat/month",
-    tax: "Full year upfront per seat",
-    liscio: "+$49/user/month",
+    ledger: "✅ Always included — price never changes",
+    smart: "❌ +$55/staff seat/month",
+    tax: "❌ Full year billed upfront per seat",
+    liscio: "❌ +$49/user/month per person",
   },
   {
-    feature: "Annual Contract",
-    ledger: "Month to month",
-    smart: "Annual billing",
-    tax: "Full year paid upfront",
-    liscio: "Contact for monthly",
+    feature: "Commitment Required",
+    ledger: "✅ None — month to month, cancel anytime",
+    smart: "❌ Annual billing",
+    tax: "❌ Full year billed upfront — no refunds",
+    liscio: "❌ Annual — monthly rate requires demo call",
   },
   {
     feature: "Pricing Transparency",
-    ledger: "Public",
-    smart: "Demo required to purchase",
-    tax: "Public",
-    liscio: "Demo required",
+    ledger: "✅ Public pricing — no demo required",
+    smart: "❌ Demo required to purchase",
+    tax: "✅ Public pricing",
+    liscio: "❌ Demo required for monthly rate",
   },
   {
-    feature: "Context-Aware AI Client Bot",
-    ledger: "Conversational, real-time checklist status",
-    smart: "⚠️ SmartRequestAI — intake only",
+    feature: "Context-Aware AI Client Bot (Scout)",
+    ledger: "✅ Scout — conversational, real-time checklist status",
+    smart: "⚠️ SmartRequestAI — intake automation only, not conversational",
     tax: "—",
     liscio: "—",
   },
   {
-    feature: "AI Practice Intelligence Bot",
-    ledger: "Portfolio queries + sends reminders",
+    feature: "AI Practice Intelligence Bot (Sage)",
+    ledger: "✅ Sage — queries full portfolio, sends reminders",
     smart: "—",
     tax: "—",
     liscio: "—",
   },
   {
     feature: "E-Signatures",
-    ledger: "Included all plans",
-    smart: "⚠️ Add-on on most plans",
-    tax: "Included",
-    liscio: "Usage-billed",
+    ledger: "✅ Included on all plans",
+    smart: "⚠️ Add-on on most plans — included only on $150/month minimum plan",
+    tax: "✅ Included",
+    liscio: "❌ Usage-billed beyond base limit",
   },
   {
     feature: "Client Accounts Required",
-    ledger: "No — magic link",
-    smart: "Yes — password portal",
-    tax: "Yes",
-    liscio: "Yes",
+    ledger: "✅ No — one-click magic link, no password",
+    smart: "❌ Yes — password-protected portal",
+    tax: "❌ Yes — client login required",
+    liscio: "❌ Yes — account and app required",
   },
   {
     feature: "Time to First Client",
-    ledger: "Under 5 minutes",
-    smart: "Guided setup required",
-    tax: "6–8 weeks",
-    liscio: "Demo required",
+    ledger: "✅ Under 5 minutes — self-serve",
+    smart: "❌ Guided setup required — days to weeks",
+    tax: "❌ 6–8 weeks onboarding",
+    liscio: "❌ Demo required to start",
   },
 ];
 
-const greenValues = [
-  "$49/month flat",
-  "None",
-  "No — magic link",
-  "Under 5 minutes",
-  "Always included",
-  "Month to month",
-  "Public",
-  "Included all plans",
-  "Conversational, real-time checklist status",
-  "Portfolio queries + sends reminders",
-];
-const isGreenValue = (val: string) =>
-  greenValues.includes(val) || val.includes("Included");
-
-const redKeywords = ["$110", "$800", "$55/staff", "$49/user", "Per user", "Per seat", "Demo required", "Full year", "Annual", "+$", "Yes", "Guided setup", "6–8 weeks", "Usage-billed", "password portal"];
-const isRedValue = (val: string) => redKeywords.some((k) => val.includes(k));
-
-const isDash = (val: string) => val === "—";
+const isPositive = (val: string) => val.startsWith("✅");
+const isNegative = (val: string) => val.startsWith("❌");
 const isWarning = (val: string) => val.startsWith("⚠️");
+const isDash = (val: string) => val === "—";
 
 export function ComparisonTable() {
   return (
@@ -139,36 +119,20 @@ export function ComparisonTable() {
                 <td className="px-4 py-4 text-sm font-bold bg-accent/5">
                   <div className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0 text-success" />
-                    <div>
-                      <span className={isGreenValue(row.ledger) ? "text-success" : ""}>
-                        {row.ledger}
-                      </span>
-                      {row.ledgerSub && (
-                        <span className="block text-xs font-normal text-muted-foreground mt-0.5">
-                          {row.ledgerSub}
-                        </span>
-                      )}
-                    </div>
+                    <span className={isPositive(row.ledger) ? "text-success" : ""}>
+                      {row.ledger.replace(/^[✅❌⚠️]\s*/, "")}
+                    </span>
                   </div>
                 </td>
-                {([
-                  { val: row.smart, sub: row.smartSub },
-                  { val: row.tax, sub: row.taxSub },
-                  { val: row.liscio, sub: row.liscioSub },
-                ] as const).map((col, j) => (
+                {([row.smart, row.tax, row.liscio] as const).map((val, j) => (
                   <td key={j} className="px-4 py-4 text-sm text-muted-foreground">
                     <span className={
-                      isWarning(col.val) ? "text-amber-600 font-semibold" :
-                      isRedValue(col.val) ? "text-destructive font-semibold" :
-                      isDash(col.val) ? "text-muted-foreground/50" : ""
+                      isWarning(val) ? "text-amber-600 font-semibold" :
+                      isNegative(val) ? "text-destructive font-semibold" :
+                      isDash(val) ? "text-muted-foreground/50" : ""
                     }>
-                      {col.val}
+                      {val}
                     </span>
-                    {col.sub && (
-                      <span className={`block text-xs mt-0.5 ${isRedValue(col.sub) ? "text-destructive" : ""}`}>
-                        {col.sub}
-                      </span>
-                    )}
                   </td>
                 ))}
               </tr>
@@ -176,7 +140,7 @@ export function ComparisonTable() {
           </tbody>
         </table>
         <p className="text-xs text-muted-foreground mt-3 text-center italic">
-          SmartVault Accounting Pro: $55/user/month, 2-user minimum, annual billing. TaxDome billed annually upfront. Liscio usage fees apply beyond base limits. Pricing as of 2026.
+          SmartVault Accounting Pro: $55/user/month, 2-user minimum, annual billing. TaxDome billed annually upfront — no refunds. Liscio usage fees apply beyond base limits. Pricing as of 2026.
         </p>
       </div>
 
@@ -190,14 +154,9 @@ export function ComparisonTable() {
                 <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0 text-success" />
                 <div>
                   <span className="text-xs text-muted-foreground font-normal block">Ledger Stash</span>
-                  <span className={isGreenValue(row.ledger) ? "text-success" : ""}>
-                    {row.ledger}
+                  <span className={isPositive(row.ledger) ? "text-success" : ""}>
+                    {row.ledger.replace(/^[✅❌⚠️]\s*/, "")}
                   </span>
-                  {row.ledgerSub && (
-                    <span className="block text-xs font-normal text-muted-foreground">
-                      {row.ledgerSub}
-                    </span>
-                  )}
                 </div>
               </div>
               {[
@@ -209,7 +168,8 @@ export function ComparisonTable() {
                   <span className="text-xs block font-medium text-foreground/60">{c.label}</span>
                   <span className={
                     isWarning(c.val) ? "text-amber-600" :
-                    isRedValue(c.val) ? "text-destructive" : ""
+                    isNegative(c.val) ? "text-destructive" :
+                    isDash(c.val) ? "text-muted-foreground/50" : ""
                   }>
                     {c.val}
                   </span>

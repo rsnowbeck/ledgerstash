@@ -3,7 +3,7 @@ import { Footer } from "@/components/landing/Footer";
 import { PageSEO } from "@/components/seo/PageSEO";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Check, X, AlertTriangle, Bot, DollarSign, Users, Eye } from "lucide-react";
+import { ArrowRight, CheckCircle2, AlertTriangle, Bot, DollarSign, Users, Eye } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -12,31 +12,39 @@ import {
 } from "@/components/ui/accordion";
 
 const comparisonRows = [
-  { feature: "Starting Price", ledger: "$49/month flat", liscio: "$49/user/month + usage overages", ledgerGreen: true, liscioRed: true },
-  { feature: "Billing Model", ledger: "Flat per firm", liscio: "Per user + per action", ledgerGreen: true, liscioRed: true },
-  { feature: "Tax Gatherings", ledger: "Included", liscio: "Usage-billed beyond limit", ledgerGreen: true, liscioRed: true },
-  { feature: "Tax Deliveries", ledger: "Included", liscio: "Usage-billed beyond limit", ledgerGreen: true, liscioRed: true },
-  { feature: "E-Signatures", ledger: "✅ Included all plans", liscio: "Usage-billed beyond limit", ledgerGreen: true, liscioRed: true },
-  { feature: "Seasonal Staff Cost", ledger: "Included — always", liscio: "+$49/user/month per person", ledgerGreen: true, liscioRed: true },
-  { feature: "User Minimums", ledger: "None", liscio: "Per user" },
-  { feature: "Annual Contract", ledger: "❌ Month to month", liscio: "Contact for monthly", ledgerGreen: true },
-  { feature: "Pricing Transparency", ledger: "✅ Public", liscio: "❌ Demo required", ledgerGreen: true, liscioRed: true },
-  { feature: "Free Trial", ledger: "✅ 14 days, no credit card", liscio: "❌ Demo required", ledgerGreen: true, liscioRed: true },
-  { feature: "Client Accounts Required", ledger: "❌ No — magic link", liscio: "✅ Yes", ledgerGreen: true },
-  { feature: "Context-Aware AI Client Bot", ledger: "✅ Knows each client's checklist", liscio: "❌", ledgerGreen: true, liscioRed: true },
-  { feature: "AI Practice Intelligence Bot", ledger: "✅ Queries portfolio, sends reminders", liscio: "❌", ledgerGreen: true, liscioRed: true },
-  { feature: "AI Conversation Audit Trail", ledger: "✅ CPA-reviewable", liscio: "❌", ledgerGreen: true, liscioRed: true },
-  { feature: "Two-Way Secure Messaging", ledger: "✅ Dedicated thread per client", liscio: "✅ Per user" },
-  { feature: "Real-Time Upload Notifications", ledger: "✅ Toggleable", liscio: "✅" },
-  { feature: "Per-Client Reminder Schedule", ledger: "✅ 1–30 days per client", liscio: "✅" },
-  { feature: "Mobile Experience", ledger: "✅ Mobile-first (React)", liscio: "✅ Native iOS/Android app" },
-  { feature: "PBC List Management", ledger: "✅ 10 accounting-specific templates", liscio: "Generic tasks", ledgerGreen: true },
-  { feature: "White-Label Branding", ledger: "✅ All plans", liscio: "Paid tiers" },
-  { feature: "ESIGN/UETA Audit Trail", ledger: "✅ IP, timestamp, browser", liscio: "Basic", ledgerGreen: true },
-  { feature: "Compliance", ledger: "IRS 4557 · FTC Safeguards · GLBA", liscio: "General security" },
-  { feature: "Time to First Client", ledger: "Under 5 minutes", liscio: "Demo required to start", ledgerGreen: true, liscioRed: true },
-  { feature: "Unlimited Team Members", ledger: "✅ All plans", liscio: "❌ Per-user", ledgerGreen: true, liscioRed: true },
+  { feature: "Starting Price", ledger: "✅ $49/month flat", liscio: "❌ $49/user/month + usage overages" },
+  { feature: "Billing Model", ledger: "✅ Flat per firm — one price", liscio: "❌ Per user + per action (gatherings, deliveries, signatures)" },
+  { feature: "Tax Gatherings", ledger: "✅ Included — unlimited", liscio: "❌ Usage-billed beyond base limit" },
+  { feature: "Tax Deliveries", ledger: "✅ Included — unlimited", liscio: "❌ Usage-billed beyond base limit" },
+  { feature: "E-Signatures", ledger: "✅ Included on all plans", liscio: "❌ Usage-billed beyond base limit" },
+  { feature: "Seasonal Staff Cost", ledger: "✅ Always included — price never changes", liscio: "❌ +$49/user/month per person" },
+  { feature: "Staff Seat Minimums", ledger: "✅ None", liscio: "❌ Per user — every addition increases bill" },
+  { feature: "Commitment Required", ledger: "✅ None — month to month, cancel anytime", liscio: "❌ Annual — monthly rate requires demo call" },
+  { feature: "Pricing Transparency", ledger: "✅ Public — no demo required", liscio: "❌ Monthly rate requires demo call" },
+  { feature: "Free Trial", ledger: "✅ 14 days — no credit card required", liscio: "❌ No free trial — demo required to start" },
+  { feature: "Client Accounts Required", ledger: "✅ No — one-click magic link", liscio: "❌ Yes — account and app required" },
+  { feature: "Client Access Method", ledger: "✅ One-click magic link — any device, no download", liscio: "❌ Password login or mobile app download" },
+  { feature: "Context-Aware AI Client Bot (Scout)", ledger: "✅ Scout — knows each client's specific checklist, conversational, 24/7", liscio: "—" },
+  { feature: "AI Practice Intelligence Bot (Sage)", ledger: "✅ Sage — queries full portfolio, surfaces at-risk clients, sends reminders", liscio: "—" },
+  { feature: "AI Conversation Audit Trail", ledger: "✅ Full log — CPA-reviewable per client", liscio: "—" },
+  { feature: "Prior-Year Return Scanning", ledger: "✅ AI scans uploaded 1040 — generates personalized PBC checklist", liscio: "—" },
+  { feature: "Two-Way Secure Messaging", ledger: "✅ Dedicated thread per client — included", liscio: "✅ Core feature — per user pricing" },
+  { feature: "Real-Time Upload Notifications", ledger: "✅ Instant email — toggleable in settings", liscio: "✅ Via mobile app" },
+  { feature: "Per-Client Reminder Schedule", ledger: "✅ 1–30 days — per client override", liscio: "✅ Configurable" },
+  { feature: "Mobile Experience", ledger: "✅ Mobile-first (React) — no download required", liscio: "✅ Native iOS/Android app" },
+  { feature: "PBC List Management", ledger: "✅ 10 accounting-specific templates", liscio: "⚠️ Generic tasks — not PBC-specific terminology" },
+  { feature: "Document Preview", ledger: "✅ Inline preview", liscio: "✅ Available" },
+  { feature: "White-Label Branding", ledger: "✅ Logo + firm name — all plans", liscio: "✅ Custom branding — paid tiers" },
+  { feature: "ESIGN/UETA Audit Trail", ledger: "✅ IP address, timestamp, browser fingerprint", liscio: "⚠️ Basic audit trail" },
+  { feature: "Compliance", ledger: "✅ IRS 4557 · FTC Safeguards · GLBA", liscio: "⚠️ General security practices" },
+  { feature: "Unlimited Team Members", ledger: "✅ All plans — unlimited at no extra cost", liscio: "❌ Per user — every team member adds to bill" },
+  { feature: "Time to First Client", ledger: "✅ Under 5 minutes — self-serve", liscio: "❌ Demo required to start" },
 ];
+
+const isPositive = (val: string) => val.startsWith("✅");
+const isNegative = (val: string) => val.startsWith("❌");
+const isWarning = (val: string) => val.startsWith("⚠️");
+const isDash = (val: string) => val === "—";
 
 const costRows = [
   { component: "Base (1 user, 12 months)", ledger: "$588/year", liscio: "$588/year ($49 × 12)" },
@@ -233,13 +241,20 @@ export default function LiscioAlternative() {
                     {comparisonRows.map((row, i) => (
                       <tr key={i} className="border-b border-border last:border-b-0 hover:bg-muted/50 transition-colors">
                         <td className="px-5 py-3.5 font-semibold text-foreground text-sm">{row.feature}</td>
-                        <td className="px-5 py-3.5 text-sm" style={{ backgroundColor: "hsl(var(--accent) / 0.06)" }}>
-                          <span className={row.ledgerGreen ? "text-accent font-bold" : "text-foreground"}>
-                            {row.ledger}
-                          </span>
+                        <td className="px-5 py-3.5 text-sm bg-accent/5">
+                          <div className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0 text-success" />
+                            <span className={isPositive(row.ledger) ? "text-success font-bold" : "text-foreground"}>
+                              {row.ledger.replace(/^[✅❌⚠️]\s*/, "")}
+                            </span>
+                          </div>
                         </td>
                         <td className="px-5 py-3.5 text-sm text-muted-foreground">
-                          <span className={row.liscioRed ? "text-destructive font-semibold" : ""}>
+                          <span className={
+                            isNegative(row.liscio) ? "text-destructive font-semibold" :
+                            isWarning(row.liscio) ? "text-amber-600 font-semibold" :
+                            isDash(row.liscio) ? "text-muted-foreground/50" : ""
+                          }>
                             {row.liscio}
                           </span>
                         </td>
@@ -255,21 +270,29 @@ export default function LiscioAlternative() {
                   <div key={i} className="bg-background rounded-xl p-4 shadow-sm border border-border">
                     <h3 className="font-semibold text-foreground text-sm mb-2">{row.feature}</h3>
                     <div className="space-y-1.5 text-sm">
-                      <div className="flex items-start gap-2 rounded-lg p-2" style={{ backgroundColor: "hsl(var(--accent) / 0.06)" }}>
-                        <Check className="h-4 w-4 mt-0.5 shrink-0 text-accent" />
+                      <div className="flex items-start gap-2 rounded-lg p-2 bg-accent/5">
+                        <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0 text-success" />
                         <div>
                           <span className="text-xs text-muted-foreground block">Ledger Stash</span>
-                          <span className={row.ledgerGreen ? "text-accent font-bold" : "text-foreground"}>{row.ledger}</span>
+                          <span className={isPositive(row.ledger) ? "text-success font-bold" : "text-foreground"}>{row.ledger.replace(/^[✅❌⚠️]\s*/, "")}</span>
                         </div>
                       </div>
                       <div className="text-muted-foreground p-2">
                         <span className="text-xs block font-medium text-foreground/60">Liscio</span>
-                        <span className={row.liscioRed ? "text-destructive" : ""}>{row.liscio}</span>
+                        <span className={
+                          isNegative(row.liscio) ? "text-destructive" :
+                          isWarning(row.liscio) ? "text-amber-600" :
+                          isDash(row.liscio) ? "text-muted-foreground/50" : ""
+                        }>{row.liscio}</span>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
+
+              <p className="text-xs text-muted-foreground italic mt-4 text-center">
+                Liscio overage rates require a demo call to confirm. Estimates based on published base pricing and reported usage-based billing. Pricing as of 2026.
+              </p>
             </div>
           </div>
         </section>

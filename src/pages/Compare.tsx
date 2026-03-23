@@ -7,42 +7,37 @@ import { CheckCircle2, ArrowRight, XCircle } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 
 const comparisonRows = [
-  { feature: "Solo Firm Pricing", ledger: "$49/month flat", smart: "$110/month min (Accounting Pro, 2-user min)", tax: "~$800/seat — paid upfront annually", liscio: "$49/user/month + overages" },
-  { feature: "Staff Seat Minimums", ledger: "None", smart: "2–3 user minimum", tax: "Per seat", liscio: "Per user" },
-  { feature: "Seasonal Staff Cost", ledger: "Included — always", smart: "+$55/staff seat/month", tax: "Full year upfront per seat", liscio: "+$49/user/month" },
-  { feature: "Annual Contract Required", ledger: "No — month to month", smart: "Yes", tax: "Full year billed upfront — no refunds, no cancellation", liscio: "Contact for monthly" },
-  { feature: "Pricing Transparency", ledger: "Public pricing", smart: "Public pricing", tax: "Public pricing", liscio: "Demo required" },
-  { feature: "Client Accounts Required", ledger: "No", smart: "Yes", tax: "Yes", liscio: "Yes" },
-  { feature: "Client Access Method", ledger: "One-click magic link", smart: "Password login", tax: "Password login", liscio: "Password login" },
-  { feature: "Mobile Experience", ledger: "Mobile-first (React)", smart: "Desktop-focused", tax: "Limited mobile", liscio: "Native app" },
-  { feature: "PBC List Terminology", ledger: "Built for accountants (W-2s, K-1s, PBC)", smart: 'Generic "file requests"', tax: 'Generic "file requests"', liscio: "Generic tasks" },
-  { feature: "White-Label Branding", ledger: "Logo + name — all plans", smart: "Custom portal", tax: "Portal branding only", liscio: "Paid add-on" },
-  { feature: "E-Signatures", ledger: "Included — all plans", smart: "⚠️ Add-on on most plans", tax: "Included", liscio: "Usage-billed per signature" },
-  { feature: "Context-Aware AI Client Bot", ledger: "Conversational, real-time checklist status", smart: "⚠️ SmartRequestAI — intake only, not conversational", tax: "—", liscio: "—" },
-  { feature: "AI Practice Intelligence Bot", ledger: "Portfolio queries + sends reminders", smart: "—", tax: "—", liscio: "—" },
-  { feature: "Time to First Client", ledger: "Under 5 minutes", smart: "Days to weeks", tax: "6–8 weeks", liscio: "Demo required" },
-  { feature: "Setup / Onboarding", ledger: "Self-serve — no demo needed", smart: "Self-serve", tax: "6–8 week onboarding", liscio: "Mandatory demo call" },
-  { feature: "Busy Season Auto-Reminders", ledger: "Included", smart: "Included", tax: "Included", liscio: "Included" },
-  { feature: "Unlimited Team Members", ledger: "Included — all plans", smart: "Per-user pricing", tax: "Per-user pricing", liscio: "Per-user pricing" },
-  { feature: "Best For", ledger: "Solo CPAs, boutique firms, EAs", smart: "Small to large firms", tax: "Small to enterprise", liscio: "Small to mid firms" },
+  { feature: "Starting Price", ledger: "✅ $49/month flat", smart: "❌ $110/month minimum (Accounting Pro, 2-user min)", tax: "❌ ~$800/seat/year — full year billed upfront", liscio: "❌ $49/user/month + usage overages" },
+  { feature: "Billing Model", ledger: "✅ Flat per firm — one price regardless of team size", smart: "❌ Per staff seat — annual billing", tax: "❌ Per seat — full year upfront, no refunds", liscio: "❌ Per user + per action (gatherings, deliveries, signatures)" },
+  { feature: "Staff Seat Minimums", ledger: "✅ None — start as a solo", smart: "❌ 2–3 user minimum depending on plan", tax: "❌ Per seat — scales with team size", liscio: "❌ Per user — every addition increases bill" },
+  { feature: "Seasonal Staff Cost", ledger: "✅ Always included — price never changes", smart: "❌ +$55/staff seat/month", tax: "❌ Full year billed upfront per seat", liscio: "❌ +$49/user/month per person" },
+  { feature: "Commitment Required", ledger: "✅ None — month to month, cancel anytime", smart: "❌ Annual billing", tax: "❌ Full year billed upfront — no refunds, no cancellation", liscio: "❌ Annual — monthly rate requires demo call" },
+  { feature: "Pricing Transparency", ledger: "✅ Public — no demo required", smart: "❌ Demo required to purchase", tax: "✅ Public pricing", liscio: "❌ Monthly rate requires demo call" },
+  { feature: "Free Trial", ledger: "✅ 14 days — no credit card required", smart: "✅ Available — guided setup required", tax: "✅ Available", liscio: "❌ No free trial — demo required to start" },
+  { feature: "Client Accounts Required", ledger: "✅ No — one-click magic link", smart: "❌ Yes — password-protected portal", tax: "❌ Yes — client login required", liscio: "❌ Yes — account and app required" },
+  { feature: "Client Access Method", ledger: "✅ One-click magic link — any device, no download", smart: "❌ Password login — portal account required", tax: "❌ Password login — client account required", liscio: "❌ Password login or mobile app download" },
+  { feature: "Context-Aware AI Client Bot (Scout)", ledger: "✅ Scout — knows each client's specific checklist, conversational, 24/7", smart: "⚠️ SmartRequestAI — generates checklist from prior-year return, not conversational", tax: "—", liscio: "—" },
+  { feature: "AI Practice Intelligence Bot (Sage)", ledger: "✅ Sage — queries full portfolio, surfaces at-risk clients, sends reminders", smart: "—", tax: "—", liscio: "—" },
+  { feature: "AI Conversation Audit Trail", ledger: "✅ Full log — CPA-reviewable per client", smart: "—", tax: "—", liscio: "—" },
+  { feature: "Prior-Year Return Scanning", ledger: "✅ AI scans uploaded 1040 — generates personalized PBC checklist", smart: "✅ SmartRequestAI — scans prior-year return, generates document request list", tax: "—", liscio: "—" },
+  { feature: "Two-Way Secure Messaging", ledger: "✅ Dedicated thread per client — CPA and client side", smart: "❌ No dedicated messaging channel", tax: "✅ Included — per seat pricing", liscio: "✅ Core feature — per user pricing" },
+  { feature: "Real-Time Upload Notifications", ledger: "✅ Instant email to CPA — toggleable in settings", smart: "❌ Not available", tax: "✅ Available", liscio: "✅ Via mobile app" },
+  { feature: "Per-Client Reminder Schedule", ledger: "✅ 1–30 days — per client override of org default", smart: "⚠️ Limited — org-level settings only", tax: "✅ Configurable", liscio: "✅ Configurable" },
+  { feature: "Mobile Experience", ledger: "✅ Mobile-first (React) — no download required", smart: "⚠️ Mobile-enabled — primarily desktop focused", tax: "✅ Native iOS/Android app", liscio: "✅ Native iOS/Android app" },
+  { feature: "PBC List Management", ledger: "✅ 10 accounting-specific templates — W-2, 1040, 1120-S, 1065 and more", smart: "✅ Accounting-specific folder templates", tax: "⚠️ Generic file requests — not PBC-specific terminology", liscio: "⚠️ Generic tasks — not PBC-specific terminology" },
+  { feature: "Document Preview", ledger: "✅ Inline preview — CPA and client side", smart: "✅ Available", tax: "✅ Available", liscio: "✅ Available" },
+  { feature: "White-Label Branding", ledger: "✅ Logo + firm name — all plans", smart: "✅ Custom branded portal — all plans", tax: "✅ Portal branding — paid tiers", liscio: "✅ Custom branding — paid tiers" },
+  { feature: "E-Signatures", ledger: "✅ Included on all plans", smart: "⚠️ Add-on on most plans — included only on $150/month minimum plan", tax: "✅ Included", liscio: "❌ Usage-billed beyond base limit" },
+  { feature: "ESIGN/UETA Audit Trail", ledger: "✅ IP address, timestamp, browser fingerprint — downloadable PDF certificates", smart: "✅ Activity logs and audit trails", tax: "✅ Built-in eSign logs", liscio: "⚠️ Basic audit trail" },
+  { feature: "Compliance", ledger: "✅ IRS 4557 · FTC Safeguards · GLBA", smart: "✅ SOC 2 Type 2 · IRS 4557 · FTC Safeguards", tax: "⚠️ General security practices", liscio: "⚠️ General security practices" },
+  { feature: "Time to First Client", ledger: "✅ Under 5 minutes — self-serve, no demo", smart: "❌ Guided setup required — days to weeks", tax: "❌ 6–8 weeks onboarding", liscio: "❌ Demo required to start" },
+  { feature: "Unlimited Team Members", ledger: "✅ All plans — unlimited at no extra cost", smart: "❌ Per staff seat pricing", tax: "❌ Per seat — annual upfront per person", liscio: "❌ Per user — every team member adds to bill" },
 ];
 
-const greenValues = [
-  "$49/month flat",
-  "None — start as a solo",
-  "No — month to month",
-  "One-click magic link",
-  "Under 5 minutes",
-  "Included — always",
-  "Included — all plans",
-  "No",
-  "Self-serve — no demo needed",
-  "Public pricing",
-];
-const isGreenValue = (val: string) => greenValues.includes(val) || val.includes("Included");
-
-const redKeywords = ["$110", "$800", "$55/staff", "+$49", "Per-user pricing", "2–3 user minimum", "Yes", "Demo required", "Mandatory demo", "6–8 week", "Days to weeks", "Password login", "Add-on", "Usage-billed", "Paid add-on", "Contact for monthly", "Per seat", "Per user"];
-const isRedValue = (val: string) => redKeywords.some((k) => val.includes(k));
+const isPositive = (val: string) => val.startsWith("✅");
+const isNegative = (val: string) => val.startsWith("❌");
+const isWarning = (val: string) => val.startsWith("⚠️");
+const isDash = (val: string) => val === "—";
 
 const costCards = [
   {
@@ -181,17 +176,21 @@ export default function Compare() {
                   {comparisonRows.map((row, i) => (
                     <tr key={i} className="border-b border-border last:border-b-0 hover:bg-muted/50 transition-colors">
                       <td className="px-4 py-3.5 font-semibold text-foreground text-sm">{row.feature}</td>
-                      <td className="px-4 py-3.5 text-sm font-bold" style={{ backgroundColor: "hsl(220 80% 97%)" }}>
+                      <td className="px-4 py-3.5 text-sm font-bold bg-accent/5">
                         <div className="flex items-start gap-2">
                           <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0 text-success" />
-                          <span style={{ color: isGreenValue(row.ledger) ? "hsl(160 60% 35%)" : undefined }}>
-                            {row.ledger}
+                          <span className={isPositive(row.ledger) ? "text-success" : ""}>
+                            {row.ledger.replace(/^[✅❌⚠️]\s*/, "")}
                           </span>
                         </div>
                       </td>
                       {[row.smart, row.tax, row.liscio].map((val, j) => (
                         <td key={j} className="px-4 py-3.5 text-sm text-muted-foreground">
-                          <span style={{ color: isRedValue(val) ? "hsl(0 72% 51%)" : undefined, fontWeight: isRedValue(val) ? 600 : undefined }}>
+                          <span className={
+                            isWarning(val) ? "text-amber-600 font-semibold" :
+                            isNegative(val) ? "text-destructive font-semibold" :
+                            isDash(val) ? "text-muted-foreground/50" : ""
+                          }>
                             {val}
                           </span>
                         </td>
@@ -208,12 +207,12 @@ export default function Compare() {
                 <div key={i} className="bg-card rounded-xl p-4 shadow-sm border border-border">
                   <h3 className="font-semibold text-foreground text-sm mb-3">{row.feature}</h3>
                   <div className="space-y-2 text-sm">
-                    <div className="flex items-start gap-2 font-bold rounded-lg p-2" style={{ backgroundColor: "hsl(220 80% 97%)" }}>
+                    <div className="flex items-start gap-2 font-bold rounded-lg p-2 bg-accent/5">
                       <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0 text-success" />
                       <div>
                         <span className="text-xs text-muted-foreground font-normal block">Ledger Stash</span>
-                        <span style={{ color: isGreenValue(row.ledger) ? "hsl(160 60% 35%)" : undefined }}>
-                          {row.ledger}
+                        <span className={isPositive(row.ledger) ? "text-success" : ""}>
+                          {row.ledger.replace(/^[✅❌⚠️]\s*/, "")}
                         </span>
                       </div>
                     </div>
@@ -224,7 +223,11 @@ export default function Compare() {
                     ].map((c, j) => (
                       <div key={j} className="text-muted-foreground p-2">
                         <span className="text-xs block font-medium text-foreground/60">{c.label}</span>
-                        <span style={{ color: isRedValue(c.val) ? "hsl(0 72% 51%)" : undefined }}>
+                        <span className={
+                          isWarning(c.val) ? "text-amber-600" :
+                          isNegative(c.val) ? "text-destructive" :
+                          isDash(c.val) ? "text-muted-foreground/50" : ""
+                        }>
                           {c.val}
                         </span>
                       </div>
@@ -234,8 +237,8 @@ export default function Compare() {
               ))}
             </div>
 
-            <p className="text-xs text-muted-foreground text-center mt-6 max-w-3xl mx-auto">
-              Competitor pricing and features based on publicly available information as of 2026. SmartVault Accounting Pro: $55/user/month, 2-user minimum, annual billing. TaxDome billed annually upfront. Liscio usage fees apply beyond base limits.
+            <p className="text-xs text-muted-foreground text-center mt-6 max-w-3xl mx-auto italic">
+              SmartVault Accounting Pro: $55/user/month, 2-user minimum, annual billing. TaxDome billed annually upfront — no refunds. Liscio usage fees apply beyond base limits. Pricing as of 2026.
             </p>
           </div>
         </section>
