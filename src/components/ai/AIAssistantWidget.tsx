@@ -244,7 +244,7 @@ export function AIAssistantWidget({ mode = "cpa", clientToken }: AIAssistantWidg
           <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[280px] max-h-[380px]">
             {messages.length === 0 && (
               <div className="text-center py-8">
-                <img src={aiChatAvatar} alt="AI Assistant" className="h-16 w-16 object-contain mx-auto mb-3" />
+                <img src={agentIcon} alt={agentName} className="h-16 w-16 object-contain mx-auto mb-3" />
                 <p className="text-sm text-muted-foreground">
                   {mode === "cpa"
                     ? "Hi! I can query your client data, show you who needs attention, and take actions like sending reminders."
