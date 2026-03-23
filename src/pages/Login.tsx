@@ -54,6 +54,29 @@ export default function Login() {
     }
   };
 
+  const handleMagicLink = async () => {
+    if (!email) {
+      toast.error("Enter your email first");
+      return;
+    }
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: `${window.location.origin}/dashboard` },
+      });
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.success("Magic link sent! Check your inbox.");
+      }
+    } catch {
+      toast.error("An unexpected error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleMFACancel = async () => {
     await supabase.auth.signOut();
     setShowMFA(false);
