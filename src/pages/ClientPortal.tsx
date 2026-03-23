@@ -124,30 +124,26 @@ function InlineScoutAssistant({ token, accentColor }: { token?: string; accentCo
   return (
     <div className="rounded-xl border border-border bg-card overflow-hidden transition-all animate-fade-in">
       {/* Scout header with inline input */}
-      <div className="px-4 py-3 flex items-center gap-3">
-        <img src={scoutIcon} alt="Scout" className="h-9 w-9 object-contain flex-shrink-0" />
-        <div className="flex-1">
-          {messages.length === 0 && !expanded ? (
-            <p className="text-sm text-muted-foreground">
-              Hi! I can answer any questions about your checklist. Just ask.
-            </p>
-          ) : null}
-          <form
-            onSubmit={(e) => { e.preventDefault(); sendMessage(); }}
-            className="flex gap-2 mt-1"
-          >
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask Scout a question..."
-              className="flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
-              disabled={isLoading}
-            />
-            <Button type="submit" size="sm" disabled={isLoading || !input.trim()} className="h-9 w-9 p-0" style={accentColor ? { backgroundColor: accentColor } : undefined}>
-              {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-            </Button>
-          </form>
+      <div className="px-4 py-3">
+        <div className="flex items-center gap-3 mb-2">
+          <img src={scoutIcon} alt="Scout" className="h-9 w-9 object-contain flex-shrink-0" />
+          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Scout — AI Assistant</span>
         </div>
+        <form
+          onSubmit={(e) => { e.preventDefault(); sendMessage(); }}
+          className="flex gap-2"
+        >
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Ask Scout what you still need to upload..."
+            className="flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+            disabled={isLoading}
+          />
+          <Button type="submit" size="sm" disabled={isLoading || !input.trim()} className="h-9 w-9 p-0" style={accentColor ? { backgroundColor: accentColor } : undefined}>
+            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+          </Button>
+        </form>
       </div>
 
       {/* Conversation thread */}
