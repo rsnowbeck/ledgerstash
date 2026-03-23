@@ -6,11 +6,11 @@ import { Progress } from "@/components/ui/progress";
 import {
   Loader2, FileText, CheckSquare, Upload, Clock, Shield,
   AlertCircle, CheckCircle2, Circle, Paperclip, ChevronDown,
-  ChevronUp, File, MessageSquare, Send, User,
+  ChevronUp, File, MessageSquare, Send, User, Lock,
 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { AIAssistantWidget } from "@/components/ai/AIAssistantWidget";
+import scoutIcon from "@/assets/scout-icon.png";
 
 interface ClientData {
   id: string;
@@ -37,6 +37,148 @@ interface Document {
   created_at: string;
 }
 
+/** Inline Scout Assistant embedded at top of checklist */
+function InlineScoutAssistant({ token, accentColor }: { token?: string; accentColor?: string }) {
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState<{ role: "user" | "assistant"; content: string }[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
+  const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-assistant`;
+
+  const sendMessage = useCallback(async () => {
+    const trimmed = input.trim();
+    if (!trimmed || isLoading) return;
+
+    const userMsg = { role: "user" as const, content: trimmed };
+    const allMessages = [...messages, userMsg];
+    setMessages(allMessages);
+    setInput("");
+    setIsLoading(true);
+    setExpanded(true);
+
+    let assistantSoFar = "";
+
+    try {
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+      };
+
+      const resp = await fetch(CHAT_URL, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          messages: allMessages,
+          context: { type: "client", ...(token ? { clientToken: token } : {}) },
+        }),
+      });
+
+      if (!resp.ok) throw new Error("Request failed");
+      if (!resp.body) throw new Error("No response body");
+
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let textBuffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        textBuffer += decoder.decode(value, { stream: true });
+
+        let newlineIndex: number;
+        while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
+          let line = textBuffer.slice(0, newlineIndex);
+          textBuffer = textBuffer.slice(newlineIndex + 1);
+          if (line.endsWith("\r")) line = line.slice(0, -1);
+          if (line.startsWith(":") || line.trim() === "") continue;
+          if (!line.startsWith("data: ")) continue;
+          const jsonStr = line.slice(6).trim();
+          if (jsonStr === "[DONE]") break;
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content;
+            if (content) {
+              assistantSoFar += content;
+              setMessages((prev) => {
+                const last = prev[prev.length - 1];
+                if (last?.role === "assistant") {
+                  return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: assistantSoFar } : m);
+                }
+                return [...prev, { role: "assistant", content: assistantSoFar }];
+              });
+            }
+          } catch {
+            textBuffer = line + "\n" + textBuffer;
+            break;
+          }
+        }
+      }
+    } catch (e: any) {
+      setMessages((prev) => [...prev, { role: "assistant", content: "Sorry, I couldn't process that. Please try again." }]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [input, isLoading, messages, token]);
+
+  return (
+    <div className="rounded-xl border border-border bg-card overflow-hidden transition-all animate-fade-in">
+      {/* Scout header with inline input */}
+      <div className="px-4 py-3 flex items-center gap-3">
+        <img src={scoutIcon} alt="Scout" className="h-9 w-9 object-contain flex-shrink-0" />
+        <div className="flex-1">
+          {messages.length === 0 && !expanded ? (
+            <p className="text-sm text-muted-foreground">
+              Hi! I can answer any questions about your checklist. Just ask.
+            </p>
+          ) : null}
+          <form
+            onSubmit={(e) => { e.preventDefault(); sendMessage(); }}
+            className="flex gap-2 mt-1"
+          >
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ask Scout a question..."
+              className="flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+              disabled={isLoading}
+            />
+            <Button type="submit" size="sm" disabled={isLoading || !input.trim()} className="h-9 w-9 p-0" style={accentColor ? { backgroundColor: accentColor } : undefined}>
+              {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+            </Button>
+          </form>
+        </div>
+      </div>
+
+      {/* Conversation thread */}
+      {expanded && messages.length > 0 && (
+        <div className="border-t border-border px-4 py-3 space-y-3 max-h-[240px] overflow-y-auto">
+          {messages.map((msg, i) => (
+            <div key={i} className={`flex gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+              {msg.role === "assistant" && (
+                <img src={scoutIcon} alt="Scout" className="h-6 w-6 object-contain flex-shrink-0 mt-1" />
+              )}
+              <div className={`max-w-[85%] rounded-xl px-3 py-2 text-sm ${
+                msg.role === "user" ? "bg-accent text-accent-foreground" : "bg-muted text-foreground"
+              }`}>
+                {msg.content}
+              </div>
+            </div>
+          ))}
+          {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
+            <div className="flex gap-2">
+              <img src={scoutIcon} alt="Scout" className="h-6 w-6 object-contain flex-shrink-0" />
+              <div className="bg-muted rounded-xl px-3 py-2">
+                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function ClientPortal() {
   const { token } = useParams<{ token: string }>();
   const [loading, setLoading] = useState(true);
@@ -60,6 +202,7 @@ export default function ClientPortal() {
   const [sendingMessage, setSendingMessage] = useState(false);
   const [showMessages, setShowMessages] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [justCompleted, setJustCompleted] = useState<string | null>(null);
 
   useEffect(() => {
     if (token) verifyAndLoad();
@@ -128,7 +271,13 @@ export default function ClientPortal() {
         body: { action: "update-task", token, taskId, status },
       });
       if (res.error) throw new Error(res.error.message);
-      toast.success(status === "completed" ? "Task marked complete!" : "Task updated");
+      if (status === "completed") {
+        setJustCompleted(taskId);
+        setTimeout(() => setJustCompleted(null), 1500);
+        toast.success("Step completed — nice work! ✓");
+      } else {
+        toast.success("Task updated");
+      }
       setTasks(prev => prev.map(t => t.id === taskId ? { ...t, status } : t));
     } catch (err: any) {
       toast.error(err.message || "Failed to update task");
@@ -206,7 +355,6 @@ export default function ClientPortal() {
   const completedTasks = tasks.filter(t => t.status === "completed");
   const totalTasks = tasks.length;
   const completionPercent = totalTasks > 0 ? Math.round((completedTasks.length / totalTasks) * 100) : 0;
-  const accentStyle = accentColor ? { "--portal-accent": accentColor } as React.CSSProperties : undefined;
 
   if (loading) {
     return (
@@ -235,60 +383,92 @@ export default function ClientPortal() {
 
   if (!client) return null;
 
+  const brandColor = accentColor || "hsl(var(--primary))";
+
   return (
-    <div className="min-h-screen bg-background" style={accentStyle}>
+    <div className="min-h-screen bg-background">
       <input ref={taskFileInputRef} type="file" multiple className="hidden" onChange={handleTaskFileChange} />
       <input ref={fileInputRef} type="file" multiple className="hidden" onChange={handleFileChange} />
+
+      {/* Accent Header Band */}
+      <div className="h-2" style={{ background: brandColor }} />
 
       {/* Header */}
       <header className="border-b border-border bg-card sticky top-0 z-40">
         <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            {firmLogoUrl && <img src={firmLogoUrl} alt={firmName} className="h-8 w-8 object-contain rounded" />}
+            {firmLogoUrl && <img src={firmLogoUrl} alt={firmName} className="h-10 w-10 object-contain rounded-lg" />}
             <div>
               <h1 className="text-lg font-bold text-foreground">{firmName || "Ledger Stash"}</h1>
               {firmName && <p className="text-xs text-muted-foreground">Secure Client Portal</p>}
             </div>
           </div>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Shield className="h-3.5 w-3.5" />
-            AES-256 Encrypted
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-full">
+            <Lock className="h-3 w-3" />
+            End-to-end encrypted
           </div>
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 py-8 space-y-8">
-        {/* Welcome */}
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Welcome, {client.first_name}</h2>
-          <p className="text-muted-foreground mt-1">
-            Complete each step below to submit your documents to {firmName || "your accountant"}.
+      <main className="max-w-3xl mx-auto px-4 py-8 space-y-6">
+        {/* Welcome Section — warm and reassuring */}
+        <div className="text-center pb-2">
+          <h2 className="text-3xl font-bold text-foreground mb-2">
+            Welcome, {client.first_name} 👋
+          </h2>
+          <p className="text-muted-foreground text-base max-w-md mx-auto">
+            {firmName ? `${firmName} is ready to help.` : "We're ready to help."} Complete each step below to submit your documents.
           </p>
+          <div className="flex items-center justify-center gap-1.5 mt-3 text-xs text-muted-foreground">
+            <Shield className="h-3.5 w-3.5" />
+            Your documents are encrypted and secure.
+          </div>
         </div>
 
-        {/* Overall Progress */}
+        {/* Overall Progress — styled with brand color */}
         {totalTasks > 0 && (
           <div className="p-5 rounded-xl border border-border bg-card">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <h3 className="text-sm font-semibold text-foreground">Overall Progress</h3>
+                <h3 className="text-sm font-semibold text-foreground">Your Progress</h3>
                 <p className="text-xs text-muted-foreground mt-0.5">
                   {completedTasks.length} of {totalTasks} steps completed
                 </p>
               </div>
-              <span className={`text-2xl font-bold ${completionPercent === 100 ? "text-emerald-600" : "text-foreground"}`}>
+              <span
+                className="text-2xl font-bold"
+                style={{ color: completionPercent === 100 ? "#16a34a" : brandColor }}
+              >
                 {completionPercent}%
               </span>
             </div>
-            <Progress value={completionPercent} className="h-2.5" />
+            <div className="relative h-3 rounded-full bg-muted overflow-hidden">
+              <div
+                className="absolute inset-y-0 left-0 rounded-full transition-all duration-700 ease-out"
+                style={{
+                  width: `${completionPercent}%`,
+                  background: completionPercent === 100
+                    ? "linear-gradient(90deg, #16a34a, #22c55e)"
+                    : `linear-gradient(90deg, ${brandColor}, ${brandColor}dd)`,
+                }}
+              />
+            </div>
             {completionPercent === 100 && (
-              <p className="text-sm text-emerald-600 mt-3 flex items-center gap-1.5 font-medium">
-                <CheckCircle2 className="h-4 w-4" />
-                All steps completed — thank you!
-              </p>
+              <div className="mt-4 text-center animate-fade-in">
+                <p className="text-base text-emerald-600 font-semibold flex items-center justify-center gap-2">
+                  <CheckCircle2 className="h-5 w-5" />
+                  All done — thank you, {client.first_name}! 🎉
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {firmName || "Your accountant"} has been notified.
+                </p>
+              </div>
             )}
           </div>
         )}
+
+        {/* Inline Scout Assistant — above checklist */}
+        <InlineScoutAssistant token={token} accentColor={accentColor} />
 
         {/* Step-by-step task list */}
         {totalTasks > 0 && (
@@ -306,14 +486,22 @@ export default function ClientPortal() {
                 {tasks.map((task, index) => {
                   const isCompleted = task.status === "completed";
                   const isUploading = uploadingTaskId === task.id;
+                  const wasJustCompleted = justCompleted === task.id;
 
                   return (
-                    <div key={task.id} className="relative flex gap-4 pb-6 last:pb-0">
+                    <div
+                      key={task.id}
+                      className={`relative flex gap-4 pb-6 last:pb-0 transition-all duration-500 ${
+                        wasJustCompleted ? "animate-fade-in" : ""
+                      }`}
+                    >
                       {/* Step indicator */}
                       <div className="relative z-10 flex-shrink-0">
                         {isCompleted ? (
-                          <div className="h-10 w-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-                            <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                          <div className={`h-10 w-10 rounded-full flex items-center justify-center transition-all duration-500 ${
+                            wasJustCompleted ? "scale-110" : "scale-100"
+                          }`} style={{ backgroundColor: `${brandColor}15` }}>
+                            <CheckCircle2 className="h-5 w-5 transition-all duration-300" style={{ color: "#16a34a" }} />
                           </div>
                         ) : (
                           <div className="h-10 w-10 rounded-full border-2 border-border bg-card flex items-center justify-center">
@@ -323,25 +511,29 @@ export default function ClientPortal() {
                       </div>
 
                       {/* Step content */}
-                      <div className={`flex-1 rounded-xl border bg-card p-4 transition-all ${
+                      <div className={`flex-1 rounded-xl border bg-card p-4 transition-all duration-500 ${
                         isCompleted
-                          ? "border-emerald-200 dark:border-emerald-900/40 bg-emerald-50/50 dark:bg-emerald-950/10"
-                          : "border-border hover:border-accent/40"
-                      }`}>
+                          ? "border-emerald-200 dark:border-emerald-900/40 opacity-75"
+                          : "border-border hover:border-accent/40 hover:shadow-sm"
+                      }`} style={isCompleted ? { backgroundColor: "#f0fdf415" } : undefined}>
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">
-                              <h4 className={`font-medium ${isCompleted ? "text-muted-foreground line-through" : "text-foreground"}`}>
+                              <h4 className={`font-medium transition-all duration-300 ${
+                                isCompleted ? "text-muted-foreground line-through" : "text-foreground"
+                              }`}>
                                 {task.title}
                               </h4>
                               {task.priority === "high" && !isCompleted && (
                                 <span className="text-[10px] px-1.5 py-0.5 rounded bg-destructive/10 text-destructive font-semibold uppercase">
-                                  Required
+                                  Urgent
                                 </span>
                               )}
                             </div>
                             {task.description && (
-                              <p className="text-sm text-muted-foreground">{task.description}</p>
+                              <p className={`text-sm ${isCompleted ? "text-muted-foreground/60" : "text-muted-foreground"}`}>
+                                {task.description}
+                              </p>
                             )}
                             {task.due_date && !isCompleted && (
                               <span className="inline-flex items-center gap-1 text-xs text-muted-foreground mt-2">
@@ -377,10 +569,10 @@ export default function ClientPortal() {
                                 </Button>
                                 <button
                                   onClick={() => handleUpdateTask(task.id, "completed")}
-                                  className="h-8 w-8 rounded-full border-2 border-muted-foreground/30 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 flex items-center justify-center transition-all"
+                                  className="h-8 w-8 rounded-full border-2 border-muted-foreground/30 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 flex items-center justify-center transition-all group"
                                   title="Mark as complete"
                                 >
-                                  <Circle className="h-4 w-4 text-transparent" />
+                                  <CheckCircle2 className="h-4 w-4 text-transparent group-hover:text-emerald-500 transition-colors" />
                                 </button>
                               </>
                             )}
@@ -409,8 +601,8 @@ export default function ClientPortal() {
             className="w-full flex items-center justify-between px-5 py-4 hover:bg-muted/30 transition-colors"
           >
             <div className="flex items-center gap-3">
-              <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                <FileText className="h-4 w-4 text-primary" />
+              <div className="h-8 w-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${brandColor}15` }}>
+                <FileText className="h-4 w-4" style={{ color: brandColor }} />
               </div>
               <div className="text-left">
                 <h3 className="text-sm font-semibold text-foreground">Uploaded Documents</h3>
@@ -471,94 +663,94 @@ export default function ClientPortal() {
             </div>
           )}
         </div>
-      </main>
 
-      {/* Messages Section */}
-      <div className="max-w-2xl mx-auto px-4 mt-6">
-        <button
-          onClick={() => {
-            setShowMessages(!showMessages);
-            if (!showMessages) loadMessages();
-          }}
-          className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-border bg-card hover:bg-muted/50 transition-colors"
-        >
-          <div className="flex items-center gap-2">
-            <MessageSquare className="h-5 w-5 text-primary" />
-            <span className="font-medium text-sm text-foreground">Messages</span>
-          </div>
-          {showMessages ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-        </button>
+        {/* Messages Section */}
+        <div>
+          <button
+            onClick={() => {
+              setShowMessages(!showMessages);
+              if (!showMessages) loadMessages();
+            }}
+            className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-border bg-card hover:bg-muted/50 transition-colors"
+          >
+            <div className="flex items-center gap-2">
+              <MessageSquare className="h-5 w-5" style={{ color: brandColor }} />
+              <span className="font-medium text-sm text-foreground">Messages</span>
+            </div>
+            {showMessages ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+          </button>
 
-        {showMessages && (
-          <div className="mt-3 rounded-xl border border-border bg-card overflow-hidden">
-            <div className="max-h-[300px] overflow-y-auto p-4 space-y-3">
-              {messages.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-4">
-                  No messages yet. Send a message to your accountant.
-                </p>
-              ) : (
-                messages.map((msg) => (
-                  <div
-                    key={msg.id}
-                    className={`flex gap-2 ${msg.sender_type === "client" ? "justify-end" : "justify-start"}`}
-                  >
-                    {msg.sender_type === "cpa" && (
-                      <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
-                        <User className="h-3.5 w-3.5 text-primary" />
-                      </div>
-                    )}
+          {showMessages && (
+            <div className="mt-3 rounded-xl border border-border bg-card overflow-hidden">
+              <div className="max-h-[300px] overflow-y-auto p-4 space-y-3">
+                {messages.length === 0 ? (
+                  <p className="text-sm text-muted-foreground text-center py-4">
+                    No messages yet. Send a message to your accountant.
+                  </p>
+                ) : (
+                  messages.map((msg) => (
                     <div
-                      className={`max-w-[75%] rounded-xl px-3 py-2 ${
-                        msg.sender_type === "client"
-                          ? "bg-accent text-accent-foreground"
-                          : "bg-muted text-foreground"
-                      }`}
+                      key={msg.id}
+                      className={`flex gap-2 ${msg.sender_type === "client" ? "justify-end" : "justify-start"}`}
                     >
-                      <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                      <p className="text-[10px] mt-1 opacity-60">
-                        {new Date(msg.created_at).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
-                      </p>
-                    </div>
-                    {msg.sender_type === "client" && (
-                      <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-1">
-                        <User className="h-3.5 w-3.5 text-muted-foreground" />
+                      {msg.sender_type === "cpa" && (
+                        <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                          <User className="h-3.5 w-3.5 text-primary" />
+                        </div>
+                      )}
+                      <div
+                        className={`max-w-[75%] rounded-xl px-3 py-2 ${
+                          msg.sender_type === "client"
+                            ? "bg-accent text-accent-foreground"
+                            : "bg-muted text-foreground"
+                        }`}
+                      >
+                        <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                        <p className="text-[10px] mt-1 opacity-60">
+                          {new Date(msg.created_at).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
+                        </p>
                       </div>
-                    )}
-                  </div>
-                ))
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-            <div className="border-t border-border p-3">
-              <form
-                onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }}
-                className="flex gap-2"
-              >
-                <Textarea
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  placeholder="Type a message..."
-                  className="min-h-[40px] max-h-[80px] resize-none text-sm"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      handleSendMessage();
-                    }
-                  }}
-                />
-                <Button
-                  type="submit"
-                  size="sm"
-                  disabled={sendingMessage || !newMessage.trim()}
-                  className="h-10 w-10 p-0 flex-shrink-0"
+                      {msg.sender_type === "client" && (
+                        <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-1">
+                          <User className="h-3.5 w-3.5 text-muted-foreground" />
+                        </div>
+                      )}
+                    </div>
+                  ))
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+              <div className="border-t border-border p-3">
+                <form
+                  onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }}
+                  className="flex gap-2"
                 >
-                  <Send className="h-4 w-4" />
-                </Button>
-              </form>
+                  <Textarea
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder="Type a message..."
+                    className="min-h-[40px] max-h-[80px] resize-none text-sm"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        handleSendMessage();
+                      }
+                    }}
+                  />
+                  <Button
+                    type="submit"
+                    size="sm"
+                    disabled={sendingMessage || !newMessage.trim()}
+                    className="h-10 w-10 p-0 flex-shrink-0"
+                  >
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </form>
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      </main>
 
       {/* Footer */}
       {showPoweredBy && (
@@ -573,9 +765,6 @@ export default function ClientPortal() {
         </footer>
       )}
       {!showPoweredBy && <div className="mt-8" />}
-
-      {/* AI Assistant */}
-      <AIAssistantWidget mode="client" clientToken={token} />
     </div>
   );
 }
