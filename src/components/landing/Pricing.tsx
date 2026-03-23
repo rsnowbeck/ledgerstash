@@ -15,19 +15,19 @@ const planOrder: { key: PlanKey; featured: boolean }[] = [
 
 const planCopy: Record<PlanKey, { title: string; subhead: string; footer: string }> = {
   solo: {
-    title: 'The "Solo" Plan',
+    title: "Solo Practitioner",
     subhead: "Perfect for solo firms and independent practitioners.",
-    footer: "Unlimited Staff Seats",
+    footer: "Unlimited Staff Seats Included",
   },
   boutique: {
-    title: 'The "Boutique" Plan',
+    title: "Boutique Firm",
     subhead: "Built for teams ready to automate.",
-    footer: "All Pro Features + White-labeling",
+    footer: "Unlimited Staff Seats Included",
   },
   enterprise: {
-    title: 'The "Unlimited" Plan',
+    title: "Enterprise Vault",
     subhead: "For firms that refuse to be taxed on growth.",
-    footer: 'The "TaxDome Killer."',
+    footer: "Unlimited Growth",
   },
 };
 
