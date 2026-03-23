@@ -410,15 +410,11 @@ export default function ClientPortal() {
         {/* Welcome Section — warm and reassuring */}
         <div className="text-center pb-2">
           <h2 className="text-3xl font-bold text-foreground mb-2">
-            Welcome, {client.first_name} 👋
+            Welcome, {client.first_name}
           </h2>
           <p className="text-muted-foreground text-base max-w-md mx-auto">
-            {firmName ? `${firmName} is ready to help.` : "We're ready to help."} Complete each step below to submit your documents.
+            {firmName ? `${firmName} has prepared your secure document checklist below.` : "Your secure document checklist is ready below."} Your documents are end-to-end encrypted.
           </p>
-          <div className="flex items-center justify-center gap-1.5 mt-3 text-xs text-muted-foreground">
-            <Shield className="h-3.5 w-3.5" />
-            Your documents are encrypted and secure.
-          </div>
         </div>
 
         {/* Overall Progress — styled with brand color */}
