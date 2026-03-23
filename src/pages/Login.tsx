@@ -146,6 +146,37 @@ export default function Login() {
             </p>
           </div>
 
+          {/* Dev Quick Login – only visible on non-production domains */}
+          {!window.location.hostname.includes('getattestly.com') && !window.location.hostname.includes('ledgerstash.com') && (
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full mb-6 border-dashed border-primary/40 text-primary hover:bg-primary/5"
+              disabled={loading}
+              onClick={async () => {
+                setLoading(true);
+                const testEmail = 'dev-test@ledgerstash.local';
+                const testPass = 'devtest123456';
+                try {
+                  const { error: signInErr } = await supabase.auth.signInWithPassword({ email: testEmail, password: testPass });
+                  if (signInErr) {
+                    const { error: signUpErr } = await supabase.auth.signUp({
+                      email: testEmail, password: testPass,
+                      options: { data: { company_name: 'Dev Firm' } },
+                    });
+                    if (signUpErr) { toast.error(signUpErr.message); setLoading(false); return; }
+                    const { error: retryErr } = await supabase.auth.signInWithPassword({ email: testEmail, password: testPass });
+                    if (retryErr) { toast.error(retryErr.message); setLoading(false); return; }
+                  }
+                  toast.success("Welcome back!");
+                  navigate('/dashboard');
+                } catch { toast.error('Dev login failed'); } finally { setLoading(false); }
+              }}
+            >
+              🛠 Dev Quick Login
+            </Button>
+          )}
+
           <div className="card-elevated p-8">
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-2">
