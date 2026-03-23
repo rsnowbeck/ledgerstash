@@ -197,7 +197,9 @@ export function AIAssistantWidget({ mode = "cpa", clientToken }: AIAssistantWidg
         "What is my current progress?",
       ];
 
-  const botLabel = mode === "cpa" ? "CPA Operations Assistant" : "Ledger Stash Assistant";
+  const agentName = mode === "cpa" ? "Sage" : "Scout";
+  const agentIcon = mode === "cpa" ? sageShieldIcon : scoutShieldIcon;
+  const botLabel = mode === "cpa" ? "Sage — CPA Operations" : "Scout — Client Assistant";
 
   return (
     <>
