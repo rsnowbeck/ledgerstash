@@ -51,8 +51,9 @@ export function Hero() {
           {/* Subheader */}
           <p className="mx-auto max-w-[48rem] text-base text-muted-foreground mb-10 animate-slide-up" style={{ animationDelay: "0.1s" }}>
             The secure document vault built for firms with{" "}
-            <strong className="text-foreground font-semibold">unlimited user seats</strong>.
-            Scale by client volume, not staff count—finally a tool that doesn&apos;t punish you for growing.
+            <strong className="text-foreground font-semibold">unlimited user seats</strong>
+            {" — "}and the only portal with AI that knows exactly what each client still owes you.
+            Scale by client volume, not staff count.
           </p>
 
           {/* CTAs */}

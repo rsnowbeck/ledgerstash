@@ -220,8 +220,17 @@ export function Pricing() {
           })}
         </div>
 
-        <div className="text-center mt-10">
+        {/* Seasonal staff statement */}
+        <div className="max-w-3xl mx-auto mt-10 rounded-xl border border-border bg-accent/5 p-6 text-center">
+          <p className="text-sm font-medium text-foreground">
+            All plans include unlimited team members. Add seasonal staff in January. Remove them in April. Your price never changes.
+          </p>
+        </div>
+
+        <div className="text-center mt-6">
           <p className="text-sm text-muted-foreground">
+            <Link to="/pricing" className="text-accent hover:underline">See full pricing details →</Link>
+            {" · "}
             Questions? See our <a href="#faq" className="text-accent hover:underline">FAQ</a> or start your free trial.
           </p>
         </div>

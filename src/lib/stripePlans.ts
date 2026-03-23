@@ -1,26 +1,31 @@
 // Stripe product and price IDs for each plan tier (LIVE)
 export const STRIPE_PLANS = {
   solo: {
-    name: "Solo Firm",
+    name: "Solo Practitioner",
     description: "For independent practitioners managing a focused client base.",
     product_id: "prod_U5Wn9ZDZbzbZKc",
     monthly: {
       price_id: "price_1T7LjxR9aaf2f8Yg6boZi82U",
-      amount: 29,
+      amount: 49,
     },
     annual: {
       price_id: "price_1T7LjzR9aaf2f8YgVk3Mwz51",
-      amount: 290,
-      monthlyEquivalent: 24.17,
+      amount: 490,
+      monthlyEquivalent: 40.83,
     },
     features: [
       "Up to 25 active clients",
       "Secure document vault",
       "PBC task lists",
+      "Context-aware AI client assistant",
+      "CPA practice intelligence bot",
+      "Two-way secure client messaging",
+      "Real-time upload notifications",
+      "Per-client configurable reminder schedule",
+      "10 pre-built PBC templates",
       "ESIGN/UETA compliant audit trail",
       "Downloadable PDF certificates",
       "Firm logo + name branding",
-      "Email notifications",
       "Per-client folders",
       "Standard support",
     ],
@@ -32,16 +37,16 @@ export const STRIPE_PLANS = {
     product_id: "prod_U5WnwTxMzxXkDt",
     monthly: {
       price_id: "price_1T7Lk0R9aaf2f8Yg565bOya4",
-      amount: 79,
+      amount: 149,
     },
     annual: {
       price_id: "price_1T7LjzR9aaf2f8Yg3OXRNcjV",
-      amount: 790,
-      monthlyEquivalent: 65.83,
+      amount: 1490,
+      monthlyEquivalent: 124.17,
     },
     features: [
       "Up to 100 active clients",
-      "Everything in Solo Firm",
+      "Everything in Solo Practitioner",
       "Full white-labeling (no Ledger Stash branding)",
       "Busy Season auto-reminders",
       "Team member accounts",
@@ -53,7 +58,7 @@ export const STRIPE_PLANS = {
   },
   enterprise: {
     name: "Enterprise Vault",
-    description: "The scalable solution for growing firms and corporate controllers.",
+    description: "The scalable solution for growing firms.",
     product_id: "prod_U5aFwai0TGN2S0",
     monthly: {
       price_id: "price_1T7P5PR9aaf2f8YgdtlZfYxe",

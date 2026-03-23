@@ -1,4 +1,4 @@
-import { Users, FileText, Send, BarChart3, Download, Shield, Clock, Bell } from "lucide-react";
+import { Users, FileText, Send, BarChart3, Download, Shield, Clock, Bell, MessageSquare, ClipboardList } from "lucide-react";
 
 interface Feature {
   icon: any;
@@ -30,6 +30,24 @@ const collectionFeatures: Feature[] = [
     title: "No More Password Support Calls",
     description:
       "Clients click a secure link, see exactly what's needed, drag-and-drop, and they're done. No accounts to create. No passwords to reset. No app to download.",
+  },
+  {
+    icon: MessageSquare,
+    title: "Your Clients Can Reach You — Securely",
+    description:
+      "Every client vault includes a dedicated two-way message thread. CPAs see it on the Client Detail page. Clients access it in their portal. No more sensitive questions sent over unencrypted email.",
+  },
+  {
+    icon: Bell,
+    title: "Know the Moment Documents Arrive",
+    description:
+      "Get an immediate email notification the moment a client uploads a document via their magic link. No more manually checking the dashboard. Toggle it on or off in settings.",
+  },
+  {
+    icon: ClipboardList,
+    title: "Hit the Ground Running",
+    description:
+      "Choose from 10 pre-built templates covering individual returns (1040), S-Corps (1120-S), partnerships (1065), W-2 collection, 1099 collection, monthly bookkeeping, new client onboarding, audit prep, S-Corp annual packages, and extension requests.",
   },
 ];
 

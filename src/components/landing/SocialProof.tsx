@@ -13,8 +13,8 @@ const cards = [
   },
   {
     icon: DollarSign,
-    metric: "85% Software Savings",
-    copy: "Why pay for 12 months of a software seat for a 3-month intern? LedgerStash is the only vault that scales with your clients, not your payroll.",
+    metric: "$7,836 Saved Over 3 Years",
+    copy: "A solo CPA with 3 seasonal staff pays $9,600 to TaxDome over 3 years — $800/seat, paid upfront annually. The same firm on Ledger Stash pays $1,764. The math isn't subtle.",
   },
 ];
 

@@ -31,6 +31,9 @@ export function Footer() {
             <Link to="/taxdome-alternative" className="text-muted-foreground hover:text-foreground transition-colors">
               TaxDome Alternative
             </Link>
+            <Link to="/liscio-alternative" className="text-muted-foreground hover:text-foreground transition-colors">
+              Liscio Alternative
+            </Link>
           </nav>
         </div>
       </div>

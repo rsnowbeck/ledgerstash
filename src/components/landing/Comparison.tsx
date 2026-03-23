@@ -13,7 +13,7 @@ export function Comparison() {
             Stop Paying the &ldquo;Success Tax&rdquo;
           </h2>
           <p className="mx-auto max-w-[50rem] text-lg text-muted-foreground font-normal leading-relaxed">
-            We built LedgerStash because SmartVault and TaxDome weren&rsquo;t designed for boutique firms.
+            We built Ledger Stash because SmartVault, TaxDome, and Liscio weren&rsquo;t designed for boutique firms.
             Compare the hidden costs of enterprise bloat vs. a system built for your scale.
           </p>
         </div>

@@ -9,6 +9,7 @@ import { Helmet } from "react-helmet-async";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { generateBlueOceanPdf } from "@/lib/generateBlueOceanPdf";
+import { Link } from "react-router-dom";
 
 const essentialFaqs = [
   {
@@ -35,6 +36,17 @@ const essentialFaqs = [
     question: "What happens if I outgrow my current plan?",
     answer:
       'You can upgrade (or downgrade) at any time with one click. If you hit your client limit, we\'ll simply nudge you to move to the next tier. You\'ll never lose access to your files, and we\'ll never charge you a surprise "overage" fee.',
+  },
+  {
+    question: "What does the AI actually know about my clients?",
+    answer:
+      'The client-side AI has access to each specific client\'s PBC list — which items are complete and which are still missing. When a client asks "what do I still need to send?" the AI responds with their actual outstanding items by name. It does not give tax or legal advice — that\'s explicitly blocked. Every conversation is logged and viewable by the CPA on the client detail page.',
+  },
+  {
+    question: "Can I compare Ledger Stash against Liscio?",
+    answer:
+      "Yes. Liscio charges $49/user/month plus usage fees on tax gatherings, deliveries, and e-signatures — and requires a demo call just to see monthly pricing. Ledger Stash publishes pricing publicly, charges one flat rate for your entire firm, and includes context-aware AI that Liscio doesn't offer.",
+    link: { text: "See the full Liscio comparison →", href: "/liscio-alternative" },
   },
 ];
 
@@ -117,6 +129,13 @@ export function FAQ() {
                   {faq.answer.split("\n\n").map((paragraph, pIdx) => (
                     <p key={pIdx}>{paragraph}</p>
                   ))}
+                  {"link" in faq && faq.link && (
+                    <p>
+                      <Link to={faq.link.href} className="text-accent hover:underline font-medium">
+                        {faq.link.text}
+                      </Link>
+                    </p>
+                  )}
                 </AccordionContent>
               </AccordionItem>
             ))}
