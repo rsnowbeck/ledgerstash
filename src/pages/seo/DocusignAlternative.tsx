@@ -56,7 +56,7 @@ export default function DocusignAlternative() {
                       { feature: "AI field detection", vaultledger: true, docusign: true },
                       { feature: "Automated compliance reminders", vaultledger: true, docusign: true },
                       { feature: "Audit-ready exports (CSV + PDF)", vaultledger: true, docusign: true },
-                      { feature: "Starts at $29/month", vaultledger: true, docusign: false },
+                      { feature: "Starts at $49/month", vaultledger: true, docusign: false },
                       { feature: "No per-envelope pricing", vaultledger: true, docusign: false },
                       { feature: "Multi-party contract negotiation", vaultledger: false, docusign: true },
                       { feature: "Legal workflow management", vaultledger: false, docusign: true },
