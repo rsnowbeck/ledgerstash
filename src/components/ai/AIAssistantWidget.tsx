@@ -2,8 +2,9 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { X, Send, Loader2, User, RotateCcw, Bot } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import sageShieldIcon from "@/assets/sage-shield-icon.png";
-import scoutShieldIcon from "@/assets/scout-shield-icon.png";
+import aiShieldIcon from "@/assets/ai-shield-icon.png";
+import aiChatAvatar from "@/assets/ai-chat-avatar.png";
+import scoutIcon from "@/assets/scout-icon.png";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
