@@ -199,7 +199,8 @@ export function AIAssistantWidget({ mode = "cpa", clientToken }: AIAssistantWidg
       ];
 
   const agentName = mode === "cpa" ? "Sage" : "Scout";
-  const agentIcon = mode === "cpa" ? sageShieldIcon : scoutShieldIcon;
+  const agentIcon = mode === "cpa" ? aiShieldIcon : scoutIcon;
+  const agentAvatar = mode === "cpa" ? aiChatAvatar : scoutIcon;
   const botLabel = mode === "cpa" ? "Sage — CPA Operations" : "Scout — Client Assistant";
 
   return (
