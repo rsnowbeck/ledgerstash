@@ -207,6 +207,7 @@ export type Database = {
           notes: string | null
           phone: string | null
           profile_id: string | null
+          reminder_cadence_days: number | null
           state: string | null
           status: string
           updated_at: string
@@ -230,6 +231,7 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           profile_id?: string | null
+          reminder_cadence_days?: number | null
           state?: string | null
           status?: string
           updated_at?: string
@@ -253,6 +255,7 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           profile_id?: string | null
+          reminder_cadence_days?: number | null
           state?: string | null
           status?: string
           updated_at?: string
