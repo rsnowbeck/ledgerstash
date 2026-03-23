@@ -78,6 +78,7 @@ export default function ClientDetail() {
   // Invite
   const [inviting, setInviting] = useState(false);
   const [portalLink, setPortalLink] = useState<string | null>(null);
+  const [engagementDialogOpen, setEngagementDialogOpen] = useState(false);
 
   useEffect(() => {
     if (user?.id && id) loadClientData();
