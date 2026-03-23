@@ -53,7 +53,9 @@ export default function ClientDetail() {
   const [folders, setFolders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [contactCount, setContactCount] = useState(0);
-
+  const [reminderOverride, setReminderOverride] = useState(false);
+  const [clientReminderDays, setClientReminderDays] = useState("7");
+  const [reminderSaving, setReminderSaving] = useState(false);
   // Task dialog
   const [taskDialogOpen, setTaskDialogOpen] = useState(false);
   const [taskForm, setTaskForm] = useState({ title: "", description: "", due_date: "", priority: "medium" });
