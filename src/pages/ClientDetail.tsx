@@ -810,6 +810,74 @@ export default function ClientDetail() {
             />
           </TabsContent>
         )}
+        {/* Settings Tab */}
+        <TabsContent value="settings">
+          <div className="max-w-lg space-y-6">
+            <div className="rounded-lg border bg-card p-6 space-y-4">
+              <div className="flex items-center gap-2">
+                <Bell className="h-5 w-5 text-primary" />
+                <h3 className="font-semibold text-foreground">Reminder Schedule</h3>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Override the organization-wide reminder cadence for this specific client.
+                {organization?.auto_reminder_days && !reminderOverride && (
+                  <span className="block mt-1">Currently using org default: every <strong>{organization.auto_reminder_days} days</strong></span>
+                )}
+              </p>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="reminderOverride">Custom reminder cadence</Label>
+                <Switch
+                  id="reminderOverride"
+                  checked={reminderOverride}
+                  onCheckedChange={(checked) => {
+                    setReminderOverride(checked);
+                    if (!checked) {
+                      // Save null immediately when turning off
+                      setReminderSaving(true);
+                      supabase.from("clients").update({ reminder_cadence_days: null }).eq("id", client.id)
+                        .then(({ error }) => {
+                          if (error) { toast.error("Failed to update"); }
+                          else { toast.success("Using org default reminder schedule"); setClient({ ...client, reminder_cadence_days: null }); }
+                          setReminderSaving(false);
+                        });
+                    }
+                  }}
+                />
+              </div>
+              {reminderOverride && (
+                <div className="space-y-3 pt-2 border-t">
+                  <Label>Frequency</Label>
+                  <Select value={clientReminderDays} onValueChange={setClientReminderDays}>
+                    <SelectTrigger className="w-[200px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[1,2,3,5,7,10,14,21,30].map(d => (
+                        <SelectItem key={d} value={d.toString()}>Every {d} day{d > 1 ? "s" : ""}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Button
+                    variant="hero"
+                    size="sm"
+                    disabled={reminderSaving || parseInt(clientReminderDays) === client.reminder_cadence_days}
+                    onClick={async () => {
+                      setReminderSaving(true);
+                      const days = parseInt(clientReminderDays);
+                      const { error } = await supabase.from("clients").update({ reminder_cadence_days: days }).eq("id", client.id);
+                      if (error) toast.error("Failed to save");
+                      else { toast.success(`Reminders set to every ${days} day${days > 1 ? "s" : ""}`); setClient({ ...client, reminder_cadence_days: days }); }
+                      setReminderSaving(false);
+                    }}
+                  >
+                    {reminderSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                    Save
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        </TabsContent>
       </Tabs>
     </DashboardLayout>
   );
