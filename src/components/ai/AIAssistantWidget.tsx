@@ -210,7 +210,7 @@ export function AIAssistantWidget({ mode = "cpa", clientToken }: AIAssistantWidg
           className="fixed bottom-6 right-6 z-50 h-12 w-12 rounded-full hover:scale-105 transition-all flex items-center justify-center overflow-hidden shadow-lg"
           aria-label="Open AI Assistant"
         >
-          <img src={aiShieldIcon} alt="AI Assistant" className="h-12 w-12 rounded-full object-cover" />
+          <img src={agentIcon} alt={agentName} className="h-12 w-12 rounded-full object-cover" />
         </button>
       )}
 
