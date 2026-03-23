@@ -7,9 +7,9 @@ import { CheckCircle2, ArrowRight, XCircle } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 
 const comparisonRows = [
-  { feature: "Solo Firm Pricing", ledger: "$49/month flat", smart: "$210/month (3-user min)", tax: "~$800/seat — paid upfront annually", liscio: "$49/user/month + overages" },
-  { feature: "User Minimums", ledger: "None — start as a solo", smart: "3-user minimum", tax: "1 seat minimum", liscio: "Per user" },
-  { feature: "Seasonal Staff Cost", ledger: "Included — always", smart: "+$70/user/month", tax: "+$67/seat/month", liscio: "+$49/user/month" },
+  { feature: "Solo Firm Pricing", ledger: "$49/month flat", smart: "$110/month min (Accounting Pro, 2-user min)", tax: "~$800/seat — paid upfront annually", liscio: "$49/user/month + overages" },
+  { feature: "Staff Seat Minimums", ledger: "None", smart: "2–3 user minimum", tax: "Per seat", liscio: "Per user" },
+  { feature: "Seasonal Staff Cost", ledger: "Included — always", smart: "+$55/staff seat/month", tax: "Full year upfront per seat", liscio: "+$49/user/month" },
   { feature: "Annual Contract Required", ledger: "No — month to month", smart: "Yes", tax: "Full year billed upfront — no refunds, no cancellation", liscio: "Contact for monthly" },
   { feature: "Pricing Transparency", ledger: "Public pricing", smart: "Public pricing", tax: "Public pricing", liscio: "Demo required" },
   { feature: "Client Accounts Required", ledger: "No", smart: "Yes", tax: "Yes", liscio: "Yes" },
