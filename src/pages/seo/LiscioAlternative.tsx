@@ -234,22 +234,14 @@ export default function LiscioAlternative() {
                       <tr key={i} className="border-b border-border last:border-b-0 hover:bg-muted/50 transition-colors">
                         <td className="px-5 py-3.5 font-semibold text-foreground text-sm">{row.feature}</td>
                         <td className="px-5 py-3.5 text-sm" style={{ backgroundColor: "hsl(var(--accent) / 0.06)" }}>
-                          <div className="flex items-center gap-1.5">
-                            {row.ledgerIcon === "check" && <Check className="h-4 w-4 shrink-0 text-success" />}
-                            {row.ledgerIcon === "x" && <X className="h-4 w-4 shrink-0 text-success" />}
-                            <span className={row.ledgerGreen ? "text-success font-bold" : "text-foreground"}>
-                              {row.ledger}
-                            </span>
-                          </div>
+                          <span className={row.ledgerGreen ? "text-accent font-bold" : "text-foreground"}>
+                            {row.ledger}
+                          </span>
                         </td>
                         <td className="px-5 py-3.5 text-sm text-muted-foreground">
-                          <div className="flex items-center gap-1.5">
-                            {row.liscioIcon === "check" && <Check className="h-4 w-4 shrink-0 text-success" />}
-                            {row.liscioIcon === "x" && <X className="h-4 w-4 shrink-0 text-destructive" />}
-                            <span className={row.liscioRed ? "text-destructive font-semibold" : ""}>
-                              {row.liscio}
-                            </span>
-                          </div>
+                          <span className={row.liscioRed ? "text-destructive font-semibold" : ""}>
+                            {row.liscio}
+                          </span>
                         </td>
                       </tr>
                     ))}
