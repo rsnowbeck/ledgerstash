@@ -11,41 +11,31 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-interface CompRow {
-  feature: string;
-  ledger: string;
-  liscio: string;
-  ledgerGreen?: boolean;
-  liscioRed?: boolean;
-  ledgerIcon?: "check" | "x";
-  liscioIcon?: "check" | "x";
-}
-
-const comparisonRows: CompRow[] = [
+const comparisonRows = [
   { feature: "Starting Price", ledger: "$49/month flat", liscio: "$49/user/month + usage overages", ledgerGreen: true, liscioRed: true },
   { feature: "Billing Model", ledger: "Flat per firm", liscio: "Per user + per action", ledgerGreen: true, liscioRed: true },
   { feature: "Tax Gatherings", ledger: "Included", liscio: "Usage-billed beyond limit", ledgerGreen: true, liscioRed: true },
   { feature: "Tax Deliveries", ledger: "Included", liscio: "Usage-billed beyond limit", ledgerGreen: true, liscioRed: true },
-  { feature: "E-Signatures", ledger: "Included all plans", liscio: "Usage-billed beyond limit", ledgerGreen: true, liscioRed: true, ledgerIcon: "check" },
+  { feature: "E-Signatures", ledger: "✅ Included all plans", liscio: "Usage-billed beyond limit", ledgerGreen: true, liscioRed: true },
   { feature: "Seasonal Staff Cost", ledger: "Included — always", liscio: "+$49/user/month per person", ledgerGreen: true, liscioRed: true },
-  { feature: "User Minimums", ledger: "None", liscio: "Per user", ledgerGreen: true },
-  { feature: "Annual Contract", ledger: "Month to month", liscio: "Contact for monthly", ledgerGreen: true, ledgerIcon: "check" },
-  { feature: "Pricing Transparency", ledger: "Public", liscio: "Demo required", ledgerGreen: true, liscioRed: true, ledgerIcon: "check", liscioIcon: "x" },
-  { feature: "Free Trial", ledger: "14 days, no credit card", liscio: "Demo required", ledgerGreen: true, liscioRed: true, ledgerIcon: "check", liscioIcon: "x" },
-  { feature: "Client Accounts Required", ledger: "No — magic link", liscio: "Yes", ledgerGreen: true, ledgerIcon: "check", liscioIcon: "check" },
-  { feature: "Context-Aware AI Client Bot", ledger: "Knows each client's checklist", liscio: "", ledgerGreen: true, ledgerIcon: "check", liscioIcon: "x" },
-  { feature: "AI Practice Intelligence Bot", ledger: "Queries portfolio, sends reminders", liscio: "", ledgerGreen: true, ledgerIcon: "check", liscioIcon: "x" },
-  { feature: "AI Conversation Audit Trail", ledger: "CPA-reviewable", liscio: "", ledgerGreen: true, ledgerIcon: "check", liscioIcon: "x" },
-  { feature: "Two-Way Secure Messaging", ledger: "Dedicated thread per client", liscio: "Per user", ledgerIcon: "check", liscioIcon: "check" },
-  { feature: "Real-Time Upload Notifications", ledger: "Toggleable", liscio: "", ledgerIcon: "check", liscioIcon: "check" },
-  { feature: "Per-Client Reminder Schedule", ledger: "1–30 days per client", liscio: "", ledgerIcon: "check", liscioIcon: "check" },
-  { feature: "Mobile Experience", ledger: "Mobile-first (React)", liscio: "Native iOS/Android app", ledgerIcon: "check", liscioIcon: "check" },
-  { feature: "PBC List Management", ledger: "10 accounting-specific templates", liscio: "Generic tasks", ledgerGreen: true, ledgerIcon: "check" },
-  { feature: "White-Label Branding", ledger: "All plans", liscio: "Paid tiers", ledgerIcon: "check" },
-  { feature: "ESIGN/UETA Audit Trail", ledger: "IP, timestamp, browser", liscio: "Basic", ledgerGreen: true, ledgerIcon: "check" },
+  { feature: "User Minimums", ledger: "None", liscio: "Per user" },
+  { feature: "Annual Contract", ledger: "❌ Month to month", liscio: "Contact for monthly", ledgerGreen: true },
+  { feature: "Pricing Transparency", ledger: "✅ Public", liscio: "❌ Demo required", ledgerGreen: true, liscioRed: true },
+  { feature: "Free Trial", ledger: "✅ 14 days, no credit card", liscio: "❌ Demo required", ledgerGreen: true, liscioRed: true },
+  { feature: "Client Accounts Required", ledger: "❌ No — magic link", liscio: "✅ Yes", ledgerGreen: true },
+  { feature: "Context-Aware AI Client Bot", ledger: "✅ Knows each client's checklist", liscio: "❌", ledgerGreen: true, liscioRed: true },
+  { feature: "AI Practice Intelligence Bot", ledger: "✅ Queries portfolio, sends reminders", liscio: "❌", ledgerGreen: true, liscioRed: true },
+  { feature: "AI Conversation Audit Trail", ledger: "✅ CPA-reviewable", liscio: "❌", ledgerGreen: true, liscioRed: true },
+  { feature: "Two-Way Secure Messaging", ledger: "✅ Dedicated thread per client", liscio: "✅ Per user" },
+  { feature: "Real-Time Upload Notifications", ledger: "✅ Toggleable", liscio: "✅" },
+  { feature: "Per-Client Reminder Schedule", ledger: "✅ 1–30 days per client", liscio: "✅" },
+  { feature: "Mobile Experience", ledger: "✅ Mobile-first (React)", liscio: "✅ Native iOS/Android app" },
+  { feature: "PBC List Management", ledger: "✅ 10 accounting-specific templates", liscio: "Generic tasks", ledgerGreen: true },
+  { feature: "White-Label Branding", ledger: "✅ All plans", liscio: "Paid tiers" },
+  { feature: "ESIGN/UETA Audit Trail", ledger: "✅ IP, timestamp, browser", liscio: "Basic", ledgerGreen: true },
   { feature: "Compliance", ledger: "IRS 4557 · FTC Safeguards · GLBA", liscio: "General security" },
   { feature: "Time to First Client", ledger: "Under 5 minutes", liscio: "Demo required to start", ledgerGreen: true, liscioRed: true },
-  { feature: "Unlimited Team Members", ledger: "All plans", liscio: "Per-user", ledgerGreen: true, liscioRed: true, ledgerIcon: "check", liscioIcon: "x" },
+  { feature: "Unlimited Team Members", ledger: "✅ All plans", liscio: "❌ Per-user", ledgerGreen: true, liscioRed: true },
 ];
 
 const costRows = [
