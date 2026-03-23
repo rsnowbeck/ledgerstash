@@ -95,7 +95,14 @@ export default function ClientDetail() {
           : Promise.resolve({ count: 0 }),
       ]);
 
-      setClient(clientRes.data);
+      const clientData = clientRes.data;
+      setClient(clientData);
+      if (clientData?.reminder_cadence_days) {
+        setReminderOverride(true);
+        setClientReminderDays(clientData.reminder_cadence_days.toString());
+      } else {
+        setReminderOverride(false);
+      }
       setDocuments(docsRes.data || []);
       setTasks(tasksRes.data || []);
       setFolders(foldersRes.data || []);
