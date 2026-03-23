@@ -885,6 +885,35 @@ export default function ClientDetail() {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Engagement History Dialog */}
+      {client && organization && user && (
+        <EngagementHistoryDialog
+          open={engagementDialogOpen}
+          onOpenChange={setEngagementDialogOpen}
+          clientId={client.id}
+          organizationId={organization.id}
+          userId={user.id}
+          tasks={tasks}
+          documents={documents}
+          onPrefill={async (taskTitles) => {
+            if (!user || !client) return;
+            const inserts = taskTitles.map((title) => ({
+              client_id: client.id,
+              assigned_by: user.id,
+              title,
+              status: "pending",
+              priority: "medium",
+            }));
+            const { error } = await supabase.from("tasks").insert(inserts);
+            if (error) {
+              toast.error("Failed to create tasks from previous engagement");
+            } else {
+              loadClientData();
+            }
+          }}
+        />
+      )}
     </DashboardLayout>
   );
 }
