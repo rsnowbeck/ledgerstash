@@ -1,0 +1,1 @@
+ALTER TABLE public.clients ADD COLUMN reminder_cadence_days integer DEFAULT NULL;
