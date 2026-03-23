@@ -247,8 +247,8 @@ export function AIAssistantWidget({ mode = "cpa", clientToken }: AIAssistantWidg
                 <img src={agentIcon} alt={agentName} className="h-16 w-16 object-contain mx-auto mb-3" />
                 <p className="text-sm text-muted-foreground">
                   {mode === "cpa"
-                    ? "Hi! I can query your client data, show you who needs attention, and take actions like sending reminders."
-                    : "Hi! I know your specific checklist and documents. Ask me what you still need to provide."}
+                    ? "Hi, I'm Sage! I can query your client data, show you who needs attention, and take actions like sending reminders."
+                    : "Hi, I'm Scout! I know your specific checklist and documents. Ask me what you still need to provide."}
                 </p>
                 <div className="mt-4 space-y-2">
                   {suggestedQuestions.map((q) => (
