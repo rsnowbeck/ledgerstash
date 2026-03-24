@@ -3,7 +3,7 @@ import { Footer } from "@/components/landing/Footer";
 import { PageSEO } from "@/components/seo/PageSEO";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, CheckCircle2, AlertTriangle, Bot, DollarSign, Users, Eye } from "lucide-react";
+import { ArrowRight, CheckCircle2, AlertTriangle, Bot, DollarSign, Users, Eye, Search, BrainCircuit, ScanLine } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -24,8 +24,8 @@ const comparisonRows = [
   { feature: "Free Trial", ledger: "✅ 14 days — no credit card required", liscio: "❌ No free trial — demo required to start" },
   { feature: "Client Accounts Required", ledger: "✅ No — one-click magic link", liscio: "❌ Yes — account and app required" },
   { feature: "Client Access Method", ledger: "✅ One-click magic link — any device, no download", liscio: "❌ Password login or mobile app download" },
-  { feature: "Context-Aware AI Client Bot (Scout)", ledger: "✅ Scout — knows each client's specific checklist, conversational, 24/7", liscio: "—" },
-  { feature: "AI Practice Intelligence Bot (Sage)", ledger: "✅ Sage — queries full portfolio, surfaces at-risk clients, sends reminders", liscio: "—" },
+  { feature: "Context-Aware AI Client Agent (Scout)", ledger: "✅ Scout — knows each client's specific checklist, conversational, 24/7", liscio: "—" },
+  { feature: "AI Practice Intelligence Agent (Sage)", ledger: "✅ Sage — queries full portfolio, surfaces at-risk clients, sends reminders", liscio: "—" },
   { feature: "AI Conversation Audit Trail", ledger: "✅ Full log — CPA-reviewable per client", liscio: "—" },
   { feature: "Prior-Year Return Scanning", ledger: "✅ AI scans uploaded 1040 — generates personalized PBC checklist", liscio: "—" },
   { feature: "Two-Way Secure Messaging", ledger: "✅ Dedicated thread per client — included", liscio: "✅ Core feature — per user pricing" },
@@ -52,6 +52,8 @@ const costRows = [
   { component: "80 tax gatherings", ledger: "Included", liscio: "Overage charges apply", ledgerGreen: true, liscioRed: true },
   { component: "80 tax deliveries", ledger: "Included", liscio: "Overage charges apply", ledgerGreen: true, liscioRed: true },
   { component: "E-signatures (80+ returns)", ledger: "Included", liscio: "Overage charges apply", ledgerGreen: true, liscioRed: true },
+  { component: "Scout + Sage AI agents", ledger: "Included", liscio: "Not available", ledgerGreen: true, liscioRed: true },
+  { component: "Prior-year return scanning", ledger: "Included", liscio: "Not available", ledgerGreen: true, liscioRed: true },
   { component: "Estimated annual total", ledger: "$588", liscio: "$1,200–2,400+ estimated", ledgerGreen: true, liscioRed: true, bold: true },
 ];
 
@@ -68,8 +70,8 @@ const gapCards = [
   },
   {
     icon: Bot,
-    title: "No Context-Aware AI — On Either Side",
-    description: "Liscio does not include a context-aware AI client assistant or a CPA practice intelligence bot. When your client asks \"what do I still need to send?\" — they email you. Ledger Stash's AI answers using each client's actual checklist in real time.",
+    title: "No AI Agents — On Either Side",
+    description: "Liscio does not include Scout, Sage, or prior-year return scanning. When your client asks \"what do I still need to send?\" — they email you. When you need to know which clients are behind — you check manually. Ledger Stash's AI agents handle both automatically, all season long.",
   },
   {
     icon: Users,
@@ -86,7 +88,7 @@ const gapCards = [
 const faqItems = [
   {
     q: "Is Ledger Stash's security comparable to Liscio?",
-    a: "Yes. AES-256 encryption at rest, TLS 1.3 in transit, compliant with IRS Publication 4557, FTC Safeguards Rule, and GLBA. Full ESIGN/UETA audit trails with IP address, timestamp, and browser fingerprint — including AI conversations.",
+    a: "Yes. AES-256 encryption at rest, TLS 1.3 in transit, compliant with IRS Publication 4557, FTC Safeguards Rule, and GLBA. Full ESIGN/UETA audit trails with IP address, timestamp, and browser fingerprint — including Scout and Sage AI agent conversations. Ledger Stash matches every regulatory requirement relevant to CPA firms.",
   },
   {
     q: "My clients are used to Liscio's app. Will magic links work for them?",
@@ -94,11 +96,15 @@ const faqItems = [
   },
   {
     q: "Does Ledger Stash have Liscio's email integration?",
-    a: "Not currently. Liscio integrates Gmail and Outlook into the platform. Ledger Stash focuses specifically on the document collection and vault workflow. If email-inside-the-portal is a core requirement for your team today, Liscio has a feature Ledger Stash doesn't currently match.",
+    a: "Not currently. Liscio integrates Gmail and Outlook into the platform. Ledger Stash focuses specifically on the document collection and vault workflow. If email-inside-the-portal is a core requirement for your team today, that's worth knowing before you switch.",
   },
   {
     q: "What about Liscio's messaging features?",
-    a: "Ledger Stash includes a dedicated two-way message thread per client — separate from documents and tasks. Liscio's messaging is well-reviewed and built for team-based communication. If multi-staff messaging is central to your workflow, Liscio has a more mature feature. If you need clean one-to-one client communication — Ledger Stash delivers that.",
+    a: "Ledger Stash includes a dedicated two-way message thread per client — separate from documents and tasks. Accessible to the CPA on the Client Detail page and to the client in their portal. Liscio's messaging is more mature and built for team-based communication. If multi-staff messaging is central to your workflow, Liscio has a more developed feature. If you need clean one-to-one client communication — Ledger Stash delivers that.",
+  },
+  {
+    q: "Liscio doesn't have Scout or Sage — does that matter?",
+    a: "It depends on your workflow. If your biggest busy season pain is chasing clients for documents and manually tracking who's behind — Scout and Sage solve that directly. Scout answers client questions about their specific checklist 24/7. Sage tells you exactly who needs attention across your entire book and can send reminders without you lifting a finger. Liscio has no equivalent.",
   },
   {
     q: "Can I add seasonal staff at no extra cost?",
@@ -125,7 +131,7 @@ export default function LiscioAlternative() {
     <div className="min-h-screen bg-background">
       <PageSEO
         title="Liscio Alternative for Solo CPAs | Ledger Stash"
-        description="Liscio charges per user plus usage fees on tax gatherings, deliveries, and e-signatures — and requires a demo just to see monthly pricing. Ledger Stash is $49/month flat with context-aware AI included. No demo required."
+        description="Liscio charges per user plus usage fees on tax gatherings, deliveries, and e-signatures — and requires a demo just to see monthly pricing. Ledger Stash is $49/month flat with Scout and Sage AI agents included. No demo required."
         keywords="Liscio alternative, Liscio competitor, Liscio alternative CPA, Liscio pricing, cheaper alternative to Liscio, client portal for accountants"
         canonical="/liscio-alternative"
       />
@@ -140,10 +146,10 @@ export default function LiscioAlternative() {
           <div className="container">
             <div className="mx-auto max-w-3xl text-center">
               <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl mb-6">
-                The <span className="text-accent">Liscio Alternative</span> With Flat Pricing, No Usage Fees, and Context-Aware AI
+                The <span className="text-accent">Liscio Alternative</span> With Flat Pricing, No Usage Fees, and Built-In AI Agents
               </h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Liscio charges per user, then bills separately for tax gatherings, deliveries, and e-signatures. Their monthly pricing requires a demo call to see. Ledger Stash publishes its pricing publicly, charges one flat rate for your entire firm, and includes context-aware AI that no competitor offers.
+                Liscio charges per user, then bills separately for the actions you perform most — tax gatherings, deliveries, and e-signatures. Their monthly pricing requires a demo call to see. Ledger Stash publishes its pricing publicly, charges one flat rate for your entire firm, and includes Scout and Sage AI agents that no competitor offers. Start a free trial right now — no call required.
               </p>
               <Button variant="hero" size="xl" asChild>
                 <Link to="/signup" className="gap-2">
@@ -170,7 +176,7 @@ export default function LiscioAlternative() {
                   But its pricing model has a fundamental problem for solo practitioners and small firms: <strong className="text-foreground">every asterisk is a hidden bill.</strong>
                 </p>
                 <p>
-                  Liscio's Tax Solo plan starts at $49/user/month. That's already per-user — the moment you add a seasonal preparer, your cost increases. But the per-user fee is just the floor. On top of that, Liscio bills separately for:
+                  Liscio's Tax Solo plan starts at $49/user/month. That's already per-user — the moment you add a seasonal preparer or part-time reviewer, your cost increases. But the per-user fee is just the floor. On top of that, Liscio bills separately for:
                 </p>
                 <ul className="space-y-2 pl-4">
                   <li className="flex items-start gap-2">
@@ -187,10 +193,10 @@ export default function LiscioAlternative() {
                   </li>
                 </ul>
                 <p>
-                  A solo CPA handling 80 returns isn't paying $49/month. They're paying $49 plus overages on 80 gatherings, 80 deliveries, and however many signatures their returns require. The real cost requires a demo call to calculate.
+                  A solo CPA handling 80 returns isn't paying $49/month. They're paying $49 plus overages on 80 gatherings, 80 deliveries, and however many signatures their returns require. The real cost requires a demo call to calculate — because Liscio doesn't publish it.
                 </p>
                 <p className="text-foreground font-semibold text-lg pt-2">
-                  Ledger Stash: $49/month. Your whole firm. No usage limits on the actions you perform every day.
+                  Ledger Stash publishes pricing on this page, right now. $49/month. Your whole firm. No usage limits on the actions you perform every day.
                 </p>
               </div>
             </div>
@@ -297,8 +303,54 @@ export default function LiscioAlternative() {
           </div>
         </section>
 
-        {/* SECTION 5 — Where Liscio Falls Short */}
+        {/* SECTION 5 — Meet Scout and Sage */}
         <section className="py-16">
+          <div className="container">
+            <div className="mx-auto max-w-4xl">
+              <h2 className="text-2xl font-bold text-foreground mb-4 text-center">
+                The AI Agents Liscio Doesn't Have
+              </h2>
+              <p className="text-muted-foreground text-center mb-10 max-w-2xl mx-auto">
+                Liscio does not include AI agents. Ledger Stash includes two purpose-built AI agents on every plan — at no extra cost.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="p-6 rounded-xl bg-card border border-border hover:border-accent/50 transition-all duration-300">
+                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent mb-4">
+                    <Search className="h-5 w-5" />
+                  </div>
+                  <h3 className="font-semibold text-foreground mb-2">Scout — AI Client Agent</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Scout knows exactly which documents each specific client has uploaded and which are still missing from their checklist. When a client asks "what do I still need to send you?" at 10pm, Scout answers with their actual outstanding items by name — not a generic response. Tax advice is explicitly blocked. Every Scout conversation is logged and reviewable by you on the client detail page.
+                  </p>
+                </div>
+                <div className="p-6 rounded-xl bg-card border border-border hover:border-accent/50 transition-all duration-300">
+                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent mb-4">
+                    <BrainCircuit className="h-5 w-5" />
+                  </div>
+                  <h3 className="font-semibold text-foreground mb-2">Sage — AI Practice Agent</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Ask Sage "who hasn't uploaded anything in 7 days?" or "which clients are still missing a W-2 across my entire book?" and get live answers based on your real portfolio data. Sage queries your entire client base in real time and can send reminders directly from the conversation — no manual dashboard scanning during busy season.
+                  </p>
+                </div>
+                <div className="p-6 rounded-xl bg-card border border-border hover:border-accent/50 transition-all duration-300">
+                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent mb-4">
+                    <ScanLine className="h-5 w-5" />
+                  </div>
+                  <h3 className="font-semibold text-foreground mb-2">Prior-Year Return Scanning</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Upload a client's prior-year 1040 and AI automatically generates their personalized PBC checklist — identifying income sources like W-2s, 1099s, Schedule C, K-1s, and rentals. Review, edit, and send in seconds.
+                  </p>
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground text-center mt-6 font-medium">
+                Liscio has none of these. They are Ledger Stash exclusives included on every plan.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 6 — Where Liscio Falls Short */}
+        <section className="py-16 bg-card">
           <div className="container">
             <div className="mx-auto max-w-4xl">
               <h2 className="text-2xl font-bold text-foreground mb-8 text-center">
@@ -306,7 +358,7 @@ export default function LiscioAlternative() {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {gapCards.map((card) => (
-                  <div key={card.title} className="group p-6 rounded-xl bg-card border border-border hover:border-accent/50 transition-all duration-300">
+                  <div key={card.title} className="group p-6 rounded-xl bg-background border border-border hover:border-accent/50 transition-all duration-300">
                     <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent mb-4 group-hover:bg-accent group-hover:text-accent-foreground transition-colors duration-300">
                       <card.icon className="h-5 w-5" />
                     </div>
@@ -319,8 +371,8 @@ export default function LiscioAlternative() {
           </div>
         </section>
 
-        {/* SECTION 6 — Real Cost Comparison */}
-        <section className="py-16 bg-card">
+        {/* SECTION 7 — Real Cost Comparison */}
+        <section className="py-16">
           <div className="container">
             <div className="mx-auto max-w-3xl">
               <h2 className="text-2xl font-bold text-foreground mb-2 text-center">
@@ -330,7 +382,7 @@ export default function LiscioAlternative() {
                 Scenario: Solo CPA, 80 clients, adds 1 seasonal preparer for 4 months
               </p>
               <div className="overflow-x-auto">
-                <table className="w-full border-collapse bg-background rounded-xl shadow-md overflow-hidden">
+                <table className="w-full border-collapse bg-card rounded-xl shadow-md overflow-hidden">
                   <thead>
                     <tr className="bg-primary text-primary-foreground">
                       <th className="px-5 py-3 text-left font-semibold text-sm">Cost Component</th>
@@ -360,7 +412,7 @@ export default function LiscioAlternative() {
           </div>
         </section>
 
-        {/* SECTION 7 — Where Liscio Wins */}
+        {/* SECTION 8 — Where Liscio Wins */}
         <section className="py-16 bg-muted/30">
           <div className="container">
             <div className="mx-auto max-w-3xl">
@@ -370,13 +422,13 @@ export default function LiscioAlternative() {
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">Native mobile app</h3>
                   <p className="text-sm text-muted-foreground">
-                    Liscio has a native iOS and Android app for clients. Ledger Stash is mobile-first and works seamlessly in any mobile browser via magic link — but no native app. If a downloadable client app is important to your firm's brand, Liscio has an edge here.
+                    Liscio has a native iOS and Android app that clients can download and use directly. Ledger Stash is mobile-first and works seamlessly in any mobile browser via magic link — but no native app currently. If a downloadable client app is important to your firm's brand experience, Liscio has an edge here.
                   </p>
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">Email integration</h3>
                   <p className="text-sm text-muted-foreground">
-                    Liscio integrates with Gmail and Outlook, bringing client emails into the platform. Ledger Stash focuses on the document collection workflow and doesn't currently match this.
+                    Liscio integrates with Gmail and Outlook, bringing client emails into the platform. Ledger Stash focuses specifically on the document collection workflow and doesn't currently match this.
                   </p>
                 </div>
                 <div>
@@ -415,7 +467,7 @@ export default function LiscioAlternative() {
         <section className="py-16 bg-card">
           <div className="container text-center">
             <h2 className="text-2xl font-bold text-foreground mb-4">
-              Flat Pricing. No Usage Fees. No Demo Required.
+              Flat Pricing. No Usage Fees. No Demo Required. Scout and Sage Included.
             </h2>
             <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
               Start your free trial right now — no sales call, no credit card, no commitment.
