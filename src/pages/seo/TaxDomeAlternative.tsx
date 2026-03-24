@@ -4,7 +4,6 @@ import { PageSEO } from "@/components/seo/PageSEO";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, CheckCircle2, Download } from "lucide-react";
-import { generateMigrationGuidePdf } from "@/lib/generateMigrationGuidePdf";
 import {
   Accordion,
   AccordionContent,
