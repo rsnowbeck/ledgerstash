@@ -3,7 +3,7 @@ import { Footer } from "@/components/landing/Footer";
 import { PageSEO } from "@/components/seo/PageSEO";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, CheckCircle2, AlertTriangle, Bot, DollarSign, Users, Eye, Search, BrainCircuit, ScanLine } from "lucide-react";
+import { ArrowRight, CheckCircle2, AlertTriangle, Bot, DollarSign, Users, Eye, Search, BrainCircuit, ScanLine, Download } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -465,6 +465,32 @@ export default function LiscioAlternative() {
                   </AccordionItem>
                 ))}
               </Accordion>
+            </div>
+          </div>
+        </section>
+
+        {/* Switching Guide Download */}
+        <section className="py-16 bg-muted/40">
+          <div className="container">
+            <div className="mx-auto max-w-2xl rounded-2xl border border-border bg-card p-8 sm:p-10 text-center shadow-md">
+              <p className="text-sm text-muted-foreground uppercase tracking-wide font-semibold mb-2">
+                Free Resource
+              </p>
+              <h3 className="text-xl font-bold text-foreground mb-2">
+                Liscio Switching Guide
+              </h3>
+              <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
+                No demo call needed to switch. 4 steps, the real usage fee math, and how Scout and Sage replace what you're losing.
+              </p>
+              <a
+                href="/guides/LedgerStash_Liscio_Switching_Guide.pdf"
+                download="LedgerStash_Liscio_Switching_Guide.pdf"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+              >
+                <Download className="h-4 w-4" />
+                Download Free Switching Guide (PDF)
+              </a>
+              <p className="text-xs text-muted-foreground mt-3 italic">No email required. Instant download.</p>
             </div>
           </div>
         </section>

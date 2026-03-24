@@ -1,5 +1,6 @@
 import { Download } from "lucide-react";
 import { generateBlueOceanPdf } from "@/lib/generateBlueOceanPdf";
+import { generateMigrationGuidePdf } from "@/lib/generateMigrationGuidePdf";
 import { ComparisonTable } from "./comparison/ComparisonTable";
 import { SuccessTaxCalculator } from "./comparison/SuccessTaxCalculator";
 
@@ -32,13 +33,31 @@ export function Comparison() {
           <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-5">
             Download our Switching Guide to see the line-by-line cost breakdown and the 60-second plan to reclaim your margins.
           </p>
-          <button
-            onClick={() => generateBlueOceanPdf()}
-            className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground hover:bg-accent/90 transition-colors"
-          >
-            <Download className="h-5 w-5" />
-            Download Free Switching Guide (PDF)
-          </button>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <button
+              onClick={() => generateMigrationGuidePdf("SmartVault")}
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+            >
+              <Download className="h-4 w-4" />
+              Switching from SmartVault
+            </button>
+            <a
+              href="/guides/LedgerStash_TaxDome_Switching_Guide.pdf"
+              download
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+            >
+              <Download className="h-4 w-4" />
+              Switching from TaxDome
+            </a>
+            <a
+              href="/guides/LedgerStash_Liscio_Switching_Guide.pdf"
+              download
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+            >
+              <Download className="h-4 w-4" />
+              Switching from Liscio
+            </a>
+          </div>
           <p className="mt-3 text-xs text-muted-foreground italic">
             No email required. Instant download.
           </p>

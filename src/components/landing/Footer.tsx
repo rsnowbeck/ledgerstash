@@ -36,6 +36,15 @@ export function Footer() {
             </Link>
           </nav>
         </div>
+        <div className="mt-6 flex flex-wrap justify-center gap-6 text-xs text-muted-foreground/70">
+          <span className="font-medium text-muted-foreground">Resources:</span>
+          <a href="/guides/LedgerStash_TaxDome_Switching_Guide.pdf" download className="hover:text-foreground transition-colors">
+            Switching from TaxDome (PDF)
+          </a>
+          <a href="/guides/LedgerStash_Liscio_Switching_Guide.pdf" download className="hover:text-foreground transition-colors">
+            Switching from Liscio (PDF)
+          </a>
+        </div>
       </div>
     </footer>
   );

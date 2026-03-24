@@ -403,14 +403,14 @@ export default function SmartVaultAlternative() {
         <section className="py-16 bg-muted/40">
           <div className="container">
             <div className="mx-auto max-w-2xl rounded-2xl border border-border bg-card p-8 sm:p-10 text-center shadow-md">
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent mb-4">
-                <Download className="h-5 w-5" />
-              </div>
+              <p className="text-sm text-muted-foreground uppercase tracking-wide font-semibold mb-2">
+                Free Resource
+              </p>
               <h3 className="text-xl font-bold text-foreground mb-2">
-                Worried about the move?
+                60-Second SmartVault Migration Guide
               </h3>
               <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-                Download our <strong>60-Second Migration Guide</strong> to see how we handle the heavy lifting for you.
+                4 steps. No downtime. Includes the real cost comparison and what you gain with Scout and Sage.
               </p>
               <Button
                 variant="outline"
@@ -419,8 +419,9 @@ export default function SmartVaultAlternative() {
                 onClick={() => generateMigrationGuidePdf("SmartVault")}
               >
                 <Download className="h-4 w-4" />
-                Download Migration Guide (PDF)
+                Download Free Migration Guide (PDF)
               </Button>
+              <p className="text-xs text-muted-foreground mt-3 italic">No email required. Instant download.</p>
             </div>
           </div>
         </section>

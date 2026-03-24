@@ -4,7 +4,6 @@ import { PageSEO } from "@/components/seo/PageSEO";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, CheckCircle2, Download } from "lucide-react";
-import { generateMigrationGuidePdf } from "@/lib/generateMigrationGuidePdf";
 import {
   Accordion,
   AccordionContent,
@@ -392,28 +391,28 @@ export default function TaxDomeAlternative() {
           </div>
         </section>
 
-        {/* Migration Guide Download */}
+        {/* Switching Guide Download */}
         <section className="py-16 bg-muted/40">
           <div className="container">
             <div className="mx-auto max-w-2xl rounded-2xl border border-border bg-card p-8 sm:p-10 text-center shadow-md">
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent mb-4">
-                <Download className="h-5 w-5" />
-              </div>
+              <p className="text-sm text-muted-foreground uppercase tracking-wide font-semibold mb-2">
+                Free Resource
+              </p>
               <h3 className="text-xl font-bold text-foreground mb-2">
-                Worried about the move?
+                TaxDome Switching Guide
               </h3>
               <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-                Download our <strong>60-Second Migration Guide</strong> to see how we handle the heavy lifting for you.
+                Already paid for the year? Start Ledger Stash in parallel today. 4 steps, the real cost math, and what Scout and Sage do that TaxDome doesn't.
               </p>
-              <Button
-                variant="outline"
-                size="lg"
-                className="gap-2"
-                onClick={() => generateMigrationGuidePdf("TaxDome")}
+              <a
+                href="/guides/LedgerStash_TaxDome_Switching_Guide.pdf"
+                download="LedgerStash_TaxDome_Switching_Guide.pdf"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
               >
                 <Download className="h-4 w-4" />
-                Download Migration Guide (PDF)
-              </Button>
+                Download Free Switching Guide (PDF)
+              </a>
+              <p className="text-xs text-muted-foreground mt-3 italic">No email required. Instant download.</p>
             </div>
           </div>
         </section>
