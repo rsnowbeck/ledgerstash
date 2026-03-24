@@ -302,6 +302,50 @@ export default function Compare() {
           </div>
         </section>
 
+        {/* Free Switching Guides */}
+        <section className="pb-20 px-4">
+          <div className="container max-w-4xl mx-auto">
+            <h3 className="text-lg font-bold text-foreground text-center mb-6">
+              Free Switching Guides
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="bg-muted/30 border border-border rounded-xl p-5 text-center">
+                <p className="font-semibold text-foreground mb-2">From SmartVault</p>
+                <p className="text-sm text-muted-foreground mb-4">4 steps, cost comparison, migration checklist</p>
+                <button
+                  onClick={() => {
+                    import("@/lib/generateMigrationGuidePdf").then(m => m.generateMigrationGuidePdf("SmartVault"));
+                  }}
+                  className="text-primary font-semibold text-sm hover:underline inline-flex items-center justify-center gap-1"
+                >
+                  <Download className="h-3.5 w-3.5" /> Download PDF
+                </button>
+              </div>
+              <div className="bg-muted/30 border border-border rounded-xl p-5 text-center">
+                <p className="font-semibold text-foreground mb-2">From TaxDome</p>
+                <p className="text-sm text-muted-foreground mb-4">Run both in parallel, $7,836 savings math</p>
+                <a
+                  href="/guides/LedgerStash_TaxDome_Switching_Guide.pdf"
+                  download
+                  className="text-primary font-semibold text-sm hover:underline inline-flex items-center justify-center gap-1"
+                >
+                  <Download className="h-3.5 w-3.5" /> Download PDF
+                </a>
+              </div>
+              <div className="bg-muted/30 border border-border rounded-xl p-5 text-center">
+                <p className="font-semibold text-foreground mb-2">From Liscio</p>
+                <p className="text-sm text-muted-foreground mb-4">Usage fee math, no demo needed to switch</p>
+                <a
+                  href="/guides/LedgerStash_Liscio_Switching_Guide.pdf"
+                  download
+                  className="text-primary font-semibold text-sm hover:underline inline-flex items-center justify-center gap-1"
+                >
+                  <Download className="h-3.5 w-3.5" /> Download PDF
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
         {/* SECTION 5 — Bottom CTA */}
         <section className="pb-24 px-4">
           <div className="container max-w-3xl mx-auto text-center">
