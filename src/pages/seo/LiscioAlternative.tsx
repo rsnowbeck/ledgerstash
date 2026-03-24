@@ -411,6 +411,9 @@ export default function LiscioAlternative() {
               <p className="text-xs text-muted-foreground italic mt-4 text-center">
                 Liscio overage rates require a demo call to confirm. Estimates based on published base pricing and reported usage-based billing.
               </p>
+              <p className="text-[11px] text-muted-foreground/70 mt-1.5 text-center">
+                Per seat and per user refer to the same concept — a charge for each staff member who accesses the software. Terminology varies by vendor.
+              </p>
             </div>
           </div>
         </section>
