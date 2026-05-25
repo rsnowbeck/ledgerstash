@@ -96,8 +96,10 @@ serve(async (req: Request) => {
       .eq("client_id", clientId)
       .eq("is_revoked", false);
 
-    // Generate new token
-    const token = crypto.randomUUID();
+    // Generate new token (256-bit entropy)
+    const tokenBytes = new Uint8Array(32);
+    crypto.getRandomValues(tokenBytes);
+    const token = Array.from(tokenBytes, (b) => b.toString(16).padStart(2, "0")).join("");
     const tokenHash = await hashToken(token);
 
     // Store token
