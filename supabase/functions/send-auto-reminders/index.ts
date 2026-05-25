@@ -16,29 +16,12 @@ serve(async (req: Request) => {
   }
 
   try {
-    // Validate caller: internal secret OR valid JWT
+    // Only callable via internal secret (cron scheduler). No JWT fallback —
+    // this job iterates all firms/orgs and must not be triggerable by tenant users.
     const internalSecret = req.headers.get("x-internal-secret");
     const expectedSecret = Deno.env.get("INTERNAL_FUNCTION_SECRET");
 
-    let authorized = false;
-    if (expectedSecret && internalSecret === expectedSecret) {
-      authorized = true;
-    }
-
-    if (!authorized) {
-      const authHeader = req.headers.get("Authorization");
-      if (authHeader?.startsWith("Bearer ")) {
-        const supabaseAuth = createClient(
-          Deno.env.get("SUPABASE_URL")!,
-          Deno.env.get("SUPABASE_ANON_KEY")!,
-          { global: { headers: { Authorization: authHeader } } }
-        );
-        const { data, error } = await supabaseAuth.auth.getUser();
-        if (!error && data?.user) authorized = true;
-      }
-    }
-
-    if (!authorized) {
+    if (!expectedSecret || internalSecret !== expectedSecret) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
