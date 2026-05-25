@@ -13,8 +13,14 @@ export function Footer() {
             </p>
           </div>
           <nav className="flex flex-wrap justify-center gap-6 text-sm">
+            <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">
+              About
+            </Link>
             <Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
               Contact
+            </Link>
+            <Link to="/faq" className="text-muted-foreground hover:text-foreground transition-colors">
+              FAQ
             </Link>
             <Link to="/privacy" className="text-muted-foreground hover:text-foreground transition-colors">
               Privacy

@@ -49,6 +49,21 @@ const ContractorAgreements = lazy(() => import("./pages/use-cases/ContractorAgre
 const EmployeeAcknowledgments = lazy(() => import("./pages/use-cases/EmployeeAcknowledgments"));
 const Compare = lazy(() => import("./pages/Compare"));
 
+// New standalone pages (not in nav)
+const About = lazy(() => import("./pages/About"));
+const HowItWorks = lazy(() => import("./pages/HowItWorks"));
+const ForSoloCPAs = lazy(() => import("./pages/ForSoloCPAs"));
+const ForBoutiqueFirms = lazy(() => import("./pages/ForBoutiqueFirms"));
+const ForBookkeepers = lazy(() => import("./pages/ForBookkeepers"));
+const Scout = lazy(() => import("./pages/Scout"));
+const Sage = lazy(() => import("./pages/Sage"));
+const FAQ = lazy(() => import("./pages/FAQ"));
+
+// New blog articles
+const StopChasingDocuments = lazy(() => import("./pages/blog/StopChasingDocuments"));
+const CompetitorComparison = lazy(() => import("./pages/blog/CompetitorComparison"));
+const WhatIsAPBCChecklist = lazy(() => import("./pages/blog/WhatIsAPBCChecklist"));
+
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -98,8 +113,20 @@ const App = () => {
             <Route path="/taxdome-alternative" element={<TaxDomeAlternative />} />
             <Route path="/liscio-alternative" element={<LiscioAlternative />} />
             <Route path="/compare" element={<Compare />} />
+            {/* Standalone pages (not in nav — for SEO, AI search, and campaigns) */}
+            <Route path="/about" element={<About />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/for-solo-cpas" element={<ForSoloCPAs />} />
+            <Route path="/for-boutique-firms" element={<ForBoutiqueFirms />} />
+            <Route path="/for-bookkeepers" element={<ForBookkeepers />} />
+            <Route path="/scout" element={<Scout />} />
+            <Route path="/sage" element={<Sage />} />
+            <Route path="/faq" element={<FAQ />} />
             {/* Blog */}
             <Route path="/blog/track-employee-policy-acknowledgments" element={<TrackPolicyAcknowledgments />} />
+            <Route path="/blog/how-to-stop-chasing-clients-for-documents" element={<StopChasingDocuments />} />
+            <Route path="/blog/taxdome-vs-smartvault-vs-ledger-stash" element={<CompetitorComparison />} />
+            <Route path="/blog/what-is-a-pbc-checklist" element={<WhatIsAPBCChecklist />} />
             {/* Use Cases */}
             <Route path="/client-intake-consent-forms" element={<ClientIntakeForms />} />
             <Route path="/contractor-vendor-agreement-tracking" element={<ContractorAgreements />} />
