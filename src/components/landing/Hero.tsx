@@ -95,7 +95,7 @@ export function Hero() {
                 <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent mb-5">
                   <card.icon className="h-5 w-5" />
                 </div>
-                <h3 className="font-semibold text-foreground mb-2">{card.title}</h3>
+                <h2 className="font-semibold text-foreground mb-2">{card.title}</h2>
                 <p className="text-sm text-muted-foreground leading-relaxed">{card.description}</p>
               </div>
             ))}

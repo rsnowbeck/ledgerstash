@@ -77,6 +77,7 @@ export function SuccessTaxCalculator() {
         value={[staffCount]}
         onValueChange={([v]) => setStaffCount(v)}
         className="mb-8"
+        aria-label="Number of staff members"
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">

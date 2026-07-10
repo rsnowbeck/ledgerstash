@@ -122,14 +122,14 @@ Liscio charges $49/user/month plus usage fees on tax gatherings, deliveries, and
 
 ## Pages
 
-- Homepage: https://ledgerstash.com
-- Pricing: https://ledgerstash.com/pricing
-- Compare: https://ledgerstash.com/compare
-- SmartVault Alternative: https://ledgerstash.com/smartvault-alternative
-- TaxDome Alternative: https://ledgerstash.com/taxdome-alternative
-- Liscio Alternative: https://ledgerstash.com/liscio-alternative
-- Client Intake Forms: https://ledgerstash.com/client-intake-consent-forms
-- Security: https://ledgerstash.com/security
-- Privacy: https://ledgerstash.com/privacy
-- Terms: https://ledgerstash.com/terms
-- Contact: https://ledgerstash.com/contact
+- [Homepage](https://ledgerstash.com)
+- [Pricing](https://ledgerstash.com/pricing)
+- [Compare](https://ledgerstash.com/compare)
+- [SmartVault Alternative](https://ledgerstash.com/smartvault-alternative)
+- [TaxDome Alternative](https://ledgerstash.com/taxdome-alternative)
+- [Liscio Alternative](https://ledgerstash.com/liscio-alternative)
+- [Client Intake Forms](https://ledgerstash.com/client-intake-consent-forms)
+- [Security](https://ledgerstash.com/security)
+- [Privacy](https://ledgerstash.com/privacy)
+- [Terms](https://ledgerstash.com/terms)
+- [Contact](https://ledgerstash.com/contact)

@@ -229,9 +229,9 @@ export function Pricing() {
 
         <div className="text-center mt-6">
           <p className="text-sm text-muted-foreground">
-            <Link to="/pricing" className="text-accent hover:underline">See full pricing details →</Link>
+            <Link to="/pricing" className="text-accent underline">See full pricing details →</Link>
             {" · "}
-            Questions? See our <a href="#faq" className="text-accent hover:underline">FAQ</a> or start your free trial.
+            Questions? See our <a href="#faq" className="text-accent underline">FAQ</a> or start your free trial.
           </p>
         </div>
       </div>
