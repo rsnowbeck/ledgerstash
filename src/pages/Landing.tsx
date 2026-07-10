@@ -1,16 +1,20 @@
+import { lazy, Suspense } from "react";
 import { Header } from "@/components/landing/Header";
 import { Hero } from "@/components/landing/Hero";
-import { AISection } from "@/components/landing/AISection";
-import { Features } from "@/components/landing/Features";
-import { HowItWorks } from "@/components/landing/HowItWorks";
-import { Pricing } from "@/components/landing/Pricing";
-import { Comparison } from "@/components/landing/Comparison";
-import { SocialProof } from "@/components/landing/SocialProof";
-import { UseCases } from "@/components/landing/UseCases";
-import { FAQ } from "@/components/landing/FAQ";
-import { Footer } from "@/components/landing/Footer";
 import { StructuredData } from "@/components/landing/StructuredData";
 import { PageSEO } from "@/components/seo/PageSEO";
+
+// Below-the-fold sections are lazy-loaded so the initial JS bundle stays small
+// and the hero (LCP element) mounts and paints as early as possible on mobile.
+const AISection = lazy(() => import("@/components/landing/AISection").then((m) => ({ default: m.AISection })));
+const Features = lazy(() => import("@/components/landing/Features").then((m) => ({ default: m.Features })));
+const HowItWorks = lazy(() => import("@/components/landing/HowItWorks").then((m) => ({ default: m.HowItWorks })));
+const Pricing = lazy(() => import("@/components/landing/Pricing").then((m) => ({ default: m.Pricing })));
+const Comparison = lazy(() => import("@/components/landing/Comparison").then((m) => ({ default: m.Comparison })));
+const SocialProof = lazy(() => import("@/components/landing/SocialProof").then((m) => ({ default: m.SocialProof })));
+const UseCases = lazy(() => import("@/components/landing/UseCases").then((m) => ({ default: m.UseCases })));
+const FAQ = lazy(() => import("@/components/landing/FAQ").then((m) => ({ default: m.FAQ })));
+const Footer = lazy(() => import("@/components/landing/Footer").then((m) => ({ default: m.Footer })));
 
 export default function Landing() {
   return (
@@ -26,16 +30,20 @@ export default function Landing() {
       <Header />
       <main>
         <Hero />
-        <AISection />
-        <Comparison />
-        <Features />
-        <HowItWorks />
-        <SocialProof />
-        <Pricing />
-        <UseCases />
-        <FAQ />
+        <Suspense fallback={null}>
+          <AISection />
+          <Comparison />
+          <Features />
+          <HowItWorks />
+          <SocialProof />
+          <Pricing />
+          <UseCases />
+          <FAQ />
+        </Suspense>
       </main>
-      <Footer />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
     </div>
   );
 }

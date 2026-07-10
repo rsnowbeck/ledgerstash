@@ -47,13 +47,36 @@
     <!-- Self-hosted Inter font (preload critical latin subset; no render-blocking third-party request) -->
     <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8DS2N2PKHF"></script>
+    <!-- Google tag (gtag.js) — deferred off the critical path (loads on first
+         interaction or when idle) so it doesn't compete for mobile bandwidth/CPU -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-8DS2N2PKHF');
+      (function () {
+        var loaded = false;
+        function loadGtag() {
+          if (loaded) return;
+          loaded = true;
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8DS2N2PKHF';
+          document.head.appendChild(s);
+        }
+        var events = ['scroll', 'pointerdown', 'keydown', 'touchstart'];
+        function onFirstInteraction() {
+          events.forEach(function (e) { window.removeEventListener(e, onFirstInteraction); });
+          loadGtag();
+        }
+        events.forEach(function (e) { window.addEventListener(e, onFirstInteraction, { once: true, passive: true }); });
+        // Fallback: load when the browser is idle, or after 4s at the latest.
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadGtag, { timeout: 4000 });
+        } else {
+          setTimeout(loadGtag, 4000);
+        }
+      })();
     </script>
   </head>
 
